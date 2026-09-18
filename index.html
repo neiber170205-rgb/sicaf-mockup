@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SICAF — Sistema Integral de Gestión para Fábricas de Calzado</title>
+<meta name="description" content="Prototipo funcional del sistema SICAF: nueve módulos para la gestión de una fábrica de calzado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div class="login" id="login"></div>
+
+<div class="app" id="app-shell" hidden>
+  <aside class="side">
+    <div class="brand">
+      <span class="brand__mark" id="brandMark" role="img" aria-label="SICAF"></span>
+    </div>
+    <nav class="nav" id="nav" aria-label="Módulos del sistema"></nav>
+    <div class="side__foot">
+      <div><div class="side__rule"></div><small>Gestión · Calidad · Resultados</small></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <div class="search" id="search">
+        <span class="ico" id="searchIco"></span>
+        <input id="q" type="search" autocomplete="off" placeholder="Buscar en SICAF..." aria-label="Buscar en todo el sistema" aria-expanded="false" aria-controls="sug">
+        <kbd class="search__k" id="searchK">/</kbd>
+        <button class="search__x" id="searchX" data-act="q-limpiar" aria-label="Limpiar búsqueda" hidden></button>
+        <div class="sug" id="sug" role="listbox" hidden></div>
+      </div>
+      <div class="top__right">
+        <span class="modo" id="modo">Modo Administrador</span>
+        <span class="vdiv"></span>
+        <button class="userbtn" data-act="sesion" aria-label="Sesión activa">
+          <span class="avatar" id="userAv">A</span><b id="userNom">Admin Principal</b><span id="chev"></span>
+        </button>
+        <span class="vdiv"></span>
+        <button class="bell" data-act="alertas" aria-label="Ver alertas"><span id="bellIco"></span><span id="bellN">0</span></button>
+      </div>
+    </header>
+    <main class="page" id="app"></main>
+    <footer class="foot">
+      <span>SICAF</span><span>v1.0.0</span>
+      <span class="foot__links">
+        <button data-act="info" data-tema="soporte">Soporte</button>
+        <button data-act="info" data-tema="manual">Manual de usuario</button>
+        <button data-act="info" data-tema="seguridad">Políticas de seguridad</button>
+      </span>
+    </footer>
+  </div>
+</div>
+<div id="modalHost"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
