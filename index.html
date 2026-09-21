@@ -17,6 +17,8 @@
   <aside class="side">
     <div class="brand">
       <span class="brand__mark" id="brandMark" role="img" aria-label="SICAF"></span>
+      <b class="brand__txt">SICAF</b>
+      <button class="brand__plegar" id="btnPlegar" data-act="plegar"></button>
     </div>
     <nav class="nav" id="nav" aria-label="Módulos del sistema"></nav>
     <div class="side__foot">
@@ -36,22 +38,17 @@
       <div class="top__right">
         <span class="modo" id="modo">Modo Administrador</span>
         <span class="vdiv"></span>
-        <button class="userbtn" data-act="sesion" aria-label="Sesión activa">
-          <span class="avatar" id="userAv">A</span><b id="userNom">Admin Principal</b><span id="chev"></span>
-        </button>
+        <div class="userwrap">
+          <button class="userbtn" data-act="sesion" aria-label="Sesión activa" aria-haspopup="true" aria-expanded="false" aria-controls="umenu">
+            <span class="avatar" id="userAv">A</span><b id="userNom">Admin Principal</b><span id="chev"></span>
+          </button>
+          <div class="umenu" id="umenu" role="menu" hidden></div>
+        </div>
         <span class="vdiv"></span>
         <button class="bell" data-act="alertas" aria-label="Ver alertas"><span id="bellIco"></span><span id="bellN">0</span></button>
       </div>
     </header>
     <main class="page" id="app"></main>
-    <footer class="foot">
-      <span>SICAF</span><span>v1.0.0</span>
-      <span class="foot__links">
-        <button data-act="info" data-tema="soporte">Soporte</button>
-        <button data-act="info" data-tema="manual">Manual de usuario</button>
-        <button data-act="info" data-tema="seguridad">Políticas de seguridad</button>
-      </span>
-    </footer>
   </div>
 </div>
 <div id="modalHost"></div>
