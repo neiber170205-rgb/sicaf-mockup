@@ -240,6 +240,25 @@ pierde cuando la pantalla se vuelve a dibujar (que es lo que hace `render()` en 
   columna de acciones deja de estar fija a la derecha (cada fila ya es una ficha).
 - Verificado sin desplazamiento horizontal entre 360 px y 1440 px.
 
+## Publicado en internet
+
+El prototipo se ve en **https://neiber170205-rgb.github.io/sicaf-mockup/**, para que la docente lo abra
+sin instalar nada. Esa página es un **espejo de esta carpeta** en un repositorio público aparte
+(`sicaf-mockup`): SICAF sigue siendo privado y allá solo llega `mockup-general/`.
+
+Para actualizarla: haz commit de tus cambios como siempre y después, desde la carpeta de SICAF,
+
+```bash
+bash integrador/publicar-mockup.sh
+```
+
+GitHub tarda alrededor de un minuto en publicarlo. El paso a paso de la primera vez (crear el
+repositorio y encender Pages) está en `integrador/guia.md`.
+
+Dos archivos de esta carpeta existen solo por eso: `README.md` es la portada que se ve en GitHub —con la
+dirección y los accesos de la demostración— y `.nojekyll` le dice a GitHub que publique los archivos tal
+cual. Ninguno de los dos afecta al prototipo.
+
 ## Notas
 
 - Los datos viven en memoria: al recargar la página el sistema vuelve al estado inicial.
