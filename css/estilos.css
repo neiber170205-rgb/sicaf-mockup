@@ -20,7 +20,7 @@
   --r-s:8px; --r-m:12px; --r-l:16px; --r-xl:20px;
   --sombra:0 1px 2px rgba(58,42,34,.06), 0 8px 24px -14px rgba(58,42,34,.28);
   --sans:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
-  --serif:"Playfair Display", Georgia, "Times New Roman", serif;
+  --serif:"Poppins", "Segoe UI", system-ui, sans-serif;  /* regla de oro: sin letra con serifa */
   --script:"Parisienne", "Segoe Script", cursive;
 }
 *{box-sizing:border-box}
@@ -326,8 +326,8 @@ pre.csv{background:var(--papel);border:1px solid var(--linea);border-radius:var(
    ===================================================================== */
 :root{
   --sans:"Poppins","Segoe UI",system-ui,sans-serif;
-  --serif:"Lora",Georgia,"Times New Roman",serif;
-  --script:"Lora",Georgia,serif;
+  --serif:"Poppins","Segoe UI",system-ui,sans-serif;
+  --script:"Poppins","Segoe UI",system-ui,sans-serif;
 }
 body{font-size:14.5px;letter-spacing:-.004em}
 /* Títulos y elementos de interfaz: Poppins */

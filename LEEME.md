@@ -95,7 +95,7 @@ mockup: lo que se crea ahí no se vuelve un acceso para entrar.
   «Sistema integral de gestión para fábricas de calzado».
 - Paleta cuero: vinotinto (`--vino-*`), cobre (`--cobre-*`), verde oliva (`--oliva-*`),
   arena y crema.
-- Tipografías: **Poppins** (títulos, botones, menús) y **Lora** (textos y frases).
+- Tipografía: **Poppins** para todo (títulos, botones, menús, textos y frases). Regla de oro: sin letra con serifa.
 - Portada de cada módulo: solo el título y su frase, sin foto (la fotografía de calzado
   quedó en la pantalla de inicio de sesión).
 - Iconos: **[Lucide](https://lucide.dev)** (licencia ISC). No se carga ninguna librería: el
@@ -332,6 +332,6 @@ cual. Ninguno de los dos afecta al prototipo.
 ## Notas
 
 - Los datos viven en memoria: al recargar la página el sistema vuelve al estado inicial.
-- Las tipografías (Poppins y Lora) se cargan desde Google Fonts, así que la primera
+- La tipografía (Poppins) se carga desde Google Fonts, así que la primera
   carga necesita conexión a internet; sin ella el sistema funciona igual pero con
   tipografías del sistema.

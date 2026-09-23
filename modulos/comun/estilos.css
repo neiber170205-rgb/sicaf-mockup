@@ -15,7 +15,7 @@
    pero SIGUEN FUNCIONANDO.
    ===================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 
 /* =====================================================================
    1. PARÁMETROS
@@ -50,7 +50,10 @@
 
   /* --- Letras --- */
   --letra-interfaz: "Poppins", "Segoe UI", system-ui, sans-serif;  /* títulos, botones, menús */
-  --letra-texto: "Lora", Georgia, "Times New Roman", serif;       /* descripciones y frases */
+  /* Regla de oro: en SICAF no se usa letra con serifa (Lora, Georgia...). Las
+     descripciones y frases van en la misma Poppins; esta variable se queda solo
+     para no romper las pantallas que ya la usan. */
+  --letra-texto: "Poppins", "Segoe UI", system-ui, sans-serif;
   --letra-tamano: 13.5px;
 
   /* --- Formas --- */

@@ -39,7 +39,7 @@ con abrir `index.html`.
 | `css/estilos.css` | El diseño: los colores de la marca, las letras y cada pieza |
 | `LEEME.md` | La documentación técnica: cómo está armado y dónde se toca cada cosa |
 
-Los íconos son de [Lucide](https://lucide.dev) (licencia ISC). Las letras, Poppins y Lora, de Google Fonts.
+Los íconos son de [Lucide](https://lucide.dev) (licencia ISC). La letra, Poppins, de Google Fonts: en SICAF no se usa letra con serifa.
 
 ---
 
