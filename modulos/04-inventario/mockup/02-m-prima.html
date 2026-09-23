@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Inventario · M. Prima</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="04-inventario" data-titulo="Inventario · M. Prima">
+
+    <section class="hero">
+      <div>
+        <h1>Inventario</h1>
+        <p>Materia prima, producto en proceso, terminado, merma y maquinaria.</p>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">8</div>
+          <div class="kpi__l">Referencias de insumo</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Bajo stock mínimo</div>
+        </div>
+        <span class="kpi__d down">↑ 100%</span>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">122</div>
+          <div class="kpi__l">Pares terminados</div>
+        </div>
+        <span class="kpi__d up">↑ 11%</span>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">$9.974.000</div>
+          <div class="kpi__l">Valorización</div>
+        </div>
+        <span class="kpi__d up">↑ 2%</span>
+      </article>
+    </div>
+    <nav class="subnav" aria-label="Secciones de Inventario">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i is-on" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
+      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
+      <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
+      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
+      <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
+      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
+      <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
+      <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="editar" href="10-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+        <div>
+          <h2>Saldos por Referencia</h2>
+          <div class="sub">El saldo se recalcula a partir de los movimientos registrados</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="sr-busca" placeholder="Buscar código o insumo…">
+          </div>
+          <div class="control control--corto">
+            <select id="sr-filtro" aria-label="Filtrar la tabla">
+              <option>Todos los estados</option>
+              <option>Bajo el mínimo</option>
+              <option>Suficiente</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n">8 referencias · 2 bajo el mínimo</span>
+        </div>
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Insumo</th>
+                <th class="num">Saldo</th>
+                <th class="num">Mínimo</th>
+                <th class="num">Valorización</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-01</b>
+                  <div class="tiny">Cuero vacuno graso</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>2.400</b> <span class="tiny">dm²</span></td>
+                <td class="num muted" data-l="Mínimo">800</td>
+                <td class="num" data-l="Valorización">
+                  $3.480.000
+                  <div class="tiny">$1.450 / dm²</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-02</b>
+                  <div class="tiny">Suela de caucho 36-43</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>420</b> <span class="tiny">par</span></td>
+                <td class="num muted" data-l="Mínimo">150</td>
+                <td class="num" data-l="Valorización">
+                  $4.116.000
+                  <div class="tiny">$9.800 / par</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-03</b>
+                  <div class="tiny">Forro textil</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>260</b> <span class="tiny">m</span></td>
+                <td class="num muted" data-l="Mínimo">120</td>
+                <td class="num" data-l="Valorización">
+                  $832.000
+                  <div class="tiny">$3.200 / m</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-04</b>
+                  <div class="tiny">Hilo poliéster 40</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>34</b> <span class="tiny">cono</span></td>
+                <td class="num muted" data-l="Mínimo">20</td>
+                <td class="num" data-l="Valorización">
+                  $221.000
+                  <div class="tiny">$6.500 / cono</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-05</b>
+                  <div class="tiny">Plantilla EVA</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>180</b> <span class="tiny">par</span></td>
+                <td class="num muted" data-l="Mínimo">200</td>
+                <td class="num" data-l="Valorización">
+                  $378.000
+                  <div class="tiny">$2.100 / par</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--warn">Bajo mínimo</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                    <button class="iconbtn" aria-label="Solicitar reposición">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-06</b>
+                  <div class="tiny">Pegante poliuretano</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>22</b> <span class="tiny">kg</span></td>
+                <td class="num muted" data-l="Mínimo">15</td>
+                <td class="num" data-l="Valorización">
+                  $407.000
+                  <div class="tiny">$18.500 / kg</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-07</b>
+                  <div class="tiny">Ojalete metálico</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>5.600</b> <span class="tiny">un</span></td>
+                <td class="num muted" data-l="Mínimo">2.000</td>
+                <td class="num" data-l="Valorización">
+                  $252.000
+                  <div class="tiny">$45 / un</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Insumo">
+                  <b>MP-08</b>
+                  <div class="tiny">Cordón encerado 120 cm</div>
+                </td>
+                <td class="num" data-l="Saldo"><b>240</b> <span class="tiny">par</span></td>
+                <td class="num muted" data-l="Mínimo">300</td>
+                <td class="num" data-l="Valorización">
+                  $288.000
+                  <div class="tiny">$1.200 / par</div>
+                </td>
+                <td data-l="Estado"><span class="pill pill--warn">Bajo mínimo</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver kárdex">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                    <button class="iconbtn" aria-label="Solicitar reposición">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><b>8 referencias</b> <span class="tiny">2 por debajo del mínimo</span></td>
+                <td class="num">9.156</td>
+                <td class="num muted">3.605</td>
+                <td class="num">$9.974.000</td>
+                <td colspan="2" class="tiny">Suma en unidades propias de cada insumo</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando 8 de 8 referencias · saldo al 2026-09-15 08:12</p>
+        <div class="nota">
+          <span class="dot">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+          </span>
+          <p><b>Nota:</b> Al cruzar el mínimo hacia abajo, el módulo genera la alerta y notifica a Compras.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+        <div>
+          <h2>Ajuste por Conteo Físico</h2>
+          <div class="sub">Requiere justificación y queda auditado</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--form">
+        <div class="field">
+          <label for="f-aj-ins">Referencia</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+            <select id="f-aj-ins">
+              <option value="MP-01">MP-01 · Cuero vacuno graso</option>
+              <option value="MP-02">MP-02 · Suela de caucho 36-43</option>
+              <option value="MP-03">MP-03 · Forro textil</option>
+              <option value="MP-04">MP-04 · Hilo poliéster 40</option>
+              <option value="MP-05">MP-05 · Plantilla EVA</option>
+              <option value="MP-06">MP-06 · Pegante poliuretano</option>
+              <option value="MP-07">MP-07 · Ojalete metálico</option>
+              <option value="MP-08">MP-08 · Cordón encerado 120 cm</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-aj-cant">Cantidad contada</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg>
+            <input id="f-aj-cant" type="number" min="0" placeholder="Ej. 2380">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-aj-just">Justificación (obligatoria)</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <input id="f-aj-just" placeholder="Ej. Conteo físico del 15/09">
+          </div>
+        </div>
+        <button class="btn">
+          <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+          Registrar ajuste
+        </button>
+        <p class="tiny">El saldo nunca se edita: el ajuste se guarda como movimiento con su responsable y su justificación.</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+        <div>
+          <h2>Nueva Solicitud de Material</h2>
+          <div class="sub">Pide a Compras lo que su área necesita</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--form">
+        <div class="field">
+          <label for="sm-ins">Insumo</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+            <select id="sm-ins">
+              <option value="MP-01">Cuero vacuno graso (MP-01 · saldo 2.400 dm²)</option>
+              <option value="MP-02">Suela de caucho 36-43 (MP-02 · saldo 420 par)</option>
+              <option value="MP-03">Forro textil (MP-03 · saldo 260 m)</option>
+              <option value="MP-04">Hilo poliéster 40 (MP-04 · saldo 34 cono)</option>
+              <option value="MP-05">Plantilla EVA (MP-05 · saldo 180 par)</option>
+              <option value="MP-06">Pegante poliuretano (MP-06 · saldo 22 kg)</option>
+              <option value="MP-07">Ojalete metálico (MP-07 · saldo 5.600 un)</option>
+              <option value="MP-08">Cordón encerado 120 cm (MP-08 · saldo 240 par)</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="sm-cant">Cantidad requerida</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg>
+            <input id="sm-cant" type="number" min="1" placeholder="Ej. 500">
+          </div>
+        </div>
+        <div class="field">
+          <label for="sm-urg">Urgencia</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+            <select id="sm-urg">
+              <option value="normal">Normal</option>
+              <option value="alta">Alta · detiene la operación</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="sm-mot">Motivo</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <input id="sm-mot" placeholder="Ej. Consumo mayor al previsto en corte">
+          </div>
+        </div>
+        <button class="btn">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+          Enviar solicitud
+        </button>
+        <p class="tiny">
+          La solicitud llega a Compras como notificación y queda en su lista hasta que la conviertan en orden de compra. Ninguna se elimina: se anula con su motivo.
+        </p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+        <div>
+          <h2>Solicitudes Enviadas a Compras</h2>
+          <div class="sub">Cada solicitud queda visible hasta que Compras genera la orden</div>
+        </div>
+        <span class="ghostbtn" style="pointer-events:none">2 pendientes</span>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Solicitud</th>
+                <th>Origen</th>
+                <th>Insumo</th>
+                <th class="num">Cantidad</th>
+                <th>Urgencia</th>
+                <th>Proveedor sugerido</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Solicitud">
+                  <b>SM-2026-002</b>
+                  <div class="tiny">2026-09-15 · automática</div>
+                </td>
+                <td data-l="Origen">
+                  <span class="chip chip--cobre">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+                    Inventario
+                  </span>
+                  <div class="tiny">Sistema</div>
+                </td>
+                <td data-l="Insumo">
+                  Cordón encerado 120 cm
+                  <div class="tiny">MP-08</div>
+                </td>
+                <td class="num" data-l="Cantidad"><b>210</b> <span class="tiny">par</span></td>
+                <td data-l="Urgencia"><span class="pill pill--crit">Alta</span></td>
+                <td class="muted" data-l="Proveedor sugerido">Insumos Textiles JR</td>
+                <td data-l="Estado"><span class="pill pill--warn">Pendiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver solicitud">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                    <button class="btn btn--sm btn--ghost">Anular</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Solicitud">
+                  <b>SM-2026-001</b>
+                  <div class="tiny">2026-09-15 · automática</div>
+                </td>
+                <td data-l="Origen">
+                  <span class="chip chip--cobre">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+                    Inventario
+                  </span>
+                  <div class="tiny">Sistema</div>
+                </td>
+                <td data-l="Insumo">
+                  Plantilla EVA
+                  <div class="tiny">MP-05</div>
+                </td>
+                <td class="num" data-l="Cantidad"><b>120</b> <span class="tiny">par</span></td>
+                <td data-l="Urgencia"><span class="pill pill--crit">Alta</span></td>
+                <td class="muted" data-l="Proveedor sugerido">Suelas Pacífico</td>
+                <td data-l="Estado"><span class="pill pill--warn">Pendiente</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="iconbtn" aria-label="Ver solicitud">
+                      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+                    </button>
+                    <button class="btn btn--sm btn--ghost">Anular</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

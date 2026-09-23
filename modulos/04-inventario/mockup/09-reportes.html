@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Inventario · Reportes</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="04-inventario" data-titulo="Inventario · Reportes">
+
+    <section class="hero">
+      <div>
+        <h1>Inventario</h1>
+        <p>Materia prima, producto en proceso, terminado, merma y maquinaria.</p>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">8</div>
+          <div class="kpi__l">Referencias de insumo</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Bajo stock mínimo</div>
+        </div>
+        <span class="kpi__d down">↑ 100%</span>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">122</div>
+          <div class="kpi__l">Pares terminados</div>
+        </div>
+        <span class="kpi__d up">↑ 11%</span>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">$9.974.000</div>
+          <div class="kpi__l">Valorización</div>
+        </div>
+        <span class="kpi__d up">↑ 2%</span>
+      </article>
+    </div>
+    <nav class="subnav" aria-label="Secciones de Inventario">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
+      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
+      <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
+      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
+      <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
+      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
+      <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
+      <a class="subnav__i is-on" data-ico="barras" href="09-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="editar" href="10-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <div>
+          <h2>Generar Reporte</h2>
+          <div class="sub">Elija el reporte, el periodo y el formato</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--form">
+        <div class="field">
+          <label for="rp-tipo">Reporte</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <select id="rp-tipo">
+              <option>Kárdex valorizado</option>
+              <option>Existencias frente al mínimo</option>
+              <option>Entradas y salidas por periodo</option>
+              <option>Merma por causa y etapa</option>
+              <option>Rotación de inventario</option>
+              <option>Maquinaria y mantenimiento</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="rp-desde">Desde</label>
+          <div class="control">
+            <input id="rp-desde" type="date" value="2026-09-01">
+          </div>
+        </div>
+        <div class="field">
+          <label for="rp-hasta">Hasta</label>
+          <div class="control">
+            <input id="rp-hasta" type="date" value="2026-09-30">
+          </div>
+        </div>
+        <div class="field">
+          <label for="rp-bodega">Bodega</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+            <select id="rp-bodega">
+              <option>Todas</option>
+              <option>BOD-01 · Principal</option>
+              <option>BOD-02 · Producto terminado</option>
+              <option>BOD-03 · Merma</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="rp-formato">Formato</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+            <select id="rp-formato">
+              <option>PDF</option>
+              <option>Excel</option>
+              <option>CSV</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <button class="btn">
+          <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+          Generar reporte
+        </button>
+        <p class="tiny">El reporte se arma con los movimientos ya registrados: no cambia ningún saldo. Queda guardado abajo para volver a descargarlo.</p>
+      </div>
+    </section>
+    <div class="grid2 grid2--even">
+      <section class="panel">
+        <header class="panel__head panel__head--oliva">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"></path> <path d="M3 12h.01"></path> <path d="M3 19h.01"></path> <path d="M8 5h13"></path> <path d="M8 12h13"></path> <path d="M8 19h13"></path></svg>
+          <div>
+            <h2>Reportes del Módulo</h2>
+            <div class="sub">Qué responde cada uno</div>
+          </div>
+        </header>
+        <div class="panel__body panel__body--flush">
+          <div class="scroll-x">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reporte</th>
+                  <th>Qué responde</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Reporte"><b>Kárdex valorizado</b></td>
+                  <td class="tiny" data-l="Qué responde">Cada entrada y salida de una referencia, con su costo y su saldo</td>
+                </tr>
+                <tr>
+                  <td data-l="Reporte"><b>Existencias frente al mínimo</b></td>
+                  <td class="tiny" data-l="Qué responde">Qué referencias están por debajo del stock mínimo</td>
+                </tr>
+                <tr>
+                  <td data-l="Reporte"><b>Entradas y salidas por periodo</b></td>
+                  <td class="tiny" data-l="Qué responde">Cuánto entró y cuánto salió entre dos fechas</td>
+                </tr>
+                <tr>
+                  <td data-l="Reporte"><b>Merma por causa y etapa</b></td>
+                  <td class="tiny" data-l="Qué responde">Dónde se pierde el material y cuánto cuesta</td>
+                </tr>
+                <tr>
+                  <td data-l="Reporte"><b>Rotación de inventario</b></td>
+                  <td class="tiny" data-l="Qué responde">Qué referencias se mueven y cuáles llevan meses quietas</td>
+                </tr>
+                <tr>
+                  <td data-l="Reporte"><b>Maquinaria y mantenimiento</b></td>
+                  <td class="tiny" data-l="Qué responde">Estado de cada máquina y sus mantenimientos programados</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section class="panel">
+        <header class="panel__head panel__head--cobre">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+          <div>
+            <h2>Resumen del Periodo</h2>
+            <div class="sub">Septiembre de 2026, hasta hoy</div>
+          </div>
+        </header>
+        <div class="panel__body panel__body--flush">
+          <div class="scroll-x">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th class="num">Valor</th>
+                  <th>Detalle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Concepto">Entradas registradas</td>
+                  <td class="num" data-l="Valor">9.278</td>
+                  <td class="tiny" data-l="Detalle">10 movimientos</td>
+                </tr>
+                <tr>
+                  <td data-l="Concepto">Salidas registradas</td>
+                  <td class="num" data-l="Valor">0</td>
+                  <td class="tiny muted" data-l="Detalle">Sin salidas en el periodo</td>
+                </tr>
+                <tr>
+                  <td data-l="Concepto">Ajustes por conteo</td>
+                  <td class="num" data-l="Valor">0</td>
+                  <td class="tiny muted" data-l="Detalle">Sin conteos cerrados</td>
+                </tr>
+                <tr>
+                  <td data-l="Concepto">Merma del periodo</td>
+                  <td class="num" data-l="Valor">81</td>
+                  <td class="tiny" data-l="Detalle">25 registros · $2.577.070</td>
+                </tr>
+                <tr>
+                  <td data-l="Concepto">Valorización al cierre</td>
+                  <td class="num" data-l="Valor">$9.974.000</td>
+                  <td class="tiny" data-l="Detalle">8 referencias de materia prima</td>
+                </tr>
+                <tr>
+                  <td data-l="Concepto">Referencias bajo el mínimo</td>
+                  <td class="num" data-l="Valor">2 de 8</td>
+                  <td data-l="Detalle"><span class="pill pill--warn">Requiere compra</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Concepto">Referencias con existencia suficiente</td>
+                  <td class="num" data-l="Valor">6 de 8</td>
+                  <td data-l="Detalle"><span class="pill pill--ok">Al día</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tabla-pie">Los mismos números del panel de Inicio, con el corte del periodo elegido arriba.</p>
+        </div>
+      </section>
+    </div>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+        <div>
+          <h2>Reportes Generados</h2>
+          <div class="sub">Los últimos que se sacaron, listos para volver a descargar</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Reporte</th>
+                <th>Periodo</th>
+                <th>Generado por</th>
+                <th>Fecha</th>
+                <th>Formato</th>
+                <th class="acts"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Nº"><b>RP-0004</b></td>
+                <td data-l="Reporte">Kárdex valorizado</td>
+                <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-15</td>
+                <td data-l="Generado por">Andrés Suárez</td>
+                <td class="tiny" data-l="Fecha">2026-09-15 09:20</td>
+                <td data-l="Formato"><span class="chip chip--vino">PDF</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Descargar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>RP-0003</b></td>
+                <td data-l="Reporte">Existencias frente al mínimo</td>
+                <td class="tiny" data-l="Periodo">2026-09-15</td>
+                <td data-l="Generado por">Andrés Suárez</td>
+                <td class="tiny" data-l="Fecha">2026-09-15 08:55</td>
+                <td data-l="Formato"><span class="chip chip--oliva">Excel</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Descargar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>RP-0002</b></td>
+                <td data-l="Reporte">Merma por causa y etapa</td>
+                <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-14</td>
+                <td data-l="Generado por">Édgar Pabón</td>
+                <td class="tiny" data-l="Fecha">2026-09-14 17:10</td>
+                <td data-l="Formato"><span class="chip chip--cobre">CSV</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Descargar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>RP-0001</b></td>
+                <td data-l="Reporte">Kárdex valorizado</td>
+                <td class="tiny" data-l="Periodo">2026-08-01 a 2026-08-31</td>
+                <td data-l="Generado por">Luisa Mendoza</td>
+                <td class="tiny" data-l="Fecha">2026-09-01 07:30</td>
+                <td data-l="Formato"><span class="chip chip--vino">PDF</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Descargar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

@@ -1,0 +1,744 @@
+/* =====================================================================
+   02-diseno/mockup/estilos.css
+
+   Lo PROPIO de este módulo. Lo compartido (colores, letras, panel, tabla,
+   botones...) está en comun/estilos.css y no se copia aquí.
+   Si cambias un color, usa siempre el NOMBRE: var(--vino-600), no "#7B1A22".
+   ===================================================================== */
+
+/* ---- Nota / avisos ---- */
+
+.nota .firma {
+  margin-left: auto;
+  font-family: var(--letra-texto);
+  font-size: 17px;
+  color: var(--vino-600);
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ---- Ficha técnica horizontal, planos y atajo flotante ---- */
+
+.ficha {
+  display: grid;
+  grid-template-columns: minmax(0,.78fr) minmax(0,1.32fr) minmax(0,1.02fr);
+  gap: 0;
+}
+
+.ficha__col {
+  padding: 0 22px;
+  border-left: 1px solid var(--linea);
+  min-width: 0;
+}
+
+.ficha__col:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.ficha__col:last-child {
+  padding-right: 0;
+}
+
+.ficha__t {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--letra-interfaz);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--vino-600);
+  margin-bottom: 12px;
+  letter-spacing: -.015em;
+}
+
+.ficha__t .tiny {
+  font-family: var(--letra-interfaz);
+  font-weight: 400;
+}
+
+.costo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--cobre-100);
+  border: 1px solid var(--cobre-200);
+  border-radius: var(--r-m);
+}
+
+.costo span {
+  font-size: 13.5px;
+  color: var(--tinta-2);
+  font-family: var(--letra-texto);
+  letter-spacing: 0;
+}
+
+.costo b {
+  font-size: 19px;
+  color: var(--vino-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.ficha__acc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  cursor: pointer;
+  padding: 20px 16px;
+  border: 2px dashed #E0C7AE;
+  border-radius: var(--r-m);
+  background: var(--cobre-100);
+  color: var(--cobre-700);
+  transition: border-color .15s,background .15s;
+}
+
+.drop:hover {
+  border-color: var(--cobre-600);
+  background: #FBE9D6;
+}
+
+.drop b {
+  color: var(--vino-600);
+  font-size: 14.5px;
+}
+
+.archivos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 268px;
+  overflow: auto;
+}
+
+.archivo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 10px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+}
+
+.archivo.is-off {
+  opacity: .6;
+  background: var(--arena);
+}
+
+.archivo .mini {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: var(--r-s);
+  object-fit: cover;
+  background: var(--vino-tint);
+  color: var(--vino-600);
+  display: grid;
+  place-items: center;
+}
+
+.archivo__d {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.archivo__d b {
+  display: block;
+  font-size: 13.5px;
+  color: var(--vino-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.archivo__d small {
+  display: block;
+  font-size: 12px;
+  color: var(--tinta-3);
+}
+
+.archivo .acts {
+  flex: 0 0 auto;
+}
+
+.fab {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 50;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(180deg,var(--cobre-500),var(--cobre-700));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 18px 32px -14px rgba(120,50,10,.75),0 0 0 4px rgba(255,255,255,.55);
+  transition: transform .15s,filter .15s;
+}
+
+.fab:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.07);
+}
+
+.fab:active {
+  transform: translateY(0);
+}
+
+@media (max-width:1180px) {
+  .ficha {
+    grid-template-columns: minmax(0,1fr);
+  }
+
+  .ficha__col {
+    padding: 20px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--linea);
+  }
+
+  .ficha__col:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+@media (max-width:560px) {
+  .fab {
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* Títulos y elementos de interfaz: Poppins */
+
+/* Textos, descripciones y frases: Lora */
+
+/* =====================================================================
+   ESCALA COMPACTA — misma identidad, menos peso tipográfico
+   ===================================================================== */
+
+/* =====================================================================
+   ESCALA COMPACTA + NAVEGACIÓN INTERNA POR MÓDULO
+   ===================================================================== */
+
+/* ---- Ajustes finos de adaptabilidad ---- */
+
+@media (max-width:560px) {
+  .nota .firma {
+    display: none;
+  }
+}
+
+/* =====================================================================
+   PENDIENTES Y NOTIFICACIONES — bloque desplegable de la pantalla de Inicio
+
+   Es un <details>: lo abre y lo cierra el navegador, sin JavaScript.
+   ===================================================================== */
+
+.avisos {
+  margin: 16px 0;
+  border: 1px solid var(--linea);
+  border-left: 5px solid var(--cobre-500);
+  border-radius: var(--r-m);
+  background: var(--crema);
+  overflow: hidden;
+}
+
+.avisos__cab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.avisos__cab::-webkit-details-marker {
+  display: none;
+}
+
+.avisos__cab:hover {
+  background: var(--cobre-100);
+}
+
+.avisos__cab:focus-visible {
+  outline: 2px solid var(--cobre-600);
+  outline-offset: -2px;
+}
+
+.avisos__ic {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--vino-tint);
+  color: var(--vino-600);
+}
+
+.avisos__t {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.avisos__t b {
+  display: block;
+  font-family: var(--letra-interfaz);
+  font-size: 13.5px;
+  color: var(--vino-800);
+}
+
+.avisos__n {
+  flex: 0 0 auto;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--crit);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.avisos__ver {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--tinta-3);
+  transition: transform .18s ease;
+}
+
+.avisos[open] .avisos__ver {
+  transform: rotate(180deg);
+}
+
+.avisos__cuerpo {
+  padding: 2px 16px 15px;
+}
+
+/* =====================================================================
+   TABLAS — barra de filtros, fila de totales y pie con el conteo
+   ===================================================================== */
+
+.tabla-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--crema);
+  border-bottom: 1px solid var(--linea);
+}
+
+.tabla-tools .control {
+  flex: 1 1 230px;
+  min-width: 0;
+}
+
+.tabla-tools .control--corto {
+  flex: 0 1 215px;
+}
+
+.tabla-tools__n {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--cobre-800);
+  background: var(--cobre-100);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+.tabla-pie {
+  padding: 11px 16px;
+  border-top: 1px solid var(--linea-2);
+  font-family: var(--letra-texto);
+  font-size: 12.5px;
+  color: var(--tinta-3);
+}
+
+/* La fila de totales */
+
+tfoot td {
+  background: var(--arena);
+  border-top: 1.5px solid var(--linea);
+  border-bottom: 0;
+  font-weight: 600;
+  color: var(--vino-800);
+}
+
+tfoot td.tiny,
+tfoot .tiny {
+  font-weight: 400;
+  color: var(--tinta-3);
+}
+
+tfoot tr:has(> td):hover {
+  background: var(--arena);
+}
+
+tfoot tr:has(> td):hover > td:first-child {
+  box-shadow: none;
+}
+
+/* Una cantidad por debajo de lo que debería */
+
+td.falta {
+  color: var(--crit);
+}
+
+/* =====================================================================
+   LO QUE APARECE AL USAR EL PROTOTIPO (prototipo.js)
+   ===================================================================== */
+
+/* Mensaje flotante de confirmación */
+
+.flash {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  max-width: min(380px, calc(100vw - 40px));
+  padding: 13px 17px;
+  border: 1px solid var(--linea);
+  border-left: 5px solid var(--ok);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--letra-texto);
+  font-size: 13.5px;
+  line-height: 1.45;
+  box-shadow: 0 12px 32px -14px rgba(58, 42, 34, .55);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.flash.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.flash--warn { border-left-color: var(--warn); }
+.flash--crit { border-left-color: var(--crit); }
+
+/* La fila que se acaba de agregar o de cambiar */
+
+tr.es-nueva > td {
+  background: var(--oliva-100);
+}
+
+/* El pendiente que ya se atendió */
+
+.noti.es-atendida {
+  opacity: .6;
+}
+
+/* Cuando el filtro no deja ninguna fila */
+
+.sin-filas {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash { transition: none; }
+}
+
+/* =====================================================================
+   PENDIENTES — la misma lista compacta que usa 05-produccion, dentro del
+   desplegable de avisos: una línea por aviso, con su color y su detalle.
+   ===================================================================== */
+
+.pend__i {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: var(--r-s);
+  border: 1px solid var(--linea-2);
+  border-left: 3px solid var(--linea);
+  background: var(--papel);
+  text-align: left;
+  transition: background .15s,border-color .15s,transform .15s;
+}
+
+.pend__i:hover {
+  background: var(--crema);
+  transform: translateX(2px);
+}
+
+.pend__ic {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--arena);
+  color: var(--tinta-2);
+}
+
+.pend__x {
+  flex: 1;
+  min-width: 0;
+}
+
+.pend__x b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vino-800);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pend__x small {
+  display: block;
+  font-size: 12px;
+  color: var(--tinta-3);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pend__v {
+  flex: 0 0 auto;
+  color: var(--tinta-3);
+  display: grid;
+  place-items: center;
+  transform: rotate(-90deg);
+}
+
+.pend__i:hover .pend__v {
+  color: var(--cobre-700);
+}
+
+.pend__i--crit {
+  border-left-color: var(--crit);
+}
+
+.pend__i--crit .pend__ic {
+  background: var(--crit-bg);
+  color: var(--crit);
+}
+
+.pend__i--warn {
+  border-left-color: var(--warn);
+}
+
+.pend__i--warn .pend__ic {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.pend__i--info {
+  border-left-color: var(--oliva-600);
+}
+
+.pend__i--info .pend__ic {
+  background: var(--oliva-100);
+  color: var(--ok);
+}
+
+.panel__head--pend {
+  background: linear-gradient(120deg,#6B2A62,#7A3070);
+}
+
+.pend__card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pend__card .panel__head {
+  padding: 10px 16px;
+  min-height: 0;
+}
+
+.pend__card .panel__head h2 {
+  font-size: 17px;
+}
+
+.pend__card .panel__head .sub {
+  font-size: 12px;
+}
+
+.pend {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px 13px;
+}
+
+/* Dentro del desplegable no necesita alto propio ni scroll aparte */
+
+.avisos .pend {
+  flex: none;
+  overflow: visible;
+  padding: 2px 0 6px;
+}
+
+.pend__i {
+  background: var(--papel);
+  cursor: pointer;
+  text-align: left;
+}
+
+.pend__i.es-atendida {
+  opacity: .55;
+}
+
+/* =====================================================================
+   CARGAR UN ARCHIVO — la zona para soltar la imagen o el plano
+   ===================================================================== */
+
+.subir {
+  border: 1.5px dashed var(--linea);
+  border-radius: var(--r-m);
+  background: var(--crema);
+}
+
+.subir__i {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.subir__z {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 18px;
+  cursor: pointer;
+}
+
+.subir:hover {
+  border-color: var(--cobre-500);
+  background: var(--cobre-100);
+}
+
+.subir__i:focus-visible + .subir__z {
+  outline: 2px solid var(--cobre-600);
+  outline-offset: -4px;
+}
+
+.subir__ic {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--vino-tint);
+  color: var(--vino-600);
+}
+
+.subir__t {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.subir__t b {
+  display: block;
+  font-family: var(--letra-interfaz);
+  font-size: 13.5px;
+  color: var(--vino-800);
+}
+
+.subir__t small {
+  display: block;
+  font-size: 12px;
+  color: var(--tinta-3);
+  margin-top: 2px;
+}
+
+/* Lo que se ve cuando ya hay archivo */
+
+.subir__v {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.subir__img {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--linea);
+  background: var(--papel);
+}
+
+.subir__img[hidden] {
+  display: none;
+}
+
+.subir__d {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.subir__d b {
+  display: block;
+  font-size: 13.5px;
+  color: var(--vino-800);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subir.tiene-archivo {
+  border-style: solid;
+  border-color: var(--oliva-600);
+  background: var(--oliva-100);
+}
+
+.subir.tiene-archivo .subir__z {
+  display: none;
+}
+
+/* La fila que se va a borrar pide confirmación antes */
+
+tr.va-a-borrarse > td {
+  background: var(--crit-bg);
+}
+
+@media (max-width:560px) {
+  .tabla-tools__n { margin-left: 0; }
+  .subir__z, .subir__v { flex-wrap: wrap; }
+}

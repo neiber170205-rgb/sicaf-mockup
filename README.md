@@ -14,8 +14,9 @@ usuarios— con datos de demostración que cambian al pulsar.
 | Usuario | Contraseña | Qué ve |
 |---|---|---|
 | `admin@sicaf.com` | `admin2026` | Todo el sistema |
-
-Los demás accesos de la demostración usan `sicaf2026`. Se crean desde **Admin. Usuarios**.
+| `maria@sicaf.com` | `sicaf2026` | Dashboard e Inventario |
+| `luis@sicaf.com` | `sicaf2026` | Dashboard y Control de Calidad |
+| `erick@sicaf.com` | `sicaf2026` | Dashboard y Logística y Despacho |
 
 > Son claves de mentira, escritas dentro del prototipo para que cualquiera pueda entrar a mirarlo.
 > El sistema real no las usa ni se parece: allí las contraseñas van cifradas y en la base de datos.
@@ -33,7 +34,8 @@ con abrir `index.html`.
 | Archivo | Qué tiene |
 |---|---|
 | `index.html` | El esqueleto: el menú lateral, la barra de arriba y el hueco donde se dibuja cada pantalla |
-| `js/app.js` | Todo lo demás: los datos, la lógica de cada módulo y cómo se dibuja |
+| `js/app.js` | Todo lo demás: los datos, la sesión, el módulo de Producción y cómo se muestra cada módulo |
+| `modulos/` | El mockup de cada módulo (menos Producción), tal cual lo dibujó su responsable en su carpeta del proyecto |
 | `css/estilos.css` | El diseño: los colores de la marca, las letras y cada pieza |
 | `LEEME.md` | La documentación técnica: cómo está armado y dónde se toca cada cosa |
 

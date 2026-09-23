@@ -1,0 +1,564 @@
+/* =====================================================================
+   07-comercial/mockup/estilos.css
+
+   Lo PROPIO de este módulo. Lo compartido (colores, letras, panel, tabla,
+   botones...) está en comun/estilos.css y no se copia aquí.
+   Si cambias un color, usa siempre el NOMBRE: var(--vino-600), no "#7B1A22".
+   ===================================================================== */
+
+/* ---- Formularios ---- */
+
+.control .chev {
+  left: auto;
+  right: 14px;
+  top: 11px;
+}
+
+/* ---- Nota / avisos ---- */
+
+.nota .firma {
+  margin-left: auto;
+  font-family: var(--letra-texto);
+  font-size: 17px;
+  color: var(--vino-600);
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ---- Notificaciones entre módulos ---- */
+
+.notis {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.noti {
+  display: flex;
+  gap: 12px;
+  padding: 13px 15px;
+  border: 1px solid var(--linea);
+  border-left: 5px solid var(--tinta-3);
+  border-radius: var(--r-m);
+  background: var(--papel);
+}
+
+.noti--ok {
+  border-left-color: var(--ok);
+  background: #F9FCF8;
+}
+
+.noti__ic {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  color: var(--tinta-2);
+}
+
+.noti--ok .noti__ic {
+  color: var(--ok);
+}
+
+.noti__b {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.noti__ruta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+  color: var(--tinta-3);
+}
+
+.noti__ruta svg {
+  transform: rotate(90deg);
+}
+
+.noti__ref {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vino-600);
+  background: var(--vino-tint);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.noti__b b {
+  display: block;
+  font-size: 13.5px;
+  color: var(--vino-800);
+  font-family: var(--letra-interfaz);
+}
+
+.noti__b p {
+  font-size: 12.5px;
+  color: var(--tinta-2);
+  margin-top: 2px;
+  font-family: var(--letra-texto);
+  letter-spacing: 0;
+}
+
+.noti__pie {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 9px;
+  flex-wrap: wrap;
+}
+
+.noti__pie .acts {
+  margin-left: auto;
+}
+
+.bandeja .panel__body {
+  padding: 16px 18px;
+}
+
+@media (max-width:560px) {
+  .noti__pie .acts {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .noti__pie .btn {
+    flex: 1;
+  }
+}
+
+/* Títulos y elementos de interfaz: Poppins */
+
+/* Textos, descripciones y frases: Lora */
+
+/* =====================================================================
+   ESCALA COMPACTA — misma identidad, menos peso tipográfico
+   ===================================================================== */
+
+/* =====================================================================
+   ESCALA COMPACTA + NAVEGACIÓN INTERNA POR MÓDULO
+   ===================================================================== */
+
+/* ---- Ajustes finos de adaptabilidad ---- */
+
+@media (max-width:560px) {
+  .nota .firma {
+    display: none;
+  }
+}
+
+/* =====================================================================
+   PENDIENTES Y NOTIFICACIONES — bloque desplegable de la pantalla de Inicio
+
+   Es un <details>: lo abre y lo cierra el navegador, sin JavaScript.
+   ===================================================================== */
+
+.avisos {
+  margin: 16px 0;
+  border: 1px solid var(--linea);
+  border-left: 5px solid var(--cobre-500);
+  border-radius: var(--r-m);
+  background: var(--crema);
+  overflow: hidden;
+}
+
+.avisos__cab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.avisos__cab::-webkit-details-marker {
+  display: none;
+}
+
+.avisos__cab:hover {
+  background: var(--cobre-100);
+}
+
+.avisos__cab:focus-visible {
+  outline: 2px solid var(--cobre-600);
+  outline-offset: -2px;
+}
+
+.avisos__ic {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--vino-tint);
+  color: var(--vino-600);
+}
+
+.avisos__t {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.avisos__t b {
+  display: block;
+  font-family: var(--letra-interfaz);
+  font-size: 13.5px;
+  color: var(--vino-800);
+}
+
+.avisos__n {
+  flex: 0 0 auto;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--crit);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.avisos__ver {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--tinta-3);
+  transition: transform .18s ease;
+}
+
+.avisos[open] .avisos__ver {
+  transform: rotate(180deg);
+}
+
+.avisos__cuerpo {
+  padding: 2px 16px 15px;
+}
+
+/* =====================================================================
+   TABLAS — barra de filtros, fila de totales y pie con el conteo
+   ===================================================================== */
+
+.tabla-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--crema);
+  border-bottom: 1px solid var(--linea);
+}
+
+.tabla-tools .control {
+  flex: 1 1 230px;
+  min-width: 0;
+}
+
+.tabla-tools .control--corto {
+  flex: 0 1 215px;
+}
+
+.tabla-tools__n {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--cobre-800);
+  background: var(--cobre-100);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+.tabla-pie {
+  padding: 11px 16px;
+  border-top: 1px solid var(--linea-2);
+  font-family: var(--letra-texto);
+  font-size: 12.5px;
+  color: var(--tinta-3);
+}
+
+/* La fila de totales */
+
+tfoot td {
+  background: var(--arena);
+  border-top: 1.5px solid var(--linea);
+  border-bottom: 0;
+  font-weight: 600;
+  color: var(--vino-800);
+}
+
+tfoot td.tiny,
+tfoot .tiny {
+  font-weight: 400;
+  color: var(--tinta-3);
+}
+
+tfoot tr:has(> td):hover {
+  background: var(--arena);
+}
+
+tfoot tr:has(> td):hover > td:first-child {
+  box-shadow: none;
+}
+
+/* Una cantidad por debajo de lo que debería */
+
+td.falta {
+  color: var(--crit);
+}
+
+/* =====================================================================
+   LO QUE APARECE AL USAR EL PROTOTIPO (prototipo.js)
+   ===================================================================== */
+
+/* Mensaje flotante de confirmación */
+
+.flash {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  max-width: min(380px, calc(100vw - 40px));
+  padding: 13px 17px;
+  border: 1px solid var(--linea);
+  border-left: 5px solid var(--ok);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--letra-texto);
+  font-size: 13.5px;
+  line-height: 1.45;
+  box-shadow: 0 12px 32px -14px rgba(58, 42, 34, .55);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.flash.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.flash--warn { border-left-color: var(--warn); }
+.flash--crit { border-left-color: var(--crit); }
+
+/* La fila que se acaba de agregar o de cambiar */
+
+tr.es-nueva > td {
+  background: var(--oliva-100);
+}
+
+/* El pendiente que ya se atendió */
+
+.noti.es-atendida {
+  opacity: .6;
+}
+
+/* Cuando el filtro no deja ninguna fila */
+
+.sin-filas {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash { transition: none; }
+}
+
+/* =====================================================================
+   PENDIENTES — la misma lista compacta que usa 05-produccion, dentro del
+   desplegable de avisos: una línea por aviso, con su color y su detalle.
+   ===================================================================== */
+
+.pend__i {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: var(--r-s);
+  border: 1px solid var(--linea-2);
+  border-left: 3px solid var(--linea);
+  background: var(--papel);
+  text-align: left;
+  transition: background .15s,border-color .15s,transform .15s;
+}
+
+.pend__i:hover {
+  background: var(--crema);
+  transform: translateX(2px);
+}
+
+.pend__ic {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--arena);
+  color: var(--tinta-2);
+}
+
+.pend__x {
+  flex: 1;
+  min-width: 0;
+}
+
+.pend__x b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vino-800);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pend__x small {
+  display: block;
+  font-size: 12px;
+  color: var(--tinta-3);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pend__v {
+  flex: 0 0 auto;
+  color: var(--tinta-3);
+  display: grid;
+  place-items: center;
+  transform: rotate(-90deg);
+}
+
+.pend__i:hover .pend__v {
+  color: var(--cobre-700);
+}
+
+.pend__i--crit {
+  border-left-color: var(--crit);
+}
+
+.pend__i--crit .pend__ic {
+  background: var(--crit-bg);
+  color: var(--crit);
+}
+
+.pend__i--warn {
+  border-left-color: var(--warn);
+}
+
+.pend__i--warn .pend__ic {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.pend__i--info {
+  border-left-color: var(--oliva-600);
+}
+
+.pend__i--info .pend__ic {
+  background: var(--oliva-100);
+  color: var(--ok);
+}
+
+.panel__head--pend {
+  background: linear-gradient(120deg,#6B2A62,#7A3070);
+}
+
+.pend__card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pend__card .panel__head {
+  padding: 10px 16px;
+  min-height: 0;
+}
+
+.pend__card .panel__head h2 {
+  font-size: 17px;
+}
+
+.pend__card .panel__head .sub {
+  font-size: 12px;
+}
+
+.pend {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px 13px;
+}
+
+/* Dentro del desplegable no necesita alto propio ni scroll aparte */
+
+.avisos .pend {
+  flex: none;
+  overflow: visible;
+  padding: 2px 0 6px;
+}
+
+.pend__i {
+  background: var(--papel);
+  cursor: pointer;
+  text-align: left;
+}
+
+.pend__i.es-atendida {
+  opacity: .55;
+}
+
+/* La fila que se va a borrar pide confirmación antes */
+
+tr.va-a-borrarse > td {
+  background: var(--crit-bg);
+}
+
+@media (max-width:560px) {
+  .tabla-tools__n { margin-left: 0; }
+}
+
+/* ── Tablero de inicio: cinco indicadores, saludo y acciones rápidas ────── */
+.kpis--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1200px) { .kpis--5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px)  { .kpis--5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px)  { .kpis--5 { grid-template-columns: minmax(0, 1fr); } }
+
+/* El indicador de ventas lleva una cifra larga: que no se corte */
+.kpis--5 .kpi__n { font-size: 20px; }
+
+.saludo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 13px 16px;
+  border-radius: var(--r-l);
+  background: var(--crema);
+  border: 1px solid var(--linea);
+}
+.saludo__t { display: flex; flex-direction: column; gap: 2px; min-width: 240px; flex: 1 1 320px; }
+.saludo__t b { font-size: 15px; color: var(--vino-800); }
+.saludo__t span { font-family: var(--letra-texto); font-size: 12.5px; color: var(--tinta-2); }
+
+.rapidas { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+.rapidas .btn { gap: 6px; }

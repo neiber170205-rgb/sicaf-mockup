@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Compras · Detectar necesidad</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="03-compras" data-titulo="Compras · Detectar necesidad">
+
+    <section class="hero">
+      <div>
+        <h1>Compras y Abastecimiento</h1>
+        <p>Paso 1: Inventario avisa que un insumo bajó del mínimo y de ahí sale la necesidad de comprar.</p>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Órdenes abiertas</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Solicitudes pendientes</div>
+        </div>
+        <span class="kpi__d down">↑ 100%</span>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">3</div>
+          <div class="kpi__l">Proveedores activos</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">$1.880.000</div>
+          <div class="kpi__l">Monto comprometido</div>
+        </div>
+        <span class="kpi__d up">↑ 25%</span>
+      </article>
+    </div>
+    <details class="avisos">
+      <summary class="avisos__cab">
+        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+        <span class="avisos__t">
+          <b>Pendientes y notificaciones</b>
+          <span class="tiny">3 urgentes · 2 en espera · 1 aviso de otro módulo</span>
+        </span>
+        <span class="avisos__n">6</span>
+        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="avisos__cuerpo">
+        <div class="pend">
+          <button class="pend__i pend__i--crit" data-ir="02-solicitudes.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+            <span class="pend__x"><b>Reposición requerida: Plantilla EVA</b><small>Inventario pide 120 par · solicitud SM-2026-001 sin convertir</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--crit" data-ir="02-solicitudes.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+            <span class="pend__x"><b>Reposición requerida: Cordón encerado 120 cm</b><small>Inventario pide 210 par · solicitud SM-2026-002 sin convertir</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--crit" data-ir="09-novedades.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg></span>
+            <span class="pend__x"><b>Novedad abierta con el proveedor</b><small>Faltante en la entrega · pendiente de respuesta</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="07-recepcion.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+            <span class="pend__x"><b>OC-2026-014 despachada sin recibir</b><small>1.200 dm² de Curtiembre del Norte · Inventario espera la entrada</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="06-ordenes.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg></span>
+            <span class="pend__x"><b>OC-2026-015 aprobada sin enviar</b><small>4.000 un de ojalete metálico · Insumos Textiles JR</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--info" data-ir="04-cotizaciones.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></span>
+            <span class="pend__x"><b>2 cotizaciones en estudio</b><small>SM-2026-001 y SM-2026-002 · falta elegir proveedor</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+        </div>
+      </div>
+    </details>
+    <nav class="subnav" aria-label="Secciones de Compras">
+      <a class="subnav__i is-on" data-ico="buscar" href="01-necesidad.html">Detectar necesidad</a>
+      <a class="subnav__i" data-ico="portapapeles" data-ct="2" href="02-solicitudes.html">Crear solicitud</a>
+      <a class="subnav__i" data-ico="usuarios" href="03-proveedores.html">Seleccionar proveedor</a>
+      <a class="subnav__i" data-ico="etiqueta" data-ct="2" href="04-cotizaciones.html">Cotización</a>
+      <a class="subnav__i" data-ico="visto" data-ct="2" href="05-aprobacion.html">Aprobar compra</a>
+      <a class="subnav__i" data-ico="carrito" data-ct="2" href="06-ordenes.html">Orden de compra</a>
+      <a class="subnav__i" data-ico="caja" data-ct="1" href="07-recepcion.html">Recibir materiales</a>
+      <a class="subnav__i" data-ico="ruta" href="08-actualizacion.html">Actualizar inventario</a>
+      <a class="subnav__i" data-ico="alerta" data-ct="1" href="09-novedades.html">Si hay problemas</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+        <div>
+          <h2>Insumos que Piden Reposición</h2>
+          <div class="sub">El saldo que reporta Inventario frente al stock mínimo de cada insumo</div>
+        </div>
+        <span class="ghostbtn" style="pointer-events:none">2 por comprar</span>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="ne-busca" placeholder="Buscar código, insumo o proveedor…">
+          </div>
+          <div class="control control--corto">
+            <select id="ne-filtro" aria-label="Filtrar la tabla">
+              <option>Todos los estados</option>
+              <option>Bajo el mínimo</option>
+              <option>Cerca del mínimo</option>
+              <option>Suficiente</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n">8 insumos · 2 bajo el mínimo</span>
+        </div>
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Insumo</th>
+                <th class="num">Saldo</th>
+                <th class="num">Mínimo</th>
+                <th class="num">Faltante</th>
+                <th class="num">Sugerido</th>
+                <th>Estado</th>
+                <th class="acts"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Código"><b>MP-05</b></td>
+                <td data-l="Insumo">Plantilla EVA<div class="tiny">Suelas Pacífico</div></td>
+                <td class="num" data-l="Saldo">180 <span class="tiny">par</span></td>
+                <td class="num muted" data-l="Mínimo">200</td>
+                <td class="num falta" data-l="Faltante">20</td>
+                <td class="num" data-l="Sugerido">120</td>
+                <td data-l="Estado"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                <td class="acts"><button class="btn btn--sm btn--oliva">Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-08</b></td>
+                <td data-l="Insumo">Cordón encerado 120 cm<div class="tiny">Insumos Textiles JR</div></td>
+                <td class="num" data-l="Saldo">240 <span class="tiny">par</span></td>
+                <td class="num muted" data-l="Mínimo">300</td>
+                <td class="num falta" data-l="Faltante">60</td>
+                <td class="num" data-l="Sugerido">210</td>
+                <td data-l="Estado"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                <td class="acts"><button class="btn btn--sm btn--oliva">Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-04</b></td>
+                <td data-l="Insumo">Hilo poliéster 40<div class="tiny">Insumos Textiles JR</div></td>
+                <td class="num" data-l="Saldo">34 <span class="tiny">cono</span></td>
+                <td class="num muted" data-l="Mínimo">20</td>
+                <td class="num" data-l="Faltante">—</td>
+                <td class="num" data-l="Sugerido">—</td>
+                <td data-l="Estado"><span class="pill pill--warn">Cerca del mínimo</span></td>
+                <td class="acts"><button class="btn btn--sm btn--ghost" disabled>Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-06</b></td>
+                <td data-l="Insumo">Pegante poliuretano<div class="tiny">Químicos Andinos</div></td>
+                <td class="num" data-l="Saldo">22 <span class="tiny">kg</span></td>
+                <td class="num muted" data-l="Mínimo">15</td>
+                <td class="num" data-l="Faltante">—</td>
+                <td class="num" data-l="Sugerido">—</td>
+                <td data-l="Estado"><span class="pill pill--warn">Cerca del mínimo</span></td>
+                <td class="acts"><button class="btn btn--sm btn--ghost" disabled>Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-01</b></td>
+                <td data-l="Insumo">Cuero vacuno graso<div class="tiny">Curtiembre del Norte</div></td>
+                <td class="num" data-l="Saldo">2.400 <span class="tiny">dm²</span></td>
+                <td class="num muted" data-l="Mínimo">800</td>
+                <td class="num" data-l="Faltante">—</td>
+                <td class="num" data-l="Sugerido">—</td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td class="acts"><button class="btn btn--sm btn--ghost" disabled>Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-02</b></td>
+                <td data-l="Insumo">Suela de caucho 36-43<div class="tiny">Suelas Pacífico</div></td>
+                <td class="num" data-l="Saldo">420 <span class="tiny">par</span></td>
+                <td class="num muted" data-l="Mínimo">150</td>
+                <td class="num" data-l="Faltante">—</td>
+                <td class="num" data-l="Sugerido">—</td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td class="acts"><button class="btn btn--sm btn--ghost" disabled>Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-03</b></td>
+                <td data-l="Insumo">Forro textil<div class="tiny">Insumos Textiles JR</div></td>
+                <td class="num" data-l="Saldo">260 <span class="tiny">m</span></td>
+                <td class="num muted" data-l="Mínimo">120</td>
+                <td class="num" data-l="Faltante">—</td>
+                <td class="num" data-l="Sugerido">—</td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td class="acts"><button class="btn btn--sm btn--ghost" disabled>Crear solicitud</button></td>
+              </tr>
+              <tr>
+                <td data-l="Código"><b>MP-07</b></td>
+                <td data-l="Insumo">Ojalete metálico<div class="tiny">Insumos Textiles JR</div></td>
+                <td class="num" data-l="Saldo">5.600 <span class="tiny">un</span></td>
+                <td class="num muted" data-l="Mínimo">2.000</td>
+                <td class="num" data-l="Faltante">—</td>
+                <td class="num" data-l="Sugerido">—</td>
+                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                <td class="acts"><button class="btn btn--sm btn--ghost" disabled>Crear solicitud</button></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4"><b>8 insumos vigilados</b> <span class="tiny">2 bajo el mínimo · 2 cerca · 4 con existencia suficiente</span></td>
+                <td class="num">80</td>
+                <td class="num">330</td>
+                <td colspan="2" class="tiny">Faltante y cantidad sugerida a comprar</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando 8 de 8 insumos · saldo que Inventario reporta al 2026-09-15 08:12</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>Estado del Proceso</h2>
+          <div class="sub">Dónde está hoy cada documento de compra</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Paso</th>
+                <th>Documento</th>
+                <th class="num">Cuántos</th>
+                <th>Qué falta hacer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Paso"><b>2 · Crear solicitud</b></td>
+                <td data-l="Documento">Solicitudes pendientes de convertir</td>
+                <td class="num" data-l="Cuántos">2</td>
+                <td class="tiny" data-l="Qué falta hacer">Pedir cotización a los proveedores sugeridos</td>
+              </tr>
+              <tr>
+                <td data-l="Paso"><b>4 · Cotización</b></td>
+                <td data-l="Documento">Cotizaciones registradas</td>
+                <td class="num" data-l="Cuántos">2</td>
+                <td class="tiny" data-l="Qué falta hacer">Comparar y elegir la mejor opción</td>
+              </tr>
+              <tr>
+                <td data-l="Paso"><b>5 · Aprobar compra</b></td>
+                <td data-l="Documento">Compras esperando visto bueno</td>
+                <td class="num" data-l="Cuántos">2</td>
+                <td class="tiny" data-l="Qué falta hacer">Las aprueba el jefe de compras: están bajo el tope</td>
+              </tr>
+              <tr>
+                <td data-l="Paso"><b>6 · Orden de compra</b></td>
+                <td data-l="Documento">Órdenes aprobadas sin enviar</td>
+                <td class="num" data-l="Cuántos">1</td>
+                <td class="tiny" data-l="Qué falta hacer">Enviar OC-2026-015 a Insumos Textiles JR</td>
+              </tr>
+              <tr>
+                <td data-l="Paso"><b>7 · Recibir materiales</b></td>
+                <td data-l="Documento">Órdenes despachadas sin recibir</td>
+                <td class="num" data-l="Cuántos">1</td>
+                <td class="tiny" data-l="Qué falta hacer">Verificar los 1.200 dm² de OC-2026-014</td>
+              </tr>
+              <tr>
+                <td data-l="Paso"><b>8 · Actualizar inventario</b></td>
+                <td data-l="Documento">Entradas sin avisar a Inventario</td>
+                <td class="num" data-l="Cuántos">1</td>
+                <td class="tiny" data-l="Qué falta hacer">Pasarle la entrada a Inventario por su API</td>
+              </tr>
+              <tr>
+                <td data-l="Paso"><b>9 · Si hay problemas</b></td>
+                <td data-l="Documento">Novedades abiertas</td>
+                <td class="num" data-l="Cuántos">1</td>
+                <td class="tiny" data-l="Qué falta hacer">Esperar respuesta del proveedor</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"><b>7 pasos con trabajo pendiente</b></td>
+                <td class="num">10</td>
+                <td class="tiny">Documentos abiertos en todo el proceso</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando el corte del 2026-09-15 · cada fila lleva al paso donde se resuelve</p>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

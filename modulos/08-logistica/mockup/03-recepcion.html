@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Logística y Despacho · Recepción</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Recepción">
+
+    <section class="hero">
+      <div>
+        <h1>Logística y Despacho</h1>
+        <p>Rutas, recepción de proveedores, logística inversa y flota.</p>
+      </div>
+    </section>
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-ruta">4</div>
+          <div class="kpi__l">Vehículos en ruta</div>
+        </div>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-pares">182</div>
+          <div class="kpi__l">Pares en tránsito</div>
+        </div>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-prov">2</div>
+          <div class="kpi__l">Proveedores en camino</div>
+        </div>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-alertas">3</div>
+          <div class="kpi__l">Alertas abiertas</div>
+        </div>
+      </article>
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-recol">5</div>
+          <div class="kpi__l">Recolecciones</div>
+        </div>
+      </article>
+    </div>
+        <span class="kpi__d up">↓ 100%</span>
+      </article>
+    </div>
+    <nav class="subnav" aria-label="Secciones de Logística">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
+      <a class="subnav__i is-on" data-ico="caja" data-ct="3" href="03-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="04-log-inversa.html">Log. inversa</a>
+      <a class="subnav__i" data-ico="camion" data-ct="4" href="05-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="06-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="07-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+        <div>
+          <h2>Recepción de Proveedores</h2>
+          <div class="sub">Puerta de entrada de los materiales a la fábrica</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--form">
+        <div class="field">
+          <label for="rp-oc">Orden de compra</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+            <select id="rp-oc">
+              <option value="OC-2026-014">OC-2026-014 · Cuero vacuno graso · Curtiembre del Norte</option>
+              <option value="OC-2026-020">OC-2026-020 · Hilo y pegante · Hilos y Pegantes S.A.</option>
+              <option value="OC-2026-021">OC-2026-021 · Forro textil · Textiles Cúcuta</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="rp-guia">Guía del transportador</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <input id="rp-guia" placeholder="Ej. GR-77431">
+          </div>
+        </div>
+        <div class="field">
+          <label for="rp-bul">Bultos recibidos</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+            <input id="rp-bul" type="number" min="1" value="1">
+          </div>
+        </div>
+        <button class="btn">
+          <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+          Registrar recepción
+        </button>
+        <p class="tiny">La guía puede leerse con el escáner OCR; si el número no coincide con la orden, la recepción queda por validar y se avisa a Compras.</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+        <div>
+          <h2>Recepciones Registradas</h2>
+          <div class="sub">Calidad inspecciona la materia prima antes del ingreso</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="rp-busca" placeholder="Buscar recepción, proveedor o guía…">
+          </div>
+          <div class="control control--corto">
+            <select id="rp-filtro" aria-label="Filtrar la tabla">
+              <option>Todos los estados</option>
+              <option>En camino</option>
+              <option>Recibida</option>
+              <option>Con diferencia</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n">3 recepciones abiertas</span>
+        </div>
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Recepción</th>
+                <th>Proveedor</th>
+                <th>Guía</th>
+                <th>Estado</th>
+                <th>Observación</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Recepción">
+                  <b>IN-047</b>
+                  <div class="tiny">2026-09-22</div>
+                </td>
+                <td data-l="Proveedor">
+                  Textiles Cúcuta
+                  <div class="tiny">OC-2026-021</div>
+                </td>
+                <td class="muted" data-l="Guía">#9822</td>
+                <td data-l="Estado"><span class="pill pill--crit">Por validar</span></td>
+                <td class="muted" data-l="Observación">El escáner OCR no leyó el número de la guía.</td>
+                <td>
+                  <div class="acts"><button class="btn btn--sm btn--oliva">Validar a mano</button></div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Recepción">
+                  <b>IN-046</b>
+                  <div class="tiny">2026-09-22</div>
+                </td>
+                <td data-l="Proveedor">
+                  Hilos y Pegantes S.A.
+                  <div class="tiny">OC-2026-020</div>
+                </td>
+                <td class="muted" data-l="Guía">GR-77446</td>
+                <td data-l="Estado"><span class="pill pill--warn">En camino</span></td>
+                <td class="muted" data-l="Observación">Llega hoy en la tarde · 6 bultos anunciados.</td>
+                <td>
+                  <div class="acts"><button class="btn btn--sm btn--ghost">Registrar llegada</button></div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Recepción">
+                  <b>IN-045</b>
+                  <div class="tiny">2026-09-22</div>
+                </td>
+                <td data-l="Proveedor">
+                  Curtiembre del Norte
+                  <div class="tiny">OC-2026-014</div>
+                </td>
+                <td class="muted" data-l="Guía">GR-77441</td>
+                <td data-l="Estado"><span class="pill pill--warn">En camino</span></td>
+                <td class="muted" data-l="Observación">1.200 dm² de cuero vacuno graso · llega hoy.</td>
+                <td>
+                  <div class="acts"><button class="btn btn--sm btn--ghost">Registrar llegada</button></div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Recepción">
+                  <b>IN-044</b>
+                  <div class="tiny">2026-09-19</div>
+                </td>
+                <td data-l="Proveedor">
+                  Herrajes Santander
+                  <div class="tiny">OC-2026-018</div>
+                </td>
+                <td class="muted" data-l="Guía">GR-77433</td>
+                <td data-l="Estado"><span class="pill pill--crit">Con diferencia</span></td>
+                <td class="muted" data-l="Observación">Llegaron 8 bultos de 10 · se avisó a Compras.</td>
+                <td>
+                  <div class="acts"><button class="btn btn--sm btn--ghost">Reclamar</button></div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Recepción">
+                  <b>IN-043</b>
+                  <div class="tiny">2026-09-17</div>
+                </td>
+                <td data-l="Proveedor">
+                  Suelas Andinas
+                  <div class="tiny">OC-2026-016</div>
+                </td>
+                <td class="muted" data-l="Guía">GR-77428</td>
+                <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
+                <td class="muted" data-l="Observación">Calidad aprobó el lote completo.</td>
+                <td>
+                  <div class="acts"><span class="tiny">—</span></div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Recepción">
+                  <b>IN-042</b>
+                  <div class="tiny">2026-09-15</div>
+                </td>
+                <td data-l="Proveedor">
+                  Curtiembre del Norte
+                  <div class="tiny">OC-2026-014</div>
+                </td>
+                <td class="muted" data-l="Guía">GR-77421</td>
+                <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
+                <td class="muted" data-l="Observación">Guía leída por OCR sin diferencias.</td>
+                <td>
+                  <div class="acts"><span class="tiny">—</span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando 6 de 6 recepciones · la entrada a bodega la registra Inventario</p>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

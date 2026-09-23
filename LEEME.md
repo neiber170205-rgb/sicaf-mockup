@@ -19,7 +19,11 @@ SICAF/
 ├── css/
 │   └── estilos.css     → paleta de color, tipografías, componentes, tablas
 ├── js/
-│   └── app.js          → estado, lógica de los 9 módulos, permisos, notificaciones
+│   └── app.js          → estado, Producción, permisos, notificaciones y el marco de los demás módulos
+├── modulos/            → COPIA del mockup de cada módulo (menos Producción). No se edita a mano:
+│   ├── modulos.js         la escribe integrador/juntar-mockups.mjs (ver "Los módulos, cada uno
+│   ├── comun/             con su mockup", más abajo)
+│   └── 01-dashboard/mockup/ … 09-admin/mockup/
 ├── img/
 │   ├── logo-sicaf.png          → logotipo de la marca (PNG con transparencia)
 │   ├── login-foto.jpg          → foto del panel de inicio de sesión
@@ -27,6 +31,36 @@ SICAF/
 │                                  por si se quiere volver a ponerla
 └── LEEME.md
 ```
+
+## Los módulos, cada uno con su mockup
+
+Menos **Producción**, que se dibuja en `js/app.js`, cada módulo se ve con **su propio mockup**, el
+de su carpeta `NN-modulo/mockup/`, tal cual: las mismas pantallas, su `estilos.css` y su
+`prototipo.js`. Así lo que cada responsable dibuja en su carpeta es exactamente lo que se ve aquí.
+
+- **Cómo llegan aquí.** `node integrador/juntar-mockups.mjs`, desde la carpeta de SICAF, copia
+  cada `NN-modulo/mockup/` (solo las pantallas de su menú y lo que ellas cargan) y `comun/` dentro
+  de `modulos/`, con el mismo árbol de carpetas, y escribe `modulos/modulos.js`: las pantallas de
+  cada módulo (para el menú lateral) y las filas de sus tablas (para el buscador de arriba).
+  Cuando un compañero cambie su mockup, se vuelve a correr y se hace commit. Con `--revisar` solo
+  dice si falta juntar algo.
+- **Cómo se muestran.** Cada módulo va en un marco (`<iframe name="sicaf-general">`) que se crea la
+  primera vez que se abre y queda vivo: al volver al módulo, lo que el usuario cambió sigue igual.
+  El marco ocupa **toda la ventana**, por debajo del menú lateral y de la barra de arriba, para que
+  la pantalla de adentro mida lo mismo que cuando se abre sola (sus `@media` y sus medidas en `vw`
+  miran la ventana). Con ese nombre, `comun/marco.js` no dibuja su propio menú: deja libre el hueco
+  que ocupan el menú y la barra del general (el general le dice cuánto miden) y le avisa por
+  mensajes en qué pantalla va y qué número tiene cada ítem de su sub-menú.
+- **El menú lateral** del módulo abierto muestra sus pantallas (las de su fila de pestañas), igual
+  que en su carpeta. Los enlaces que una pantalla tiene a otro módulo los abre el general, con sus
+  permisos: un enlace a Producción lleva a su proceso aquí.
+- **El buscador de arriba** encuentra las filas de las tablas de los mockups (como están en sus
+  pantallas) y las órdenes de Producción. Al elegir una fila, se abre su pantalla y la fila queda
+  resaltada un momento.
+- Con doble clic en `index.html` también funciona, pero cada cambio de pantalla dentro de un módulo
+  recarga su marco (el navegador no deja leer los archivos de al lado), así que lo hecho en una
+  pantalla se pierde al pasar a otra, igual que en el mockup de la carpeta. Con Live Server, XAMPP
+  o en internet no pasa.
 
 ## La ayuda y la versión están en el menú del usuario
 
@@ -52,7 +86,8 @@ luis@sicaf.com   → Calidad
 ```
 
 Se puede escribir solo la parte antes de la `@` (por ejemplo `admin`).
-Los usuarios y sus claves se administran desde el módulo **Admin. Usuarios**.
+Estos accesos están en `S.usuarios` y `S.claves` de `js/app.js`. El módulo **Admin. Usuarios** es un
+mockup: lo que se crea ahí no se vuelve un acceso para entrar.
 
 ## Identidad visual
 
@@ -89,14 +124,18 @@ debajo de 900 px la barra ya es una fila de módulos y el botón se oculta.
 | Alto de la barra superior          | `css/estilos.css` → `.top`, `.search input`, `.avatar`, `.bell` |
 | Menú del usuario (ayuda y versión) | `js/app.js` → `pintarMenuUsuario()` · `.umenu*` en el CSS |
 | Pantalla de inicio de sesión       | `js/app.js` → `renderLogin()` · `css/estilos.css` → `.login`, `.loginbox` |
-| Textos, datos y reglas de negocio  | `js/app.js` → objeto `S` (estado inicial)            |
+| Datos y reglas de Producción y de la sesión | `js/app.js` → objeto `S` (estado inicial) |
 | Datos de Producción (órdenes, merma, tiempos, lotes) | `js/app.js` → tablas `OPS`, `MERMAS`, `TIEMPOS` y `LOTES`: una fila = un registro |
-| Pantalla de un módulo              | `js/app.js` → objeto `V` (`V.inventario`, `V.compras`, …) |
-| Acciones de los botones            | `js/app.js` → objeto `A` (se enlazan con `data-act`) |
-| Permisos por rol                   | `js/app.js` → `puedeVer`, `puedeEscribir`, `puedeAprobar` |
+| Pantalla de Producción             | `js/app.js` → `V.produccion` |
+| Pantalla de cualquier otro módulo  | Su carpeta `NN-modulo/mockup/`, y después `node integrador/juntar-mockups.mjs` |
+| Cómo se muestra el mockup de un módulo | `js/app.js` → MOCKUPS DE LOS MÓDULOS (`marcoDe()`, `irPantalla()`) · `.marcos` y `.marco` en el CSS · sección 4 de `comun/marco.js` |
+| Acciones de los botones            | `js/app.js` → objeto `A` (se enlazan con `data-act`); las de los otros módulos, en su `prototipo.js` |
+| Permisos por rol                   | `js/app.js` → `puedeVer`, `puedeEscribir` |
 | Notificaciones entre módulos       | `js/app.js` → `notificar()`, `misNotis()`, `pendientes()` |
 | Tablas con buscador y filtros      | `js/app.js` → `datatable()` · `css/estilos.css` → bloque `.dt*` |
-| Procesos de Producción (menú)      | `js/app.js` → `PROCESOS` y el `#nav` de `render()` · `.nav__sub` en el CSS |
+| Procesos de Producción (menú)      | `js/app.js` → `PROCESOS` y `pintarMenu()` · `.nav__sub` en el CSS |
+| Pantallas de los demás módulos (menú) | `modulos/modulos.js` (lo escribe `juntar-mockups.mjs`) y `pintarMenu()` |
+| Buscador de arriba                 | `js/app.js` → `buscarGlobal()` y `pintarSugerencias()` · `.sug*` en el CSS |
 | Encabezado y pasos de una pantalla | `js/app.js` → `PROC`, `PIPELINE` y `bannerProc()` · `.bnr*` en el CSS |
 | Indicadores de un proceso          | `js/app.js` → `indProc()` y `kpisProc()` · `.kpi*` en el CSS |
 | Panel principal de Producción      | `js/app.js` → `panelMosaico()` y `MOSAICO` · `.mos`, `.mtile`, `.minib`, `.colg`, `.gauge` |
@@ -233,9 +272,12 @@ pierde cuando la pantalla se vuelve a dibujar (que es lo que hace `render()` en 
 - De 761 px hacia arriba las tablas se ven como tabla; por debajo cada fila se
   convierte en una ficha y cada dato conserva su rótulo (`rotularTablas()` en
   `js/app.js` copia el encabezado de la columna en cada celda).
-- El mapa de flota de Logística se sustituye por una lista en pantallas pequeñas.
 - La barra lateral pasa a ser una fila de módulos desplazable por debajo de 900 px;
-  los procesos de Producción siguen en esa misma fila, detrás de su módulo.
+  los procesos de Producción, y las pantallas del módulo abierto, siguen en esa misma
+  fila, detrás de su módulo.
+- En los demás módulos, la pantalla de su mockup se acomoda sola, con sus propias reglas:
+  en el celular la fila de módulos y la barra de arriba quedan fijas y la pantalla se
+  recorre por debajo de ellas.
 - En la tabla de datos, el buscador, los filtros y las páginas se reacomodan, y la
   columna de acciones deja de estar fija a la derecha (cada fila ya es una ficha).
 - Verificado sin desplazamiento horizontal entre 360 px y 1440 px.

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Admin. Usuarios · Inicio</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="09-admin" data-titulo="Admin. Usuarios · Inicio">
+
+    <section class="hero">
+      <div>
+        <h1>Admin. Usuarios</h1>
+        <p>Quién entra, a qué módulo, con qué permisos y qué hizo.</p>
+      </div>
+    </section>
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+        <div>
+          <div class="kpi__n">9</div>
+          <div class="kpi__l">Usuarios activos</div>
+        </div>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+        <div>
+          <div class="kpi__n">4</div>
+          <div class="kpi__l">Roles definidos</div>
+        </div>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg></span>
+        <div>
+          <div class="kpi__n">9</div>
+          <div class="kpi__l">Módulos con dueño</div>
+        </div>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect> <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Accesos por revisar</div>
+        </div>
+      </article>
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse> <path d="M3 5v14a9 3 0 0 0 18 0V5"></path> <path d="M3 12a9 3 0 0 0 18 0"></path></svg></span>
+        <div>
+          <div class="kpi__n">1</div>
+          <div class="kpi__l">Días sin respaldo</div>
+        </div>
+      </article>
+    </div>
+    <section class="saludo">
+      <div class="saludo__t">
+        <b>Buenos días.</b>
+        <span>9 usuarios activos · 2 solicitudes de acceso esperando y el respaldo de anoche falló.</span>
+      </div>
+      <div class="rapidas">
+        <button class="btn btn--sm" data-rapida="usuario"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 21v-2a4 4 0 0 1 4-4h5"></path> <circle cx="9" cy="7" r="4"></circle> <line x1="19" x2="19" y1="8" y2="14"></line> <line x1="22" x2="16" y1="11" y2="11"></line></svg> Nuevo usuario</button>
+        <button class="btn btn--sm btn--oliva" data-rapida="rol"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg> Revisar roles</button>
+        <button class="btn btn--sm btn--ghost" data-rapida="respaldo"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse> <path d="M3 5v14a9 3 0 0 0 18 0V5"></path> <path d="M3 12a9 3 0 0 0 18 0"></path></svg> Respaldar ahora</button>
+      </div>
+    </section>
+    <details class="avisos">
+      <summary class="avisos__cab">
+        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+        <span class="avisos__t">
+          <b>Pendientes y notificaciones</b>
+          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
+        </span>
+        <span class="avisos__n">5</span>
+        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="avisos__cuerpo">
+        <div class="pend">
+          <button class="pend__i pend__i--crit" data-ir="02-usuarios.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect> <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+            <span class="pend__x"><b>Luisa Mendoza lleva 45 días sin entrar</b><small>Sigue con acceso a Inventario · la política dice suspender a los 30 días</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--crit" data-ir="03-roles.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+            <span class="pend__x"><b>Dos personas con permiso de anular en Compras</b><small>El rol Gerente y el rol Jefe de compras se pisan · hay que dejar uno solo</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="06-respaldos.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse> <path d="M3 5v14a9 3 0 0 0 18 0V5"></path> <path d="M3 12a9 3 0 0 0 18 0"></path></svg></span>
+            <span class="pend__x"><b>El respaldo de anoche no corrió</b><small>Último respaldo bueno: 2026-09-20 a las 23:00 · falta el de ayer</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="02-usuarios.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 21v-2a4 4 0 0 1 4-4h5"></path> <circle cx="9" cy="7" r="4"></circle> <line x1="19" x2="19" y1="8" y2="14"></line> <line x1="22" x2="16" y1="11" y2="11"></line></svg></span>
+            <span class="pend__x"><b>2 solicitudes de acceso sin responder</b><small>Producción pidió un usuario nuevo y Calidad pidió cambiar un rol</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--info" data-ir="04-auditoria.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"></path> <path d="M8 12h13"></path> <path d="M8 18h13"></path> <path d="M3 6h.01"></path> <path d="M3 12h.01"></path> <path d="M3 18h.01"></path></svg></span>
+            <span class="pend__x"><b>6 movimientos sensibles en la bitácora de ayer</b><small>Cambios de cupo, anulaciones y un cambio de permisos</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+        </div>
+      </div>
+    </details>
+    <nav class="subnav" aria-label="Secciones de Administración">
+      <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="usuarios" data-ct="9" href="02-usuarios.html">Usuarios</a>
+      <a class="subnav__i" data-ico="escudo" data-ct="4" href="03-roles.html">Roles</a>
+      <a class="subnav__i" data-ico="lista" data-ct="6" href="04-auditoria.html">Auditoría</a>
+      <a class="subnav__i" data-ico="engranaje" href="05-parametros.html">Parámetros</a>
+      <a class="subnav__i" data-ico="base-datos" data-ct="1" href="06-respaldos.html">Respaldos</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+        <div>
+          <h2>Accesos por Módulo</h2>
+          <div class="sub">Cuánta gente entra a cada módulo y quién responde por él</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                  <th>Módulo</th>
+                  <th class="num">Usuarios</th>
+                  <th>Responsable</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Módulo"><b>Diseño</b></td>
+                <td class="num" data-l="Usuarios">1</td>
+                <td data-l="Responsable">Hernán Ruiz<div class="tiny">Operario</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Compras</b></td>
+                <td class="num" data-l="Usuarios">1</td>
+                <td data-l="Responsable">Carlos Ruiz<div class="tiny">Supervisor</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Inventario</b></td>
+                <td class="num" data-l="Usuarios">2</td>
+                <td data-l="Responsable">Andrés Suárez<div class="tiny">Supervisor</div></td>
+                <td data-l="Estado"><span class="pill pill--crit">1 usuario inactivo</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Producción</b></td>
+                <td class="num" data-l="Usuarios">2</td>
+                <td data-l="Responsable">Marta Villamizar<div class="tiny">Gerente</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Control de Calidad</b></td>
+                <td class="num" data-l="Usuarios">1</td>
+                <td data-l="Responsable">Édgar Pabón<div class="tiny">Supervisor</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Comercial</b></td>
+                <td class="num" data-l="Usuarios">1</td>
+                <td data-l="Responsable">Sofía Ramírez<div class="tiny">Supervisor</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Logística y Despacho</b></td>
+                <td class="num" data-l="Usuarios">1</td>
+                <td data-l="Responsable">Erick Cuevas<div class="tiny">Supervisor</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Admin. Usuarios</b></td>
+                <td class="num" data-l="Usuarios">1</td>
+                <td data-l="Responsable">Marta Villamizar<div class="tiny">Gerente</div></td>
+                <td data-l="Estado"><span class="pill pill--warn">2 solicitudes sin responder</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+              <tr>
+                <td data-l="Módulo"><b>Dashboard General</b></td>
+                <td class="num" data-l="Usuarios">0</td>
+                <td data-l="Responsable">Lo ven todos<div class="tiny">—</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">No necesita dueño</span></td>
+                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-ir="02-usuarios.html">Ver usuarios</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Los nueve módulos tienen responsable · el Dashboard lo ven todos, así que no necesita dueño</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"></path> <path d="M8 12h13"></path> <path d="M8 18h13"></path> <path d="M3 6h.01"></path> <path d="M3 12h.01"></path> <path d="M3 18h.01"></path></svg>
+        <div>
+          <h2>Lo Último de la Bitácora</h2>
+          <div class="sub">Los movimientos más recientes de todo el sistema</div>
+        </div><button class="ghostbtn" data-ir="04-auditoria.html"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"></path> <path d="M8 12h13"></path> <path d="M8 18h13"></path> <path d="M3 6h.01"></path> <path d="M3 12h.01"></path> <path d="M3 18h.01"></path></svg> Ver toda</button>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                  <th>Cuándo</th>
+                  <th>Quién</th>
+                  <th>Qué hizo</th>
+                  <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tiny" data-l="Cuándo">2026-09-22 08:12</td>
+                <td data-l="Quién"><b>Sofía Ramírez</b><div class="tiny">Comercial</div></td>
+                <td data-l="Qué hizo">Cambió el cupo de Comercial Los Andes<div class="tiny">$16.000.000 → $18.000.000</div></td>
+                <td data-l="Tipo"><span class="pill pill--crit">Sensible</span></td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Cuándo">2026-09-22 07:58</td>
+                <td data-l="Quién"><b>Erick Cuevas</b><div class="tiny">Logística</div></td>
+                <td data-l="Qué hizo">Anuló el despacho DS-2026-053<div class="tiny">Motivo: cliente aplazó la entrega</div></td>
+                <td data-l="Tipo"><span class="pill pill--crit">Sensible</span></td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Cuándo">2026-09-22 07:40</td>
+                <td data-l="Quién"><b>Marta Villamizar</b><div class="tiny">Admin</div></td>
+                <td data-l="Qué hizo">Cambió el rol de Diego Peña<div class="tiny">Operario → Supervisor</div></td>
+                <td data-l="Tipo"><span class="pill pill--crit">Sensible</span></td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Cuándo">2026-09-21 17:22</td>
+                <td data-l="Quién"><b>Andrés Suárez</b><div class="tiny">Inventario</div></td>
+                <td data-l="Qué hizo">Ajustó existencias por conteo<div class="tiny">REF-1042: 188 → 186 pares</div></td>
+                <td data-l="Tipo"><span class="pill pill--warn">Con efecto</span></td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Cuándo">2026-09-21 16:40</td>
+                <td data-l="Quién"><b>Carlos Ruiz</b><div class="tiny">Compras</div></td>
+                <td data-l="Qué hizo">Aprobó la orden OC-2026-021<div class="tiny">$8.420.000 a Textiles Cúcuta</div></td>
+                <td data-l="Tipo"><span class="pill pill--warn">Con efecto</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Los 5 movimientos más recientes · la bitácora completa está en Auditoría</p>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Inventario · Usuarios</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="04-inventario" data-titulo="Inventario · Usuarios">
+
+    <section class="hero">
+      <div>
+        <h1>Inventario</h1>
+        <p>Materia prima, producto en proceso, terminado, merma y maquinaria.</p>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">8</div>
+          <div class="kpi__l">Referencias de insumo</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Bajo stock mínimo</div>
+        </div>
+        <span class="kpi__d down">↑ 100%</span>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">122</div>
+          <div class="kpi__l">Pares terminados</div>
+        </div>
+        <span class="kpi__d up">↑ 11%</span>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">$9.974.000</div>
+          <div class="kpi__l">Valorización</div>
+        </div>
+        <span class="kpi__d up">↑ 2%</span>
+      </article>
+    </div>
+    <nav class="subnav" aria-label="Secciones de Inventario">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
+      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
+      <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
+      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
+      <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
+      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
+      <a class="subnav__i is-on" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
+      <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="editar" href="10-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <path d="M16 3.128a4 4 0 0 1 0 7.744"></path> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <circle cx="9" cy="7" r="4"></circle></svg>
+        <div>
+          <h2>Usuarios de Bodega</h2>
+          <div class="sub">Quién puede registrar movimientos en este módulo</div>
+        </div>
+        <span class="ghostbtn" style="pointer-events:none">4 activos</span>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="us-busca" placeholder="Buscar usuario o correo…">
+          </div>
+          <div class="control control--corto">
+            <select id="us-filtro" aria-label="Filtrar la tabla">
+              <option>Todos los roles</option>
+              <option>Jefe de bodega</option>
+              <option>Auxiliar de bodega</option>
+              <option>Consulta</option>
+              <option>Sin rol</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n">5 usuarios · 4 activos</span>
+        </div>
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Rol en bodega</th>
+                <th>Bodega asignada</th>
+                <th>Último movimiento</th>
+                <th>Estado</th>
+                <th class="acts"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Usuario">
+                  <b>Andrés Suárez</b>
+                  <div class="tiny">andres.suarez@sicaf.com</div>
+                </td>
+                <td data-l="Rol en bodega"><span class="chip chip--vino">Jefe de bodega</span></td>
+                <td data-l="Bodega asignada">BOD-01 · Principal</td>
+                <td class="tiny" data-l="Último movimiento">MV-0010 · 2026-09-15</td>
+                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Editar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Usuario">
+                  <b>Luisa Mendoza</b>
+                  <div class="tiny">luisa.mendoza@sicaf.com</div>
+                </td>
+                <td data-l="Rol en bodega"><span class="chip chip--cobre">Auxiliar de bodega</span></td>
+                <td data-l="Bodega asignada">BOD-01 · Principal</td>
+                <td class="tiny" data-l="Último movimiento">MV-0009 · 2026-09-15</td>
+                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Editar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Usuario">
+                  <b>Édgar Pabón</b>
+                  <div class="tiny">edgar.pabon@sicaf.com</div>
+                </td>
+                <td data-l="Rol en bodega"><span class="chip chip--cobre">Auxiliar de bodega</span></td>
+                <td data-l="Bodega asignada">BOD-02 · Producto terminado</td>
+                <td class="tiny" data-l="Último movimiento">MV-0006 · 2026-09-15</td>
+                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Editar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Usuario">
+                  <b>Marcela Ortiz</b>
+                  <div class="tiny">marcela.ortiz@sicaf.com</div>
+                </td>
+                <td data-l="Rol en bodega"><span class="chip chip--oliva">Consulta</span></td>
+                <td data-l="Bodega asignada">Todas</td>
+                <td class="tiny muted" data-l="Último movimiento">Sin movimientos</td>
+                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Editar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Usuario">
+                  <b>Jhon Villamizar</b>
+                  <div class="tiny">jhon.villamizar@sicaf.com</div>
+                </td>
+                <td data-l="Rol en bodega"><span class="chip chip--tinta">Sin rol</span></td>
+                <td class="muted" data-l="Bodega asignada">—</td>
+                <td class="tiny muted" data-l="Último movimiento">Sin movimientos</td>
+                <td data-l="Estado"><span class="pill pill--off">Inactivo</span></td>
+                <td class="acts">
+                  <button class="iconbtn" aria-label="Editar">
+                    <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando 5 de 5 usuarios con acceso al módulo</p>
+      </div>
+    </section>
+    <div class="grid2 grid2--even">
+      <section class="panel">
+        <header class="panel__head panel__head--vino">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <line x1="19" x2="19" y1="8" y2="14"></line> <line x1="22" x2="16" y1="11" y2="11"></line></svg>
+          <div>
+            <h2>Asignar Rol de Bodega</h2>
+            <div class="sub">El usuario ya existe en Admin. Usuarios: aquí solo se le da su rol en Inventario</div>
+          </div>
+        </header>
+        <div class="panel__body">
+          <div class="field">
+            <label for="us-usuario">Usuario</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle></svg>
+              <select id="us-usuario">
+                <option>Jhon Villamizar · jhon.villamizar@sicaf.com</option>
+                <option>Andrea Sepúlveda · andrea.sepulveda@sicaf.com</option>
+                <option>Carlos Quintero · carlos.quintero@sicaf.com</option>
+              </select>
+              <span class="ico chev">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="us-rol">Rol en bodega</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect> <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <select id="us-rol">
+                  <option>Jefe de bodega</option>
+                  <option>Auxiliar de bodega</option>
+                  <option>Consulta</option>
+                </select>
+                <span class="ico chev">
+                  <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="us-bodega">Bodega asignada</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+                <select id="us-bodega">
+                  <option>BOD-01 · Principal</option>
+                  <option>BOD-02 · Producto terminado</option>
+                  <option>BOD-03 · Merma</option>
+                  <option>Todas</option>
+                </select>
+                <span class="ico chev">
+                  <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                </span>
+              </div>
+            </div>
+          </div>
+          <button class="btn">
+            <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg>
+            Asignar rol
+          </button>
+          <p class="tiny">Inventario no crea ni borra usuarios: eso es de Admin. Usuarios. Aquí solo se decide qué puede hacer cada quien dentro de la bodega.</p>
+        </div>
+      </section>
+      <section class="panel">
+        <header class="panel__head panel__head--oliva">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect> <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <div>
+            <h2>Qué puede hacer cada rol</h2>
+            <div class="sub">Permiso por sección del módulo</div>
+          </div>
+        </header>
+        <div class="panel__body panel__body--flush">
+          <div class="scroll-x">
+            <table>
+              <thead>
+                <tr>
+                  <th>Acción</th>
+                  <th>Jefe</th>
+                  <th>Auxiliar</th>
+                  <th>Consulta</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Acción">Ver saldos y kárdex</td>
+                  <td data-l="Jefe"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Auxiliar"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Consulta"><span class="pill pill--ok">Sí</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Acción">Registrar entrada y salida</td>
+                  <td data-l="Jefe"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Auxiliar"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Consulta"><span class="pill pill--off">No</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Acción">Registrar merma</td>
+                  <td data-l="Jefe"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Auxiliar"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Consulta"><span class="pill pill--off">No</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Acción">Ajuste por conteo físico</td>
+                  <td data-l="Jefe"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Auxiliar"><span class="pill pill--off">No</span></td>
+                  <td data-l="Consulta"><span class="pill pill--off">No</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Acción">Solicitar material a Compras</td>
+                  <td data-l="Jefe"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Auxiliar"><span class="pill pill--off">No</span></td>
+                  <td data-l="Consulta"><span class="pill pill--off">No</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Acción">Cambiar la configuración</td>
+                  <td data-l="Jefe"><span class="pill pill--ok">Sí</span></td>
+                  <td data-l="Auxiliar"><span class="pill pill--off">No</span></td>
+                  <td data-l="Consulta"><span class="pill pill--off">No</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"></line> <line x1="12" x2="15" y1="14" y2="11"></line> <circle cx="12" cy="14" r="8"></circle></svg>
+        <div>
+          <h2>Bitácora de Bodega</h2>
+          <div class="sub">Quién hizo qué y cuándo: trazabilidad de cada movimiento</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Referencia</th>
+                <th>Documento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tiny" data-l="Fecha">2026-09-15 08:12</td>
+                <td data-l="Usuario">Luisa Mendoza</td>
+                <td data-l="Acción"><span class="chip chip--oliva">Entrada</span></td>
+                <td data-l="Referencia">PT-REF-1042</td>
+                <td class="muted" data-l="Documento">LT-2026-029</td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Fecha">2026-09-15 08:04</td>
+                <td data-l="Usuario">Andrés Suárez</td>
+                <td data-l="Acción"><span class="chip chip--cobre">Ajuste</span></td>
+                <td data-l="Referencia">MP-05</td>
+                <td class="muted" data-l="Documento">Conteo físico</td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Fecha">2026-09-15 08:00</td>
+                <td data-l="Usuario">Andrés Suárez</td>
+                <td data-l="Acción"><span class="chip chip--oliva">Entrada</span></td>
+                <td data-l="Referencia">MP-08</td>
+                <td class="muted" data-l="Documento">Saldo inicial</td>
+              </tr>
+              <tr>
+                <td class="tiny" data-l="Fecha">2026-09-14 16:40</td>
+                <td data-l="Usuario">Édgar Pabón</td>
+                <td data-l="Acción"><span class="chip chip--vino">Merma</span></td>
+                <td data-l="Referencia">MP-01</td>
+                <td class="muted" data-l="Documento">MR-0004</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Compras · Cotización</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="03-compras" data-titulo="Compras · Cotización">
+
+    <section class="hero">
+      <div>
+        <h1>Compras y Abastecimiento</h1>
+        <p>Paso 4: se registra lo que cotizó cada proveedor y se elige la mejor opción.</p>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Órdenes abiertas</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">2</div>
+          <div class="kpi__l">Solicitudes pendientes</div>
+        </div>
+        <span class="kpi__d down">↑ 100%</span>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">3</div>
+          <div class="kpi__l">Proveedores activos</div>
+        </div>
+        <span class="kpi__d flat">↑ 0%</span>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">$1.880.000</div>
+          <div class="kpi__l">Monto comprometido</div>
+        </div>
+        <span class="kpi__d up">↑ 25%</span>
+      </article>
+    </div>
+    <nav class="subnav" aria-label="Secciones de Compras">
+      <a class="subnav__i" data-ico="buscar" href="01-necesidad.html">Detectar necesidad</a>
+      <a class="subnav__i" data-ico="portapapeles" data-ct="2" href="02-solicitudes.html">Crear solicitud</a>
+      <a class="subnav__i" data-ico="usuarios" href="03-proveedores.html">Seleccionar proveedor</a>
+      <a class="subnav__i is-on" data-ico="etiqueta" data-ct="2" href="04-cotizaciones.html">Cotización</a>
+      <a class="subnav__i" data-ico="visto" data-ct="2" href="05-aprobacion.html">Aprobar compra</a>
+      <a class="subnav__i" data-ico="carrito" data-ct="2" href="06-ordenes.html">Orden de compra</a>
+      <a class="subnav__i" data-ico="caja" data-ct="1" href="07-recepcion.html">Recibir materiales</a>
+      <a class="subnav__i" data-ico="ruta" href="08-actualizacion.html">Actualizar inventario</a>
+      <a class="subnav__i" data-ico="alerta" data-ct="1" href="09-novedades.html">Si hay problemas</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        <div>
+          <h2>Registrar Cotización</h2>
+          <div class="sub">Paso 4: comparar opciones antes de ordenar</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--form">
+        <div class="field">
+          <label for="ct-sol">Solicitud</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <select id="ct-sol">
+              <option value="SM-2026-002">SM-2026-002 · Cordón encerado 120 cm · 210 par</option>
+              <option value="SM-2026-001">SM-2026-001 · Plantilla EVA · 120 par</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ct-prov">Proveedor</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+            <select id="ct-prov">
+              <option value="PV-01">Curtiembre del Norte</option>
+              <option value="PV-02">Suelas Pacífico</option>
+              <option value="PV-03">Insumos Textiles JR</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ct-pre">Precio unitario</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+            <input id="ct-pre" type="number" min="1" placeholder="Ej. 2080">
+          </div>
+        </div>
+        <div class="field">
+          <label for="ct-dias">Días de entrega</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <input id="ct-dias" type="number" min="1" value="5">
+          </div>
+        </div>
+        <div class="field">
+          <label for="ct-cal">Calidad ofrecida</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+            <select id="ct-cal">
+              <option value="5">5 · excelente</option>
+              <option value="4" selected>4 · buena</option>
+              <option value="3">3 · aceptable</option>
+            </select>
+            <span class="ico chev">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </div>
+        <button class="btn">
+          <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+          Registrar cotización
+        </button>
+        <p class="tiny">Se comparan precio, tiempo de entrega y calidad. Al elegir una cotización el sistema genera la orden de compra con ese proveedor.</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+        <div>
+          <h2>Cotizaciones por Solicitud</h2>
+          <div class="sub">La elegida se convierte en orden de compra</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="ct-busca" placeholder="Buscar cotización, solicitud o proveedor…">
+          </div>
+          <div class="control control--corto">
+            <select id="ct-filtro" aria-label="Filtrar la tabla">
+              <option>Todos los estados</option>
+              <option>En estudio</option>
+              <option>Aceptada</option>
+              <option>Descartada</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n">2 cotizaciones registradas</span>
+        </div>
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Cotización</th>
+                <th>Solicitud</th>
+                <th>Proveedor</th>
+                <th class="num">Precio</th>
+                <th class="num">Entrega</th>
+                <th class="num">Calidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Cotización">
+                  <b>CT-001</b>
+                  <div class="tiny">2026-09-15</div>
+                </td>
+                <td data-l="Solicitud">
+                  SM-2026-001
+                  <div class="tiny">Plantilla EVA</div>
+                </td>
+                <td data-l="Proveedor">Suelas Pacífico</td>
+                <td class="num" data-l="Precio">
+                  $2.080
+                  <div class="tiny">por par</div>
+                </td>
+                <td class="num" data-l="Entrega">
+                  8
+                  <div class="tiny">días</div>
+                </td>
+                <td class="num" data-l="Calidad">4 / 5</td>
+                <td data-l="Estado"><span class="pill pill--warn">Registrada</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="btn btn--sm btn--oliva">Elegir y ordenar</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Cotización">
+                  <b>CT-002</b>
+                  <div class="tiny">2026-09-15</div>
+                </td>
+                <td data-l="Solicitud">
+                  SM-2026-001
+                  <div class="tiny">Plantilla EVA</div>
+                </td>
+                <td data-l="Proveedor">Insumos Textiles JR</td>
+                <td class="num" data-l="Precio">
+                  $2.150
+                  <div class="tiny">por par</div>
+                </td>
+                <td class="num" data-l="Entrega">
+                  3
+                  <div class="tiny">días</div>
+                </td>
+                <td class="num" data-l="Calidad">5 / 5</td>
+                <td data-l="Estado"><span class="pill pill--warn">Registrada</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button class="btn btn--sm btn--oliva">Elegir y ordenar</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando 2 de 2 cotizaciones · se comparan precio, entrega y calidad antes de generar la orden</p>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

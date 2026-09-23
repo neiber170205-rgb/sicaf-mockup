@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Logística y Despacho · Inicio</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Inicio">
+
+    <section class="hero">
+      <div>
+        <h1>Logística y Despacho</h1>
+        <p>Rutas, recepción de proveedores, logística inversa y flota.</p>
+      </div>
+    </section>
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-ruta">4</div>
+          <div class="kpi__l">Vehículos en ruta</div>
+        </div>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-pares">182</div>
+          <div class="kpi__l">Pares en tránsito</div>
+        </div>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-prov">2</div>
+          <div class="kpi__l">Proveedores en camino</div>
+        </div>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-alertas">3</div>
+          <div class="kpi__l">Alertas abiertas</div>
+        </div>
+      </article>
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-recol">5</div>
+          <div class="kpi__l">Recolecciones</div>
+        </div>
+      </article>
+    </div>
+    <section class="saludo">
+      <div class="saludo__t">
+        <b>Buenos días.</b>
+        <span>Operación en curso · 4 vehículos rodando y 2 recepciones esperadas para hoy.</span>
+      </div>
+      <div class="rapidas">
+        <button class="btn btn--sm" data-rapida="ruta"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg> Nueva ruta</button>
+        <button class="btn btn--sm btn--oliva" data-rapida="recepcion"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg> Recepción de proveedor</button>
+        <button class="btn btn--sm btn--ghost" data-rapida="ocr"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg> Escanear guía (OCR)</button>
+      </div>
+    </section>
+    <details class="avisos">
+      <summary class="avisos__cab">
+        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+        <span class="avisos__t">
+          <b>Pendientes y notificaciones</b>
+          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
+        </span>
+        <span class="avisos__n">5</span>
+        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="avisos__cuerpo">
+        <div class="pend">
+          <button class="pend__i pend__i--crit" data-ir="02-despachos.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span class="pend__x"><b>DS-2026-059 sin vehículo asignado</b><small>26 pares de REF-1043 alistados para Calzado El Dorado · compromiso 2026-09-23</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--crit" data-ir="03-recepcion.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+            <span class="pend__x"><b>Guía #9822 no la pudo leer el escáner</b><small>Recepción IN-047 de Textiles Cúcuta queda por validar a mano</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="04-log-inversa.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
+            <span class="pend__x"><b>Recolección RC-2026-015 sin programar</b><small>Calzado Norte reportó 2 pares en garantía · lleva 2 días</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="05-flota.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"></line> <line x1="12" x2="15" y1="14" y2="11"></line> <circle cx="12" cy="14" r="8"></circle></svg></span>
+            <span class="pend__x"><b>Camioneta DEF-455 sin ruta asignada</b><small>Disponible desde ayer · 120 pares de capacidad sin usar</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--info" data-ir="03-recepcion.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
+            <span class="pend__x"><b>2 proveedores llegan hoy a la planta</b><small>Curtiembre del Norte (GR-77441) y Hilos y Pegantes (GR-77446)</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+        </div>
+      </div>
+    </details>
+    <nav class="subnav" aria-label="Secciones de Logística">
+      <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
+      <a class="subnav__i" data-ico="caja" data-ct="3" href="03-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="04-log-inversa.html">Log. inversa</a>
+      <a class="subnav__i" data-ico="camion" data-ct="4" href="05-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="06-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="07-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>Operación en Curso</h2>
+          <div class="sub">Geolocalización de la flota y estado de cada vehículo</div>
+        </div>
+        <button class="ghostbtn" data-rapida="ocr">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+          Escanear guía
+        </button>
+      </header>
+      <div class="panel__body">
+        <div class="mapa">
+          <div class="mapa__g"></div>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M 11 80 Q 46 10 80 16" fill="none" stroke="#C9B49C" stroke-width="1.6" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"></path><path d="M 11 80 Q 40 34 66 40" fill="none" stroke="#C9B49C" stroke-width="1.6" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"></path><path d="M 11 80 Q 28 68 50 74" fill="none" stroke="#C9B49C" stroke-width="1.6" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"></path><path d="M 11 80 Q 50 92 86 66" fill="none" stroke="#C9B49C" stroke-width="1.6" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"></path></svg>
+          <span class="nodo nodo--pl" style="left:11%;top:80%"><i></i><b>Planta</b></span>
+          <span class="nodo" style="left:80%;top:16%"><i></i><b>Bogotá</b></span>
+          <span class="nodo" style="left:66%;top:40%"><i></i><b>Bucaramanga</b></span>
+          <span class="nodo" style="left:86%;top:66%"><i></i><b>Cúcuta</b></span>
+          <span class="nodo" style="left:50%;top:74%"><i></i><b>Pamplona</b></span>
+          <span class="veh veh--ruta" style="left:46.0%;top:24.0%"><b>XYZ-123</b><small>Bogotá</small></span>
+          <span class="veh veh--ruta" style="left:38.0%;top:46.0%"><b>GHI-302</b><small>Bucaramanga</small></span>
+          <span class="veh veh--ruta" style="left:25.0%;top:66.0%"><b>JKL-778</b><small>Pamplona</small></span>
+          <span class="veh veh--ruta" style="left:64.0%;top:80.0%"><b>ABC-987</b><small>Cúcuta</small></span>
+          <span class="veh" style="left:16%;top:28%"><b>DEF-455</b><small>En base</small></span>
+          <span class="mapa__pie">
+            <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+            Geolocalización en vivo · 4 vehículos en ruta · 1 en base
+          </span>
+        </div>
+        <ul class="flotalista">
+          <li>
+            <span class="ic"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span><b>XYZ-123</b><small>Camión NPR · Jorge Peña</small></span>
+            <span class="pill pill--warn">En tránsito</span>
+            <em>Bogotá</em>
+          </li>
+          <li>
+            <span class="ic"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span><b>ABC-987</b><small>Furgón · Luisa Mora</small></span>
+            <span class="pill pill--warn">En tránsito</span>
+            <em>Cúcuta</em>
+          </li>
+          <li>
+            <span class="ic"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span><b>GHI-302</b><small>Camión NPR · Marta Villamizar</small></span>
+            <span class="pill pill--warn">En tránsito</span>
+            <em>Bucaramanga</em>
+          </li>
+          <li>
+            <span class="ic"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span><b>JKL-778</b><small>Furgón · Álvaro Contreras</small></span>
+            <span class="pill pill--warn">En tránsito</span>
+            <em>Pamplona</em>
+          </li>
+          <li>
+            <span class="ic"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span><b>DEF-455</b><small>Camioneta · Hernán Ruiz</small></span>
+            <span class="pill pill--off">Disponible</span>
+            <em>En base</em>
+          </li>
+          <li>
+            <span class="ic"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span><b>MNO-214</b><small>Camioneta · Sonia Carvajal</small></span>
+            <span class="pill pill--crit">En taller</span>
+            <em>Mantenimiento</em>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <div class="grid2 grid2--even">
+      <section class="panel">
+        <header class="panel__head panel__head--vino">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          <div>
+            <h2>Últimos Movimientos</h2>
+            <div class="sub">Salidas y entradas registradas hoy</div>
+          </div>
+        </header>
+        <div class="panel__body panel__body--flush">
+          <div class="tabla-tools">
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input type="search" id="mv-busca" placeholder="Buscar documento o estado…">
+            </div>
+            <div class="control control--corto">
+              <select id="mv-filtro" aria-label="Filtrar la tabla">
+                <option>Todos los estados</option>
+                <option>En ruta</option>
+                <option>Entregado</option>
+                <option>Validado</option>
+                <option>Por validar</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+            <span class="tabla-tools__n">6 movimientos de hoy</span>
+          </div>
+          <div class="scroll-x">
+            <table>
+              <thead>
+                <tr>
+                  <th>Movimiento</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Movimiento">
+                    <b>OUT-089</b>
+                    <div class="tiny">Despacho DS-2026-056 · Bogotá</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Movimiento">
+                    <b>OUT-088</b>
+                    <div class="tiny">Despacho DS-2026-055 · Cúcuta</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Movimiento">
+                    <b>IN-042</b>
+                    <div class="tiny">Recepción Curtiembre del Norte</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Movimiento">
+                    <b>IN-043</b>
+                    <div class="tiny">Recepción Suelas Andinas</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Movimiento">
+                    <b>OUT-087</b>
+                    <div class="tiny">Despacho DS-2026-054 · Bogotá</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Movimiento">
+                    <b>IN-047</b>
+                    <div class="tiny">Recepción Textiles Cúcuta · guía #9822</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--crit">Por validar</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tabla-pie">Mostrando 6 de 6 movimientos · el detalle está en cada sección</p>
+        </div>
+      </section>
+      <section class="panel">
+        <header class="panel__head panel__head--oliva">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+          <div>
+            <h2>Alertas Críticas</h2>
+            <div class="sub">Retrasos, guías sin leer y recolecciones sin programar</div>
+          </div>
+        </header>
+        <div class="panel__body">
+          <div class="aviso aviso--crit">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+            <div>
+              <b>Retraso por tráfico en Cúcuta</b>
+              <p>ABC-987 lleva 40 minutos de demora en la vía Pamplona–Cúcuta. Se avisó al cliente Distribuidora Tamanaco.</p>
+              <button class="btn btn--sm btn--ghost" data-ir="02-despachos.html">Ver despacho</button>
+            </div>
+          </div>
+          <div class="aviso aviso--crit">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+            <div>
+              <b>Error de OCR en la guía #9822</b>
+              <p>La recepción IN-047 de Textiles Cúcuta no pudo leerse; el número hay que digitarlo a mano antes de dar entrada.</p>
+              <button class="btn btn--sm btn--ghost" data-ir="03-recepcion.html">Validar a mano</button>
+            </div>
+          </div>
+          <div class="aviso aviso--warn">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+            <div>
+              <b>Recolección RC-2026-015 sin programar</b>
+              <p>Calzado Norte reportó 2 pares en garantía hace 2 días y todavía no tiene vehículo ni fecha.</p>
+              <button class="btn btn--sm btn--ghost" data-ir="04-log-inversa.html">Programar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

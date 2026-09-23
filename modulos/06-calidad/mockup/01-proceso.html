@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Control de Calidad · Proceso</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="06-calidad" data-titulo="Control de Calidad · Proceso">
+
+    <section class="hero">
+      <div>
+        <h1>Control de Calidad</h1>
+        <p>Materia prima, proceso, producto terminado y no conformidades.</p>
+      </div>
+    </section>
+    <div class="kpis">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path> <path d="M6.453 15h11.094"></path> <path d="M8.5 2h7"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">5</div>
+          <div class="kpi__l">Lotes por inspeccionar</div>
+        </div>
+        <span class="kpi__d down">↑ 25%</span>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">94,96 %</div>
+          <div class="kpi__l">Índice de conformidad</div>
+        </div>
+        <span class="kpi__d up">↑ 3%</span>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">41</div>
+          <div class="kpi__l">Unidades en reproceso</div>
+        </div>
+        <span class="kpi__d down">↑ 8%</span>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">$246.015</div>
+          <div class="kpi__l">Costo de la no calidad</div>
+        </div>
+        <span class="kpi__d up">↓ 12%</span>
+      </article>
+    </div>
+    <details class="avisos">
+      <summary class="avisos__cab">
+        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+        <span class="avisos__t">
+          <b>Pendientes y notificaciones</b>
+          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
+        </span>
+        <span class="avisos__n">5</span>
+        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="avisos__cuerpo">
+        <div class="pend">
+          <button class="pend__i pend__i--crit" data-ir="06-no-conformidades.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+            <span class="pend__x"><b>NC-2026-004 sin cerrar</b><small>Desviación en el pegado del lote LT-2026-028 · falta la acción correctiva</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--crit" data-ir="05-terminado.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
+            <span class="pend__x"><b>5 lotes esperando inspección de terminado</b><small>LT-2026-030 a LT-2026-034 · Producción ya los entregó</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="02-materia-prima.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+            <span class="pend__x"><b>Recepción de Compras sin inspeccionar</b><small>1.200 dm² de cuero vacuno graso de Curtiembre del Norte</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="04-en-proceso.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg></span>
+            <span class="pend__x"><b>Mediciones en proceso pendientes</b><small>29 órdenes en planta esperando verificación de criterio</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--info" data-ir="07-auditorias.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path> <path d="M6.453 15h11.094"></path> <path d="M8.5 2h7"></path></svg></span>
+            <span class="pend__x"><b>Auditoría de empaque programada</b><small>Despacho del 2026-09-16 · falta registrar el resultado</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+        </div>
+      </div>
+    </details>
+    <nav class="subnav" aria-label="Secciones de Control de Calidad">
+      <a class="subnav__i is-on" data-ico="ruta" href="01-proceso.html">Proceso</a>
+      <a class="subnav__i" data-ico="caja" data-ct="1" href="02-materia-prima.html">Materia prima</a>
+      <a class="subnav__i" data-ico="portapapeles" href="03-estandares.html">Estándares</a>
+      <a class="subnav__i" data-ico="engranaje" data-ct="29" href="04-en-proceso.html">En proceso</a>
+      <a class="subnav__i" data-ico="visto" data-ct="17" href="05-terminado.html">Terminado</a>
+      <a class="subnav__i" data-ico="alerta" data-ct="1" href="06-no-conformidades.html">No conformidades</a>
+      <a class="subnav__i" data-ico="frasco" data-ct="1" href="07-auditorias.html">Auditorías</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>Proceso de Control de Calidad</h2>
+          <div class="sub">De la materia prima que entra al certificado que sale</div>
+        </div>
+      </header>
+      <div class="panel__body">
+        <div class="pasos">
+          <article class="paso">
+            <header>
+              <span class="paso__n">1</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <b>Recepción e inspección inicial</b>
+            </header>
+            <ul>
+              <li>Verificar materiales recibidos</li>
+              <li>Tomar muestra (AQL si aplica)</li>
+              <li>Revisar empaque y etiquetas</li>
+            </ul>
+          </article>
+          <article class="paso">
+            <header>
+              <span class="paso__n">2</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+              <b>Definir estándares</b>
+            </header>
+            <ul>
+              <li>Consultar la ficha técnica</li>
+              <li>Establecer parámetros de aceptación</li>
+              <li>Indicar herramienta de medición</li>
+            </ul>
+          </article>
+          <article class="paso">
+            <header>
+              <span class="paso__n">3</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+              <b>Inspección en proceso</b>
+            </header>
+            <ul>
+              <li>Monitorear puntos críticos</li>
+              <li>Registrar mediciones intermedias</li>
+              <li>Verificar condiciones de producción</li>
+            </ul>
+          </article>
+          <article class="paso">
+            <header>
+              <span class="paso__n">4</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path> <path d="M6.453 15h11.094"></path> <path d="M8.5 2h7"></path></svg>
+              <b>Pruebas de producto terminado</b>
+            </header>
+            <ul>
+              <li>Pruebas funcionales y mecánicas</li>
+              <li>Registrar resultados</li>
+              <li>Evaluar contra el estándar</li>
+            </ul>
+          </article>
+          <article class="paso paso--ok">
+            <header>
+              <span class="paso__n">5</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+              <b>Liberar producto</b>
+            </header>
+            <ul>
+              <li>Revisar el informe de inspección</li>
+              <li>Aprobar o rechazar el lote</li>
+              <li>Generar certificado de calidad</li>
+            </ul>
+          </article>
+          <article class="paso">
+            <header>
+              <span class="paso__n">6</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+              <b>Auditoría de empaque y despacho</b>
+            </header>
+            <ul>
+              <li>Inspección de empaque</li>
+              <li>Verificar documentación de envío</li>
+              <li>Confirmar integridad de la carga</li>
+            </ul>
+          </article>
+          <article class="paso paso--warn">
+            <header>
+              <span class="paso__n">7</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+              <b>Gestionar no conformidades</b>
+            </header>
+            <ul>
+              <li>Identificar la desviación</li>
+              <li>Segregar el lote afectado</li>
+              <li>Abrir el registro de no conformidad</li>
+            </ul>
+          </article>
+          <article class="paso">
+            <header>
+              <span class="paso__n">8</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+              <b>Análisis de causa raíz</b>
+            </header>
+            <ul>
+              <li>Investigar el origen</li>
+              <li>Ishikawa o cinco porqués</li>
+              <li>Definir la acción correctiva</li>
+            </ul>
+          </article>
+          <article class="paso paso--warn">
+            <header>
+              <span class="paso__n">9</span>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
+              <b>Si hay no conformidad</b>
+            </header>
+            <ul>
+              <li>Detener la producción afectada</li>
+              <li>Notificar a proveedores y producción</li>
+              <li>Monitorear la acción correctiva</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

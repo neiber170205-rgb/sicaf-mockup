@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Logística y Despacho · Flota</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Flota">
+
+    <section class="hero">
+      <div>
+        <h1>Logística y Despacho</h1>
+        <p>Rutas, recepción de proveedores, logística inversa y flota.</p>
+      </div>
+    </section>
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-ruta">4</div>
+          <div class="kpi__l">Vehículos en ruta</div>
+        </div>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-pares">182</div>
+          <div class="kpi__l">Pares en tránsito</div>
+        </div>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-prov">2</div>
+          <div class="kpi__l">Proveedores en camino</div>
+        </div>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-alertas">3</div>
+          <div class="kpi__l">Alertas abiertas</div>
+        </div>
+      </article>
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-recol">5</div>
+          <div class="kpi__l">Recolecciones</div>
+        </div>
+      </article>
+    </div>
+        <span class="kpi__d up">↓ 100%</span>
+      </article>
+    </div>
+    <nav class="subnav" aria-label="Secciones de Logística">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
+      <a class="subnav__i" data-ico="caja" data-ct="3" href="03-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="04-log-inversa.html">Log. inversa</a>
+      <a class="subnav__i is-on" data-ico="camion" data-ct="4" href="05-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="06-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="07-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        <div>
+          <h2>Flota</h2>
+          <div class="sub">Vehículos, conductores y ocupación de carga</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="fl-busca" placeholder="Buscar vehículo, conductor o ruta…">
+          </div>
+          <div class="control control--corto">
+            <select id="fl-filtro" aria-label="Filtrar la tabla">
+              <option>Todos los estados</option>
+              <option>Disponible</option>
+              <option>En ruta</option>
+              <option>En mantenimiento</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n">4 vehículos en ruta</span>
+        </div>
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Vehículo</th>
+                <th>Conductor</th>
+                <th>Estado</th>
+                <th>Ruta</th>
+                <th>Ocupación</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Vehículo">
+                  <b>XYZ-123</b>
+                  <div class="tiny">Camión NPR</div>
+                </td>
+                <td data-l="Conductor">Jorge Peña</td>
+                <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                <td data-l="Ruta">Bogotá</td>
+                <td style="min-width:120px" data-l="Ocupación">
+                  <div class="bar "><i style="width:15.5%"></i></div>
+                  <div class="tiny">62 / 400 pares</div>
+                </td>
+                <td>
+                  <div class="acts">
+                    <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Vehículo">
+                  <b>ABC-987</b>
+                  <div class="tiny">Furgón</div>
+                </td>
+                <td data-l="Conductor">Luisa Mora</td>
+                <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                <td data-l="Ruta">Cúcuta</td>
+                <td style="min-width:120px" data-l="Ocupación">
+                  <div class="bar "><i style="width:19.2%"></i></div>
+                  <div class="tiny">48 / 250 pares</div>
+                </td>
+                <td>
+                  <div class="acts">
+                    <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Vehículo">
+                  <b>GHI-302</b>
+                  <div class="tiny">Camión NPR</div>
+                </td>
+                <td data-l="Conductor">Marta Villamizar</td>
+                <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                <td data-l="Ruta">Bucaramanga</td>
+                <td style="min-width:120px" data-l="Ocupación">
+                  <div class="bar "><i style="width:10.0%"></i></div>
+                  <div class="tiny">40 / 400 pares</div>
+                </td>
+                <td>
+                  <div class="acts">
+                    <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Vehículo">
+                  <b>JKL-778</b>
+                  <div class="tiny">Furgón</div>
+                </td>
+                <td data-l="Conductor">Álvaro Contreras</td>
+                <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                <td data-l="Ruta">Pamplona</td>
+                <td style="min-width:120px" data-l="Ocupación">
+                  <div class="bar "><i style="width:12.8%"></i></div>
+                  <div class="tiny">32 / 250 pares</div>
+                </td>
+                <td>
+                  <div class="acts">
+                    <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Vehículo">
+                  <b>DEF-455</b>
+                  <div class="tiny">Camioneta</div>
+                </td>
+                <td data-l="Conductor">Hernán Ruiz</td>
+                <td data-l="Estado"><span class="pill pill--ok">Disponible</span></td>
+                <td data-l="Ruta">—</td>
+                <td style="min-width:120px" data-l="Ocupación">
+                  <div class="bar "><i style="width:0.0%"></i></div>
+                  <div class="tiny">0 / 120 pares</div>
+                </td>
+                <td>
+                  <div class="acts">
+                    <button class="btn btn--sm btn--ghost">Asignar ruta</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Vehículo">
+                  <b>MNO-214</b>
+                  <div class="tiny">Camioneta</div>
+                </td>
+                <td data-l="Conductor">Sonia Carvajal</td>
+                <td data-l="Estado"><span class="pill pill--crit">En taller</span></td>
+                <td data-l="Ruta">—</td>
+                <td style="min-width:120px" data-l="Ocupación">
+                  <div class="bar "><i style="width:0.0%"></i></div>
+                  <div class="tiny">0 / 120 pares</div>
+                </td>
+                <td>
+                  <div class="acts">
+                    <button class="btn btn--sm btn--ghost">Dar de alta</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Mostrando 6 de 6 vehículos · un vehículo con mantenimiento vencido no sale a ruta</p>
+        <div class="nota">
+          <span class="dot">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+          </span>
+          <p><b>Nota:</b> La ocupación se calcula sobre la capacidad del vehículo; al cerrar la ruta queda disponible para el siguiente despacho.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

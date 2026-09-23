@@ -1,0 +1,542 @@
+/* =====================================================================
+   SICAF/comun/estilos.css  (lo mantiene SOLO el integrador; se cambia por PR)
+
+   El estilo de TODAS las pantallas de SICAF: el mismo del mockup general.
+   Cómo se usa, con ejemplos para copiar: comun/README.md
+   Todas las piezas funcionando:           http://localhost/SICAF/comun/
+
+   1. PARÁMETROS  ← lo único que se cambia para ajustar el estilo de todo SICAF
+   2. Base
+   3. Marco (menú lateral, barra superior, pie). Lo arma comun/marco.js
+   4. Piezas para las pantallas (encabezado, panel, formulario, tabla...)
+   5. Pantallas pequeñas (celular)
+
+   Si este archivo falta o tiene un error, las pantallas se ven sin estilo,
+   pero SIGUEN FUNCIONANDO.
+   ===================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap");
+
+/* =====================================================================
+   1. PARÁMETROS
+   ===================================================================== */
+:root {
+  /* --- Colores de la marca (paleta cuero del mockup) --- */
+  --vino-900: #2A0508;  --vino-800: #3B0A0E;  --vino-700: #5A1016;  --vino-600: #7B1A22;
+  --vino-500: #94242C;  --vino-tint: #F6E4E3;
+  --cobre-800: #8A3A0A; --cobre-700: #A8430A; --cobre-600: #C05620; --cobre-500: #DE7B35;
+  --cobre-400: #EA915C; --cobre-200: #F8DCC2; --cobre-100: #FDF2E4;
+  --oliva-900: #1E3222; --oliva-800: #14501F; --oliva-600: #2E7D46; --oliva-300: #B9C7AC;
+  --oliva-200: #C9F1D2; --oliva-100: #E4F3E7;
+  --rosa-300: #EBBBB9;
+
+  /* --- Fondos --- */
+  --arena: #F6F1EC;     /* fondo de la página */
+  --crema: #FFFCF7;     /* barra superior y cuerpo de los paneles */
+  --papel: #FFFFFF;     /* campos de formulario y tarjetas */
+
+  /* --- Textos y líneas --- */
+  --tinta: #3A2A22;     /* texto normal */
+  --tinta-2: #6B584E;   /* texto secundario */
+  --tinta-3: #9C887B;   /* texto de ayuda y títulos de las tablas */
+  --linea: #E9DFD4;
+  --linea-2: #F0E8DF;
+
+  /* --- Colores con significado: bien, alerta, error y dato --- */
+  --ok: #1E7A3C;   --ok-bg: #DFF3E4;
+  --warn: #B26A06; --warn-bg: #FDF0DA;
+  --crit: #A81F27; --crit-bg: #FBE6E6;
+  --info: #1A4F78; --info-bg: #EAF2F9;   /* azul: explica, no avisa de nada */
+
+  /* --- Letras --- */
+  --letra-interfaz: "Poppins", "Segoe UI", system-ui, sans-serif;  /* títulos, botones, menús */
+  --letra-texto: "Lora", Georgia, "Times New Roman", serif;       /* descripciones y frases */
+  --letra-tamano: 13.5px;
+
+  /* --- Formas --- */
+  --r-s: 8px; --r-m: 12px; --r-l: 16px;   /* bordes redondeados: pequeño, mediano, grande */
+  --sombra: 0 1px 2px rgba(58, 42, 34, .06), 0 8px 24px -14px rgba(58, 42, 34, .28);
+
+  /* --- Marco --- */
+  --ancho-menu: clamp(250px, 19.7vw, 330px);
+  --foto-encabezado: url("img/portada-encabezado.jpg");   /* la foto del encabezado (.hero) */
+}
+
+/* =====================================================================
+   2. BASE
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--arena);
+  color: var(--tinta);
+  font-family: var(--letra-interfaz);
+  font-size: var(--letra-tamano);
+  line-height: 1.5;
+  letter-spacing: -.004em;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+:focus-visible { outline: 2.5px solid var(--cobre-600); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--cobre-700); }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92em; background: var(--cobre-100); border-radius: 4px; padding: 1px 5px; }
+[hidden] { display: none !important; }
+svg.ico { flex: 0 0 auto; vertical-align: middle; stroke-width: 1.9; }
+/* Los íconos pequeños llevan el trazo un poco más grueso, igual que en el mockup general. */
+svg.ico[width="17"], svg.ico[width="16"], svg.ico[width="15"],
+svg.ico[width="14"], svg.ico[width="13"] { stroke-width: 2.1; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #D9CCC0; border-radius: 8px; border: 3px solid var(--arena); }
+
+/* =====================================================================
+   3. MARCO  (lo arma comun/marco.js alrededor de tu pantalla)
+
+   El mismo del mockup general: la marca con el logo, el nombre SICAF y el
+   botón que pliega el menú; los módulos; y arriba el buscador, el modo, el
+   chip del usuario y la campana.
+   ===================================================================== */
+.app {
+  display: grid; grid-template-columns: var(--ancho-menu) minmax(0, 1fr); min-height: 100vh;
+  transition: grid-template-columns .22s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---- Menú lateral ---- */
+.side {
+  background: linear-gradient(176deg, #1F0406 0%, var(--vino-800) 42%, #3F0C11 100%);
+  color: #F3E4DF; display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh; overflow: auto;
+}
+.brand { display: flex; align-items: center; gap: 11px; padding: 12px 14px 12px 18px; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.brand__mark { display: block; flex: 0 0 auto; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .45)); }
+.brand__mark img { display: block; width: 44px; height: auto; }
+.brand__txt { font-family: var(--letra-interfaz); font-size: 24px; font-weight: 700; letter-spacing: .03em; color: #fff; line-height: 1; }
+.brand__plegar {
+  margin-left: auto; width: 32px; height: 32px; flex: 0 0 auto;
+  display: grid; place-items: center; border-radius: 9px;
+  color: rgba(255, 255, 255, .62); transition: background .15s, color .15s;
+}
+.brand__plegar:hover { background: rgba(255, 255, 255, .14); color: #fff; }
+.brand__plegar:focus-visible { outline: 2px solid var(--cobre-400); outline-offset: 1px; }
+.nav { display: flex; flex-direction: column; gap: 2px; padding: 6px 14px 18px; flex: 1; }
+.nav__item {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  padding: 11px 13px; border-radius: var(--r-m);
+  color: #E8D8D3; font-weight: 600; font-size: 14px; text-align: left; text-decoration: none;
+  transition: background .15s, color .15s;
+}
+/* El Dashboard General va marcado aunque no sea la pantalla en la que estás. */
+.nav__item.is-home { background: var(--vino-700); color: #fff; }
+.nav__item:hover { background: rgba(255, 255, 255, .07); color: #fff; }
+.nav__item.is-current { background: linear-gradient(180deg, var(--cobre-600), var(--cobre-700)); color: #fff; box-shadow: 0 6px 18px -8px rgba(0, 0, 0, .7); }
+.nav__item .ico { flex: 0 0 22px; color: var(--cobre-400); }
+.nav__item.is-current .ico { color: #fff; }
+/* ---- Las pantallas del módulo, colgando de su nombre ----
+   La fila de pestañas que trae la pantalla (<nav class="subnav">) pasa aquí:
+   el módulo y su flecha son una sola pieza, y el fondo lo pinta la fila. */
+.nav__grupo { display: flex; flex-direction: column; gap: 2px; }
+.nav__fila {
+  display: flex; align-items: center; gap: 0; padding-right: 6px; border-radius: var(--r-m);
+  transition: background .15s, box-shadow .15s;
+}
+.nav__fila:hover { background: rgba(255, 255, 255, .07); }
+.nav__fila.is-current { background: linear-gradient(180deg, var(--cobre-600), var(--cobre-700)); box-shadow: 0 6px 18px -8px rgba(0, 0, 0, .7); }
+.nav__fila .nav__item, .nav__fila .nav__item:hover, .nav__fila .nav__item.is-current { flex: 1; min-width: 0; background: none; box-shadow: none; }
+.nav__fila.is-current .nav__item { color: #fff; }
+.nav__fila:hover .nav__item { color: #fff; }
+.nav__fila .nav__item > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav__caret {
+  flex: 0 0 28px; height: 28px; display: grid; place-items: center; border-radius: 7px;
+  color: rgba(255, 255, 255, .6);
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1), background .15s, color .15s;
+}
+.nav__caret:hover { background: rgba(255, 255, 255, .16); color: #fff; }
+.nav__fila.is-current .nav__caret { color: rgba(255, 255, 255, .85); }
+.nav__fila.is-current .nav__caret:hover { background: rgba(255, 255, 255, .22); color: #fff; }
+.nav__grupo:not(.is-open) .nav__caret { transform: rotate(-90deg); }
+.nav__grupo.is-activo .nav__caret { color: var(--cobre-200); }
+.nav__sub {
+  display: flex; flex-direction: column; gap: 1px; overflow: hidden;
+  margin: 3px 0 6px 17px; padding-left: 10px; border-left: 1px solid rgba(234, 145, 92, .3);
+  transition: max-height .22s cubic-bezier(.4, 0, .2, 1), opacity .18s ease, margin .22s ease;
+}
+.nav__sub.is-cerrado { max-height: 0; opacity: 0; margin-top: 0; margin-bottom: 0; pointer-events: none; }
+.nav__si {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 11px; border-radius: 9px;
+  color: #DDC9C4; font-size: 14px; font-weight: 600; text-align: left; text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.nav__si .ico { flex: 0 0 16px; color: var(--cobre-400); }
+.nav__si:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.nav__si.is-on { background: rgba(255, 255, 255, .1); color: #fff; box-shadow: inset 3px 0 0 var(--cobre-400); }
+.nav__si .ct { margin-left: auto; background: rgba(255, 255, 255, .15); border-radius: 999px; padding: 1px 8px; font-size: 11.5px; font-weight: 700; }
+.nav__si.is-on .ct { background: var(--cobre-600); color: #fff; }
+
+.side__foot { display: flex; gap: 12px; align-items: flex-start; padding: 20px 26px 28px; border-top: 1px solid rgba(255, 255, 255, .08); }
+.side__foot small { display: block; font-size: 11px; letter-spacing: .17em; text-transform: uppercase; color: #C9B2AC; line-height: 1.5; }
+.side__rule { width: 34px; height: 2px; background: var(--cobre-500); margin-bottom: 8px; }
+
+/* Menú plegado: solo los íconos. La clase side-min la pone el botón de la marca. */
+@media (min-width: 901px) {
+  body.side-min .app { grid-template-columns: 78px minmax(0, 1fr); }
+  body.side-min .brand { flex-direction: column; gap: 7px; padding: 12px 8px; }
+  body.side-min .brand__mark img { width: 34px; }
+  body.side-min .brand__txt { display: none; }
+  body.side-min .brand__plegar { margin: 0; }
+  body.side-min .nav { padding: 6px 11px 18px; }
+  body.side-min .nav__item { justify-content: center; gap: 0; padding: 11px 0; }
+  body.side-min .nav__item > span { display: none; }
+  body.side-min .nav__caret, body.side-min .nav__sub { display: none; }
+  body.side-min .side__foot { display: none; }
+}
+
+/* La pantalla no se desplaza: lo hace el área de contenido. Así una tarjeta
+   puede ocupar el alto que queda y traer su propio desplazamiento. */
+@media (min-width: 901px) {
+  .app { height: 100vh; overflow: hidden; }
+  .main { min-height: 0; }
+  .page { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  /* Cada pieza guarda el alto que necesita: si no caben, se recorre el contenido.
+     Una pieza que deba ocupar el alto sobrante lo pide con flex:1 en el estilos.css del módulo. */
+  .page > * { flex: 0 0 auto; }
+}
+
+/* ---- Barra superior ---- */
+.main { min-width: 0; display: flex; flex-direction: column; }
+.top {
+  display: flex; align-items: center; gap: 14px; padding: 9px 24px;
+  background: var(--crema); border-bottom: 1px solid var(--linea);
+  position: sticky; top: 0; z-index: 30;
+}
+.top__right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.modo { font-family: var(--letra-texto); font-style: italic; font-weight: 500; font-size: 15px; color: var(--vino-600); }
+.vdiv { width: 1px; height: 24px; background: var(--linea); }
+
+/* Buscador de la barra superior */
+.search { position: relative; flex: 1 1 460px; max-width: 560px; }
+.search > .ico { position: absolute; left: 13px; top: 10px; color: var(--tinta-3); z-index: 1; }
+.search input { width: 100%; height: 40px; border-radius: var(--r-m); border: 1px solid #DDD3C8; background: var(--papel); padding: 0 66px 0 40px; }
+.search input::placeholder { color: var(--tinta-3); }
+.search input:focus { border-color: var(--cobre-500); outline: none; box-shadow: 0 0 0 3px rgba(222, 123, 53, .16); }
+.search input::-webkit-search-cancel-button { display: none; }
+.search__k { position: absolute; right: 14px; top: 9px; height: 22px; min-width: 22px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--linea); background: var(--arena); color: var(--tinta-3); font: 600 12px/22px var(--letra-interfaz); text-align: center; }
+
+/* Chip del usuario y campana */
+.userwrap { position: relative; }
+.userbtn { display: flex; align-items: center; gap: 9px; padding: 3px 7px; border-radius: var(--r-m); }
+.userbtn:hover { background: var(--arena); }
+.userbtn b { font-size: 14.5px; font-weight: 600; }
+/* El avatar también sirve dentro de la pantalla, en listas de personas */
+.avatar { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; background: var(--vino-600); color: #fff; font-weight: 700; font-size: 19px; }
+.avatar--sm { width: 40px; height: 40px; font-size: 16px; }
+.top .avatar { width: 34px; height: 34px; font-size: 15px; }
+.bell { position: relative; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: var(--vino-600); }
+.bell:hover { background: var(--arena); }
+.bell__n {
+  position: absolute; top: 0; right: 0; min-width: 17px; height: 17px; padding: 0 5px;
+  border-radius: 10px; border: 1.5px solid var(--crema); background: var(--crit);
+  color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center;
+}
+
+/* ---- Menú del usuario (lo que antes era la barra del pie de la página) ---- */
+.umenu {
+  position: absolute; top: calc(100% + 9px); right: 0; z-index: 60; width: 262px; overflow: hidden;
+  background: var(--papel); border: 1px solid var(--linea); border-radius: var(--r-m);
+  box-shadow: 0 24px 44px -24px rgba(58, 42, 34, .55);
+}
+.umenu__h { display: flex; align-items: center; gap: 11px; padding: 14px 16px 12px; }
+.umenu__h b { display: block; font-size: 14.5px; color: var(--vino-800); line-height: 1.25; }
+.umenu__h small { display: block; font-size: 12px; color: var(--tinta-3); }
+.umenu__rol { display: flex; align-items: center; gap: 7px; padding: 0 16px 12px; font-size: 12px; color: var(--tinta-2); }
+.umenu__rol .ico { color: var(--cobre-700); flex: 0 0 auto; }
+.umenu__g { border-top: 1px solid var(--linea-2); padding: 6px; }
+.umenu__i {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border-radius: var(--r-s);
+  text-align: left; font-size: 13.5px; color: var(--tinta); transition: background .13s, color .13s;
+}
+.umenu__i .ico { color: var(--tinta-3); flex: 0 0 auto; }
+.umenu__i:hover { background: var(--arena); color: var(--vino-600); }
+.umenu__i:hover .ico { color: var(--cobre-700); }
+.umenu__pie {
+  display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: var(--crema);
+  border-top: 1px solid var(--linea-2); font-size: 11.5px; color: var(--tinta-3);
+}
+.umenu__pie b { letter-spacing: .12em; color: var(--tinta-2); }
+
+/* ---- Contenido ---- */
+.page { padding: 0 28px 22px; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+
+/* =====================================================================
+   4. PIEZAS PARA LAS PANTALLAS
+   ===================================================================== */
+
+/* ---- Encabezado de la pantalla: <section class="hero"> ---- */
+.hero { position: relative; padding: 24px 0 4px; display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.hero__photo {
+  position: absolute; inset: 0 -28px 0 34%; pointer-events: none;
+  border-bottom-left-radius: 60px; overflow: hidden;
+  background-image:
+    linear-gradient(90deg, var(--arena) 0%, color-mix(in srgb, var(--arena) 82%, transparent) 22%,
+      color-mix(in srgb, var(--arena) 26%, transparent) 52%, color-mix(in srgb, var(--arena) 12%, transparent) 100%),
+    var(--foto-encabezado);
+  background-size: cover, cover; background-position: center, right center; background-repeat: no-repeat;
+}
+.hero > :not(.hero__photo) { position: relative; z-index: 1; }
+.hero h1 { font-weight: 700; color: var(--vino-600); font-size: clamp(28px, 3.1vw, 46px); line-height: 1.05; letter-spacing: -.035em; }
+.hero p { font-family: var(--letra-texto); letter-spacing: 0; color: var(--tinta-2); font-size: clamp(13.5px, 1.05vw, 16px); margin-top: 6px; max-width: 66ch; }
+
+/* ---- Pestañas de las secciones del módulo: <nav class="subnav"> ---- */
+.subnav { display: flex; gap: 5px; flex-wrap: wrap; background: var(--papel); border: 1px solid var(--linea-2); padding: 6px; border-radius: var(--r-l); box-shadow: var(--sombra); }
+.subnav__i { text-decoration: none; display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 10px; font-weight: 500; font-size: 13px; color: var(--tinta-2); white-space: nowrap; }
+.subnav__i:hover { background: var(--arena); color: var(--vino-600); }
+.subnav__i.is-on { background: linear-gradient(120deg, var(--vino-700), var(--vino-600)); color: #fff; font-weight: 600; }
+.subnav__i.is-on .ico { color: var(--cobre-400); }
+.subnav__i .ct { background: rgba(58, 42, 34, .1); border-radius: 99px; padding: 1px 7px; font-size: 11px; font-weight: 700; }
+.subnav__i.is-on .ct { background: rgba(255, 255, 255, .22); }
+
+/* ---- Tarjetas de indicador: <div class="kpis"> con <article class="kpi kpi--arena"> ---- */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.kpi { display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: var(--r-l); border: 1px solid rgba(58, 42, 34, .07); }
+.kpi__tile { width: 48px; height: 48px; border-radius: var(--r-m); display: grid; place-items: center; flex: 0 0 auto; }
+.kpi__n { font-size: 25px; font-weight: 600; letter-spacing: -.025em; line-height: 1; font-variant-numeric: tabular-nums; }
+.kpi__l { font-size: 12.5px; color: var(--tinta-2); margin-top: 3px; }
+.kpi__d { margin-left: auto; align-self: flex-start; font-size: 12px; font-weight: 600; }
+.kpi--arena { background: var(--cobre-100); }  .kpi--arena .kpi__tile { background: #F1D9B9; color: #4C2109; }
+.kpi--rosa { background: var(--rosa-300); }    .kpi--rosa .kpi__tile { background: var(--vino-600); color: #FBE9E7; }  .kpi--rosa .kpi__l { color: #5C2B2B; }
+.kpi--oliva { background: var(--oliva-300); }  .kpi--oliva .kpi__tile { background: #1B4A26; color: #D8EBDC; }  .kpi--oliva .kpi__l { color: #2C4331; }
+.kpi--cobre { background: var(--cobre-400); }  .kpi--cobre .kpi__tile { background: #C85E18; color: #FFF5EA; }  .kpi--cobre .kpi__n { color: #fff; }  .kpi--cobre .kpi__l { color: #59240A; }
+.up { color: var(--ok); }  .down { color: var(--crit); }  .flat { color: var(--tinta-3); }
+.kpi--cobre .up, .kpi--cobre .down, .kpi--cobre .flat { color: #59240A; }
+
+/* ---- Columnas: <div class="grid2"> ---- */
+.grid2 { display: grid; grid-template-columns: minmax(0, .62fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.grid2--even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+
+/* ---- Panel: <section class="panel"> ---- */
+.panel { background: var(--papel); border-radius: var(--r-l); overflow: hidden; box-shadow: var(--sombra); border: 1px solid var(--linea-2); }
+.panel__head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; padding: 14px 20px; min-height: 66px; color: #fff; }
+.panel__head > div:first-of-type { flex: 1 1 0; min-width: 0; }
+.panel__head h2 { font-size: clamp(16px, 1.35vw, 21px); font-weight: 600; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.panel__head .sub { font-family: var(--letra-texto); font-size: 12px; opacity: .82; line-height: 1.45; }
+.panel__head .ico { width: 24px; height: 24px; opacity: .95; }
+.panel__head--vino { background: linear-gradient(120deg, var(--vino-700), var(--vino-600)); }
+.panel__head--oliva { background: linear-gradient(120deg, #12301A, var(--oliva-900)); }
+.panel__head--cobre { background: linear-gradient(120deg, var(--cobre-700), var(--cobre-600)); }
+.panel__body { padding: 16px 20px 18px; background: var(--crema); }
+.panel__body--flush { padding: 0; }
+.panel__body--flush > .scroll-x { padding: 4px 6px 0; }
+.ghostbtn { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .3); color: #fff; font-weight: 600; padding: 10px 16px; border-radius: var(--r-m); white-space: nowrap; }
+.ghostbtn:hover { background: rgba(255, 255, 255, .24); }
+
+/* ---- Formulario: <div class="field"> con <label> y <div class="control"> ---- */
+.field { margin-bottom: 14px; }
+.field > label { display: block; font-weight: 700; font-size: 12.5px; color: var(--vino-600); margin-bottom: 5px; }
+.control { position: relative; }
+.control > .ico { position: absolute; left: 14px; top: 12px; color: var(--tinta-3); pointer-events: none; }
+.control input, .control select, .control textarea {
+  width: 100%; height: 44px; font-size: 13.5px; padding: 0 14px;
+  border: 1px solid #E4DACF; border-radius: var(--r-m); background-color: var(--papel);
+}
+.control:has(> .ico) input, .control:has(> .ico) select { padding-left: 44px; }
+.control textarea { height: 76px; padding: 12px 14px; resize: vertical; }
+.control select {
+  appearance: none; cursor: pointer; padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%239C887B' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 9.5 12 15l5.5-5.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.control input:focus, .control select:focus, .control textarea:focus { border-color: var(--cobre-500); outline: none; box-shadow: 0 0 0 3px rgba(222, 123, 53, .16); }
+.control.bad input, .control.bad select, .control.bad textarea { border-color: var(--crit); box-shadow: 0 0 0 3px rgba(168, 31, 39, .12); }
+.err { color: var(--crit); font-size: 13px; margin-top: 5px; display: flex; gap: 6px; align-items: center; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Formulario en fila, a todo el ancho del panel: <div class="panel__body panel__body--form"> */
+.panel__body--form { display: grid; grid-template-columns: repeat(auto-fit, minmax(228px, 1fr)); gap: 0 18px; align-items: end; }
+.panel__body--form .field { margin-bottom: 16px; }
+.panel__body--form .btn { height: 44px; margin-bottom: 16px; white-space: nowrap; }
+.panel__body--form > p, .panel__body--form > .aviso { grid-column: 1 / -1; }
+
+/* ---- Botones: <button class="btn"> ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 46px; padding: 0 18px; border-radius: var(--r-m);
+  font-weight: 600; font-size: 14px; letter-spacing: -.01em; color: #fff; text-decoration: none;
+  background: linear-gradient(180deg, var(--vino-600), var(--vino-700));
+  box-shadow: 0 10px 22px -14px rgba(90, 16, 22, .9);
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: translateY(1px); }
+.btn--full { width: 100%; }
+.btn--oliva { background: linear-gradient(180deg, var(--oliva-600), var(--oliva-800)); box-shadow: 0 10px 22px -14px rgba(20, 80, 31, .9); }
+.btn--cobre { background: linear-gradient(180deg, var(--cobre-500), var(--cobre-700)); }
+.btn--ghost { background: var(--papel); color: var(--vino-600); border: 1px solid var(--linea); box-shadow: none; }
+.btn--sm { height: 36px; font-size: 13px; padding: 0 13px; border-radius: var(--r-s); }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+.iconbtn { width: 32px; height: 32px; border-radius: 9px; background: var(--arena); display: inline-grid; place-items: center; color: var(--tinta-2); border: 1px solid var(--linea-2); }
+.iconbtn:hover { background: var(--vino-tint); color: var(--vino-600); }
+.acts { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ---- Tabla: <div class="scroll-x"><table> ---- */
+.scroll-x { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+/* El nombre de la columna iba en --tinta-3 a 10,5 px: 2,72:1 sobre la banda,
+   muy por debajo del 4,5:1 que pide WCAG AA, y casi no se leía. Con --tinta-2
+   a 11,5 px sube a 5,40:1 sin dejar de ser secundario frente a los datos. */
+th {
+  background: transparent; color: var(--tinta-2); font-size: 11.5px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; text-align: left; white-space: nowrap;
+  padding: 12px 12px 10px; border-bottom: 1.5px solid var(--linea);
+}
+td { padding: 11px 12px; border-bottom: 1px solid var(--linea-2); font-size: 13.5px; vertical-align: middle; }
+tr:last-child > td { border-bottom: 0; }
+tr { transition: background .13s ease; }
+tr:has(> td):hover { background: #FEF7EE; }
+tr:has(> td):hover > td:first-child { box-shadow: inset 3px 0 0 var(--cobre-500); }
+td > b:first-child { font-weight: 600; letter-spacing: -.01em; color: var(--vino-800); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.num { font-weight: 600; }
+td:has(> .acts) { width: 1%; white-space: nowrap; }
+td .tiny { display: block; margin-top: 3px; }
+.who { display: flex; align-items: center; gap: 11px; }
+.who b { display: block; font-weight: 600; font-size: 13.5px; color: var(--vino-800); line-height: 1.2; }
+.who small { color: var(--tinta-3); font-size: 11.5px; }
+
+/* ---- Textos pequeños y "no hay nada" ---- */
+.muted { color: var(--tinta-2); }
+.tiny { font-size: 11.5px; color: var(--tinta-3); }
+.empty { padding: 34px 20px; text-align: center; font-family: var(--letra-texto); font-size: 15px; color: var(--tinta-3); }
+
+/* ---- Estados: <span class="pill pill--ok"> y etiquetas: <span class="chip chip--cobre"> ---- */
+.pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; white-space: nowrap; border: 1px solid rgba(58, 42, 34, .07); }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pill--ok { background: var(--oliva-200); color: var(--ok); }
+.pill--warn { background: var(--warn-bg); color: var(--warn); }
+.pill--crit { background: var(--crit-bg); color: var(--crit); }
+.pill--off { background: #ECE6E0; color: var(--tinta-3); }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid rgba(58, 42, 34, .08); }
+.chip--cobre { background: var(--cobre-100); color: var(--cobre-800); }
+.chip--oliva { background: var(--oliva-100); color: var(--oliva-800); }
+.chip--vino { background: var(--vino-tint); color: var(--vino-600); }
+.chip--tinta { background: #EFEAE4; color: var(--tinta-2); }
+
+/* ---- Avisos: <div class="aviso aviso--ok"> ---- */
+.aviso { display: flex; gap: 12px; align-items: flex-start; padding: 11px 13px; border-radius: var(--r-m); border-left: 4px solid; margin-bottom: 10px; }
+.aviso > .ico { margin-top: 1px; }
+.aviso b { display: block; font-size: 13.5px; }
+.aviso p { font-family: var(--letra-texto); font-size: 12.5px; color: var(--tinta-2); }
+.aviso--ok { background: var(--ok-bg); border-color: var(--ok); }      .aviso--ok > .ico { color: var(--ok); }
+.aviso--warn { background: var(--warn-bg); border-color: var(--warn); } .aviso--warn > .ico { color: var(--warn); }
+.aviso--crit { background: var(--crit-bg); border-color: var(--crit); } .aviso--crit > .ico { color: var(--crit); }
+/* Nota al pie de un panel */
+.nota { display: flex; align-items: center; gap: 14px; margin: 14px 20px 18px; padding: 12px 15px; background: var(--cobre-100); border: 1px solid var(--cobre-200); border-radius: var(--r-m); }
+.nota .dot { width: 34px; height: 34px; border-radius: 50%; background: var(--vino-800); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+.nota p { font-family: var(--letra-texto); font-size: 13px; color: var(--tinta-2); }
+/* Nota azul: para lo que EXPLICA cómo se lee la pantalla. El cobre de la nota
+   normal se confunde con los avisos de "cuidado"; el azul se lee como dato. */
+.nota--info { background: var(--info-bg); border-color: color-mix(in srgb, var(--info) 26%, transparent); }
+.nota--info .dot { background: var(--info); }
+.nota--info p b { color: var(--info); }
+
+/* ---- Datos, avance y pasos ---- */
+.kv { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; font-size: 13.5px; border-bottom: 1px dashed var(--linea); }
+.kv:last-child { border-bottom: 0; }
+.kv b { font-variant-numeric: tabular-nums; }
+.bar { height: 9px; border-radius: 5px; background: #EDE5DC; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--cobre-500), var(--cobre-700)); }
+.bar--ok > i { background: linear-gradient(90deg, var(--oliva-600), var(--oliva-800)); }
+.bar--crit > i { background: linear-gradient(90deg, #C93F45, var(--crit)); }
+.steps { display: flex; gap: 6px; flex-wrap: wrap; }
+.step { flex: 1 1 90px; padding: 7px 5px; border-radius: var(--r-s); text-align: center; font-size: 10.5px; font-weight: 600; background: #EFEAE4; color: var(--tinta-3); border: 1px solid var(--linea-2); }
+.step.done { background: var(--oliva-200); color: var(--ok); border-color: #AEDCB9; }
+.step.now { background: var(--cobre-200); color: var(--cobre-800); border-color: #EBC59B; }
+.pasos { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 12px; }
+.paso { border: 1px solid var(--linea-2); border-radius: var(--r-m); padding: 13px 15px; background: var(--papel); }
+.paso header { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.paso__n { width: 23px; height: 23px; flex: 0 0 auto; border-radius: 50%; background: var(--vino-600); color: #fff; display: grid; place-items: center; font-size: 11.5px; font-weight: 700; }
+.paso header b { font-size: 13px; color: var(--vino-800); letter-spacing: -.01em; }
+.paso ul { margin: 0; padding-left: 15px; color: var(--tinta-2); font-size: 12.5px; line-height: 1.6; }
+.paso li::marker { color: var(--cobre-500); }
+
+/* ---- Ventana encima de la pantalla: <div class="overlay"><div class="modal"> ---- */
+.overlay { position: fixed; inset: 0; background: rgba(42, 5, 8, .5); display: grid; place-items: center; padding: 20px; z-index: 60; backdrop-filter: blur(2px); }
+.modal { background: var(--crema); border-radius: var(--r-l); width: min(620px, 100%); max-height: 88vh; overflow: auto; box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .6); }
+.modal__head { display: flex; align-items: center; gap: 12px; padding: 18px 22px; background: linear-gradient(120deg, var(--vino-700), var(--vino-600)); color: #fff; }
+.modal__head h3 { font-size: 18px; font-weight: 600; letter-spacing: -.015em; }
+.modal__head button { margin-left: auto; color: #fff; opacity: .85; }
+.modal__body { padding: 20px 22px 24px; }
+.modal__foot { display: flex; gap: 10px; justify-content: flex-end; padding: 0 22px 22px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* =====================================================================
+   5. PANTALLAS PEQUEÑAS (celular y tableta)
+   ===================================================================== */
+@media (min-width: 901px) {
+  /* el color del menú llega hasta abajo aunque la página sea larga */
+  body:has(> .app) { background: linear-gradient(90deg, var(--vino-800) 0 var(--ancho-menu), var(--arena) 0); }
+  body.side-min:has(> .app) { background: linear-gradient(90deg, var(--vino-800) 0 78px, var(--arena) 0); }
+}
+@media (max-width: 1180px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid2, .grid2--even { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { position: static; height: auto; }
+  .brand { padding: 12px 18px; border-bottom: 0; }
+  .brand__plegar { display: none; }
+  .nav { flex-direction: row; overflow-x: auto; padding: 6px 14px 14px; }
+  .nav__item { white-space: nowrap; width: auto; font-size: 14.5px; padding: 10px 12px; }
+  .top { flex-wrap: wrap; padding: 12px 18px; }
+  .search { flex: 1 1 100%; max-width: none; order: 2; }
+  .top__right { width: 100%; justify-content: flex-end; }
+  .side__foot { display: none; }
+  .nav__grupo { display: contents; }
+  .nav__sub { flex-direction: row; margin: 0 0 0 6px; padding-left: 8px; max-height: none; opacity: 1; }
+  .nav__sub.is-cerrado { display: none; }
+  .nav__si { width: auto; white-space: nowrap; font-size: 13.5px; padding: 9px 10px; }
+  .top { padding: 12px 18px; flex-wrap: wrap; }
+  .page { padding: 0 18px 20px; }
+  .hero__photo { inset: 0 -18px 0 42%; opacity: .4; border-bottom-left-radius: 34px; }
+  .subnav { flex-wrap: nowrap; overflow-x: auto; }
+  .subnav__i { flex: 0 0 auto; }
+}
+/* En el celular cada fila de la tabla se ve como una ficha.
+   El nombre de cada dato sale del atributo data-l del <td>: <td data-l="Cliente">. */
+@media (max-width: 760px) {
+  .scroll-x { overflow: visible; }
+  table, tbody, tr, td { display: block; width: 100%; }
+  thead, tr:has(> th) { display: none; }
+  tr:has(> td) { border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel); margin: 0 0 10px; overflow: hidden; }
+  tr:has(> td):hover > td:first-child { box-shadow: none; }
+  td { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px 14px; text-align: right; padding: 10px 13px; border-bottom: 1px solid var(--linea-2); }
+  tr:last-child > td { border-bottom: 1px solid var(--linea-2); }
+  tr > td:last-child { border-bottom: 0; }
+  td[data-l]::before { content: attr(data-l); margin-right: auto; text-align: left; font-weight: 600; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-3); line-height: 1.6; }
+  td:has(> .acts) { width: 100%; }
+  .panel__body--flush > .scroll-x { padding: 12px; }
+  .hero__photo { opacity: .28; }
+}
+@media (max-width: 560px) {
+  .app { overflow-x: clip; }
+  .page { padding: 0 14px 18px; }
+  .hero__photo { inset: 0 -14px 0 42%; }
+  .top { padding: 10px 14px; }
+  .modo { display: none; }
+  .vdiv { display: none; }
+  .top__right { gap: 10px; }
+  .userbtn b { display: none; }
+  .hero h1 { font-size: clamp(23px, 7vw, 30px); }
+  .kpis { grid-template-columns: minmax(0, 1fr); }
+  .row2, .panel__body--form { grid-template-columns: minmax(0, 1fr); }
+  .panel__head { padding: 13px 15px; min-height: 0; gap: 10px; }
+  .panel__head h2 { white-space: normal; font-size: 20px; }
+  .panel__body { padding: 14px 15px 16px; }
+  .panel__head .ghostbtn { margin-left: 0; width: 100%; justify-content: center; }
+  .modal__foot { flex-direction: column-reverse; }
+  .modal__foot .btn { width: 100%; }
+  .subnav { padding: 5px; }
+  .subnav__i { padding: 8px 11px; font-size: 12.5px; }
+  .umenu { width: min(260px, calc(100vw - 28px)); }
+}

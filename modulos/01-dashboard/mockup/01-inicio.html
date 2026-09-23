@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Dashboard General · Inicio</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="01-dashboard" data-titulo="Dashboard General · Inicio">
+
+    <section class="hero">
+      <div>
+        <h1>Dashboard General</h1>
+        <p>Cómo va la fábrica hoy, con los números que reporta cada módulo.</p>
+      </div>
+    </section>
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n">24</div>
+          <div class="kpi__l">Órdenes en producción</div>
+        </div>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18h20"></path> <path d="M2 14h6l3-3 4 2h5a2 2 0 0 1 2 2v2H2z"></path> <path d="M8 14V8"></path></svg></span>
+        <div>
+          <div class="kpi__n">1.240</div>
+          <div class="kpi__l">Pares vendidos este mes</div>
+        </div>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"></rect> <circle cx="12" cy="12" r="2"></circle> <path d="M6 12h.01M18 12h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n">$84.350.000</div>
+          <div class="kpi__l">Venta del mes</div>
+        </div>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n">7</div>
+          <div class="kpi__l">Alertas abiertas</div>
+        </div>
+      </article>
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+        <div>
+          <div class="kpi__n">182</div>
+          <div class="kpi__l">Pares en tránsito</div>
+        </div>
+      </article>
+    </div>
+    <section class="saludo">
+      <div class="saludo__t">
+        <b>Buenos días.</b>
+        <span>La fábrica va bien salvo por tres cosas: falta cuero, un cliente pasó el cupo y el respaldo de anoche no corrió.</span>
+      </div>
+      <div class="rapidas">
+        <button class="btn btn--sm" data-rapida="alertas"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg> Ver alertas</button>
+        <button class="btn btn--sm btn--oliva" data-rapida="modulos"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"></path> <path d="M8 12h13"></path> <path d="M8 18h13"></path> <path d="M3 6h.01"></path> <path d="M3 12h.01"></path> <path d="M3 18h.01"></path></svg> Estado de módulos</button>
+        <button class="btn btn--sm btn--ghost" data-rapida="indicadores"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg> Indicadores</button>
+      </div>
+    </section>
+    <details class="avisos">
+      <summary class="avisos__cab">
+        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+        <span class="avisos__t">
+          <b>Pendientes y notificaciones</b>
+          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
+        </span>
+        <span class="avisos__n">5</span>
+        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </summary>
+      <div class="avisos__cuerpo">
+        <div class="pend">
+          <button class="pend__i pend__i--crit" data-ir="04-alertas.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+            <span class="pend__x"><b>Producción parada por falta de cuero</b><small>OP-2026-048 lleva 3 días esperando · el pedido a Compras es la OC-2026-014</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--crit" data-ir="04-alertas.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+            <span class="pend__x"><b>Comercial Los Andes pasó el cupo de crédito</b><small>$15.900.000 de $18.000.000 · el próximo pedido queda retenido</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="04-alertas.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+            <span class="pend__x"><b>Retraso de entrega en la ruta de Cúcuta</b><small>ABC-987 lleva 40 minutos de demora · el cliente ya fue avisado</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--warn" data-ir="04-alertas.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+            <span class="pend__x"><b>2 referencias bajo el stock mínimo</b><small>Cuero vacuno graso y plantilla EVA · Compras ya tiene la solicitud</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+          <button class="pend__i pend__i--info" data-ir="02-modulos.html">
+            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
+            <span class="pend__x"><b>Los 9 módulos reportaron hoy</b><small>Último reporte: Admin. Usuarios a las 08:12</small></span>
+            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </button>
+        </div>
+      </div>
+    </details>
+    <nav class="subnav" aria-label="Secciones del tablero">
+      <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="lista" data-ct="8" href="02-modulos.html">Módulos</a>
+      <a class="subnav__i" data-ico="barras" href="03-indicadores.html">Indicadores</a>
+      <a class="subnav__i" data-ico="alerta" data-ct="7" href="04-alertas.html">Alertas</a>
+      <a class="subnav__i" data-ico="engranaje" href="05-config.html">Config.</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>La Cadena Productiva Hoy</h2>
+          <div class="sub">Los nueve eslabones, del modelo aprobado al par entregado</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                  <th class="num">Paso</th>
+                  <th>Qué pasa aquí</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num" data-l="Paso"><b>1</b></td>
+                <td data-l="Qué pasa aquí"><b>Diseño aprueba el modelo</b><div class="tiny">12 modelos aprobados</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../02-diseno/mockup/01-modelos.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>2</b></td>
+                <td data-l="Qué pasa aquí"><b>Comercial toma el pedido</b><div class="tiny">6 pedidos abiertos</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/01-inicio.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>3</b></td>
+                <td data-l="Qué pasa aquí"><b>Producción arma la orden</b><div class="tiny">24 órdenes en curso</div></td>
+                <td data-l="Estado"><span class="pill pill--warn">3 sin material</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>4</b></td>
+                <td data-l="Qué pasa aquí"><b>Compras trae los insumos</b><div class="tiny">6 órdenes de compra abiertas</div></td>
+                <td data-l="Estado"><span class="pill pill--warn">1 entrega incompleta</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../03-compras/mockup/01-necesidad.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>5</b></td>
+                <td data-l="Qué pasa aquí"><b>Inventario entrega y descuenta</b><div class="tiny">8 referencias de insumo</div></td>
+                <td data-l="Estado"><span class="pill pill--crit">2 bajo mínimo</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../04-inventario/mockup/01-inicio.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>6</b></td>
+                <td data-l="Qué pasa aquí"><b>La planta corta, guarnece y monta</b><div class="tiny">28 % de avance promedio</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>7</b></td>
+                <td data-l="Qué pasa aquí"><b>Calidad revisa el lote</b><div class="tiny">94,96 % de conformidad</div></td>
+                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../06-calidad/mockup/01-proceso.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>8</b></td>
+                <td data-l="Qué pasa aquí"><b>Logística despacha</b><div class="tiny">182 pares en tránsito</div></td>
+                <td data-l="Estado"><span class="pill pill--warn">1 retraso</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Abrir</a></div></td>
+              </tr>
+              <tr>
+                <td class="num" data-l="Paso"><b>9</b></td>
+                <td data-l="Qué pasa aquí"><b>Admin vigila quién hizo qué</b><div class="tiny">9 usuarios activos</div></td>
+                <td data-l="Estado"><span class="pill pill--warn">Respaldo fallido</span></td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../09-admin/mockup/01-inicio.html">Abrir</a></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">De la aprobación del modelo hasta la entrega · si un paso se traba, los de abajo también</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        <div>
+          <h2>Lo Que Necesita Atención</h2>
+          <div class="sub">Lo más grave que hay abierto ahora mismo</div>
+        </div><button class="ghostbtn" data-ir="04-alertas.html"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg> Ver todas</button>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                  <th>Alerta</th>
+                  <th>Qué pasa</th>
+                  <th>Desde</th>
+                  <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Alerta"><b>AL-007</b></td>
+                <td data-l="Qué pasa">OP-2026-048 lleva 3 días sin cuero<div class="tiny">Producción · Para la planta</div></td>
+                <td class="tiny falta" data-l="Desde">Hace 3 días</td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Ir al módulo</a></div></td>
+              </tr>
+              <tr>
+                <td data-l="Alerta"><b>AL-006</b></td>
+                <td data-l="Qué pasa">Comercial Los Andes pasó el cupo de crédito<div class="tiny">Comercial · Retiene pedidos</div></td>
+                <td class="tiny falta" data-l="Desde">Hace 1 día</td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/01-inicio.html">Ir al módulo</a></div></td>
+              </tr>
+              <tr>
+                <td data-l="Alerta"><b>AL-005</b></td>
+                <td data-l="Qué pasa">El respaldo de anoche falló<div class="tiny">Admin · Riesgo de datos</div></td>
+                <td class="tiny falta" data-l="Desde">Hace 10 horas</td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../09-admin/mockup/01-inicio.html">Ir al módulo</a></div></td>
+              </tr>
+              <tr>
+                <td data-l="Alerta"><b>AL-004</b></td>
+                <td data-l="Qué pasa">Retraso por tráfico en la ruta de Cúcuta<div class="tiny">Logística · Molesta al cliente</div></td>
+                <td class="tiny" data-l="Desde">Hace 40 minutos</td>
+                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Ir al módulo</a></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Las 4 más graves de 7 · la lista completa está en Alertas</p>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>
