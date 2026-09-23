@@ -154,7 +154,7 @@ lista, y a la derecha de cada proceso aparece cuántos registros tiene pendiente
 |----------------|----------------------------------------------------------|-----------------|
 | Panel principal| Con lo que abre el módulo: el flujo, cómo va, los pendientes y una tarjeta por proceso | todos |
 | Proceso        | Lienzo con los nueve pasos y el detalle del que se elija  | todos           |
-| Órdenes        | Órdenes de trabajo con sus etapas y su avance             | 1 y 4           |
+| Órdenes        | Una fila por orden: sus pares en cada una de las cuatro etapas | 1 y 4      |
 | Val. BOM       | Materiales por par contra las existencias de Inventario   | 2 y 3           |
 | Etapas         | Una fila por cada etapa de cada orden                     | 5 y 6           |
 | Pérdidas       | Merma con su causa, su etapa y su costo                   | 9               |
@@ -167,12 +167,40 @@ Salvo las dos primeras, **cada proceso es una tabla de datos**: buscador propio,
 encabezados que ordenan (una pulsación ascendente, otra descendente, otra sin orden),
 menú para ocultar columnas, totales de lo filtrado, páginas y exportación a CSV.
 
-Cada pantalla del módulo abre con el mismo encabezado (`bannerProc()`): qué es, para qué
+Cada pantalla del módulo, menos Órdenes (ver abajo), abre con el mismo encabezado (`bannerProc()`): qué es, para qué
 sirve y la tira del flujo —Orden de producción › Verificar materiales › Corte › Guarnición
 › Montaje › Terminado › Control de calidad— con los pasos que cubre esa pantalla en
 vinotinto. Debajo van **cuatro tarjetas de indicadores del proceso** (`indProc()`), con el
 mismo color y el mismo tamaño de siempre; las que traen filtro son botones: al pulsarlas
 filtran su tabla y quedan marcadas con «· filtrando».
+
+### La pantalla de Órdenes: la tabla es la pantalla
+
+Es la misma de `05-produccion/mockup/03-ordenes.html`, pero funcionando. Arriba, el título y
+una nota azul que explica cómo se leen las etapas (se quita con su cruz y no vuelve hasta
+recargar: `S.notaOrd`); debajo, las cuatro tarjetas de siempre y la tabla, sin encabezado de
+pasos, sin gráficas y sin el aviso de «en espera», que repetía la tarjeta rosa.
+
+- **Una fila por orden, de una línea.** Las cuatro etapas son cuatro columnas de números:
+  los pares que **salieron** de cada una. La etapa en curso va resaltada y ahí el número es lo
+  que **entró**; la que todavía no llega lleva «—». Si los números bajan de una columna a la
+  siguiente, la diferencia es merma: la escalera es la regla del módulo.
+- **Abre con las órdenes en curso** (el filtro Estado «En curso» ya puesto), ordenadas por
+  compromiso: las atrasadas quedan arriba, con su marca «tarde».
+- **Los filtros van en un botón que despliega** una condición por columna (orden, modelo,
+  pares, estado, cada etapa y compromiso). Lo que está filtrando queda a la vista en fichas
+  con su cruz; «Borrar todos» los quita todos. La caja se cierra al pulsar fuera o con Escape.
+- **«Nueva orden»** abre una ventana con el formulario (`A['p-nueva']`); «Crear orden» la crea,
+  valida la BOM y la libera o la deja en espera, igual que antes.
+- **«Exportar Excel»** da el mismo archivo con punto y coma que abre Excel.
+- La columna de acciones ya no está: **Registrar** sigue en Etapas, y **Liberar** ocurre solo
+  al crear la orden. Una orden que quedó en espera ya no tiene botón para volver a intentarlo
+  (su material se le pide a Compras desde Val. BOM).
+
+Lo nuevo de la tabla son opciones de `datatable()` que solo usa Órdenes (`caja`, `inicial`,
+`nuevo`, `exportar`, `tams`, `resumenT`, `info` y, por columna, `th`, `td` y `tt`); el resto de
+las tablas se ve igual. Sus estilos están al final de `css/estilos.css`, en «Producción ·
+Órdenes», con las mismas reglas del `estilos.css` del módulo.
 
 ### La pantalla de Proceso
 
@@ -258,7 +286,7 @@ datatable({
     {k:'cant', t:'Cantidad', tipo:'num'},               // tipo: num, moneda, pct
     {k:'etapa',t:'Etapa',    oculta:true}               // empieza oculta
   ],
-  filtros:[{k:'etapa',t:'Etapa',op:['Corte','Montaje']}],   // también tipo:'fechas' y tipo:'si'
+  filtros:[{k:'etapa',t:'Etapa',op:['Corte','Montaje']}],   // también tipo 'fechas', 'numeros', 'texto' y 'si'
   acciones:m=>'<button class="btn btn--sm">Ver</button>',   // última columna, fija a la derecha
   resumen:fs=>[{t:'Unidades',v:fs.length,tono:'crit'}]      // totales de TODO lo filtrado
 })

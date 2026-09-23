@@ -1342,3 +1342,102 @@ select.dt__in{min-width:140px;max-width:210px;cursor:pointer}
    módulos no se estira para llenar la ventana */
 @media (max-width:900px){ .marcos{flex:none;height:0} .side{position:relative} .app{align-content:start} }
 
+/* ============ PRODUCCIÓN · ÓRDENES: LA TABLA ES LA PANTALLA ============
+   Las mismas reglas de 05-produccion/mockup/estilos.css (03-ordenes.html). Allá los
+   filtros, la nota y la ventana se abren sin JavaScript; aquí lo hace js/app.js. */
+/* Azul: para lo que EXPLICA cómo se lee la pantalla (el mismo de comun/estilos.css) */
+:root{--info:#1A4F78;--info-bg:#EAF2F9}
+.nota--info{background:var(--info-bg);border-color:color-mix(in srgb,var(--info) 26%,transparent)}
+.nota--info .dot{background:var(--info)}
+.nota--info p b{color:var(--info)}
+
+/* El título y la nota comparten renglón; la nota se quita con su cruz */
+.phead--fila{flex-direction:row;align-items:center;gap:16px}
+.phead--fila .phead__t{flex:0 0 auto}
+.nota--lado{position:relative;flex:1;min-width:0;margin:0;padding:8px 40px 8px 12px;gap:11px}
+.nota--lado .dot{width:28px;height:28px}
+.nota--lado .dot .ico{width:16px;height:16px}
+.nota--lado p{font-size:12.5px;line-height:1.4;letter-spacing:-.054px}   /* la de comun/ (-.004em de 13,5 px): con otra, el texto parte en otro lugar */
+.nota__x{position:absolute;top:5px;right:6px;width:24px;height:24px;padding:0;display:grid;place-items:center;border-radius:50%;
+ color:var(--cobre-700);font-size:17px;line-height:1;cursor:pointer;transition:background .13s,color .13s}
+.nota__x:hover{background:var(--cobre-400);color:#fff}
+.nota--info .nota__x{color:var(--info)}
+.nota--info .nota__x:hover{background:var(--info);color:#fff}
+@media (max-width:1100px){ .phead--fila{flex-direction:column;align-items:stretch;gap:10px} .phead--fila .phead__t{flex:0 0 auto} }
+
+/* La tabla: con páginas de 10 filas no hace falta estirar la tarjeta; el tope solo
+   aparece con 25 o 50 filas por página */
+@media (min-width:761px){ .panel--tabla .dt__scroll{max-height:min(62vh,620px)} }
+/* Las cuatro etapas, una columna cada una: la escalera de números es la regla del módulo */
+@media (min-width:761px){ .dt__et{width:88px} }
+.panel--tabla .dt thead th.dt__et{letter-spacing:.04em;white-space:nowrap}
+.panel--tabla .dt tbody td:first-child{white-space:nowrap}
+@media (min-width:761px){
+ .panel--tabla .dt__thmod{min-width:200px}
+ .panel--tabla .dt tbody .dt__mod{max-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .panel--tabla .dt table{min-width:1040px}
+}
+.dt td.dt__et{font-variant-numeric:tabular-nums}
+.panel--tabla .dt tbody td.dt__et--no{color:var(--tinta-2)}
+/* La etapa en curso: no solo por el color, también en negrita y con el borde */
+.panel--tabla .dt tbody td.dt__et--hoy{background:var(--cobre-100);box-shadow:inset 0 -2px 0 var(--cobre-500);color:var(--cobre-800);font-weight:700}
+/* El pedido que originó la orden, en la misma línea del código */
+.dt__ori{margin-left:6px;font-size:11.5px;font-weight:600;color:var(--tinta-2);letter-spacing:.02em}
+/* Cada fila en una línea: la pantalla es la tabla */
+.panel--tabla .dt tbody td{padding:7px 12px}
+.panel--tabla .dt__fec{white-space:nowrap}
+.panel--tabla .dt tbody .dt__flag{display:inline;font-size:12px}
+.panel--tabla .dt tbody .dt__flag::before{content:"· "}
+.panel--tabla .dt tbody .pill,.panel--tabla .dt tbody .dt__flag{vertical-align:middle}
+.panel--tabla .dt tbody .pill{height:22px;padding:0 9px}
+.panel--tabla .dt tbody td{line-height:1.3}
+.panel--tabla .dt__res{padding-top:8px;padding-bottom:8px}
+
+/* La cruz de la ventana de "Nueva orden" */
+.ord-x{margin-left:auto;padding:0;color:#fff;opacity:.85;display:grid;place-items:center}
+.ord-x:hover{opacity:1}
+/* La flecha de la lista va dentro de la caja: el <svg> de adentro también es .ico y no
+   debe tomar la posición absoluta de .control .ico (en comun/ la regla es .control > .ico) */
+.control .chev .ico{position:static}
+/* Los íconos de los campos, a la altura de comun/ (12 px) */
+.ord-nueva .control>.ico{top:12px}
+
+/* Los filtros: un botón que despliega una condición por columna */
+.fil{position:static}
+.panel--tabla .dt__bar{position:relative}
+.fil__b{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 13px;border-radius:var(--r-m);
+ border:1px solid var(--linea);background:var(--papel);color:var(--tinta-2);font-size:13px;font-weight:600;
+ white-space:nowrap;cursor:pointer;list-style:none;transition:background .13s,border-color .13s,color .13s}
+.fil__b::-webkit-details-marker{display:none}
+.fil__b:hover{background:var(--cobre-100);border-color:var(--cobre-400);color:var(--cobre-800)}
+.fil[open] .fil__b{background:var(--cobre-100);border-color:var(--cobre-500);color:var(--cobre-800)}
+.fil__n{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--cobre-600);color:#fff;
+ font-size:11px;line-height:18px;text-align:center}
+/* La caja flota para no empujar la tabla, anclada a la barra para no salirse por ningún lado */
+.fil__caja{position:absolute;z-index:40;top:calc(100% + 7px);left:14px;right:auto;width:min(560px,calc(100% - 28px));
+ padding:14px 16px 12px;border:1px solid var(--linea);border-radius:var(--r-m);background:var(--papel);
+ box-shadow:0 26px 48px -26px rgba(58,42,34,.6);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+.fil__t{grid-column:1 / -1;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cobre-700)}
+.fil__c{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fil__c--2{grid-column:1 / -1}
+.fil__l{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-3)}
+.fil__r{display:flex;align-items:center;gap:7px}
+.fil__r .dt__in{flex:1;min-width:0}
+.fil__rs{color:var(--tinta-3)}
+.fil__pie{grid-column:1 / -1;display:flex;align-items:center;gap:12px;padding-top:10px;border-top:1px solid var(--linea-2)}
+.fil__x{margin-left:auto;color:var(--vino-600);font-size:13px;font-weight:600;text-decoration:none}
+.fil__x:hover{text-decoration:underline}
+/* Lo que está filtrando ahora, a la vista: una ficha con su cruz por filtro */
+.fil__act{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.fil__chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 4px 0 11px;border-radius:999px;
+ border:1px solid var(--cobre-400);background:var(--cobre-100);color:var(--cobre-800);font-size:12px;letter-spacing:.02em}
+.fil__chip b{font-weight:700}
+.fil__chip a{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;color:var(--cobre-700);
+ font-size:15px;line-height:1;text-decoration:none}
+.fil__chip a:hover{background:var(--cobre-400);color:#fff}
+/* La caja flotante se saldría de la tarjeta, y .panel recorta lo que sobra */
+.panel--tabla{overflow:visible}
+/* Aquí .panel__body vuelve a poner su relleno después de --flush y le gana: la tabla va de borde a borde */
+.panel--tabla .panel__body--flush{padding:0}
+/* El nombre de la columna como en comun/: --tinta-2 a 11,5 px (5,40:1; a 10,5 px en --tinta-3 casi no se leía) */
+.panel--tabla thead th{font-size:11.5px;color:var(--tinta-2)}

@@ -43,7 +43,8 @@ const P = {
   reloj:"<line x1='10' x2='14' y1='2' y2='2'/> <line x1='12' x2='15' y1='14' y2='11'/> <circle cx='12' cy='14' r='8'/>",
   eyeoff:"<path d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/> <path d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/> <path d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/> <path d='m2 2 20 20'/>",
   plegar:"<rect width='18' height='18' x='3' y='3' rx='2'/> <path d='M9 3v18'/> <path d='m16 15-3-3 3-3'/>",
-  desplegar:"<rect width='18' height='18' x='3' y='3' rx='2'/> <path d='M9 3v18'/> <path d='m14 9 3 3-3 3'/>"
+  desplegar:"<rect width='18' height='18' x='3' y='3' rx='2'/> <path d='M9 3v18'/> <path d='m14 9 3 3-3 3'/>",
+  funnel:"<path d='M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z'/>"
 };
 /* Dibuja un icono: ico('gear',20). Todos vienen de Lucide, así que basta con
    envolver su trazo en el <svg>; el color lo hereda del texto (currentColor). */
@@ -542,20 +543,30 @@ const secc=(mod,def)=>S.tab[mod]||def;
 
    Configuración:
      {id, filas, cols, filtros, acciones, resumen, boton, orden, tam,
-      buscar, vacio, sinDatos, csv, titulo, clase}
+      buscar, vacio, sinDatos, csv, titulo, clase,
+      caja, inicial, nuevo, exportar, tams, resumenT, info}
+     caja: los filtros en un botón que despliega · inicial: filtros ya puestos
+     nuevo: {act,t,ic} el botón de crear · exportar: 'Excel' · tams: [10,25,50]
+     resumenT(filas,e) e info(desde,cuantas,filas,e): los textos del pie
    Columna: {k, t, tipo:'num'|'moneda'|'pct'|'fecha', v:fila=>valor,
-             r:fila=>html, oculta, orden:false, busca:false, ancho}
-   Filtro:  {k, t, tipo:'select'|'fechas'|'si', op:[...], v, m:(fila,val)=>bool}
+             r:fila=>html, oculta, orden:false, busca:false, ancho,
+             th:'clases', td:fila=>'clases', tt:fila=>'texto al pasar el ratón'}
+   Filtro:  {k, t, tipo:'select'|'fechas'|'numeros'|'texto'|'si', op:[...], v, m:(fila,val)=>bool,
+             todos:'Todas', sinTodos, ancho:2, ph}
    ===================================================================== */
 const DT={};                 /* configuración de cada tabla, por id */
 const DT_TAMS=[5,10,25,50];  /* filas por página que ofrece el pie */
 
-/* Estado inicial: búsqueda, filtros, orden, página y columnas ocultas. */
+/* Estado inicial: búsqueda, filtros (los de cfg.inicial ya puestos), orden,
+   página, columnas ocultas y si la caja de filtros está abierta. */
 function dtEstado(id,cfg){
- if(!S.dt[id])S.dt[id]={q:'',f:{},col:cfg.orden?cfg.orden.k:'',dir:cfg.orden?cfg.orden.dir:'',
-  pag:1,tam:cfg.tam||10,ocultas:cfg.cols.filter(c=>c.oculta).map(c=>c.k),cols:false};
+ if(!S.dt[id])S.dt[id]={q:'',f:Object.assign({},cfg.inicial),col:cfg.orden?cfg.orden.k:'',dir:cfg.orden?cfg.orden.dir:'',
+  pag:1,tam:cfg.tam||10,ocultas:cfg.cols.filter(c=>c.oculta).map(c=>c.k),cols:false,caja:false};
  return S.dt[id];
 }
+/* Un filtro está puesto si tiene valor (en un rango, basta con uno de sus dos lados) */
+const dtRango=fl=>fl.tipo==='fechas'||fl.tipo==='numeros';
+const dtPuesto=(fl,v)=>!(v===undefined||v===null||v===''||v===false||(dtRango(fl)&&!v.de&&!v.a));
 /* Valor crudo de una celda: con él se ordena, se busca y se exporta. */
 const dtValor=(c,f)=>c.v?c.v(f):f[c.k];
 const dtTexto=(c,f)=>{const x=dtValor(c,f);return x===null||x===undefined?'':String(x)};
@@ -579,11 +590,14 @@ function dtFilas(cfg,e){
  if(q)filas=filas.filter(f=>cfg.cols.some(c=>c.busca!==false&&norm(dtTexto(c,f)).includes(q)));
  (cfg.filtros||[]).forEach(fl=>{
   const v=e.f[fl.k];
-  if(v===undefined||v===null||v===''||v===false)return;
+  if(!dtPuesto(fl,v))return;
   const col={k:fl.k,v:fl.v};
   if(fl.tipo==='fechas'){
-   if(!v.de&&!v.a)return;
    filas=filas.filter(f=>{const x=dtTexto(col,f);return (!v.de||x>=v.de)&&(!v.a||x<=v.a)});
+  }else if(fl.tipo==='numeros'){
+   filas=filas.filter(f=>{const x=Number(dtValor(col,f));return (!v.de||x>=Number(v.de))&&(!v.a||x<=Number(v.a))});
+  }else if(fl.tipo==='texto'){
+   filas=filas.filter(f=>norm(dtTexto(col,f)).includes(norm(v).trim()));
   }else if(fl.tipo==='si'){
    filas=filas.filter(f=>fl.m(f));
   }else{
@@ -616,10 +630,49 @@ function dtPaginas(pag,total){
 }
 /* Rótulo de un filtro activo, para la ficha que se puede quitar. */
 function dtChipTxt(fl,v){
- if(fl.tipo==='fechas')return (v.de||'…')+' a '+(v.a||'…');
+ if(fl.tipo==='numeros')return v.de&&v.a?v.de+' a '+v.a:v.de?'desde '+v.de:'hasta '+v.a;
+ if(dtRango(fl))return (v.de||'…')+' a '+(v.a||'…');
  if(fl.tipo==='si')return 'Sí';
+ if(fl.tipo==='texto')return String(v);
  const o=dtOps(fl).find(x=>String(dtOpV(x))===String(v));
- return String(o!==undefined?dtOpT(o):v);
+ return String(o===undefined?v:o.c||dtOpT(o));   /* c: el rótulo corto de la ficha, si la opción lo trae */
+}
+/* Con cfg.caja los filtros no van en una fila: van en un botón "Filtros" que
+   despliega una condición por columna, y lo que está filtrando queda a la vista
+   en fichas con su cruz (la pantalla de Órdenes de Producción). */
+function cajaFiltros(cfg,e,d){
+ const puestos=cfg.filtros.filter(fl=>dtPuesto(fl,e.f[fl.k]));
+ const campo=fl=>{
+  const v=e.f[fl.k], dch=' data-ch="dt-filtro'+d+' data-f="'+fl.k+'"';
+  let control;
+  if(dtRango(fl)){
+   const r=v||{}, tipo=fl.tipo==='fechas'?'date':'number';
+   control='<span class="fil__r"><input class="dt__in" type="'+tipo+'" value="'+esc(r.de||'')+'"'+dch
+     +' data-lado="de" aria-label="'+esc(fl.t)+' desde"><span class="fil__rs">–</span>'
+    +'<input class="dt__in" type="'+tipo+'" value="'+esc(r.a||'')+'"'+dch+' data-lado="a" aria-label="'+esc(fl.t)+' hasta"></span>';
+  }else if(fl.tipo==='texto'){
+   control='<input id="dt-'+cfg.id+'-f-'+fl.k+'" class="dt__in" type="text" value="'+esc(v||'')+'" placeholder="'+esc(fl.ph||'')+'"'
+    +dch+' aria-label="'+esc(fl.t)+'">';
+  }else{
+   control='<select id="dt-'+cfg.id+'-f-'+fl.k+'" class="dt__in"'+dch+' aria-label="'+esc(fl.t)+'">'
+    +(fl.sinTodos?'':'<option value="">'+esc(fl.todos||'Todos')+'</option>')
+    +dtOps(fl).map(o=>'<option value="'+esc(dtOpV(o))+'"'+(String(dtOpV(o))===String(v===undefined?'':v)?' selected':'')+'>'
+      +esc(dtOpT(o))+'</option>').join('')+'</select>';
+  }
+  return '<div class="fil__c'+(fl.ancho===2?' fil__c--2':'')+'"><span class="fil__l">'+esc(fl.t)+'</span>'+control+'</div>';
+ };
+ return '<details class="fil"'+(e.caja?' open':'')+'>'
+  +'<summary class="fil__b" title="Filtrar la tabla por cualquier columna" data-act="dt-caja'+d+'>'+ico('funnel',15)+'Filtros'
+   +(puestos.length?'<span class="fil__n">'+puestos.length+'</span>':'')+'</summary>'
+  +'<div class="fil__caja" role="group" aria-label="Filtros de la tabla"><div class="fil__t">Una condición por columna</div>'
+   +cfg.filtros.map(campo).join('')
+   +'<div class="fil__pie"><span class="tiny">'+(puestos.length===1?'1 filtro puesto'
+     :puestos.length?puestos.length+' filtros puestos':'Ningún filtro puesto')+'</span>'
+   +(puestos.length?'<a class="fil__x" href="#" data-act="dt-limpiar'+d+'>Borrar todos</a>':'')+'</div>'
+  +'</div></details>'
+  +(puestos.length?'<span class="fil__act" aria-label="Filtros puestos">'+puestos.map(fl=>'<span class="fil__chip">'+esc(fl.t)
+    +'<b>'+esc(dtChipTxt(fl,e.f[fl.k]))+'</b><a href="#" data-act="dt-quitar'+d+' data-f="'+esc(fl.k)+'"'
+    +' title="Quitar el filtro de '+esc(fl.t)+'" aria-label="Quitar el filtro de '+esc(fl.t)+'">&times;</a></span>').join('')+'</span>':'');
 }
 
 /* Dibuja la tabla completa. */
@@ -638,22 +691,26 @@ function datatable(cfg){
   +cfg.cols.map(c=>'<label class="dt__check"><input type="checkbox" data-ch="dt-col'+d+' data-col="'+esc(c.k)+'"'
     +(e.ocultas.includes(c.k)?'':' checked')+'><span>'+esc(c.t)+'</span></label>').join('')
   +'</div></div>';
+ const exp=cfg.exportar||'CSV';
  const barra='<div class="dt__bar">'
   +'<div class="dt__q">'+ico('search',18)
    +'<input id="dt-'+id+'-q" type="text" value="'+esc(e.q)+'" autocomplete="off"'
    +' placeholder="'+esc(cfg.buscar||'Buscar en la tabla...')+'" aria-label="Buscar en la tabla" data-in="dt-q'+d+'>'
    +(e.q?'<button class="dt__qx" data-act="dt-qx'+d+' aria-label="Limpiar la búsqueda">'+ico('x',14)+'</button>':'')
   +'</div>'
+  +(cfg.caja?cajaFiltros(cfg,e,d):'')
   +'<div class="dt__acts">'
+   +(cfg.nuevo?'<button class="btn btn--sm" data-act="'+cfg.nuevo.act+'" title="'+esc(cfg.nuevo.title||cfg.nuevo.t)+'">'
+     +ico(cfg.nuevo.ic||'plus',16)+esc(cfg.nuevo.t)+'</button>':'')
    +'<button class="dt__b'+(e.cols?' is-on':'')+'" data-act="dt-cols'+d+' aria-expanded="'+(e.cols?'true':'false')
     +'" title="Mostrar u ocultar columnas">'+ico('grid',16)+'<span>Columnas</span></button>'
-   +'<button class="dt__b" data-act="dt-csv'+d+' title="Exportar a CSV lo que ve en pantalla">'+ico('down',16)+'<span>Exportar CSV</span></button>'
+   +'<button class="dt__b" data-act="dt-csv'+d+' title="Exportar a '+exp+' lo que ve en pantalla">'+ico('down',16)+'<span>Exportar '+exp+'</span></button>'
    +(cfg.boton?'<button class="dt__b dt__b--fuerte" data-act="'+cfg.boton.act+'">'+ico(cfg.boton.ic||'plus',16)+'<span>'+esc(cfg.boton.t)+'</span></button>':'')
    +(e.cols?menuCols:'')
   +'</div></div>';
 
- /* 2. Fila de filtros */
- const filtros=(cfg.filtros||[]).length?'<div class="dt__filtros" role="group" aria-label="Filtros de la tabla">'
+ /* 2. Fila de filtros (con cfg.caja van en su caja desplegable, en la barra) */
+ const filtros=!cfg.caja&&(cfg.filtros||[]).length?'<div class="dt__filtros" role="group" aria-label="Filtros de la tabla">'
   +'<span class="dt__filtros-t">'+ico('search',13)+'Filtros</span>'
   +cfg.filtros.map(fl=>{
    const v=e.f[fl.k], fid='dt-'+id+'-f-'+fl.k;
@@ -687,7 +744,7 @@ function datatable(cfg){
   if(fl.tipo==='fechas'&&!v.de&&!v.a)return;
   fichas.push({k:fl.k,t:fl.t+': '+dtChipTxt(fl,v)});
  });
- const chips=fichas.length?'<div class="dt__chips"><span class="dt__chips-t">Filtros activos</span>'
+ const chips=!cfg.caja&&fichas.length?'<div class="dt__chips"><span class="dt__chips-t">Filtros activos</span>'
   +fichas.map(x=>'<span class="dt__chip">'+esc(x.t)
     +'<button data-act="dt-quitar'+d+' data-f="'+esc(x.k)+'" aria-label="Quitar '+esc(x.t)+'">'+ico('x',12)+'</button></span>').join('')
   +'<button class="dt__link" data-act="dt-limpiar'+d+'>Limpiar todo</button></div>':'';
@@ -695,7 +752,7 @@ function datatable(cfg){
  /* 4. La tabla: encabezado que ordena y filas de la página */
  const th=cols.map(c=>{
   const on=e.col===c.k, dir=on?e.dir:'';
-  const cls=(dtNum(c)?'num ':'')+(on?'is-on ':'')+(c.orden===false?'dt__th--txt':'');
+  const cls=(dtNum(c)?'num ':'')+(c.th?c.th+' ':'')+(on?'is-on ':'')+(c.orden===false?'dt__th--txt':'');
   return '<th'+(cls.trim()?' class="'+cls.trim()+'"':'')+(c.ancho?' style="width:'+c.ancho+'"':'')
    +(on?' aria-sort="'+(dir==='desc'?'descending':'ascending')+'"':'')+'>'
    +(c.orden===false?esc(c.t)
@@ -708,7 +765,11 @@ function datatable(cfg){
   ? pagina.map(f=>{
      const cl=cfg.clase?cfg.clase(f):'';
      return '<tr'+(cl?' class="'+cl+'"':'')+'>'
-      +cols.map(c=>'<td'+(dtNum(c)?' class="num"':'')+'>'+(c.r?c.r(f):dtFmt(c,f))+'</td>').join('')
+      +cols.map(c=>{
+        /* c.td: clases propias de la celda · c.tt: su texto al pasar el ratón */
+        const tc=[dtNum(c)?'num':'',c.td?c.td(f):''].filter(Boolean).join(' ');
+        return '<td'+(tc?' class="'+tc+'"':'')+(c.tt?' title="'+esc(c.tt(f))+'"':'')+'>'+(c.r?c.r(f):dtFmt(c,f))+'</td>';
+       }).join('')
       +(cfg.acciones?'<td><div class="acts">'+cfg.acciones(f)+'</div></td>':'')+'</tr>';
     }).join('')
   : '<tr class="dt__vacio"><td colspan="'+(cols.length+(cfg.acciones?1:0))+'">'
@@ -721,12 +782,12 @@ function datatable(cfg){
  /* 5. Totales de TODAS las filas filtradas, no solo de la página */
  const res=cfg.resumen?cfg.resumen(filas):null;
  const resumen=res&&res.length?'<div class="dt__res"><span class="dt__res-t">Totales'
-   +'<em>de los '+n0(filas.length)+' registro(s) filtrados</em></span>'
+   +'<em>'+(cfg.resumenT?cfg.resumenT(filas,e):'de los '+n0(filas.length)+' registro(s) filtrados')+'</em></span>'
    +res.map(r=>'<span class="dt__res-i'+(r.tono?' dt__res-i--'+r.tono:'')+'"><b>'+esc(r.t)+'</b><span>'+r.v+'</span></span>').join('')
    +'</div>':'';
 
  /* 6. Pie: cuántas filas se ven, tamaño de página y paginador */
- const info=filas.length
+ const info=cfg.info?cfg.info(desde,pagina.length,filas,e):filas.length
   ? 'Mostrando <b>'+n0(desde+1)+'–'+n0(desde+pagina.length)+'</b> de <b>'+n0(filas.length)+'</b> registro(s)'
     +(filas.length!==cfg.filas.length?' <span class="muted">(de '+n0(cfg.filas.length)+' en total)</span>':'')
   : 'Sin registros que mostrar'+(cfg.filas.length?' <span class="muted">(de '+n0(cfg.filas.length)+' en total)</span>':'');
@@ -737,7 +798,7 @@ function datatable(cfg){
  const pie='<div class="dt__pie"><div class="dt__info" aria-live="polite">'+info+'</div>'
   +'<div class="dt__pieR"><label class="dt__tam" for="dt-'+id+'-tam">Filas por página'
    +'<select id="dt-'+id+'-tam" class="dt__in" data-ch="dt-tam'+d+'>'
-   +[...new Set(DT_TAMS.concat(e.tam))].sort((a,b)=>a-b)
+   +[...new Set((cfg.tams||DT_TAMS).concat(e.tam))].sort((a,b)=>a-b)
      .map(n=>'<option value="'+n+'"'+(n===e.tam?' selected':'')+'>'+n+'</option>').join('')+'</select></label>'
   +'<nav class="dt__pager" aria-label="Paginación">'
    +salto(e.pag-1,'‹',e.pag<=1)
@@ -1367,62 +1428,77 @@ V.produccion=()=>{
    +'<div class="lienzo">'+lienzoProceso()+detallePaso()+'</div>';
  }
 
- /* --- Órdenes de trabajo --- */
+ /* --- Órdenes de trabajo: la tabla es la pantalla ---
+    Una fila por orden, de una línea: las cuatro etapas son cuatro columnas de
+    números, y la escalera que forman es la regla del módulo (lo que entra a una
+    etapa es lo que salió de la anterior; si baja, la diferencia es merma).
+    Abre con las órdenes en curso, las atrasadas arriba. */
  if(t==='ordenes'){
-  const aprob=S.modelos.filter(m=>m.estado==='aprobado');
-  const form='<div class="panel__body panel__body--form">'
-   +'<div class="field"><label for="f-op-ref">Modelo aprobado</label><div class="control">'+ico('pencil',20)+'<select id="f-op-ref">'+aprob.map(m=>'<option value="'+m.ref+'">'+m.ref+' · '+m.nom+'</option>').join('')+'</select><span class="ico chev">'+ico('chev',20)+'</span></div></div>'
-   +'<div class="field"><label for="f-op-cant">Cantidad (pares)</label><div class="control">'+ico('plus',20)+'<input id="f-op-cant" type="number" min="1" value="60"></div></div>'
-   +'<div class="field"><label for="f-op-fec">Fecha compromiso</label><div class="control">'+ico('clip',20)+'<input id="f-op-fec" type="date" value="2026-09-30" style="padding-left:44px"></div></div>'
-   +'<button class="btn" data-act="p-crear">'+ico('gear',19)+'Crear orden</button>'
-   +'<p class="tiny">Antes de liberar, el sistema valida la BOM y compara contra Inventario. Si falta insumo, la orden queda en espera y se genera la solicitud a Compras.</p></div>';
+  /* Dónde va la orden en cada etapa: 'paso' ya salió de ella, 'hoy' está en ella, 'no' todavía no llega */
+  const enEtapa=(o,ix)=>o.etapas[ix].cerrada?'paso':o.liberada&&o.estado!=='cerrada'&&ix===o.etapa?'hoy':'no';
+  const enCurso=o=>o.estado!=='cerrada';
+  const nomMod=o=>o.ref+' · '+modelo(o.ref).nom;
   const tablaOP=datatable({
-   id:'p-ordenes', titulo:'órdenes de producción', csv:'ordenes_produccion',
+   id:'p-ordenes', titulo:'órdenes de producción', csv:'ordenes_produccion', exportar:'Excel',
    buscar:'Buscar por orden, modelo, estado o pedido...',
-   filas:S.op, orden:{k:'compromiso',dir:'asc'},
+   filas:S.op, orden:{k:'compromiso',dir:'asc'}, inicial:{estado:'en curso'}, tams:[10,25,50], caja:true,
+   nuevo:{act:'p-nueva',t:'Nueva orden',ic:'plus',title:'Crear una orden de producción'},
    clase:o=>atrasada(o)?'dt__tarde':'',
    cols:[
-    {k:'id',t:'Orden',ancho:'160px',
-     r:o=>'<b>'+esc(o.id)+'</b><div class="tiny">'+(o.pedido?'Pedido '+esc(o.pedido):'Reposición de stock')+'</div>'},
-    {k:'ref',t:'Modelo',v:o=>o.ref+' '+modelo(o.ref).nom,
-     r:o=>esc(o.ref)+'<div class="tiny">'+esc(modelo(o.ref).nom)+'</div>'},
-    {k:'cant',t:'Pares',tipo:'num'},
-    {k:'etapas',t:'Etapas',orden:false,busca:false,ancho:'224px',
-     v:o=>o.etapas.map(e=>e.n+' '+e.proc).join(' · '),
-     r:o=>'<div class="steps">'+o.etapas.map((e,ix)=>'<span class="step '+(e.cerrada?'done':ix===o.etapa&&o.liberada?'now':'')+'">'+e.n+'<br>'+n0(e.proc)+'</span>').join('')+'</div>'},
-    {k:'avance',t:'Avance',ancho:'132px',v:o=>Math.round(avance(o)),
-     r:o=>barra(avance(o),avance(o)>=100?'bar--ok':'')+'<div class="tiny">'+n0(avance(o))+' % del plan</div>'},
-    {k:'compromiso',t:'Compromiso',ancho:'138px',
-     r:o=>esc(o.compromiso)+(atrasada(o)?'<div class="tiny dt__flag">'+ico('alert',13)+'Fuera de fecha</div>':'')},
-    {k:'estado',t:'Estado',r:o=>pill(o.estado)},
+    {k:'id',t:'Orden',ancho:'190px',v:o=>o.id+' '+(o.pedido||''),
+     r:o=>'<b>'+esc(o.id)+'</b>'+(o.pedido?' <span class="dt__ori">'+esc(o.pedido)+'</span>':'')},
+    {k:'ref',t:'Modelo',th:'dt__thmod',v:nomMod,td:()=>'dt__mod',tt:nomMod},
+    {k:'cant',t:'Pares',tipo:'num',ancho:'76px'}]
+   .concat(ETAPAS.map((n,ix)=>({k:'e'+ix,t:n,tipo:'num',orden:false,busca:false,th:'dt__et',
+     v:o=>{const s=enEtapa(o,ix);return s==='no'?null:s==='paso'?o.etapas[ix].proc:o.etapas[ix].rec},
+     td:o=>{const s=enEtapa(o,ix);return 'dt__et'+(s==='hoy'?' dt__et--hoy':s==='no'?' dt__et--no':'')},
+     r:o=>{const s=enEtapa(o,ix);return s==='no'?'—':n0(s==='paso'?o.etapas[ix].proc:o.etapas[ix].rec)}})))
+   .concat([
+    {k:'compromiso',t:'Compromiso',ancho:'136px',td:()=>'dt__fec',
+     r:o=>esc(o.compromiso)+(atrasada(o)?' <span class="dt__flag">tarde</span>':'')},
+    {k:'estado',t:'Estado',ancho:'122px',r:o=>pill(o.estado)},
+    {k:'avance',t:'Avance',tipo:'pct',oculta:true,v:o=>Math.round(avance(o))},
     {k:'etapa',t:'Etapa actual',oculta:true,
      v:o=>o.estado==='cerrada'?'Cerrada':(o.etapas[o.etapa]?o.etapas[o.etapa].n:'—')},
     {k:'proc',t:'Pares procesados',tipo:'num',oculta:true,v:procesados},
     {k:'perd',t:'Merma',tipo:'num',oculta:true,v:perdidas},
     {k:'costo',t:'Costo planeado',tipo:'moneda',oculta:true,v:o=>costoPar(o.ref)*o.cant}
-   ],
+   ]),
    filtros:[
-    {k:'estado',t:'Estado',op:[...new Set(S.op.map(o=>o.estado))]},
-    {k:'ref',t:'Modelo',op:S.modelos.map(m=>({v:m.ref,t:m.ref+' · '+m.nom}))},
-    {k:'compromiso',t:'Compromiso',tipo:'fechas'},
-    {k:'tarde',t:'Solo atrasadas',tipo:'si',m:atrasada}
-   ],
-   acciones:o=>!o.liberada
-     ?'<button class="btn btn--sm btn--ghost" data-act="p-liberar" data-id="'+o.id+'">Liberar</button>'
-     :o.estado==='cerrada'?'<span class="tiny">Enviada a calidad</span>'
-     :'<button class="btn btn--sm btn--oliva" data-act="p-etapa" data-id="'+o.id+'">Registrar</button>',
+    {k:'id',t:'Orden',tipo:'texto',ph:'OP-2026-...'},
+    {k:'ref',t:'Modelo',op:[...new Set(S.op.map(o=>o.ref))].sort().map(r=>({v:r,t:r+' · '+modelo(r).nom}))},
+    {k:'cant',t:'Pares',tipo:'numeros'},
+    {k:'estado',t:'Estado',sinTodos:true,m:(o,v)=>v==='en curso'?enCurso(o):o.estado===v,
+     op:[{v:'en curso',t:'En curso ('+n0(S.op.filter(enCurso).length)+')',c:'En curso'},{v:'',t:'Todos ('+n0(S.op.length)+')'},
+      {v:'en proceso',t:'En proceso'},{v:'en espera',t:'En espera'},{v:'pendiente',t:'Pendiente'},{v:'cerrada',t:'Cerrada'}]}]
+   .concat(ETAPAS.map((n,ix)=>({k:'e'+ix,t:n,todos:'Todas',m:(o,v)=>enEtapa(o,ix)===v,
+     op:[{v:'hoy',t:'Está en esta etapa'},{v:'paso',t:'Ya pasó por aquí'},{v:'no',t:'Todavía no llega'}]})))
+   .concat([{k:'compromiso',t:'Compromiso',tipo:'fechas',ancho:2}]),
    resumen:fs=>[
     {t:'Pares programados',v:n0(fs.reduce((a,o)=>a+o.cant,0))},
-    {t:'Pares procesados',v:n0(fs.reduce((a,o)=>a+procesados(o),0)),tono:'ok'},
+    {t:'Pares liberados',v:n0(fs.filter(o=>o.liberada).reduce((a,o)=>a+o.cant,0)),tono:'ok'},
     {t:'Merma (pares)',v:n0(fs.reduce((a,o)=>a+perdidas(o),0)),tono:'crit'},
-    {t:'En espera de material',v:n0(fs.filter(o=>o.estado==='en espera').length),tono:'warn'}
+    {t:'Órdenes sin liberar',v:n0(fs.filter(o=>!o.liberada).length),tono:'warn'}
    ],
+   /* Con el filtro "En curso" puesto, los textos del pie lo dicen */
+   resumenT:(fs,e)=>{const tarde=fs.filter(atrasada).length;
+    return 'de las '+n0(fs.length)+(e.f.estado==='en curso'?' en curso':fs.length===S.op.length?' órdenes':' filtradas')
+     +' · '+n0(tarde)+(tarde===1?' atrasada':' atrasadas');},
+   info:(desde,n,fs,e)=>fs.length
+    ?'Mostrando <b>'+n0(desde+1)+'–'+n0(desde+n)+'</b> de <b>'+n0(fs.length)+'</b> orden(es)'
+     +(e.f.estado==='en curso'?' en curso':fs.length!==S.op.length?' <span class="muted">(de '+n0(S.op.length)+' en total)</span>':'')
+    :'Ninguna orden coincide <span class="muted">(de '+n0(S.op.length)+' en total)</span>',
    sinDatos:'Todavía no hay órdenes de producción registradas.'
   });
-  cuerpo = panel('vino','gear','Nueva Orden de Producción','Pasos 1 a 4: generación, validación, existencias y liberación',form)
-   + panel('oliva','ruta','Órdenes en Curso','Una etapa solo inicia cuando la anterior fue cerrada',
-     '<div class="panel__body panel__body--flush">'+tablaOP
-     + nota('Al liberar la orden se reservan y descuentan los insumos del inventario según la BOM.')+'</div>');
+  const notaOrd=S.notaOrd?'':'<div class="nota nota--info nota--lado"><span class="dot">'+ico('info',18)+'</span>'
+   +'<p><b>Nota:</b> Cada columna de etapa son los pares que <b>salieron</b> de ella. La casilla resaltada es la etapa '
+   +'<b>en curso</b>, y ahí el número es lo que <b>entró</b>: todavía no ha salido nada. Si los números bajan de una '
+   +'columna a la siguiente, la diferencia es merma.</p>'
+   +'<button class="nota__x" data-act="p-nota" title="Quitar la nota" aria-label="Quitar la nota">&times;</button></div>';
+  /* Sin el encabezado de pasos ni las gráficas: el título, la nota, sus cuatro indicadores y la tabla */
+  return '<header class="phead phead--fila"><h2 class="phead__t">'+ico('ruta',20)+'Órdenes de producción</h2>'+notaOrd+'</header>'
+   +kpisProc(TID.ordenes,indProc('ordenes'))
+   +'<section class="panel panel--tabla"><div class="panel__body panel__body--flush">'+tablaOP+'</div></section>';
  }
 
  /* --- Validación de BOM contra existencias --- */
@@ -1752,8 +1828,29 @@ A['p-crear']=()=>{
  const op={id:'OP-2026-'+String(++S.seqOP).padStart(3,'0'),ref,cant,compromiso:fec,estado:'en espera',etapa:0,
   etapas:['Corte','Guarnición','Montaje','Terminado'].map(n=>({n,rec:0,proc:0,perd:0,cerrada:false})),liberada:false,pedido:''};
  S.op.unshift(op);log('Creación de orden de producción',op.id+' · '+ref+' · '+cant+' pares');
- liberar(op);render();
+ liberar(op);cerrarModal();render();
 };
+/* La ventana de "Nueva orden" (Órdenes): el formulario que antes iba en su propio panel */
+A['p-nueva']=()=>{
+ const aprob=S.modelos.filter(m=>m.estado==='aprobado');
+ modalOK=null;
+ $('#modalHost').innerHTML='<div class="overlay ord-nueva" data-act="cerrar-modal">'
+  +'<div class="modal" role="dialog" aria-modal="true" aria-labelledby="nueva-t" data-stop>'
+  +'<div class="modal__head">'+ico('plus',22)+'<h3 id="nueva-t">Nueva orden de producción</h3>'
+   +'<button class="ord-x" data-act="cerrar-modal" aria-label="Cerrar">'+ico('x',20)+'</button></div>'
+  +'<div class="modal__body"><div class="row2">'
+   +'<div class="field"><label for="f-op-ref">Modelo aprobado</label><div class="control">'+ico('pencil',20)+'<select id="f-op-ref">'
+    +aprob.map(m=>'<option value="'+m.ref+'">'+m.ref+' · '+esc(m.nom)+'</option>').join('')+'</select><span class="ico chev">'+ico('chev',20)+'</span></div></div>'
+   +'<div class="field"><label for="f-op-cant">Cantidad (pares)</label><div class="control">'+ico('plus',20)+'<input id="f-op-cant" type="number" min="1" value="60"></div></div>'
+   +'<div class="field"><label for="f-op-fec">Fecha compromiso</label><div class="control">'+ico('clip',20)+'<input id="f-op-fec" type="date" value="2026-09-30" style="padding-left:44px"></div></div>'
+  +'</div><p class="tiny">Antes de liberar, el sistema valida la BOM y compara contra Inventario. Si falta insumo, la orden queda en espera y se genera la solicitud a Compras.</p></div>'
+  +'<div class="modal__foot"><button class="btn btn--ghost" data-act="cerrar-modal">Cancelar</button>'
+   +'<button class="btn" data-act="p-crear">'+ico('gear',19)+'Crear orden</button></div>'
+  +'</div></div>';
+ $('#f-op-ref').focus();
+};
+/* La nota azul de Órdenes se quita con su cruz y no vuelve hasta recargar */
+A['p-nota']=()=>{S.notaOrd=true;render();};
 A['p-liberar']=el=>{liberar(S.op.find(o=>o.id===el.dataset.id));render()};
 function liberar(op){
  const f=faltantes(op.ref,op.cant);
@@ -1907,6 +2004,8 @@ A['dt-quitar']=el=>{const e=S.dt[el.dataset.dt], k=el.dataset.f;
  if(k==='__q')e.q=''; else delete e.f[k];
  e.pag=1;render();};
 A['dt-limpiar']=el=>{const e=S.dt[el.dataset.dt];e.q='';e.f={};e.pag=1;render();};
+/* El botón "Filtros" abre y cierra su caja (se guarda aquí porque la pantalla se redibuja) */
+A['dt-caja']=el=>{const e=S.dt[el.dataset.dt];e.caja=!e.caja;render();};
 A['dt-cols']=el=>{const e=S.dt[el.dataset.dt];e.cols=!e.cols;render();};
 A['dt-col']=el=>{const e=S.dt[el.dataset.dt], k=el.dataset.col;
  if(el.checked)e.ocultas=e.ocultas.filter(x=>x!==k);
@@ -2312,17 +2411,19 @@ function render(){
  }
 }
 document.addEventListener('click',e=>{
- /* Un clic fuera cierra el menú de columnas de cualquier tabla */
+ /* Un clic fuera cierra el menú de columnas y la caja de filtros de cualquier tabla */
  let cerrar=false;
  if(!e.target.closest('.dt__pop')&&!e.target.closest('[data-act="dt-cols"]'))
   Object.keys(S.dt).forEach(k=>{if(S.dt[k].cols){S.dt[k].cols=false;cerrar=true}});
+ if(!e.target.closest('.fil'))
+  Object.keys(S.dt).forEach(k=>{if(S.dt[k].caja){S.dt[k].caja=false;cerrar=true}});
  if(S.menuUser&&!e.target.closest('.userwrap')){S.menuUser=false;cerrar=true}
  const t=e.target.closest('[data-act]');
  if(!t){if(cerrar)render();return}
  const a=t.dataset.act;
  if(a==='cerrar-modal'&&t.classList.contains('overlay')&&e.target!==t)return;
  if(A[a]){e.preventDefault();A[a](t);}
- if(cerrar&&$('.dt__pop'))render();
+ if(cerrar&&($('.dt__pop')||$('details.fil[open]')))render();
 });
 /* Los controles que responden al cambio (listas, fechas, casillas) usan data-ch;
    los que responden a cada tecla (buscador de la tabla), data-in. */
@@ -2335,7 +2436,11 @@ document.addEventListener('input',e=>{
  if(t&&A[t.dataset.in])A[t.dataset.in](t);
 });
 document.addEventListener('keydown',e=>{
- if(e.key==='Escape')cerrarModal();
+ if(e.key==='Escape'){
+  cerrarModal();
+  const abiertas=Object.keys(S.dt).filter(k=>S.dt[k].caja);   /* Escape también cierra la caja de filtros */
+  if(abiertas.length){abiertas.forEach(k=>{S.dt[k].caja=false});render();}
+ }
  if(e.key==='Enter'&&!S.user&&$('#l-mail')&&(e.target.id==='l-mail'||e.target.id==='l-pass')){e.preventDefault();A['entrar']();}
 });
 $('#q').addEventListener('input',e=>{S.q=e.target.value;pintarSugerencias();render();});
