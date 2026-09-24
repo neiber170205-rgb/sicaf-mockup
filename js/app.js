@@ -2148,6 +2148,7 @@ function marcoDe(mod,pant){
   const f=document.createElement('iframe');
   f.className='marco'; f.name='sicaf-general'; f.title=modName(mod);
   f.src=rutaMockup(mod,pant||S.pant[mod]||MOCK[mod].primera);
+  f.addEventListener('load',()=>f.classList.remove('encima'));   /* una página nueva llega sin ventanas abiertas */
   $('#marcos').appendChild(f); MARCOS[mod]=f;
  }
  return MARCOS[mod];
@@ -2202,6 +2203,10 @@ window.addEventListener('message',e=>{
   else A['ir-tab']({dataset:{mod:dest.id,tab:PROD_PANT[d.pantalla]||'panel'}});
  }
  if(d.sicaf==='buscar')$('#q').focus();
+ if(d.sicaf==='encima'){             /* abrió o cerró una ventana que tapa también el menú y la barra */
+  MARCOS[mod].classList.toggle('encima',!!d.si);
+  if(d.si){if(S.menuUser){S.menuUser=false;pintarMenuUsuario();} const s=$('#sug'); if(s&&!s.hidden)s.hidden=true;}
+ }
  if(d.sicaf==='clic'){               /* un clic dentro del marco cierra lo que esté abierto aquí */
   if(S.menuUser){S.menuUser=false;pintarMenuUsuario();}
   const s=$('#sug'); if(s&&!s.hidden)s.hidden=true;

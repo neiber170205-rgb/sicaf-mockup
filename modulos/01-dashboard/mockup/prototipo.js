@@ -83,22 +83,13 @@
     }
 
     var filas = todos("tbody tr", tabla);
-    var vistas = 0;
     filas.forEach(function (fila) {
       var t = fila.textContent.toLowerCase();
       var pasa = (!texto || t.indexOf(texto) >= 0) &&
                  palabras.every(function (p) { return t.indexOf(p) >= 0; });
-      fila.style.display = pasa ? "" : "none";
-      if (pasa) vistas++;
+      fila.dataset.pasa = pasa ? "si" : "no";
     });
 
-    var pie = uno(".tabla-pie", cuerpo);
-    if (pie) {
-      if (!pie.dataset.original) pie.dataset.original = pie.textContent;
-      pie.textContent = (texto || palabras.length)
-        ? "Mostrando " + vistas + " de " + filas.length + " filas que coinciden con el filtro"
-        : pie.dataset.original;
-    }
     var vacio = uno(".sin-filas", cuerpo);
     if (!vacio) {
       vacio = document.createElement("p");
@@ -106,20 +97,41 @@
       vacio.textContent = "Ninguna fila coincide con lo que buscó.";
       tabla.parentNode.appendChild(vacio);
     }
+
+    var dt = tools.classList.contains("dt") ? tools : tabla.closest(".dt");
+    if (dt) { dt.dataset.pag = 1; dtPintar(dt); return; }
+
+    /* tablas viejas, sin el bloque .dt */
+    var vistas = 0;
+    filas.forEach(function (f) {
+      var pasa = f.dataset.pasa !== "no";
+      f.style.display = pasa ? "" : "none";
+      if (pasa) vistas++;
+    });
     vacio.style.display = vistas ? "none" : "";
+    var pie = uno(".tabla-pie", cuerpo);
+    if (pie) {
+      if (!pie.dataset.original) pie.dataset.original = pie.textContent;
+      pie.textContent = (texto || palabras.length)
+        ? "Mostrando " + vistas + " de " + filas.length + " filas que coinciden con el filtro"
+        : pie.dataset.original;
+    }
   }
 
   document.addEventListener("input", function (e) {
     var t = e.target;
-    if (t.matches && t.matches('.tabla-tools input[type="search"]')) filtrar(t.closest(".tabla-tools"));
+    if (t.matches && t.matches('.tabla-tools input[type="search"], .dt input[type="search"]'))
+      filtrar(t.closest(".tabla-tools, .dt"));
   });
   document.addEventListener("change", function (e) {
     var t = e.target;
-    if (t.matches && t.matches(".tabla-tools select")) filtrar(t.closest(".tabla-tools"));
+    if (t.matches && t.matches(".tabla-tools select, .dt__filtros select"))
+      filtrar(t.closest(".tabla-tools, .dt"));
   });
 
   /* ---------------------------------------------------------------- 4. Ir de una pantalla a otra */
 
+  var PRIMERA = "01-inicio.html";
   var ES_PANTALLA = /^\d\d-[a-z-]+\.html$/;
   var actual = (location.pathname.split("/").pop() || "01-inicio.html");
   if (!ES_PANTALLA.test(actual)) actual = "01-inicio.html";
@@ -144,10 +156,12 @@
     function terminar() {
       actual = archivo;
       marcarMenu();
+  setTimeout(dtArrancar, 0);
       if (guardarEnHistorial) history.pushState({ pantalla: archivo }, "", archivo);
       window.scrollTo(0, 0);
       var p = pagina();
       if (p.parentNode) p.parentNode.scrollTop = 0;
+      dtArrancar();
     }
 
     if (guardadas[archivo]) {
@@ -187,12 +201,6 @@
   /* ---------------------------------------------------------------- 5. El contador de la campana */
 
   function contarPendientes(delta) {
-    var n = uno(".avisos__n");
-    if (n) {
-      var v = Math.max(0, numero(n.textContent) + delta);
-      n.textContent = v;
-      n.style.display = v ? "" : "none";
-    }
     var campana = uno(".bell__n");
     if (campana) {
       var c = Math.max(0, numero(campana.textContent) + delta);
@@ -201,17 +209,38 @@
     }
   }
 
-  /* La campana de la barra de arriba abre los pendientes de Inicio */
+  /* La campanita lleva a donde este módulo tiene sus alertas.
+     Si el módulo no maneja alertas, la campanita se queda sin número. */
+  var PANTALLA_ALERTAS = "02-alertas.html";
+
+  if (!PANTALLA_ALERTAS) {
+    var globo = uno(".bell__n");
+    if (globo) globo.style.display = "none";
+  }
+
   document.addEventListener("click", function (e) {
     if (!e.target.closest || !e.target.closest(".bell")) return;
     e.preventDefault();
-    function abrir() {
-      var d = uno(".avisos");
-      if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "center" }); }
-      else aviso("No hay pendientes sin atender.", "ok");
+
+    function mostrar() {
+      var panel = todos(".panel").filter(function (x) {
+        var h = uno("h2", x);
+        return h && /alerta|novedad|pendiente/i.test(h.textContent);
+      })[0];
+      if (panel) {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        panel.classList.add("es-nueva");
+        return;
+      }
+      aviso("Este módulo no maneja alertas propias.", "ok");
     }
-    if (actual !== "01-inicio.html") { ir("01-inicio.html", true); setTimeout(abrir, 260); }
-    else abrir();
+
+    if (PANTALLA_ALERTAS && actual !== PANTALLA_ALERTAS) {
+      ir(PANTALLA_ALERTAS, true);
+      setTimeout(mostrar, 280);
+    } else {
+      mostrar();
+    }
   });
 
 
@@ -309,8 +338,7 @@
   /* ---------------------------------------------------------------- 7. Lo propio del tablero */
 
   var RAPIDAS = {
-    "alertas":     { a: "04-alertas.html",     dice: "Lo que está abierto ahora mismo, de más grave a menos." },
-    "modulos":     { a: "02-modulos.html",     dice: "Cuántos pendientes tiene cada módulo." },
+    "alertas":     { a: "02-alertas.html",     dice: "Lo que está abierto ahora mismo, de más grave a menos." },
     "indicadores": { a: "03-indicadores.html", dice: "Los números que reporta cada módulo al tablero." }
   };
 
@@ -338,7 +366,7 @@
       fila.classList.add("es-nueva");
       b.disabled = true;
       contarPendientes(-1);
-      sumarAlMenu("04-alertas.html", -1);
+      sumarAlMenu("02-alertas.html", -1);
       var cual = (fila.querySelector("b") || {}).textContent || "La alerta";
       return aviso(cual + " queda marcada como vista · se apaga sola cuando el módulo arregle la causa.", "warn");
     }
@@ -353,4 +381,279 @@
 
   marcarMenu();
   history.replaceState({ pantalla: actual }, "", actual);
+
+
+  /* ---------------------------------------------------------------- Las tarjetas de indicador
+
+     Cada tarjeta es un botón: unas llevan a la pantalla donde vive ese número,
+     otras filtran la tabla de abajo. */
+
+  document.addEventListener("click", function (e) {
+    var k = e.target.closest ? e.target.closest("[data-kpi]") : null;
+    if (!k) return;
+    e.preventDefault();
+
+    var orden = k.getAttribute("data-kpi");
+    var dice = k.getAttribute("data-dice") || "";
+
+    if (orden.indexOf("url:") === 0) { location.href = orden.slice(4); return; }
+
+    if (orden.indexOf("ir:") === 0) {
+      aviso("Le abro " + dice + ".", "ok");
+      return ir(orden.slice(3), true);
+    }
+
+    if (orden.indexOf("ver:") === 0) {
+      var titulo = orden.slice(4).toLowerCase();
+      var panel = todos(".panel").filter(function (x) {
+        var h = uno("h2", x);
+        return h && h.textContent.trim().toLowerCase() === titulo;
+      })[0];
+      if (!panel) return aviso("Esa parte no está en esta pantalla.", "warn");
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      panel.classList.add("es-nueva");
+      return;
+    }
+
+    if (orden.indexOf("filtro:") === 0) {
+      var termino = orden.slice(7);
+      var dt = uno(".dt");
+      var caja = dt && uno('input[type="search"]', dt);
+      if (!caja) return aviso("Aquí no hay tabla que filtrar.", "warn");
+
+      var estaba = k.classList.contains("is-on");
+      todos("[data-kpi]").forEach(function (x) {
+        x.classList.remove("is-on");
+        x.setAttribute("aria-pressed", "false");
+      });
+      caja.value = estaba ? "" : termino;
+      if (!estaba) { k.classList.add("is-on"); k.setAttribute("aria-pressed", "true"); }
+      filtrar(dt);
+      dt.scrollIntoView({ behavior: "smooth", block: "start" });
+      return aviso(estaba ? "Se quitó el filtro: vuelve a verse todo."
+                          : "Tabla filtrada: " + dice + ".", "ok");
+    }
+  });
+
+  /* ---------------------------------------------------------------- La tabla de datos, viva
+
+     Ordenar por columna, pasar páginas, cambiar cuántas filas se ven, esconder
+     columnas y bajar lo que está en pantalla. Todo sobre el mismo bloque .dt.
+  */
+
+  function dtTabla(dt) { return uno("table", dt); }
+  function dtFilas(dt) { return todos("tbody tr", dtTabla(dt)); }
+
+  /* Las que pasan el filtro; si nunca se filtró, pasan todas */
+  function dtPasan(dt) {
+    return dtFilas(dt).filter(function (f) { return f.dataset.pasa !== "no"; });
+  }
+
+  function dtTam(dt) {
+    var s = uno(".dt__tam select", dt);
+    return s ? numero(s.value) || 10 : 10;
+  }
+
+  /* Reparte las filas en páginas y reescribe el pie */
+  function dtPintar(dt) {
+    var pasan = dtPasan(dt), tam = dtTam(dt);
+    var paginas = Math.max(1, Math.ceil(pasan.length / tam));
+    var pag = Math.min(Math.max(1, numero(dt.dataset.pag || "1")), paginas);
+    dt.dataset.pag = pag;
+
+    dtFilas(dt).forEach(function (f) { f.style.display = "none"; });
+    var desde = (pag - 1) * tam;
+    pasan.slice(desde, desde + tam).forEach(function (f) { f.style.display = ""; });
+
+    var info = uno(".dt__info", dt);
+    if (info) {
+      info.innerHTML = pasan.length
+        ? "Mostrando <b>" + (desde + 1) + "–" + Math.min(desde + tam, pasan.length) +
+          "</b> de <b>" + pasan.length + "</b> registro(s)"
+        : "Ninguna fila coincide con lo que buscó.";
+    }
+
+    var pager = uno(".dt__pager", dt);
+    if (pager) {
+      var h = ['<button class="dt__pag dt__pag--n" ' + (pag === 1 ? "disabled " : "") +
+               'data-pag="' + (pag - 1) + '" aria-label="‹">‹</button>'];
+      var primera = Math.max(1, Math.min(pag - 2, paginas - 4));
+      for (var i = primera; i <= Math.min(paginas, primera + 4); i++) {
+        h.push('<button class="dt__pag' + (i === pag ? " is-on" : "") + '" data-pag="' + i + '"' +
+               (i === pag ? ' aria-current="page"' : "") + ">" + i + "</button>");
+      }
+      h.push('<button class="dt__pag dt__pag--n" ' + (pag === paginas ? "disabled " : "") +
+             'data-pag="' + (pag + 1) + '" aria-label="›">›</button>');
+      pager.innerHTML = h.join("");
+    }
+
+    var vacio = uno(".sin-filas", dt);
+    if (vacio) vacio.style.display = pasan.length ? "none" : "";
+  }
+
+  /* Ordenar por la columna que se pulse */
+  function dtOrdenar(dt, indice, boton) {
+    var cuerpo = uno("tbody", dtTabla(dt));
+    var filas = dtFilas(dt);
+    var arriba = boton.dataset.dir !== "asc";
+    todos(".dt__orden", dt).forEach(function (o) {
+      if (o !== boton) { o.dataset.dir = ""; uno(".dt__ind", o).textContent = "⇅"; }
+      o.closest("th").classList.remove("is-on");
+      o.closest("th").removeAttribute("aria-sort");
+    });
+    boton.dataset.dir = arriba ? "asc" : "des";
+    uno(".dt__ind", boton).textContent = arriba ? "▲" : "▼";
+    boton.closest("th").classList.add("is-on");
+    boton.closest("th").setAttribute("aria-sort", arriba ? "ascending" : "descending");
+
+    function valor(f) {
+      var c = f.cells[indice];
+      return c ? c.textContent.replace(/\s+/g, " ").trim() : "";
+    }
+    var numerico = filas.every(function (f) {
+      var t = valor(f).replace(/[$\s.]/g, "").replace(",", ".");
+      return t === "" || t === "—" || !isNaN(parseFloat(t));
+    });
+
+    filas.sort(function (a, b) {
+      var x = valor(a), y = valor(b);
+      if (numerico) {
+        x = parseFloat(x.replace(/[$\s.]/g, "").replace(",", ".")) || 0;
+        y = parseFloat(y.replace(/[$\s.]/g, "").replace(",", ".")) || 0;
+        return arriba ? x - y : y - x;
+      }
+      return arriba ? x.localeCompare(y, "es") : y.localeCompare(x, "es");
+    });
+    filas.forEach(function (f) { cuerpo.appendChild(f); });
+    dt.dataset.pag = 1;
+    dtPintar(dt);
+  }
+
+  /* Esconder o mostrar columnas */
+  function dtColumnas(dt, boton) {
+    var caja = uno(".dt__cols", dt);
+    if (caja) {
+      caja.remove();
+      boton.setAttribute("aria-expanded", "false");
+      return;
+    }
+    caja = document.createElement("div");
+    caja.className = "dt__cols";
+    var th = todos("thead th", dtTabla(dt));
+    caja.innerHTML = th.map(function (c, i) {
+      var nombre = c.textContent.replace(/[⇅▲▼]/g, "").trim();
+      if (!nombre) return "";
+      return '<label><input type="checkbox" data-col="' + i + '"' +
+             (c.style.display === "none" ? "" : " checked") + "> " + nombre + "</label>";
+    }).join("");
+    boton.closest(".dt__acts").appendChild(caja);
+    boton.setAttribute("aria-expanded", "true");
+  }
+
+  function dtVerColumna(dt, indice, ver) {
+    var t = dtTabla(dt);
+    todos("tr", t).forEach(function (f) {
+      var c = f.cells[indice];
+      if (c) c.style.display = ver ? "" : "none";
+    });
+  }
+
+  /* Bajar a un archivo lo que se ve en pantalla */
+  function dtExportar(dt) {
+    var t = dtTabla(dt);
+    var cab = todos("thead th", t).filter(function (c) { return c.style.display !== "none"; })
+      .map(function (c) { return c.textContent.replace(/[⇅▲▼]/g, "").trim(); });
+    var lineas = [cab];
+    dtPasan(dt).forEach(function (f) {
+      lineas.push(todos("td", f).filter(function (c) { return c.style.display !== "none"; })
+        .map(function (c) { return c.textContent.replace(/\s+/g, " ").trim(); }));
+    });
+    var texto = lineas.map(function (l) {
+      return l.map(function (v) { return '"' + v.replace(/"/g, '""') + '"'; }).join(";");
+    }).join("\n");
+
+    var nombre = "sicaf-" + (dt.id || "tabla") + "-" + hoy() + ".csv";
+    try {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob(["﻿" + texto], { type: "text/csv;charset=utf-8" }));
+      a.download = nombre;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      aviso("Reporte bajado: " + nombre + " · " + (lineas.length - 1) + " fila(s). Se abre con Excel.", "ok");
+    } catch (x) {
+      aviso("Aquí el navegador no deja bajar archivos. En el sistema real saldría " +
+            nombre + " con " + (lineas.length - 1) + " fila(s).", "warn");
+    }
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t.closest) return;
+
+    var orden = t.closest(".dt__orden");
+    if (orden) {
+      e.preventDefault();
+      var th = orden.closest("th");
+      return dtOrdenar(orden.closest(".dt"), todos("thead th", th.closest("table")).indexOf(th), orden);
+    }
+
+    var pag = t.closest(".dt__pag");
+    if (pag && !pag.disabled) {
+      e.preventDefault();
+      var dt = pag.closest(".dt");
+      dt.dataset.pag = pag.getAttribute("data-pag");
+      dtPintar(dt);
+      dtTabla(dt).scrollIntoView({ behavior: "smooth", block: "nearest" });
+      return;
+    }
+
+    var b = t.closest(".dt__b");
+    if (b) {
+      e.preventDefault();
+      var dt2 = b.closest(".dt");
+      if (b.textContent.indexOf("Columnas") >= 0) return dtColumnas(dt2, b);
+      return dtExportar(dt2);
+    }
+  });
+
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (!t.closest) return;
+    if (t.matches(".dt__tam select")) {
+      var dt = t.closest(".dt");
+      dt.dataset.pag = 1;
+      return dtPintar(dt);
+    }
+    if (t.matches(".dt__cols input")) {
+      var dt2 = t.closest(".dt");
+      return dtVerColumna(dt2, numero(t.getAttribute("data-col")), t.checked);
+    }
+  });
+
+  /* Al entrar, y cada vez que se cambia de pantalla, las tablas se reparten en páginas */
+  function dtArrancar() { todos(".dt").forEach(dtPintar); }
+
 })();
+
+  /* La agenda arranca mostrando el día de hoy si la pantalla no da para los cinco. */
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      var hoy = document.querySelector(".cal__dia--hoy");
+      var caja = hoy && hoy.closest(".scroll-x");
+      if (!caja) return;
+      var sobra = caja.scrollWidth - caja.clientWidth;
+      if (sobra > 0) caja.scrollLeft = Math.min(hoy.offsetLeft - 62, sobra);
+    }, 80);
+  });
+
+  /* La agenda arranca mostrando el día de hoy si la pantalla no da para los cinco. */
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      var hoy = document.querySelector(".cal__dia--hoy");
+      var caja = hoy && hoy.closest(".cal-caja");
+      if (!caja) return;
+      var sobra = caja.scrollWidth - caja.clientWidth;
+      if (sobra > 0) caja.scrollLeft = Math.min(hoy.offsetLeft - 62, sobra);
+    }, 80);
+  });

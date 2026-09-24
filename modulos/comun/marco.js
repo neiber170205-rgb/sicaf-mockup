@@ -95,6 +95,7 @@
     "entrar": "<path d=\"m10 17 5-5-5-5\"/> <path d=\"M15 12H3\"/> <path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\"/>",
     "escudo": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/>",
     "etiqueta": "<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/> <circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>",
+    "factura": "<path d=\"M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z\"/> <path d=\"M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8\"/> <path d=\"M12 17.5v-11\"/>",
     "flecha-abajo": "<path d=\"m6 9 6 6 6-6\"/>",
     "flecha-arriba": "<path d=\"m5 12 7-7 7 7\"/> <path d=\"M12 19V5\"/>",
     "frasco": "<path d=\"M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2\"/> <path d=\"M6.453 15h11.094\"/> <path d=\"M8.5 2h7\"/>",
@@ -110,6 +111,7 @@
     "puntos": "<circle cx=\"12\" cy=\"12\" r=\"1\"/> <circle cx=\"12\" cy=\"5\" r=\"1\"/> <circle cx=\"12\" cy=\"19\" r=\"1\"/>",
     "reloj": "<line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\"/> <line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\"/> <circle cx=\"12\" cy=\"14\" r=\"8\"/>",
     "ruta": "<circle cx=\"6\" cy=\"19\" r=\"3\"/> <path d=\"M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15\"/> <circle cx=\"18\" cy=\"5\" r=\"3\"/>",
+    "ubicacion": "<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/> <circle cx=\"12\" cy=\"10\" r=\"3\"/>",
     "usuario": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/> <circle cx=\"12\" cy=\"7\" r=\"4\"/>",
     "usuario-lleno": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/> <circle cx=\"12\" cy=\"7\" r=\"4\"/>",
     "usuario-mas": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/> <circle cx=\"9\" cy=\"7\" r=\"4\"/> <line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/> <line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>",
@@ -423,11 +425,14 @@
       setTimeout(function () { fila.style.outline = ""; fila.style.outlineOffset = ""; }, 2600);
     }
 
-    // Un enlace a otro módulo lo abre el general, con su menú y sus permisos
+    // Un enlace a otro módulo lo abre el general, con su menú y sus permisos. También una tarjeta
+    // de indicador que lleva a otro módulo (data-kpi="url:..."; prototipo.js la abre con location.href)
     document.addEventListener("click", function (e) {
-      var a = e.target.closest ? e.target.closest("a[href]") : null;
-      if (!a || a.href.indexOf(raiz) !== 0) return;
-      var partes = a.href.slice(raiz.length).split(/[?#]/)[0].split("/");
+      var x = e.target.closest ? e.target.closest('a[href], [data-kpi^="url:"]') : null;
+      if (!x) return;
+      var url = x.hasAttribute("data-kpi") ? new URL(x.getAttribute("data-kpi").slice(4), location.href).href : x.href;
+      if (url.indexOf(raiz) !== 0) return;
+      var partes = url.slice(raiz.length).split(/[?#]/)[0].split("/");
       if (partes.length !== 3 || partes[1] !== "mockup" || partes[0] === carpetaActual) return;
       e.preventDefault();
       e.stopPropagation();
@@ -443,6 +448,31 @@
       avisar({ sicaf: "buscar" });
     });
     document.addEventListener("pointerdown", function () { avisar({ sicaf: "clic" }); });
+
+    // Una ventana que se abre encima (elegir productos, las fotos en grande...) también tapa, con
+    // su fondo oscuro, el menú y la barra. Se nota porque en la esquina de arriba queda algo fijo
+    // (position: fixed; la pantalla, aunque se desplace en el celular, no lo es): mientras esté
+    // abierta, el general sube este marco por encima de su menú y su barra, y aquí el fondo se
+    // vuelve transparente para que por los huecos se vean, oscurecidos, el menú y la barra del
+    // general (detrás de la pantalla queda el mismo arena, el del general).
+    // Solo mientras tanto: con fondo transparente las letras se suavizan un poco distinto.
+    var encima = false, porMirar = 0;
+    function mirarEncima() {
+      porMirar = 0;
+      var si = false;
+      for (var x = document.elementFromPoint(2, 2); x && x !== document.body; x = x.parentElement) {
+        if (getComputedStyle(x).position === "fixed") { si = true; break; }
+      }
+      if (si === encima) return;
+      encima = si;
+      document.body.style.background = si ? "transparent" : "var(--arena)";
+      avisar({ sicaf: "encima", si: si });
+    }
+    function luego() { if (!porMirar) porMirar = requestAnimationFrame(mirarEncima); }
+    new MutationObserver(luego).observe(document.body, {
+      subtree: true, childList: true, attributes: true, attributeFilter: ["hidden", "class", "style", "open"]
+    });
+    ["click", "keyup", "transitionend", "animationend"].forEach(function (t) { document.addEventListener(t, luego, true); });
 
     // Sin historial por pantalla: el botón Atrás del navegador movería un marco que no se ve
     history.pushState = function (estado, nombre, url) { history.replaceState(estado, nombre, url); };

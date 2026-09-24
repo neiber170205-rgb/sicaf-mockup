@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SICAF · Dashboard General · Alertas</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="01-dashboard" data-titulo="Dashboard General · Alertas">
+
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        Dashboard General
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
+    <nav class="subnav" aria-label="Secciones del tablero">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i is-on" data-ico="alerta" data-ct="7" href="02-alertas.html">Alertas</a>
+      <a class="subnav__i" data-ico="barras" href="03-indicadores.html">Indicadores</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        <div>
+          <h2>Alertas abiertas</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-01-alertas-abiertas">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-01-alertas-abiertas-q" type="search" value="" autocomplete="off" placeholder="Buscar alerta o módulo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="al-filtro">Estado</label>
+              <select id="al-filtro" class="dt__in">
+                <option value="">Todas</option>
+                <option value="Urgente">Urgente</option>
+                <option value="Para hoy">Para hoy</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (7)</span>
+              </label>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Alerta"><span>Alerta</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Qué pasa"><span>Qué pasa</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Módulo"><span>Módulo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Desde"><span>Desde</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Gravedad"><span>Gravedad</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="dt__th--txt" style="width:1%">Acciones</th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-007</b></td>
+                            <td data-l="Qué pasa"><b>OP-2026-048 lleva 3 días sin cuero</b><div class="tiny">Para la planta</div></td>
+                            <td class="muted" data-l="Módulo">Producción</td>
+                            <td class="tiny falta" data-l="Desde">Hace 3 días</td>
+                            <td data-l="Gravedad"><span class="pill pill--crit">Urgente</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-006</b></td>
+                            <td data-l="Qué pasa"><b>Comercial Los Andes pasó el cupo de crédito</b><div class="tiny">Retiene pedidos</div></td>
+                            <td class="muted" data-l="Módulo">Comercial</td>
+                            <td class="tiny falta" data-l="Desde">Hace 1 día</td>
+                            <td data-l="Gravedad"><span class="pill pill--crit">Urgente</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/01-inicio.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-005</b></td>
+                            <td data-l="Qué pasa"><b>El respaldo de anoche falló</b><div class="tiny">Riesgo de datos</div></td>
+                            <td class="muted" data-l="Módulo">Admin</td>
+                            <td class="tiny falta" data-l="Desde">Hace 10 horas</td>
+                            <td data-l="Gravedad"><span class="pill pill--crit">Urgente</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../09-admin/mockup/01-inicio.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-004</b></td>
+                            <td data-l="Qué pasa"><b>Retraso por tráfico en la ruta de Cúcuta</b><div class="tiny">Molesta al cliente</div></td>
+                            <td class="muted" data-l="Módulo">Logística</td>
+                            <td class="tiny" data-l="Desde">Hace 40 minutos</td>
+                            <td data-l="Gravedad"><span class="pill pill--warn">Para hoy</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-003</b></td>
+                            <td data-l="Qué pasa"><b>2 referencias bajo el existencia mínima</b><div class="tiny">Frena producción</div></td>
+                            <td class="muted" data-l="Módulo">Inventario</td>
+                            <td class="tiny" data-l="Desde">Hace 2 días</td>
+                            <td data-l="Gravedad"><span class="pill pill--warn">Para hoy</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../04-inventario/mockup/01-inicio.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-002</b></td>
+                            <td data-l="Qué pasa"><b>Guía #9822 no la pudo leer el escáner</b><div class="tiny">Trabajo a mano</div></td>
+                            <td class="muted" data-l="Módulo">Logística</td>
+                            <td class="tiny" data-l="Desde">Hace 4 horas</td>
+                            <td data-l="Gravedad"><span class="pill pill--warn">Para hoy</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-001</b></td>
+                            <td data-l="Qué pasa"><b>2 no conformidades de guarnición abiertas</b><div class="tiny">Reproceso</div></td>
+                            <td class="muted" data-l="Módulo">Calidad</td>
+                            <td class="tiny" data-l="Desde">Hace 2 días</td>
+                            <td data-l="Gravedad"><span class="pill pill--warn">Para hoy</span></td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../06-calidad/mockup/01-proceso.html">Ir al módulo</a><button class="btn btn--sm btn--oliva">Marcar vista</button></div></td>
+                          </tr>
+                        </tbody>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 7 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Urgente</b><span>3</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Para hoy</b><span>4</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–7</b> de <b>7</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-01-alertas-abiertas-tam">
+                Filas por página
+                <select id="dt-01-alertas-abiertas-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="nota">
+          <span class="dot"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg></span>
+          <p><b>Nota:</b> La alerta se apaga cuando el módulo arregla la causa. Desde aquí solo se mira y se avisa.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

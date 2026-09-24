@@ -3,111 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Admin. Usuarios · Usuarios</title>
+    <title>SICAF · Configuraciones · Usuarios</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
     <link rel="stylesheet" href="estilos.css" />
   </head>
-  <body data-modulo="09-admin" data-titulo="Admin. Usuarios · Usuarios">
+  <body data-modulo="09-admin" data-titulo="Configuraciones · Usuarios">
 
-    <section class="hero">
-      <div>
-        <h1>Admin. Usuarios</h1>
-        <p>Quién entra, a qué módulo, con qué permisos y qué hizo.</p>
-      </div>
-    </section>
-    <div class="kpis kpis--5">
-      <article class="kpi kpi--arena">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-        <div>
-          <div class="kpi__n">9</div>
-          <div class="kpi__l">Usuarios activos</div>
-        </div>
-      </article>
-      <article class="kpi kpi--rosa">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
-        <div>
-          <div class="kpi__n">4</div>
-          <div class="kpi__l">Roles definidos</div>
-        </div>
-      </article>
-      <article class="kpi kpi--oliva">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg></span>
-        <div>
-          <div class="kpi__n">9</div>
-          <div class="kpi__l">Módulos con dueño</div>
-        </div>
-      </article>
-      <article class="kpi kpi--cobre">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect> <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
-        <div>
-          <div class="kpi__n">2</div>
-          <div class="kpi__l">Accesos por revisar</div>
-        </div>
-      </article>
-      <article class="kpi kpi--arena">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse> <path d="M3 5v14a9 3 0 0 0 18 0V5"></path> <path d="M3 12a9 3 0 0 0 18 0"></path></svg></span>
-        <div>
-          <div class="kpi__n">1</div>
-          <div class="kpi__l">Días sin respaldo</div>
-        </div>
-      </article>
-    </div>
-    <details class="avisos">
-      <summary class="avisos__cab">
-        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
-        <span class="avisos__t">
-          <b>Pendientes y notificaciones</b>
-          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+        Configuraciones
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
         </span>
-        <span class="avisos__n">5</span>
-        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-      </summary>
-      <div class="avisos__cuerpo">
-        <div class="pend">
-          <button class="pend__i pend__i--crit" data-ir="02-usuarios.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect> <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
-            <span class="pend__x"><b>Luisa Mendoza lleva 45 días sin entrar</b><small>Sigue con acceso a Inventario · la política dice suspender a los 30 días</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--crit" data-ir="03-roles.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
-            <span class="pend__x"><b>Dos personas con permiso de anular en Compras</b><small>El rol Gerente y el rol Jefe de compras se pisan · hay que dejar uno solo</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="06-respaldos.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse> <path d="M3 5v14a9 3 0 0 0 18 0V5"></path> <path d="M3 12a9 3 0 0 0 18 0"></path></svg></span>
-            <span class="pend__x"><b>El respaldo de anoche no corrió</b><small>Último respaldo bueno: 2026-09-20 a las 23:00 · falta el de ayer</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="02-usuarios.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 21v-2a4 4 0 0 1 4-4h5"></path> <circle cx="9" cy="7" r="4"></circle> <line x1="19" x2="19" y1="8" y2="14"></line> <line x1="22" x2="16" y1="11" y2="11"></line></svg></span>
-            <span class="pend__x"><b>2 solicitudes de acceso sin responder</b><small>Producción pidió un usuario nuevo y Calidad pidió cambiar un rol</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--info" data-ir="04-auditoria.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"></path> <path d="M8 12h13"></path> <path d="M8 18h13"></path> <path d="M3 6h.01"></path> <path d="M3 12h.01"></path> <path d="M3 18h.01"></path></svg></span>
-            <span class="pend__x"><b>6 movimientos sensibles en la bitácora de ayer</b><small>Cambios de cupo, anulaciones y un cambio de permisos</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-        </div>
-      </div>
-    </details>
-    <nav class="subnav" aria-label="Secciones de Administración">
+      </h2>
+    </header>
+    <nav class="subnav" aria-label="Secciones de Configuraciones">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
       <a class="subnav__i is-on" data-ico="usuarios" data-ct="9" href="02-usuarios.html">Usuarios</a>
       <a class="subnav__i" data-ico="escudo" data-ct="4" href="03-roles.html">Roles</a>
       <a class="subnav__i" data-ico="lista" data-ct="6" href="04-auditoria.html">Auditoría</a>
-      <a class="subnav__i" data-ico="engranaje" href="05-parametros.html">Parámetros</a>
-      <a class="subnav__i" data-ico="base-datos" data-ct="1" href="06-respaldos.html">Respaldos</a>
+      <a class="subnav__i" data-ico="base-datos" data-ct="1" href="05-respaldos.html">Respaldos</a>
+      <a class="subnav__i" data-ico="engranaje" href="06-general.html">General</a>
+      <a class="subnav__i" data-ico="cuadricula" href="07-modulos.html">Por módulo</a>
     </nav>
     <section class="panel">
       <header class="panel__head panel__head--vino">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 21v-2a4 4 0 0 1 4-4h5"></path> <circle cx="9" cy="7" r="4"></circle> <line x1="19" x2="19" y1="8" y2="14"></line> <line x1="22" x2="16" y1="11" y2="11"></line></svg>
         <div>
           <h2>Nuevo Acceso</h2>
-          <div class="sub">Un usuario entra a un solo módulo, con un solo rol</div>
         </div>
       </header>
         <div class="panel__body panel__body--form">
@@ -130,14 +57,13 @@
             <div class="control">
               <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
               <select id="us-area">
-                <option>Diseño</option>
                 <option>Compras</option>
                 <option>Inventario</option>
                 <option>Producción</option>
                 <option>Control de Calidad</option>
                 <option>Comercial</option>
                 <option>Logística y Despacho</option>
-                <option>Admin. Usuarios</option>
+                <option>Configuraciones</option>
               </select>
               <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
             </div>
@@ -164,126 +90,177 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         <div>
           <h2>Usuarios del Sistema</h2>
-          <div class="sub">Quién tiene acceso, a qué módulo y con qué rol</div>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="tabla-tools">
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input type="search" id="us-busca" placeholder="Buscar usuario, correo o módulo…">
+        <div class="dt dt--acc" id="dt-09-usuarios-del-sistema">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-09-usuarios-del-sistema-q" type="search" value="" autocomplete="off" placeholder="Buscar usuario, correo o módulo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
           </div>
-          <div class="control control--corto">
-            <select id="us-filtro" aria-label="Filtrar la tabla">
-              <option>Todos los roles</option>
-              <option>Gerente</option>
-              <option>Supervisor</option>
-              <option>Operario</option>
-              <option>Auditor</option>
-            </select>
-            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="us-filtro">Estado</label>
+              <select id="us-filtro" class="dt__in">
+                <option value="">Todos los roles</option>
+                <option value="Gerente">Gerente</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Operario">Operario</option>
+                <option value="Auditor">Auditor</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (1)</span>
+              </label>
+            </div>
           </div>
-          <span class="tabla-tools__n">9 usuarios · 1 inactivo</span>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Usuario"><span>Usuario</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Código"><span>Código</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Módulo"><span>Módulo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Rol"><span>Rol</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Último ingreso"><span>Último ingreso</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="dt__th--txt" style="width:1%">Acciones</th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">E</span><div><b>Erick Cuevas</b><small>erick@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-001</b></td>
+                            <td data-l="Módulo"><span class="chip chip--cobre">Logística y Despacho</span></td>
+                            <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
+                            <td class="tiny" data-l="Último ingreso">Hoy 07:42</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">A</span><div><b>Andrés Suárez</b><small>andres@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-002</b></td>
+                            <td data-l="Módulo"><span class="chip chip--oliva">Inventario</span></td>
+                            <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
+                            <td class="tiny" data-l="Último ingreso">Hoy 06:58</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">M</span><div><b>Marta Villamizar</b><small>marta@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-003</b></td>
+                            <td data-l="Módulo"><span class="chip chip--vino">Producción</span></td>
+                            <td data-l="Rol"><span class="chip chip--vino">Gerente</span></td>
+                            <td class="tiny" data-l="Último ingreso">Hoy 07:10</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">É</span><div><b>Édgar Pabón</b><small>edgar@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-004</b></td>
+                            <td data-l="Módulo"><span class="chip chip--oliva">Control de Calidad</span></td>
+                            <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
+                            <td class="tiny" data-l="Último ingreso">Ayer 17:30</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">S</span><div><b>Sofía Ramírez</b><small>sofia@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-005</b></td>
+                            <td data-l="Módulo"><span class="chip chip--cobre">Comercial</span></td>
+                            <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
+                            <td class="tiny" data-l="Último ingreso">Hoy 08:05</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">C</span><div><b>Carlos Ruiz</b><small>carlos@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-006</b></td>
+                            <td data-l="Módulo"><span class="chip chip--vino">Compras</span></td>
+                            <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
+                            <td class="tiny" data-l="Último ingreso">Ayer 16:12</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">D</span><div><b>Diego Peña</b><small>diego@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-007</b></td>
+                            <td data-l="Módulo"><span class="chip chip--vino">Producción</span></td>
+                            <td data-l="Rol"><span class="chip chip--oliva">Operario</span></td>
+                            <td class="tiny" data-l="Último ingreso">Hoy 06:30</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">L</span><div><b>Luisa Mendoza</b><small>luisa@sicaf.com</small></div></div></td>
+                            <td class="muted" data-l="Código"><b>US-008</b></td>
+                            <td data-l="Módulo"><span class="chip chip--oliva">Inventario</span></td>
+                            <td data-l="Rol"><span class="chip chip--oliva">Operario</span></td>
+                            <td class="tiny falta" data-l="Último ingreso">Hace 45 días</td>
+                            <td data-l="Estado"><span class="pill pill--crit">Inactivo</span></td>
+                            <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Reactivar</button></div></td>
+                          </tr>
+                        </tbody>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 8 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Inactivo</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Activo</b><span>7</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–8</b> de <b>8</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-09-usuarios-del-sistema-tam">
+                Filas por página
+                <select id="dt-09-usuarios-del-sistema-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+          </div>
         </div>
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                  <th>Usuario</th>
-                  <th>Código</th>
-                  <th>Módulo</th>
-                  <th>Rol</th>
-                  <th>Último ingreso</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">E</span><div><b>Erick Cuevas</b><small>erick@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-001</b></td>
-                <td data-l="Módulo"><span class="chip chip--cobre">Logística y Despacho</span></td>
-                <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
-                <td class="tiny" data-l="Último ingreso">Hoy 07:42</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">A</span><div><b>Andrés Suárez</b><small>andres@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-002</b></td>
-                <td data-l="Módulo"><span class="chip chip--oliva">Inventario</span></td>
-                <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
-                <td class="tiny" data-l="Último ingreso">Hoy 06:58</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">M</span><div><b>Marta Villamizar</b><small>marta@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-003</b></td>
-                <td data-l="Módulo"><span class="chip chip--vino">Producción</span></td>
-                <td data-l="Rol"><span class="chip chip--vino">Gerente</span></td>
-                <td class="tiny" data-l="Último ingreso">Hoy 07:10</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">É</span><div><b>Édgar Pabón</b><small>edgar@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-004</b></td>
-                <td data-l="Módulo"><span class="chip chip--oliva">Control de Calidad</span></td>
-                <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
-                <td class="tiny" data-l="Último ingreso">Ayer 17:30</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">S</span><div><b>Sofía Ramírez</b><small>sofia@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-005</b></td>
-                <td data-l="Módulo"><span class="chip chip--cobre">Comercial</span></td>
-                <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
-                <td class="tiny" data-l="Último ingreso">Hoy 08:05</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">C</span><div><b>Carlos Ruiz</b><small>carlos@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-006</b></td>
-                <td data-l="Módulo"><span class="chip chip--vino">Compras</span></td>
-                <td data-l="Rol"><span class="chip chip--cobre">Supervisor</span></td>
-                <td class="tiny" data-l="Último ingreso">Ayer 16:12</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">D</span><div><b>Diego Peña</b><small>diego@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-007</b></td>
-                <td data-l="Módulo"><span class="chip chip--vino">Producción</span></td>
-                <td data-l="Rol"><span class="chip chip--oliva">Operario</span></td>
-                <td class="tiny" data-l="Último ingreso">Hoy 06:30</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">L</span><div><b>Luisa Mendoza</b><small>luisa@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-008</b></td>
-                <td data-l="Módulo"><span class="chip chip--oliva">Inventario</span></td>
-                <td data-l="Rol"><span class="chip chip--oliva">Operario</span></td>
-                <td class="tiny falta" data-l="Último ingreso">Hace 45 días</td>
-                <td data-l="Estado"><span class="pill pill--crit">Inactivo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Reactivar</button></div></td>
-              </tr>
-              <tr>
-                <td data-l="Usuario"><div class="who"><span class="avatar avatar--sm" style="background:var(--vino-600)">H</span><div><b>Hernán Ruiz</b><small>hernan@sicaf.com</small></div></div></td>
-                <td class="muted" data-l="Código"><b>US-009</b></td>
-                <td data-l="Módulo"><span class="chip chip--cobre">Diseño</span></td>
-                <td data-l="Rol"><span class="chip chip--oliva">Operario</span></td>
-                <td class="tiny" data-l="Último ingreso">Ayer 15:48</td>
-                <td data-l="Estado"><span class="pill pill--ok">Activo</span></td>
-                <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Cambiar rol</button><button class="btn btn--sm btn--ghost">Suspender</button></div></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando 9 de 9 usuarios · un usuario suspendido conserva su historial en la bitácora</p>
         <div class="nota">
           <span class="dot"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg></span>
           <p><b>Nota:</b> Aquí no se borra a nadie: se suspende. Borrar un usuario dejaría huérfanos los movimientos que registró en los demás módulos.</p>

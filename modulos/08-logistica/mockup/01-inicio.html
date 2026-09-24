@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Logística y Despacho · Inicio</title>
+    <title>SICAF · Logística y Despacho · Inicio</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
@@ -11,48 +11,52 @@
   </head>
   <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Inicio">
 
-    <section class="hero">
-      <div>
-        <h1>Logística y Despacho</h1>
-        <p>Rutas, recepción de proveedores, logística inversa y flota.</p>
-      </div>
-    </section>
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        Logística y Despacho
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
     <div class="kpis kpis--5">
-      <article class="kpi kpi--arena">
+      <button class="kpi kpi--arena kpi--btn" type="button" aria-pressed="false" data-kpi="ir:06-flota.html" data-dice="la flota" title="Abrir la flota">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
         <div>
           <div class="kpi__n" id="k-ruta">4</div>
           <div class="kpi__l">Vehículos en ruta</div>
         </div>
-      </article>
-      <article class="kpi kpi--rosa">
+      </button>
+      <button class="kpi kpi--rosa kpi--btn" type="button" aria-pressed="false" data-kpi="ir:02-despachos.html" data-dice="los despachos" title="Abrir los despachos">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
         <div>
           <div class="kpi__n" id="k-pares">182</div>
           <div class="kpi__l">Pares en tránsito</div>
         </div>
-      </article>
-      <article class="kpi kpi--oliva">
+      </button>
+      <button class="kpi kpi--oliva kpi--btn" type="button" aria-pressed="false" data-kpi="ir:04-recepcion.html" data-dice="las recepciones" title="Abrir las recepciones">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
         <div>
           <div class="kpi__n" id="k-prov">2</div>
           <div class="kpi__l">Proveedores en camino</div>
         </div>
-      </article>
-      <article class="kpi kpi--cobre">
+      </button>
+      <button class="kpi kpi--cobre kpi--btn" type="button" aria-pressed="false" data-kpi="ver:Alertas Críticas" data-dice="las alertas críticas" title="Abrir las alertas críticas">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
         <div>
           <div class="kpi__n" id="k-alertas">3</div>
           <div class="kpi__l">Alertas abiertas</div>
         </div>
-      </article>
-      <article class="kpi kpi--arena">
+      </button>
+      <button class="kpi kpi--arena kpi--btn" type="button" aria-pressed="false" data-kpi="ir:05-log-inversa.html" data-dice="las recolecciones" title="Abrir las recolecciones">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
         <div>
           <div class="kpi__n" id="k-recol">5</div>
           <div class="kpi__l">Recolecciones</div>
         </div>
-      </article>
+      </button>
     </div>
     <section class="saludo">
       <div class="saludo__t">
@@ -62,68 +66,279 @@
       <div class="rapidas">
         <button class="btn btn--sm" data-rapida="ruta"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg> Nueva ruta</button>
         <button class="btn btn--sm btn--oliva" data-rapida="recepcion"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg> Recepción de proveedor</button>
-        <button class="btn btn--sm btn--ghost" data-rapida="ocr"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg> Escanear guía (OCR)</button>
+        <button class="btn btn--sm btn--ghost" data-rapida="ocr"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg> Leer guía con la cámara</button>
       </div>
     </section>
-    <details class="avisos">
-      <summary class="avisos__cab">
-        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
-        <span class="avisos__t">
-          <b>Pendientes y notificaciones</b>
-          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
-        </span>
-        <span class="avisos__n">5</span>
-        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-      </summary>
-      <div class="avisos__cuerpo">
-        <div class="pend">
-          <button class="pend__i pend__i--crit" data-ir="02-despachos.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
-            <span class="pend__x"><b>DS-2026-059 sin vehículo asignado</b><small>26 pares de REF-1043 alistados para Calzado El Dorado · compromiso 2026-09-23</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--crit" data-ir="03-recepcion.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
-            <span class="pend__x"><b>Guía #9822 no la pudo leer el escáner</b><small>Recepción IN-047 de Textiles Cúcuta queda por validar a mano</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="04-log-inversa.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
-            <span class="pend__x"><b>Recolección RC-2026-015 sin programar</b><small>Calzado Norte reportó 2 pares en garantía · lleva 2 días</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="05-flota.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"></line> <line x1="12" x2="15" y1="14" y2="11"></line> <circle cx="12" cy="14" r="8"></circle></svg></span>
-            <span class="pend__x"><b>Camioneta DEF-455 sin ruta asignada</b><small>Disponible desde ayer · 120 pares de capacidad sin usar</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--info" data-ir="03-recepcion.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
-            <span class="pend__x"><b>2 proveedores llegan hoy a la planta</b><small>Curtiembre del Norte (GR-77441) y Hilos y Pegantes (GR-77446)</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-        </div>
-      </div>
-    </details>
     <nav class="subnav" aria-label="Secciones de Logística">
       <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
       <a class="subnav__i" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
-      <a class="subnav__i" data-ico="caja" data-ct="3" href="03-recepcion.html">Recepción</a>
-      <a class="subnav__i" data-ico="ruta" data-ct="5" href="04-log-inversa.html">Log. inversa</a>
-      <a class="subnav__i" data-ico="camion" data-ct="4" href="05-flota.html">Flota</a>
-      <a class="subnav__i" data-ico="barras" href="06-reportes.html">Reportes</a>
-      <a class="subnav__i" data-ico="engranaje" href="07-config.html">Config.</a>
+      <a class="subnav__i" data-ico="ubicacion" data-ct="4" href="03-seguimiento.html">Seguimiento</a>
+      <a class="subnav__i" data-ico="caja" data-ct="3" href="04-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="05-log-inversa.html">Devoluciones</a>
+      <a class="subnav__i" data-ico="camion" data-ct="4" href="06-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
     </nav>
+    <article class="graf graf--flujo graf--mes">
+      <header class="graf__h">
+        <svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <b>Despachos entregados</b>
+        <span class="graf__t">cada mes, últimos seis</span>
+      </header>
+          <div class="colg">
+            <div class="colg__y"><span>60</span><span>40</span><span>20</span><span>0</span></div>
+            <div class="colg__p">
+              <span class="colg__g"><i style="bottom:100%"></i><i style="bottom:66.66%"></i><i style="bottom:33.33%"></i><i style="bottom:0%"></i></span>
+              <button class="colg__b" style="--c:var(--paso-8)" title="Abril de 2026: 38 despachos">
+                <span class="colg__t"><i style="height:63.33%"><em class="colg__tip">38 despachos<small>2 con retraso</small></em></i></span>
+                <span class="colg__x">Abr</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-8)" title="Mayo de 2026: 44 despachos">
+                <span class="colg__t"><i style="height:73.33%"><em class="colg__tip">44 despachos<small>1 con retraso</small></em></i></span>
+                <span class="colg__x">May</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-8)" title="Junio de 2026: 40 despachos">
+                <span class="colg__t"><i style="height:66.67%"><em class="colg__tip">40 despachos<small>3 con retraso</small></em></i></span>
+                <span class="colg__x">Jun</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-8)" title="Julio de 2026: 49 despachos">
+                <span class="colg__t"><i style="height:81.67%"><em class="colg__tip">49 despachos<small>2 con retraso</small></em></i></span>
+                <span class="colg__x">Jul</span>
+              </button>
+              <button class="colg__b is-top" style="--c:var(--paso-8)" title="Agosto de 2026: 55 despachos">
+                <span class="colg__t"><i style="height:91.67%"><em class="colg__tip">55 despachos<small>1 con retraso</small></em></i></span>
+                <span class="colg__x">Ago</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-8)" title="Septiembre de 2026: 51 despachos">
+                <span class="colg__t"><i style="height:85.00%"><em class="colg__tip">51 despachos<small>1 con retraso · va hasta hoy</small></em></i></span>
+                <span class="colg__x">Sep</span>
+              </button>
+            </div>
+          </div>
+      <details class="g6__datos">
+        <summary>Ver los mismos números en una tabla</summary>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Mes</th><th class="num">Despachos</th><th>Detalle</th></tr></thead>
+            <tbody><tr><td data-l="Mes">Abril</td><td class="num" data-l="despachos">38</td><td data-l="Detalle">2 con retraso</td></tr><tr><td data-l="Mes">Mayo</td><td class="num" data-l="despachos">44</td><td data-l="Detalle">1 con retraso</td></tr><tr><td data-l="Mes">Junio</td><td class="num" data-l="despachos">40</td><td data-l="Detalle">3 con retraso</td></tr><tr><td data-l="Mes">Julio</td><td class="num" data-l="despachos">49</td><td data-l="Detalle">2 con retraso</td></tr><tr><td data-l="Mes">Agosto</td><td class="num" data-l="despachos">55</td><td data-l="Detalle">1 con retraso</td></tr><tr><td data-l="Mes">Septiembre</td><td class="num" data-l="despachos">51</td><td data-l="Detalle">1 con retraso · va hasta hoy</td></tr></tbody>
+          </table>
+        </div>
+      </details>
+    </article>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div>
+          <h2>Historial de los últimos meses</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-08-historial">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-08-historial-q" type="search" value="" autocomplete="off" placeholder="Buscar día, persona o trabajo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="dt-08-historial-f-mes">Mes</label>
+              <select id="dt-08-historial-f-mes" class="dt__in">
+                <option value="">Todos</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l">Día</span>
+              <div class="dt__rango">
+                <input type="date" class="dt__in" value aria-label="Día desde" title="Desde">
+                <span class="dt__rango-s">–</span>
+                <input type="date" class="dt__in" value aria-label="Día hasta" title="Hasta">
+              </div>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table class="hist">
+              <thead>
+                <tr>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Día"><span>Día</span><i class="dt__ind">▼</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Desde"><span>Desde</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Hasta"><span>Hasta</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Duró"><span>Duró</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Qué se hizo"><span>Qué se hizo</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Quién"><span>Quién</span><i class="dt__ind">⇅</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Cómo quedó"><span>Cómo quedó</span><i class="dt__ind">⇅</i></button></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Día"><b>23/09/2026</b></td>
+                  <td class="num" data-l="Desde">09:05</td>
+                  <td class="num" data-l="Hasta">13:40</td>
+                  <td class="num" data-l="Duró">4,6 h</td>
+                  <td data-l="Qué se hizo">Ruta DS-2026-057 · Cúcuta a Pamplona</td>
+                  <td data-l="Quién">Hernán Ruiz</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--warn">En camino</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>22/09/2026</b></td>
+                  <td class="num" data-l="Desde">05:20</td>
+                  <td class="num" data-l="Hasta">11:30</td>
+                  <td class="num" data-l="Duró">6,2 h</td>
+                  <td data-l="Qué se hizo">Ruta DS-2026-056 · Cúcuta a Bogotá</td>
+                  <td data-l="Quién">Jorge Peña</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--warn">En reparto</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>19/09/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">15:20</td>
+                  <td class="num" data-l="Duró">9,3 h</td>
+                  <td data-l="Qué se hizo">Ruta DS-2026-055 · Cúcuta a Bucaramanga</td>
+                  <td data-l="Quién">Marta Villamizar</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>15/09/2026</b></td>
+                  <td class="num" data-l="Desde">07:00</td>
+                  <td class="num" data-l="Hasta">09:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Recepción de suela de Suelas Pacífico</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Recibida</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>09/09/2026</b></td>
+                  <td class="num" data-l="Desde">05:40</td>
+                  <td class="num" data-l="Hasta">16:05</td>
+                  <td class="num" data-l="Duró">10,4 h</td>
+                  <td data-l="Qué se hizo">Ruta DS-2026-051 · Cúcuta a Bogotá</td>
+                  <td data-l="Quién">Andrés Parra</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>30/08/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">10:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Mantenimiento del MNO-514</td>
+                  <td data-l="Quién">Taller externo</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--crit">En el taller</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>18/08/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">14:30</td>
+                  <td class="num" data-l="Duró">8,5 h</td>
+                  <td data-l="Qué se hizo">Ruta a Bucaramanga con 3 despachos</td>
+                  <td data-l="Quién">Marta Villamizar</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>29/07/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">17:00</td>
+                  <td class="num" data-l="Duró">11 h</td>
+                  <td data-l="Qué se hizo">Ruta a Bogotá con 4 despachos</td>
+                  <td data-l="Quién">Jorge Peña</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--warn">Con retraso</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>12/07/2026</b></td>
+                  <td class="num" data-l="Desde">07:00</td>
+                  <td class="num" data-l="Hasta">09:30</td>
+                  <td class="num" data-l="Duró">2,5 h</td>
+                  <td data-l="Qué se hizo">Recolección de 14 pares devueltos</td>
+                  <td data-l="Quién">Andrés Parra</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Recogida</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>24/06/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">15:00</td>
+                  <td class="num" data-l="Duró">9 h</td>
+                  <td data-l="Qué se hizo">Ruta a Ocaña con 2 despachos</td>
+                  <td data-l="Quién">Hernán Ruiz</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>21/05/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">10 h</td>
+                  <td data-l="Qué se hizo">Ruta a Bogotá con 3 despachos</td>
+                  <td data-l="Quién">Jorge Peña</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>23/04/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">15:30</td>
+                  <td class="num" data-l="Duró">9,5 h</td>
+                  <td data-l="Qué se hizo">Ruta a Bucaramanga con 2 despachos</td>
+                  <td data-l="Quién">Marta Villamizar</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregado</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 12 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>En el taller</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>En camino</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>En reparto</b><span>1</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>12</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-08-historial-tam">
+                Filas por página
+                <select id="dt-08-historial-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag">2</button>
+                <button class="dt__pag dt__pag--n" aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
     <section class="panel">
       <header class="panel__head panel__head--cobre">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
         <div>
           <h2>Operación en Curso</h2>
-          <div class="sub">Geolocalización de la flota y estado de cada vehículo</div>
         </div>
         <button class="ghostbtn" data-rapida="ocr">
           <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-          Escanear guía
+          Leer guía con la cámara
         </button>
       </header>
       <div class="panel__body">
@@ -191,82 +406,134 @@
           <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
           <div>
             <h2>Últimos Movimientos</h2>
-            <div class="sub">Salidas y entradas registradas hoy</div>
           </div>
         </header>
         <div class="panel__body panel__body--flush">
-          <div class="tabla-tools">
-            <div class="control">
-              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-              <input type="search" id="mv-busca" placeholder="Buscar documento o estado…">
+          <div class="dt dt--acc" id="dt-08-ultimos-movimientos">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-08-ultimos-movimientos-q" type="search" value="" autocomplete="off" placeholder="Buscar documento o estado…" aria-label="Buscar en la tabla">
             </div>
-            <div class="control control--corto">
-              <select id="mv-filtro" aria-label="Filtrar la tabla">
-                <option>Todos los estados</option>
-                <option>En ruta</option>
-                <option>Entregado</option>
-                <option>Validado</option>
-                <option>Por validar</option>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="mv-filtro">Estado</label>
+              <select id="mv-filtro" class="dt__in">
+                <option value="">Todos los estados</option>
+                <option value="En ruta">En ruta</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Validado">Validado</option>
+                <option value="Por validar">Por validar</option>
               </select>
-              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
             </div>
-            <span class="tabla-tools__n">6 movimientos de hoy</span>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (3)</span>
+              </label>
+            </div>
           </div>
-          <div class="scroll-x">
+          <div class="dt__scroll">
             <table>
-              <thead>
-                <tr>
-                  <th>Movimiento</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td data-l="Movimiento">
-                    <b>OUT-089</b>
-                    <div class="tiny">Despacho DS-2026-056 · Bogotá</div>
-                  </td>
-                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
-                </tr>
-                <tr>
-                  <td data-l="Movimiento">
-                    <b>OUT-088</b>
-                    <div class="tiny">Despacho DS-2026-055 · Cúcuta</div>
-                  </td>
-                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
-                </tr>
-                <tr>
-                  <td data-l="Movimiento">
-                    <b>IN-042</b>
-                    <div class="tiny">Recepción Curtiembre del Norte</div>
-                  </td>
-                  <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
-                </tr>
-                <tr>
-                  <td data-l="Movimiento">
-                    <b>IN-043</b>
-                    <div class="tiny">Recepción Suelas Andinas</div>
-                  </td>
-                  <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
-                </tr>
-                <tr>
-                  <td data-l="Movimiento">
-                    <b>OUT-087</b>
-                    <div class="tiny">Despacho DS-2026-054 · Bogotá</div>
-                  </td>
-                  <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
-                </tr>
-                <tr>
-                  <td data-l="Movimiento">
-                    <b>IN-047</b>
-                    <div class="tiny">Recepción Textiles Cúcuta · guía #9822</div>
-                  </td>
-                  <td data-l="Estado"><span class="pill pill--crit">Por validar</span></td>
-                </tr>
-              </tbody>
-            </table>
+                                        <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Movimiento"><span>Movimiento</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td data-l="Movimiento">
+                                <b>OUT-089</b>
+                                <div class="tiny">Despacho DS-2026-056 · Bogotá</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Movimiento">
+                                <b>OUT-088</b>
+                                <div class="tiny">Despacho DS-2026-055 · Cúcuta</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Movimiento">
+                                <b>IN-042</b>
+                                <div class="tiny">Recepción Curtiembre del Norte</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Movimiento">
+                                <b>IN-043</b>
+                                <div class="tiny">Recepción Suelas Andinas</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--ok">Validado</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Movimiento">
+                                <b>OUT-087</b>
+                                <div class="tiny">Despacho DS-2026-054 · Bogotá</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Movimiento">
+                                <b>IN-047</b>
+                                <div class="tiny">Recepción Textiles Cúcuta · guía #9822</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--crit">Por validar</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
           </div>
-          <p class="tabla-pie">Mostrando 6 de 6 movimientos · el detalle está en cada sección</p>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 6 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Por validar</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>En ruta</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Validado</b><span>2</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–6</b> de <b>6</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-08-ultimos-movimientos-tam">
+                Filas por página
+                <select id="dt-08-ultimos-movimientos-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+          </div>
         </div>
       </section>
       <section class="panel">
@@ -274,7 +541,6 @@
           <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
           <div>
             <h2>Alertas Críticas</h2>
-            <div class="sub">Retrasos, guías sin leer y recolecciones sin programar</div>
           </div>
         </header>
         <div class="panel__body">
@@ -289,9 +555,9 @@
           <div class="aviso aviso--crit">
             <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
             <div>
-              <b>Error de OCR en la guía #9822</b>
+              <b>La cámara no pudo leer la guía #9822</b>
               <p>La recepción IN-047 de Textiles Cúcuta no pudo leerse; el número hay que digitarlo a mano antes de dar entrada.</p>
-              <button class="btn btn--sm btn--ghost" data-ir="03-recepcion.html">Validar a mano</button>
+              <button class="btn btn--sm btn--ghost" data-ir="04-recepcion.html">Validar a mano</button>
             </div>
           </div>
           <div class="aviso aviso--warn">
@@ -299,7 +565,7 @@
             <div>
               <b>Recolección RC-2026-015 sin programar</b>
               <p>Calzado Norte reportó 2 pares en garantía hace 2 días y todavía no tiene vehículo ni fecha.</p>
-              <button class="btn btn--sm btn--ghost" data-ir="04-log-inversa.html">Programar</button>
+              <button class="btn btn--sm btn--ghost" data-ir="05-log-inversa.html">Programar</button>
             </div>
           </div>
         </div>

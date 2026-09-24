@@ -1336,7 +1336,11 @@ select.dt__in{min-width:140px;max-width:210px;cursor:pointer}
    (sus @media y sus medidas en vw miran la ventana). comun/marco.js le deja libre el
    hueco del menú y de la barra; .marcos es ese espacio libre y de él se mide el hueco. */
 .marcos{flex:1;min-height:0}
-.marco{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;z-index:1;background:var(--arena)}
+/* El marco no tiene fondo: por sus huecos se ven el menú y la barra, y detrás de su pantalla el
+   arena de esta página. Con una ventana suya abierta (su fondo oscuro tapa todo) sube por encima
+   del menú y de la barra, como cuando el módulo se abre solo; las ventanas de aquí siguen encima. */
+.marco{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;z-index:1;background:transparent}
+.marco.encima{z-index:50}
 .side{z-index:2}
 /* En el celular el general casi no tiene contenido (la pantalla va en el marco): la fila de
    módulos no se estira para llenar la ventana */

@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Comercial · Nueva cotización</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="07-comercial" data-titulo="Comercial · Nueva cotización">
+
+    <!-- Esta pantalla no tiene pestaña propia: se abre con "Crear cotización" desde
+         09-cotizacion.html, y en el menú queda marcada Cotizaciones. -->
+    <nav class="subnav" aria-label="Secciones de Comercial">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="billete" data-ct="3" href="02-ventas.html">Ventas</a>
+      <a class="subnav__i" data-ico="zapato" data-ct="5" href="03-productos.html">Productos</a>
+      <a class="subnav__i" data-ico="usuarios" data-ct="8" href="04-clientes.html">Clientes</a>
+      <a class="subnav__i" data-ico="portapapeles" data-ct="6" href="05-pedidos.html">Pedidos</a>
+      <a class="subnav__i" data-ico="camion" data-ct="3" href="06-entregas.html">Entregas</a>
+      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="08-config.html">Config.</a>
+      <a class="subnav__i is-on" data-ico="etiqueta" data-ct="6" href="09-cotizacion.html">Cotizaciones</a>
+      <a class="subnav__i" data-ico="factura" data-ct="6" href="10-facturacion.html">Facturación</a>
+    </nav>
+
+    <!-- OJO: este HTML trae una cotización de EJEMPLO ya llena (cliente, productos y
+         totales), para que se vea cómo queda cada parte. prototipo.js la vacía al abrir
+         la pantalla y el vendedor la arma desde cero: cliente → Cotizar → productos.
+
+         Título: volver a la lista, el estado de la cotización y en qué paso va -->
+    <header class="cot-cab">
+      <a class="cot-volver" href="09-cotizacion.html" title="Volver a Cotizaciones" aria-label="Volver a Cotizaciones">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"></path> <path d="M19 12H5"></path></svg>
+      </a>
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        Nueva cotización
+      </h2>
+      <!-- Cambia al pulsar Cotizar: Sin guardar → En elaboración -->
+      <span class="pill pill--warn" id="cot-estado">En elaboración</span>
+      <div class="steps" aria-label="Pasos de la cotización">
+        <span class="step done">1 · Cliente</span>
+        <span class="step done">2 · Productos</span>
+        <span class="step now">3 · Enviar</span>
+      </div>
+    </header>
+
+    <!-- Lo que el vendedor NO escribe: lo pone el sistema -->
+    <section class="panel cot-datos" id="cot-form" aria-label="Datos de la cotización">
+      <div class="cot-dato">
+        <span class="cot-dato__l">Nº de cotización</span>
+        <b id="cot-num">CO-2026-019</b>
+        <span class="tiny">El consecutivo del año</span>
+      </div>
+      <div class="cot-dato">
+        <span class="cot-dato__l">Fecha</span>
+        <b id="cot-fecha">23-septiembre-2026</b>
+        <span class="tiny" id="cot-dia">miércoles · la pone el sistema</span>
+      </div>
+      <div class="cot-dato">
+        <span class="cot-dato__l">Válida hasta</span>
+        <b id="cot-vence">08-octubre-2026</b>
+        <span class="tiny">15 días · se cambia en Config.</span>
+      </div>
+      <div class="cot-dato cot-dato--vend">
+        <span class="avatar avatar--sm" aria-hidden="true">VR</span>
+        <div>
+          <span class="cot-dato__l">Vendedor</span>
+          <b id="cot-vendedor">Valentina Rojas</b>
+          <span class="tiny">VEN-03 · zona Cúcuta</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- El cliente: se busca por nombre, NIT o cédula, y al elegirlo sale su ficha -->
+    <section class="panel cot-abierto" id="cot-cliente">
+      <!-- Como la tabla de Órdenes: una barra clara con el título y, en la misma línea,
+           el buscador. Sin la franja de color, que se llevaba mucho alto. -->
+      <div class="cot-barra">
+        <h3 class="cot-barra__t">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <path d="M16 3.128a4 4 0 0 1 0 7.744"></path> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <circle cx="9" cy="7" r="4"></circle></svg>
+          Cliente
+        </h3>
+        <div class="cot-busca" hidden>
+          <div class="control">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input id="cot-cli-q" type="search" autocomplete="off" placeholder="Buscar cliente por nombre, NIT o cédula..." aria-label="Buscar cliente" role="combobox" aria-expanded="false" aria-controls="cot-cli-res" aria-autocomplete="list">
+          </div>
+          <!-- Los resultados: los dibuja prototipo.js mientras se escribe -->
+          <div class="cot-res" id="cot-cli-res" role="listbox" aria-label="Clientes que coinciden" hidden></div>
+        </div>
+        <span class="cot-barra__ayuda" hidden>Seleccione un cliente para ver su información</span>
+        <!-- Después de Cotizar, el cliente se resume en esta línea para dejarle el alto a
+             los productos. "Ver ficha completa" abre la ficha debajo; "Ocultar ficha" la cierra. -->
+        <div class="cot-cli-mini" id="cot-cli-mini">
+          <span class="avatar avatar--sm" aria-hidden="true">CD</span>
+          <div class="cot-cli-mini__x">
+            <div class="cot-cli-mini__n"><b>Calzado El Dorado</b><span class="cot-ficha__estados"><span class="pill pill--ok">Al día</span></span></div>
+            <small>NIT 830.112.991-1 · Bogotá · Crédito 30 días · disponible $7.200.000</small>
+          </div>
+          <button class="btn btn--sm btn--ghost" type="button" data-cot="ver-ficha" aria-expanded="false" aria-controls="cot-cli-cuerpo">Ver ficha completa</button>
+          <button class="btn btn--sm btn--ghost" type="button" data-cot="cambiar-cliente">Cambiar cliente</button>
+        </div>
+      </div>
+      <!-- Antes de cotizar, la ficha se ve completa aquí. Después queda escondida
+           (hidden) hasta que se pulse "Ver ficha completa", y sin su cabecera, que ya
+           está en la línea de arriba (clase sin-cab). -->
+      <div class="panel__body" id="cot-cli-cuerpo" hidden>
+        <p class="cot-ficha-vacia" id="cot-ficha-vacia" hidden>Seleccione un cliente en el buscador para ver su información: contacto, dirección, crédito y facturas vencidas.</p>
+
+        <!-- La ficha del cliente. Este es un ejemplo lleno: prototipo.js la vacía al
+             abrir la pantalla y la vuelve a llenar con el cliente que se elija. -->
+        <div class="cot-ficha sin-cab" id="cot-ficha">
+          <div class="cot-ficha__cab">
+            <div class="who">
+              <span class="avatar" aria-hidden="true">CD</span>
+              <div><b>Calzado El Dorado</b><small>NIT 830.112.991-1 · CL-001 · cliente desde 2023</small></div>
+            </div>
+            <span class="cot-ficha__estados"><span class="pill pill--ok">Al día</span></span>
+            <button class="btn btn--sm btn--ghost" type="button" data-cot="cambiar-cliente">Cambiar cliente</button>
+          </div>
+          <div class="cot-ficha__g">
+            <section class="cot-ficha__s">
+              <h4>Contacto</h4>
+              <div class="kv"><span>Persona</span><b>Luis Gómez · compras</b></div>
+              <div class="kv"><span>Teléfono</span><b>310 245 8871</b></div>
+              <div class="kv"><span>Correo</span><b>compras@<wbr>calzadoeldorado.com.co</b></div>
+            </section>
+            <section class="cot-ficha__s">
+              <h4>Entrega</h4>
+              <div class="kv"><span>Dirección</span><b>Cra. 13 # 63-40</b></div>
+              <div class="kv"><span>Barrio</span><b>Chapinero</b></div>
+              <div class="kv"><span>Ciudad</span><b>Bogotá</b></div>
+            </section>
+            <section class="cot-ficha__s">
+              <h4>Crédito</h4>
+              <div class="kv"><span>Forma de pago</span><b>Crédito 30 días</b></div>
+              <div class="kv"><span>Cupo</span><b>$12.000.000</b></div>
+              <div class="kv"><span>Debe hoy</span><b>$4.800.000</b></div>
+              <div class="kv"><span>Disponible</span><b>$7.200.000</b></div>
+              <div class="bar bar--ok"><i style="width:40%"></i></div>
+              <span class="tiny">Usa el 40 % del cupo</span>
+              <div class="kv"><span>Facturas vencidas</span><b><span class="cot-bien">Ninguna</span></b></div>
+            </section>
+          </div>
+          <!-- Si el cliente tiene facturas vencidas, debajo de las columnas sale este recuadro
+               (ejemplo de Comercial Los Andes). En Facturación no se le podrá facturar hasta que pague.
+          <div class="cot-vencidas">
+            <div class="cot-vencidas__cab">(ícono alerta)<div><b>2 facturas vencidas por $5.400.000</b><p>Se le puede cotizar, pero no se le podrá facturar hasta que las pague.</p></div></div>
+            <table class="cot-vencidas__t">
+              <thead><tr><th>Factura</th><th>Venció el</th><th class="num">Hace</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                <tr><td data-l="Factura"><b>FV-2026-0091</b></td><td data-l="Venció el">04-septiembre-2026</td><td class="num" data-l="Hace">19 días</td><td class="num" data-l="Total">$3.480.000</td></tr>
+                <tr><td data-l="Factura"><b>FV-2026-0104</b></td><td data-l="Venció el">22-septiembre-2026</td><td class="num" data-l="Hace">1 día</td><td class="num" data-l="Total">$1.920.000</td></tr>
+              </tbody>
+            </table>
+          </div>
+          -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Los productos: aparece al pulsar Cotizar. Van como en el carrito de la ventana,
+         un bloque por modelo con sus colores, tallas y desglose. Aquí solo se leen: se
+         cambian en la ventana "Seleccionar productos" (el botón de la barra o "Cambiar").
+         En pantallas anchas esta sección ocupa el alto que queda: la lista se desplaza
+         sola y el resumen de la derecha (totales, observaciones y avisos) no se pierde.
+         Ejemplo lleno, igual que la ficha. -->
+    <section class="panel cot-prod" id="cot-productos">
+      <div class="cot-barra">
+        <h3 class="cot-barra__t">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path> <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path> <path d="M16 17h4"></path> <path d="M4 13h4"></path></svg>
+          Productos cotizados
+        </h3>
+        <span class="cot-barra__ayuda" id="cot-prod-sub">3 modelos · 38 pares</span>
+        <button class="btn btn--sm cot-barra__btn" type="button" data-cot="abrir-productos">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg>
+          Agregar o cambiar productos
+        </button>
+      </div>
+      <div class="cot-prod__cuerpo">
+        <div class="cot-prod__lista" id="cot-lineas" role="region" aria-label="Productos de la cotización">
+          <article class="cot-item">
+            <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span>
+            <div class="cot-item__x">
+              <div class="cot-item__cab">
+                <div><b>Bota Andina</b><span class="tiny">REF-1042 · 12 pares</span></div>
+                <div class="cot-item__der">
+                  <b class="cot-item__total">$978.180</b><span class="cot-item__acc"><button type="button" class="cot-ico cot-ico--cambiar" data-cot-cambiar="REF-1042" data-tip="Cambiar color, tallas o descuento" aria-label="Cambiar Bota Andina: color, tallas o descuento"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></button><button type="button" class="cot-ico cot-ico--quitar" data-cot-quitar="REF-1042" data-tip="Quitar de la cotización" aria-label="Quitar Bota Andina de la cotización"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></span>
+                </div>
+              </div>
+              <div class="cot-item__color"><i style="background:var(--cuero-negro)"></i><span>Negro</span><span class="vit__chips"><span>37<b>×6</b></span><span>38<b>×6</b></span></span></div>
+              <div class="cot-item__pie"><span class="cot-item__desglose">12 × $68.500 = <b>$822.000</b> · Sin descuento · IVA 19 % <b>$156.180</b></span></div>
+            </div>
+          </article>
+          <article class="cot-item">
+            <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-cafe)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M15 44c0-6 5-10 12-10h32c6 0 11 1.6 17 3.6l20 6.4c9 2.9 15 7.6 15 13.4V64H12V53c0-4 1-6.6 3-9z"></path><path class="brillo" d="M20 40c3-2 6-2.6 10-2.6h10c-4 1-8 3-10 6H18z"></path><path class="suela" d="M10 62h102c1.8 0 3 1.2 3 2.7s-1.2 2.7-3 2.7H13c-1.8 0-3-1.2-3-2.7z"></path><path class="costura" d="M58 36.5c14 0 28 4 38 10.5M56 41c13 .3 25 3.4 35 8.5"></path><path class="suela" d="M50 38.2h13v3.2H50z"></path></svg></span>
+            <div class="cot-item__x">
+              <div class="cot-item__cab">
+                <div><b>Mocasín Cúcuta</b><span class="tiny">REF-1043 · 8 pares</span></div>
+                <div class="cot-item__der">
+                  <b class="cot-item__total">$578.816</b><span class="cot-item__acc"><button type="button" class="cot-ico cot-ico--cambiar" data-cot-cambiar="REF-1043" data-tip="Cambiar color, tallas o descuento" aria-label="Cambiar Mocasín Cúcuta: color, tallas o descuento"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></button><button type="button" class="cot-ico cot-ico--quitar" data-cot-quitar="REF-1043" data-tip="Quitar de la cotización" aria-label="Quitar Mocasín Cúcuta de la cotización"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></span>
+                </div>
+              </div>
+              <div class="cot-item__color"><i style="background:var(--cuero-cafe)"></i><span>Café</span><span class="vit__chips"><span>40<b>×8</b></span></span></div>
+              <div class="cot-item__pie"><span class="cot-item__desglose">8 × $64.000 = <b>$512.000</b> · Descuento 5 % <b>−$25.600</b> · IVA 19 % <b>$92.416</b></span></div>
+            </div>
+          </article>
+          <article class="cot-item">
+            <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="68" rx="52" ry="3.4"></ellipse><path class="piel" d="M15 42c0-6 5-10 12-10h22c6 0 11 1.8 17 3.9l27 8.7c10 3.2 17 7.9 17 13.4V64H12V51c0-4 1-6.4 3-9z"></path><path class="brillo" d="M20 38c3-2 6-2.6 10-2.6h8c-4 1-7 3-9 6H18z"></path><path class="suela" d="M10 61h103a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3z"></path><path class="costura" d="M49 34c7 3.5 13 7.5 19 11.5M89 45c9 3 16 7.5 18 13.5"></path><path class="cordon" d="M53 35.5l9-2.6M56.5 39l9-2.6M60 42.5l9-2.6"></path></svg></span>
+            <div class="cot-item__x">
+              <div class="cot-item__cab">
+                <div><b>Zapato Colegial Reforzado</b><span class="tiny">REF-1044 · 18 pares</span></div>
+                <div class="cot-item__der">
+                  <b class="cot-item__total">$1.170.000</b><span class="cot-item__acc"><button type="button" class="cot-ico cot-ico--cambiar" data-cot-cambiar="REF-1044" data-tip="Cambiar color, tallas o descuento" aria-label="Cambiar Zapato Colegial Reforzado: color, tallas o descuento"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></button><button type="button" class="cot-ico cot-ico--quitar" data-cot-quitar="REF-1044" data-tip="Quitar de la cotización" aria-label="Quitar Zapato Colegial Reforzado de la cotización"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></span>
+                </div>
+              </div>
+              <div class="cot-item__color"><i style="background:var(--cuero-negro)"></i><span>Negro</span><span class="vit__chips"><span class="is-mal" title="Faltan 2 de la talla 36">36<b>×18</b> · faltan 2</span></span></div>
+              <div class="cot-item__pie"><span class="cot-item__desglose">18 × $65.000 = <b>$1.170.000</b> · Sin descuento · Sin IVA</span></div>
+            </div>
+          </article>
+        </div>
+        <aside class="cot-prod__resumen" aria-label="Resumen de la cotización">
+          <div class="cot-tot" id="cot-tot">
+            <div class="kv"><span>Subtotal <span class="tiny">38 pares</span></span><b>$2.504.000</b></div>
+            <div class="kv"><span>Descuentos</span><b>−$25.600</b></div>
+            <div class="kv"><span>IVA 19 % <span class="tiny">sobre $1.308.400</span></span><b>$248.596</b></div>
+            <div class="kv"><span>Productos sin IVA</span><b>$1.170.000</b></div>
+            <div class="kv kv--t"><span>Total</span><b>$2.726.996</b></div>
+          </div>
+          <div class="field">
+            <label for="cot-obs">Observaciones para el cliente</label>
+            <div class="control">
+              <textarea id="cot-obs" rows="2" placeholder="Ej. Entrega en 8 días hábiles después de facturada."></textarea>
+            </div>
+          </div>
+          <div class="cot-prod__avisos" id="cot-avisos">
+            <div class="aviso aviso--ok">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path><path d="m9 11 3 3L22 4"></path></svg>
+              <div>
+                <b>Cabe en el cupo del cliente</b>
+                <p>Le quedan $7.200.000 de cupo y la cotización suma $2.726.996.</p>
+              </div>
+            </div>
+            <div class="aviso aviso--warn">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+              <div>
+                <b>1 talla pide más pares de los que tiene asignados</b>
+                <p>Salen en rojo en la lista. Se cotiza igual: Inventario reserva lo que haya y el resto se le pide a Producción.</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Las acciones, siempre a la vista. Antes de cotizar solo está Cotizar;
+         después, Guardar borrador y Enviar a facturación. El cliente no la acepta:
+         la recibe Facturación para facturarla y a él le llega el PDF, solo para que
+         la conozca. -->
+    <div class="cot-acciones">
+      <button class="btn btn--ghost" type="button" data-cot="cancelar">Cancelar</button>
+      <p class="cot-acciones__msg" id="cot-msg" aria-live="polite">Revise los totales y envíela a Facturación (al cliente le llega el PDF), o guárdela como borrador para seguir después.</p>
+      <button class="btn btn--ghost" type="button" data-cot="borrador">Guardar borrador</button>
+      <button class="btn btn--oliva" type="button" data-cot="enviar" title="La recibe Facturación para facturarla; al cliente le llega el PDF a su correo">
+        <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path> <path d="m21.854 2.147-10.94 10.939"></path></svg>
+        Enviar a facturación
+      </button>
+      <button class="btn cot-cotizar" type="button" data-cot="cotizar" hidden>
+        <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        Cotizar
+      </button>
+    </div>
+
+    <!-- La ventana "Seleccionar productos": se abre al pulsar Cotizar. Es una vitrina:
+         el catálogo con el dibujo de cada modelo y, al abrir uno, tres pasos (color,
+         pares por talla, descuento y total), cada uno en su tarjeta. A la derecha, el
+         carrito. Lo que se escribe aquí se ve de una vez en la lista de la pantalla. -->
+    <div class="overlay" id="cot-dlg" role="dialog" aria-modal="true" aria-labelledby="cot-dlg-t" hidden>
+      <div class="modal cot-modal" tabindex="-1">
+        <div class="modal__head">
+          <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path> <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path> <path d="M16 17h4"></path> <path d="M4 13h4"></path></svg>
+          <div>
+            <h3 id="cot-dlg-t">Seleccionar productos</h3>
+            <span class="sub" id="cot-dlg-sub">CO-2026-019 · Calzado El Dorado · cupo disponible $7.200.000</span>
+          </div>
+          <button class="cot-x" type="button" data-cot="cerrar-productos" aria-label="Cerrar">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <!-- La vitrina: a la izquierda el catálogo (o el modelo abierto, en tres pasos) y a
+               la derecha el carrito con lo que lleva la cotización. Lo que hay adentro de
+               #cot-vit-cuerpo y #cot-vit-carro es un ejemplo con la Bota Andina abierta:
+               prototipo.js lo vuelve a dibujar cada vez que se abre la ventana. -->
+          <div class="vit" id="cot-vit">
+            <section class="vit__main" aria-label="Catálogo">
+              <div class="vit__bar">
+                <button class="vit__volver" id="cot-vit-volver" type="button" data-volver-catalogo>
+                  <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"></path> <path d="M19 12H5"></path></svg>
+                  Catálogo
+                </button>
+                <div class="control">
+                  <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+                  <input id="cot-vit-q" type="search" autocomplete="off" placeholder="Buscar por nombre o referencia..." aria-label="Buscar en el catálogo">
+                </div>
+                <label class="cot-solo"><input type="checkbox" id="cot-vit-solo"> Solo los que tienen pares</label>
+              </div>
+              <div id="cot-vit-cuerpo">
+                <div class="vit__modelo">
+                  <div class="vit__col">
+                    <section class="vit__ficha">
+                      <div class="gal" aria-label="Fotos de Bota Andina">
+                        <div class="gal__minis">
+                          <button type="button" class="gal__mini is-on" data-foto="0" aria-label="Foto: De lado" aria-current="true"><span class="cot-foto cot-foto--mini" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span></button>
+                          <button type="button" class="gal__mini" data-foto="1" aria-label="Foto: Lado de adentro"><span class="cot-foto cot-foto--mini" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true" class="es-espejo"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span></button>
+                          <button type="button" class="gal__mini" data-foto="2" aria-label="Foto: Desde arriba"><span class="cot-foto cot-foto--mini" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="63" cy="66" rx="48" ry="3.2"></ellipse><path class="piel borde" d="M16 36c0-9 7-14 17-14 15 0 28-2 43-4 20-2 34 5 34 18s-14 20-34 18c-15-2-28-4-43-4-10 0-17-5-17-14z"></path><ellipse class="adentro" cx="34" cy="36" rx="17" ry="11"></ellipse><ellipse class="cana" cx="34" cy="36" rx="19.5" ry="13.2"></ellipse><path class="costura" d="M58 23c20-3 38 1 44 13-6 12-24 16-44 13"></path></svg></span></button>
+                          <button type="button" class="gal__mini" data-foto="3" aria-label="Foto: La suela"><span class="cot-foto cot-foto--mini" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="63" cy="66" rx="48" ry="3.2"></ellipse><path class="suela" d="M16 36c0-9 7-14 17-14 15 0 28-2 43-4 20-2 34 5 34 18s-14 20-34 18c-15-2-28-4-43-4-10 0-17-5-17-14z"></path><path class="huella" d="M88 24h14M84 30h22M84 36h24M84 42h22M88 48h14M22 29h14M20 35h18M20 41h18M22 47h14M46 23v26"></path><text class="marca" x="66" y="38.5">SICAF</text></svg></span></button>
+                          <button type="button" class="gal__mini" data-foto="4" aria-label="Foto: Detalle del cuero"><span class="cot-foto cot-foto--mini" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><rect class="piel" x="8" y="6" width="104" height="60" rx="10"></rect><path class="brillo" d="M8 18c0-7 5-12 12-12h38C38 12 22 26 8 46z"></path><rect class="costura" x="16" y="14" width="88" height="44" rx="6"></rect><rect class="banda" x="76" y="45" width="28" height="13" rx="3"></rect><text class="marca" x="90" y="53.8">SICAF</text></svg></span></button>
+                        </div>
+                        <div class="gal__principal">
+                          <button type="button" class="gal__ver" data-ampliar="" title="Ampliar la foto"><span class="cot-foto cot-foto--gal" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span></button>
+                          <button type="button" class="gal__flecha gal__flecha--ant" data-foto-mover="-1" aria-label="Foto anterior"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+                          <button type="button" class="gal__flecha gal__flecha--sig" data-foto-mover="1" aria-label="Foto siguiente"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+                          <span class="gal__cuenta">1 / 5 · De lado</span><span class="gal__lupa" aria-hidden="true"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>Ampliar</span>
+                        </div>
+                      </div>
+                      <div class="vit__ficha-x">
+                        <span class="vit__ref">REF-1042 · colección Otoño 2026</span>
+                        <h4>Bota Andina</h4>
+                        <div class="vit__fila"><span class="vit__precio vit__precio--lg"><b>$68.500</b> el par</span><span class="vit__badges"><span class="cot-badge">IVA 19 %</span></span></div>
+                        <span class="vit__ficha-datos">Tallas 35 a 40 · 3 colores · 80 pares disponibles</span>
+                      </div>
+                    </section>
+                    <section class="vit__paso is-listo" data-paso="1">
+                      <header class="vit__paso-cab">
+                        <span class="vit__paso-n" aria-hidden="true">✓</span>
+                        <div class="vit__paso-t">
+                          <h5>Color del cuero</h5>
+                          <small>Toque un color para elegirlo.</small>
+                        </div>
+                        <span class="vit__paso-estado is-on" data-v="estado"><i style="background:var(--cuero-negro)"></i>Negro</span>
+                      </header>
+                      <div class="vit__paso-cuerpo">
+                        <div class="cot-colores" role="radiogroup" aria-label="Color del cuero">
+                          <button type="button" class="cot-color is-on" role="radio" aria-checked="true" data-vit-color="Negro"><i style="background:var(--cuero-negro)"></i><span>Negro<small><b>12 en la cotización</b></small></span></button>
+                          <button type="button" class="cot-color" role="radio" aria-checked="false" data-vit-color="Café"><i style="background:var(--cuero-cafe)"></i><span>Café<small>23 disponibles</small></span></button>
+                          <button type="button" class="cot-color" role="radio" aria-checked="false" data-vit-color="Miel"><i style="background:var(--cuero-miel)"></i><span>Miel<small>15 disponibles</small></span></button>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="vit__col">
+                    <section class="vit__paso is-listo" data-paso="2">
+                      <header class="vit__paso-cab">
+                        <span class="vit__paso-n" aria-hidden="true">✓</span>
+                        <div class="vit__paso-t">
+                          <h5>Pares por talla en Negro</h5>
+                          <small>Escriba cuántos pares quiere de cada talla.</small>
+                        </div>
+                        <span class="vit__paso-estado is-on" data-v="estado">12 pares</span>
+                      </header>
+                      <div class="vit__paso-cuerpo">
+                        <div class="cot-tallas" style="grid-template-columns: repeat(6, minmax(0, 1fr))">
+                          <label class="cot-talla cot-talla--poco"><span class="cot-talla__n">Talla 35</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="" data-ref="REF-1042" data-color="Negro" data-talla="35" aria-label="Pares de talla 35, Negro"><span class="cot-talla__hay">hay 4</span></label>
+                          <label class="cot-talla cot-talla--ok"><span class="cot-talla__n">Talla 36</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="" data-ref="REF-1042" data-color="Negro" data-talla="36" aria-label="Pares de talla 36, Negro"><span class="cot-talla__hay">hay 8</span></label>
+                          <label class="cot-talla cot-talla--ok is-on"><span class="cot-talla__n">Talla 37</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="6" data-ref="REF-1042" data-color="Negro" data-talla="37" aria-label="Pares de talla 37, Negro"><span class="cot-talla__hay">hay 12</span></label>
+                          <label class="cot-talla cot-talla--ok is-on"><span class="cot-talla__n">Talla 38</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="6" data-ref="REF-1042" data-color="Negro" data-talla="38" aria-label="Pares de talla 38, Negro"><span class="cot-talla__hay">hay 10</span></label>
+                          <label class="cot-talla cot-talla--ok"><span class="cot-talla__n">Talla 39</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="" data-ref="REF-1042" data-color="Negro" data-talla="39" aria-label="Pares de talla 39, Negro"><span class="cot-talla__hay">hay 6</span></label>
+                          <label class="cot-talla cot-talla--poco"><span class="cot-talla__n">Talla 40</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="" data-ref="REF-1042" data-color="Negro" data-talla="40" aria-label="Pares de talla 40, Negro"><span class="cot-talla__hay">hay 2</span></label>
+                        </div>
+                        <div class="vit__leyenda"><span class="is-ok">alcanza</span><span class="is-poco">quedan pocos</span><span class="is-cero">no hay</span><span class="is-mal" title="Se cotiza igual: se reserva lo que haya y el resto se le pide a Producción">pide más de lo que hay</span></div>
+                        <div class="vit__atajos">
+                          <span>Poner</span><input class="dt__in" id="cot-vit-n" type="number" min="1" step="1" value="2" aria-label="Pares para cada talla"><span>en cada talla</span>
+                          <button type="button" class="btn btn--sm btn--ghost" data-vit-llenar="">Llenar</button>
+                          <span class="vit__atajos-mas" data-v="atajos"><button type="button" class="btn btn--sm btn--ghost vit__borrar" data-vit-limpiar="">Borrar las del Negro</button></span>
+                        </div>
+                      </div>
+                    </section>
+                    <section class="vit__paso" data-paso="3">
+                      <header class="vit__paso-cab">
+                        <span class="vit__paso-n" aria-hidden="true">3</span>
+                        <div class="vit__paso-t">
+                          <h5>Descuento y total</h5>
+                          <small>Vale para todo el modelo; hasta 8 % sin autorización.</small>
+                        </div>
+                        <span class="vit__paso-estado" data-v="estado">Sin descuento</span>
+                      </header>
+                      <div class="vit__paso-cuerpo">
+                        <div class="cot-desglose vit__total">
+                          <span><b data-v="pares">12 pares</b> × $68.500 = <b data-v="bruto">$822.000</b></span>
+                          <label class="vit__desc" for="cot-vit-desc">Descuento <span class="cot-pct"><input class="dt__in cot-desc" id="cot-vit-desc" type="number" min="0" max="100" step="1" value="0" data-ref="REF-1042"> %</span> <b data-v="descuento">$0</b></label>
+                          <span>IVA 19 % <b data-v="iva">$156.180</b></span><span class="cot-desglose__t">Total <b data-v="total">$978.180</b></span>
+                        </div>
+                        <div class="vit__modelo-fin">
+                          <button type="button" class="btn btn--sm" data-volver-catalogo=""><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path><path d="m9 11 3 3L22 4"></path></svg>Listo con Bota Andina</button>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <aside class="vit__carro" id="cot-vit-carro" aria-label="Lo que lleva la cotización">
+              <div class="vit__carro-cab"><b>Lo que lleva la cotización</b><span>CO-2026-019</span></div>
+              <div class="vit__items">
+                <article class="vit__item is-abierto">
+                  <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span>
+                  <div class="vit__item-x">
+                    <div class="vit__item-cab"><b>Bota Andina</b><b>$978.180</b></div>
+                    <div class="vit__item-color"><i style="background:var(--cuero-negro)"></i>Negro<span class="vit__chips"><span>37<b>×6</b></span><span>38<b>×6</b></span></span></div>
+                    <div class="vit__item-pie">
+                      <span class="tiny">12 × $68.500 · IVA 19 %</span><span class="cot-item__acc"><button type="button" class="cot-ico cot-ico--cambiar" data-abrir="REF-1042" data-tip="Cambiar color, tallas o descuento" aria-label="Cambiar Bota Andina: color, tallas o descuento"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></button><button type="button" class="cot-ico cot-ico--quitar" data-quitar-producto="REF-1042" data-tip="Quitar de la cotización" aria-label="Quitar Bota Andina de la cotización"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></span>
+                    </div>
+                  </div>
+                </article>
+                <article class="vit__item">
+                  <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-cafe)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M15 44c0-6 5-10 12-10h32c6 0 11 1.6 17 3.6l20 6.4c9 2.9 15 7.6 15 13.4V64H12V53c0-4 1-6.6 3-9z"></path><path class="brillo" d="M20 40c3-2 6-2.6 10-2.6h10c-4 1-8 3-10 6H18z"></path><path class="suela" d="M10 62h102c1.8 0 3 1.2 3 2.7s-1.2 2.7-3 2.7H13c-1.8 0-3-1.2-3-2.7z"></path><path class="costura" d="M58 36.5c14 0 28 4 38 10.5M56 41c13 .3 25 3.4 35 8.5"></path><path class="suela" d="M50 38.2h13v3.2H50z"></path></svg></span>
+                  <div class="vit__item-x">
+                    <div class="vit__item-cab"><b>Mocasín Cúcuta</b><b>$578.816</b></div>
+                    <div class="vit__item-color"><i style="background:var(--cuero-cafe)"></i>Café<span class="vit__chips"><span>40<b>×8</b></span></span></div>
+                    <div class="vit__item-pie">
+                      <span class="tiny">8 × $64.000 · −5 % · IVA 19 %</span><span class="cot-item__acc"><button type="button" class="cot-ico cot-ico--cambiar" data-abrir="REF-1043" data-tip="Cambiar color, tallas o descuento" aria-label="Cambiar Mocasín Cúcuta: color, tallas o descuento"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></button><button type="button" class="cot-ico cot-ico--quitar" data-quitar-producto="REF-1043" data-tip="Quitar de la cotización" aria-label="Quitar Mocasín Cúcuta de la cotización"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></span>
+                    </div>
+                  </div>
+                </article>
+                <article class="vit__item">
+                  <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="68" rx="52" ry="3.4"></ellipse><path class="piel" d="M15 42c0-6 5-10 12-10h22c6 0 11 1.8 17 3.9l27 8.7c10 3.2 17 7.9 17 13.4V64H12V51c0-4 1-6.4 3-9z"></path><path class="brillo" d="M20 38c3-2 6-2.6 10-2.6h8c-4 1-7 3-9 6H18z"></path><path class="suela" d="M10 61h103a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3z"></path><path class="costura" d="M49 34c7 3.5 13 7.5 19 11.5M89 45c9 3 16 7.5 18 13.5"></path><path class="cordon" d="M53 35.5l9-2.6M56.5 39l9-2.6M60 42.5l9-2.6"></path></svg></span>
+                  <div class="vit__item-x">
+                    <div class="vit__item-cab"><b>Zapato Colegial Reforzado</b><b>$1.170.000</b></div>
+                    <div class="vit__item-color"><i style="background:var(--cuero-negro)"></i>Negro<span class="vit__chips"><span>36<b>×18</b></span></span></div>
+                    <div class="vit__item-pie">
+                      <span class="tiny">18 × $65.000 · sin IVA</span><span class="cot-item__acc"><button type="button" class="cot-ico cot-ico--cambiar" data-abrir="REF-1044" data-tip="Cambiar color, tallas o descuento" aria-label="Cambiar Zapato Colegial Reforzado: color, tallas o descuento"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></button><button type="button" class="cot-ico cot-ico--quitar" data-quitar-producto="REF-1044" data-tip="Quitar de la cotización" aria-label="Quitar Zapato Colegial Reforzado de la cotización"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="vit__carro-pie">
+                <div class="kv"><span>Subtotal <span class="tiny">38 pares</span></span><b>$2.504.000</b></div>
+                <div class="kv"><span>Descuentos</span><b>−$25.600</b></div>
+                <div class="kv"><span>IVA</span><b>$248.596</b></div>
+                <div class="kv kv--t"><span>Total</span><b>$2.726.996</b></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="modal__foot">
+          <div class="cot-sum" id="cot-sum">
+            <span>3 modelos · <b>38</b> pares</span><span>Subtotal <b>$2.504.000</b></span><span>Descuento <b>−$25.600</b></span><span>IVA <b>$248.596</b></span><span class="cot-sum__t">Total <b>$2.726.996</b></span>
+          </div>
+          <button class="btn" type="button" data-cot="cerrar-productos">
+            <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+            Listo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Las fotos del modelo en grande, encima de la ventana de productos: se abre con
+         un clic en la foto de la galería. prototipo.js la llena con el modelo abierto. -->
+    <div class="gal-caja" id="cot-galeria" role="dialog" aria-modal="true" aria-labelledby="cot-galeria-t" hidden></div>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Inventario · Inicio</title>
+    <title>SICAF · Inventario · Inicio</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
@@ -11,14 +11,18 @@
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Inicio">
 
-    <section class="hero">
-      <div>
-        <h1>Inventario</h1>
-        <p>Materia prima, producto en proceso, terminado, merma y maquinaria.</p>
-      </div>
-    </section>
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+        Inventario
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
     <div class="kpis">
-      <article class="kpi kpi--arena">
+      <button class="kpi kpi--arena kpi--btn" type="button" aria-pressed="false" data-kpi="ir:02-m-prima.html" data-dice="las referencias de materia prima" title="Abrir las referencias de materia prima">
         <span class="kpi__tile">
           <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
         </span>
@@ -27,18 +31,18 @@
           <div class="kpi__l">Referencias de insumo</div>
         </div>
         <span class="kpi__d flat">↑ 0%</span>
-      </article>
-      <article class="kpi kpi--rosa">
+      </button>
+      <button class="kpi kpi--rosa kpi--btn" type="button" aria-pressed="false" data-kpi="filtro:Bajo el mínimo" data-dice="solo lo que está bajo el mínimo" title="Filtrar la tabla: solo lo que está bajo el mínimo">
         <span class="kpi__tile">
           <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
         </span>
         <div>
           <div class="kpi__n">2</div>
-          <div class="kpi__l">Bajo stock mínimo</div>
+          <div class="kpi__l">Bajo el mínimo</div>
         </div>
         <span class="kpi__d down">↑ 100%</span>
-      </article>
-      <article class="kpi kpi--oliva">
+      </button>
+      <button class="kpi kpi--oliva kpi--btn" type="button" aria-pressed="false" data-kpi="ir:04-terminado.html" data-dice="el producto terminado" title="Abrir el producto terminado">
         <span class="kpi__tile">
           <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
         </span>
@@ -47,63 +51,18 @@
           <div class="kpi__l">Pares terminados</div>
         </div>
         <span class="kpi__d up">↑ 11%</span>
-      </article>
-      <article class="kpi kpi--cobre">
+      </button>
+      <button class="kpi kpi--cobre kpi--btn" type="button" aria-pressed="false" data-kpi="ir:07-kardex.html" data-dice="el kardex, que es de donde sale la valorización" title="Abrir el kardex, que es de donde sale la valorización">
         <span class="kpi__tile">
           <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
         </span>
         <div>
           <div class="kpi__n">$9.974.000</div>
-          <div class="kpi__l">Valorización</div>
+          <div class="kpi__l">Cuánto vale</div>
         </div>
         <span class="kpi__d up">↑ 2%</span>
-      </article>
+      </button>
     </div>
-    <details class="avisos">
-      <summary class="avisos__cab">
-        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
-        <span class="avisos__t">
-          <b>Pendientes y notificaciones</b>
-          <span class="tiny">3 urgentes · 2 en espera · 1 aviso de otro módulo</span>
-        </span>
-        <span class="avisos__n">6</span>
-        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-      </summary>
-      <div class="avisos__cuerpo">
-        <div class="pend">
-          <button class="pend__i pend__i--crit" data-ir="02-m-prima.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
-            <span class="pend__x"><b>Plantilla EVA por debajo del mínimo</b><small>180 par frente a un mínimo de 200 · solicitud SM-2026-001 enviada a Compras</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--crit" data-ir="02-m-prima.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
-            <span class="pend__x"><b>Cordón encerado 120 cm por debajo del mínimo</b><small>240 par frente a un mínimo de 300 · solicitud SM-2026-002 enviada a Compras</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--crit" data-ir="06-maquinaria.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg></span>
-            <span class="pend__x"><b>Prensa de montaje averiada</b><small>Etapa de montaje detenida · fuga en el pistón derecho</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="02-m-prima.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg></span>
-            <span class="pend__x"><b>Recepción pendiente OC-2026-014</b><small>1.200 dm² de cuero vacuno graso · Curtiembre del Norte ya despachó</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="06-maquinaria.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"></line> <line x1="12" x2="15" y1="14" y2="11"></line> <circle cx="12" cy="14" r="8"></circle></svg></span>
-            <span class="pend__x"><b>Horno reactivador en mantenimiento</b><small>Etapa de terminado · vuelve el 2026-09-16</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--info" data-ir="04-terminado.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
-            <span class="pend__x"><b>Ingreso de producto terminado LT-2026-029</b><small>78 pares de REF-1042 · lo aprobó Control de Calidad</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-        </div>
-      </div>
-    </details>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
@@ -114,14 +73,1026 @@
       <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
       <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
       <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
-      <a class="subnav__i" data-ico="editar" href="10-config.html">Config.</a>
     </nav>
+    <div class="g6__par">
+    <article class="graf graf--flujo">
+      <header class="graf__h">
+        <svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <b>Lo que entró a bodega</b>
+        <span class="graf__t">unidades, últimos seis meses</span>
+      </header>
+          <div class="colg">
+            <div class="colg__y"><span>6.000</span><span>4.000</span><span>2.000</span><span>0</span></div>
+            <div class="colg__p">
+              <span class="colg__g"><i style="bottom:100%"></i><i style="bottom:66.66%"></i><i style="bottom:33.33%"></i><i style="bottom:0%"></i></span>
+              <button class="colg__b" style="--c:var(--paso-4)" title="Abril de 2026: 4.200 unidades">
+                <span class="colg__t"><i style="height:70.00%"><em class="colg__tip">4.200 unidades<small>28 entradas</small></em></i></span>
+                <span class="colg__x">Abr</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-4)" title="Mayo de 2026: 4.800 unidades">
+                <span class="colg__t"><i style="height:80.00%"><em class="colg__tip">4.800 unidades<small>31 entradas</small></em></i></span>
+                <span class="colg__x">May</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-4)" title="Junio de 2026: 4.100 unidades">
+                <span class="colg__t"><i style="height:68.33%"><em class="colg__tip">4.100 unidades<small>26 entradas</small></em></i></span>
+                <span class="colg__x">Jun</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-4)" title="Julio de 2026: 5.100 unidades">
+                <span class="colg__t"><i style="height:85.00%"><em class="colg__tip">5.100 unidades<small>34 entradas</small></em></i></span>
+                <span class="colg__x">Jul</span>
+              </button>
+              <button class="colg__b is-top" style="--c:var(--paso-4)" title="Agosto de 2026: 5.400 unidades">
+                <span class="colg__t"><i style="height:90.00%"><em class="colg__tip">5.400 unidades<small>36 entradas</small></em></i></span>
+                <span class="colg__x">Ago</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-4)" title="Septiembre de 2026: 3.900 unidades">
+                <span class="colg__t"><i style="height:65.00%"><em class="colg__tip">3.900 unidades<small>24 entradas · va hasta hoy</small></em></i></span>
+                <span class="colg__x">Sep</span>
+              </button>
+            </div>
+          </div>
+      <details class="g6__datos">
+        <summary>Ver los mismos números en una tabla</summary>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Mes</th><th class="num">Unidades</th><th>Detalle</th></tr></thead>
+            <tbody><tr><td data-l="Mes">Abril</td><td class="num" data-l="unidades">4.200</td><td data-l="Detalle">28 entradas</td></tr><tr><td data-l="Mes">Mayo</td><td class="num" data-l="unidades">4.800</td><td data-l="Detalle">31 entradas</td></tr><tr><td data-l="Mes">Junio</td><td class="num" data-l="unidades">4.100</td><td data-l="Detalle">26 entradas</td></tr><tr><td data-l="Mes">Julio</td><td class="num" data-l="unidades">5.100</td><td data-l="Detalle">34 entradas</td></tr><tr><td data-l="Mes">Agosto</td><td class="num" data-l="unidades">5.400</td><td data-l="Detalle">36 entradas</td></tr><tr><td data-l="Mes">Septiembre</td><td class="num" data-l="unidades">3.900</td><td data-l="Detalle">24 entradas · va hasta hoy</td></tr></tbody>
+          </table>
+        </div>
+      </details>
+    </article>
+    <article class="graf graf--flujo">
+      <header class="graf__h">
+        <svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <b>Lo que salió de bodega</b>
+        <span class="graf__t">unidades, últimos seis meses</span>
+      </header>
+          <div class="colg">
+            <div class="colg__y"><span>6.000</span><span>4.000</span><span>2.000</span><span>0</span></div>
+            <div class="colg__p">
+              <span class="colg__g"><i style="bottom:100%"></i><i style="bottom:66.66%"></i><i style="bottom:33.33%"></i><i style="bottom:0%"></i></span>
+              <button class="colg__b" style="--c:var(--paso-2)" title="Abril de 2026: 3.900 unidades">
+                <span class="colg__t"><i style="height:65.00%"><em class="colg__tip">3.900 unidades<small>25 salidas</small></em></i></span>
+                <span class="colg__x">Abr</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-2)" title="Mayo de 2026: 4.500 unidades">
+                <span class="colg__t"><i style="height:75.00%"><em class="colg__tip">4.500 unidades<small>29 salidas</small></em></i></span>
+                <span class="colg__x">May</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-2)" title="Junio de 2026: 4.300 unidades">
+                <span class="colg__t"><i style="height:71.67%"><em class="colg__tip">4.300 unidades<small>27 salidas</small></em></i></span>
+                <span class="colg__x">Jun</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-2)" title="Julio de 2026: 4.800 unidades">
+                <span class="colg__t"><i style="height:80.00%"><em class="colg__tip">4.800 unidades<small>31 salidas</small></em></i></span>
+                <span class="colg__x">Jul</span>
+              </button>
+              <button class="colg__b is-top" style="--c:var(--paso-2)" title="Agosto de 2026: 5.200 unidades">
+                <span class="colg__t"><i style="height:86.67%"><em class="colg__tip">5.200 unidades<small>34 salidas</small></em></i></span>
+                <span class="colg__x">Ago</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-2)" title="Septiembre de 2026: 3.600 unidades">
+                <span class="colg__t"><i style="height:60.00%"><em class="colg__tip">3.600 unidades<small>22 salidas · va hasta hoy</small></em></i></span>
+                <span class="colg__x">Sep</span>
+              </button>
+            </div>
+          </div>
+      <details class="g6__datos">
+        <summary>Ver los mismos números en una tabla</summary>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Mes</th><th class="num">Unidades</th><th>Detalle</th></tr></thead>
+            <tbody><tr><td data-l="Mes">Abril</td><td class="num" data-l="unidades">3.900</td><td data-l="Detalle">25 salidas</td></tr><tr><td data-l="Mes">Mayo</td><td class="num" data-l="unidades">4.500</td><td data-l="Detalle">29 salidas</td></tr><tr><td data-l="Mes">Junio</td><td class="num" data-l="unidades">4.300</td><td data-l="Detalle">27 salidas</td></tr><tr><td data-l="Mes">Julio</td><td class="num" data-l="unidades">4.800</td><td data-l="Detalle">31 salidas</td></tr><tr><td data-l="Mes">Agosto</td><td class="num" data-l="unidades">5.200</td><td data-l="Detalle">34 salidas</td></tr><tr><td data-l="Mes">Septiembre</td><td class="num" data-l="unidades">3.600</td><td data-l="Detalle">22 salidas · va hasta hoy</td></tr></tbody>
+          </table>
+        </div>
+      </details>
+    </article>
+    </div>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg>
+        <div>
+          <h2>Las cuatro bodegas</h2>
+        </div>
+      </header>
+      <div class="panel__body">
+        <article class="graf mosli" id="bodegas">
+          <header class="graf__h">
+            <svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg>
+            <b>Qué hay en cada bodega</b>
+            <span class="graf__t" id="bod-cuenta">1 de 4</span>
+            <button class="mosli__b" type="button" data-paso="-1" aria-label="Bodega anterior" disabled>
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <button class="mosli__b mosli__b--sig" type="button" data-paso="1" aria-label="Siguiente bodega">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+          </header>
+          <div class="mosli__v">
+            <div class="mosli__t" id="bod-tira" style="transform:translateX(-0%)">
+          <div class="mosli__p mosli__p--uno" data-bodega="BOD-01">
+            <article class="bodp">
+              <header class="bodp__h">
+                <span class="bodp__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg></span>
+                <span class="bodp__t"><b>BOD-01 · Principal</b><small>Primer piso, al lado de corte</small></span>
+                <span class="pill pill--warn">Hay que abastecer</span>
+              </header>
+              <p class="bodp__q">Cuero, suelas, forro y plantillas</p>
+              <div class="bodp__o">
+                <div class="bar bar--warn"><i style="width:68%"></i></div>
+                <span class="tiny">68 % ocupada · 4 artículos adentro</span>
+              </div>
+              <div class="bodp__cols">
+                <div>
+                  <div class="bodp__r">Lo que tiene <span class="bodp__ay">la barra es frente a su mínimo</span></div>
+                  <span class="minib">
+              <span class="minib__i" title="2.400 dm² · mínimo 800">
+                <span class="minib__t">Cuero vacuno graso</span>
+                <span class="minib__b"><i style="width:100.0%;background:var(--ok)"></i></span>
+                <b>2.400</b>
+              </span>
+              <span class="minib__i" title="420 par · mínimo 150">
+                <span class="minib__t">Suela de caucho 36-43</span>
+                <span class="minib__b"><i style="width:100.0%;background:var(--ok)"></i></span>
+                <b>420</b>
+              </span>
+              <span class="minib__i" title="260 m · mínimo 120">
+                <span class="minib__t">Forro textil</span>
+                <span class="minib__b"><i style="width:100.0%;background:var(--ok)"></i></span>
+                <b>260</b>
+              </span>
+              <span class="minib__i" title="180 par · mínimo 200">
+                <span class="minib__t">Plantilla EVA</span>
+                <span class="minib__b"><i style="width:45.0%;background:var(--crit)"></i></span>
+                <b>180</b>
+              </span>
+                  </span>
+                </div>
+                <div>
+                  <div class="bodp__r">Lo que le hace falta</div>
+            <ul class="bodp__f">              <li><b>MP-05</b> Plantilla EVA <span>faltan 20 par</span></li></ul>
+            <button class="btn btn--sm" type="button" data-pedir="BOD-01">Pedir para esta bodega</button>
+                </div>
+              </div>
+              <button class="btn btn--sm btn--ghost" type="button" data-ver="BOD-01">Ver los artículos de esta bodega</button>
+            </article>
+          </div>
+          <div class="mosli__p mosli__p--uno" data-bodega="BOD-02">
+            <article class="bodp">
+              <header class="bodp__h">
+                <span class="bodp__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg></span>
+                <span class="bodp__t"><b>BOD-02 · Producto terminado</b><small>Segundo piso, junto a despachos</small></span>
+                <span class="pill pill--ok">Al día</span>
+              </header>
+              <p class="bodp__q">Pares listos para entregar</p>
+              <div class="bodp__o">
+                <div class="bar"><i style="width:54%"></i></div>
+                <span class="tiny">54 % ocupada · 2 artículos adentro</span>
+              </div>
+              <div class="bodp__cols">
+                <div>
+                  <div class="bodp__r">Lo que tiene <span class="bodp__ay">la barra es frente a su mínimo</span></div>
+                  <span class="minib">
+              <span class="minib__i" title="78 par · mínimo 40">
+                <span class="minib__t">Mocasín Cúcuta</span>
+                <span class="minib__b"><i style="width:97.5%;background:var(--ok)"></i></span>
+                <b>78</b>
+              </span>
+              <span class="minib__i" title="44 par · mínimo 30">
+                <span class="minib__t">Zapato Colegial</span>
+                <span class="minib__b"><i style="width:73.3%;background:var(--warn)"></i></span>
+                <b>44</b>
+              </span>
+                  </span>
+                </div>
+                <div>
+                  <div class="bodp__r">Lo que le hace falta</div>
+            <p class="bodp__ok">No le falta nada: todo está por encima del mínimo.</p>
+                </div>
+              </div>
+              <button class="btn btn--sm btn--ghost" type="button" data-ver="BOD-02">Ver los artículos de esta bodega</button>
+            </article>
+          </div>
+          <div class="mosli__p mosli__p--uno" data-bodega="BOD-03">
+            <article class="bodp">
+              <header class="bodp__h">
+                <span class="bodp__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg></span>
+                <span class="bodp__t"><b>BOD-03 · Merma y reproceso</b><small>Patio de atrás</small></span>
+                <span class="pill pill--ok">Al día</span>
+              </header>
+              <p class="bodp__q">Lo que salió mal y lo que vuelve del cliente</p>
+              <div class="bodp__o">
+                <div class="bar"><i style="width:31%"></i></div>
+                <span class="tiny">31 % ocupada · 3 artículos adentro</span>
+              </div>
+              <div class="bodp__cols">
+                <div>
+                  <div class="bodp__r">Lo que tiene <span class="bodp__ay">la barra es frente a su mínimo</span></div>
+                  <span class="minib">
+              <span class="minib__i" title="38 dm²">
+                <span class="minib__t">Cuero con manchas</span>
+                <span class="minib__b"><i style="width:92.7%;background:var(--ok)"></i></span>
+                <b>38</b>
+              </span>
+              <span class="minib__i" title="41 par">
+                <span class="minib__t">Pares para reproceso</span>
+                <span class="minib__b"><i style="width:100.0%;background:var(--ok)"></i></span>
+                <b>41</b>
+              </span>
+              <span class="minib__i" title="12 par">
+                <span class="minib__t">Suela defectuosa</span>
+                <span class="minib__b"><i style="width:29.3%;background:var(--ok)"></i></span>
+                <b>12</b>
+              </span>
+                  </span>
+                </div>
+                <div>
+                  <div class="bodp__r">Lo que le hace falta</div>
+            <p class="bodp__ok">No le falta nada: todo está por encima del mínimo.</p>
+                </div>
+              </div>
+              <button class="btn btn--sm btn--ghost" type="button" data-ver="BOD-03">Ver los artículos de esta bodega</button>
+            </article>
+          </div>
+          <div class="mosli__p mosli__p--uno" data-bodega="BOD-04">
+            <article class="bodp">
+              <header class="bodp__h">
+                <span class="bodp__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg></span>
+                <span class="bodp__t"><b>BOD-04 · Insumos y químicos</b><small>Primer piso, cuarto cerrado</small></span>
+                <span class="pill pill--warn">Hay que abastecer</span>
+              </header>
+              <p class="bodp__q">Hilo, pegante, ojaletes y cordones</p>
+              <div class="bodp__o">
+                <div class="bar bar--crit"><i style="width:82%"></i></div>
+                <span class="tiny">82 % ocupada · 4 artículos adentro</span>
+              </div>
+              <div class="bodp__cols">
+                <div>
+                  <div class="bodp__r">Lo que tiene <span class="bodp__ay">la barra es frente a su mínimo</span></div>
+                  <span class="minib">
+              <span class="minib__i" title="34 cono · mínimo 20">
+                <span class="minib__t">Hilo poliéster 40</span>
+                <span class="minib__b"><i style="width:85.0%;background:var(--ok)"></i></span>
+                <b>34</b>
+              </span>
+              <span class="minib__i" title="22 kg · mínimo 15">
+                <span class="minib__t">Pegante poliuretano</span>
+                <span class="minib__b"><i style="width:73.3%;background:var(--warn)"></i></span>
+                <b>22</b>
+              </span>
+              <span class="minib__i" title="5.600 un · mínimo 2.000">
+                <span class="minib__t">Ojalete metálico</span>
+                <span class="minib__b"><i style="width:100.0%;background:var(--ok)"></i></span>
+                <b>5.600</b>
+              </span>
+              <span class="minib__i" title="240 par · mínimo 300">
+                <span class="minib__t">Cordón encerado 120 cm</span>
+                <span class="minib__b"><i style="width:40.0%;background:var(--crit)"></i></span>
+                <b>240</b>
+              </span>
+                  </span>
+                </div>
+                <div>
+                  <div class="bodp__r">Lo que le hace falta</div>
+            <ul class="bodp__f">              <li><b>MP-08</b> Cordón encerado 120 cm <span>faltan 60 par</span></li></ul>
+            <button class="btn btn--sm" type="button" data-pedir="BOD-04">Pedir para esta bodega</button>
+                </div>
+              </div>
+              <button class="btn btn--sm btn--ghost" type="button" data-ver="BOD-04">Ver los artículos de esta bodega</button>
+            </article>
+          </div>
+            </div>
+          </div>
+          <div class="mosli__d"><button class="mosli__pt is-on" aria-label="Bodega 1"></button><button class="mosli__pt" aria-label="Bodega 2"></button><button class="mosli__pt" aria-label="Bodega 3"></button><button class="mosli__pt" aria-label="Bodega 4"></button></div>
+        </article>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg>
+        <div>
+          <h2>Qué hay adentro</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-04-adentro">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-04-adentro-q" type="search" value="" autocomplete="off" placeholder="Buscar artículo, código o estante…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="dt-04-adentro-f-bod">Bodega</label>
+              <select id="dt-04-adentro-f-bod" class="dt__in">
+                <option value="">Todas</option>
+                <option value="BOD-01">BOD-01 · Principal</option>
+                <option value="BOD-02">BOD-02 · Producto terminado</option>
+                <option value="BOD-03">BOD-03 · Merma y reproceso</option>
+                <option value="BOD-04">BOD-04 · Insumos y químicos</option>
+              </select>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Bodega"><span>Bodega</span><i class="dt__ind">▲</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Código"><span>Código</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Qué es"><span>Qué es</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Hay"><span>Hay</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Mínimo"><span>Mínimo</span><i class="dt__ind">⇅</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Dónde está"><span>Dónde está</span><i class="dt__ind">⇅</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Cómo está"><span>Cómo está</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="acts dt__th--txt"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-bodega="BOD-01" data-unidad="dm²">
+                  <td data-l="Bodega"><b>BOD-01</b><div class="tiny">Principal</div></td>
+                  <td data-l="Código">MP-01</td>
+                  <td data-l="Qué es">Cuero vacuno graso</td>
+                  <td class="num" data-l="Hay"><b class="hay">2.400</b><div class="tiny">dm²</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">800</span></td>
+                  <td data-l="Dónde está"><span class="donde">A-1</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-01" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-01</b><div class="tiny">Principal</div></td>
+                  <td data-l="Código">MP-02</td>
+                  <td data-l="Qué es">Suela de caucho 36-43</td>
+                  <td class="num" data-l="Hay"><b class="hay">420</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">150</span></td>
+                  <td data-l="Dónde está"><span class="donde">A-2</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-01" data-unidad="m">
+                  <td data-l="Bodega"><b>BOD-01</b><div class="tiny">Principal</div></td>
+                  <td data-l="Código">MP-03</td>
+                  <td data-l="Qué es">Forro textil</td>
+                  <td class="num" data-l="Hay"><b class="hay">260</b><div class="tiny">m</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">120</span></td>
+                  <td data-l="Dónde está"><span class="donde">A-3</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-01" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-01</b><div class="tiny">Principal</div></td>
+                  <td data-l="Código">MP-05</td>
+                  <td data-l="Qué es">Plantilla EVA</td>
+                  <td class="num" data-l="Hay"><b class="hay">180</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">200</span></td>
+                  <td data-l="Dónde está"><span class="donde">A-4</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-02" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-02</b><div class="tiny">Producto terminado</div></td>
+                  <td data-l="Código">PT-REF-1042</td>
+                  <td data-l="Qué es">Mocasín Cúcuta</td>
+                  <td class="num" data-l="Hay"><b class="hay">78</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">40</span></td>
+                  <td data-l="Dónde está"><span class="donde">B-1</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-02" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-02</b><div class="tiny">Producto terminado</div></td>
+                  <td data-l="Código">PT-REF-1043</td>
+                  <td data-l="Qué es">Zapato Colegial</td>
+                  <td class="num" data-l="Hay"><b class="hay">44</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">30</span></td>
+                  <td data-l="Dónde está"><span class="donde">B-2</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--warn">Cerca del mínimo</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-03" data-unidad="dm²">
+                  <td data-l="Bodega"><b>BOD-03</b><div class="tiny">Merma y reproceso</div></td>
+                  <td data-l="Código">ME-01</td>
+                  <td data-l="Qué es">Cuero con manchas</td>
+                  <td class="num" data-l="Hay"><b class="hay">38</b><div class="tiny">dm²</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">—</span></td>
+                  <td data-l="Dónde está"><span class="donde">C-1</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-03" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-03</b><div class="tiny">Merma y reproceso</div></td>
+                  <td data-l="Código">ME-02</td>
+                  <td data-l="Qué es">Pares para reproceso</td>
+                  <td class="num" data-l="Hay"><b class="hay">41</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">—</span></td>
+                  <td data-l="Dónde está"><span class="donde">C-2</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-03" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-03</b><div class="tiny">Merma y reproceso</div></td>
+                  <td data-l="Código">ME-03</td>
+                  <td data-l="Qué es">Suela defectuosa</td>
+                  <td class="num" data-l="Hay"><b class="hay">12</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">—</span></td>
+                  <td data-l="Dónde está"><span class="donde">C-3</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-04" data-unidad="cono">
+                  <td data-l="Bodega"><b>BOD-04</b><div class="tiny">Insumos y químicos</div></td>
+                  <td data-l="Código">MP-04</td>
+                  <td data-l="Qué es">Hilo poliéster 40</td>
+                  <td class="num" data-l="Hay"><b class="hay">34</b><div class="tiny">cono</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">20</span></td>
+                  <td data-l="Dónde está"><span class="donde">D-1</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-04" data-unidad="kg">
+                  <td data-l="Bodega"><b>BOD-04</b><div class="tiny">Insumos y químicos</div></td>
+                  <td data-l="Código">MP-06</td>
+                  <td data-l="Qué es">Pegante poliuretano</td>
+                  <td class="num" data-l="Hay"><b class="hay">22</b><div class="tiny">kg</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">15</span></td>
+                  <td data-l="Dónde está"><span class="donde">D-2</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--warn">Cerca del mínimo</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-04" data-unidad="un">
+                  <td data-l="Bodega"><b>BOD-04</b><div class="tiny">Insumos y químicos</div></td>
+                  <td data-l="Código">MP-07</td>
+                  <td data-l="Qué es">Ojalete metálico</td>
+                  <td class="num" data-l="Hay"><b class="hay">5.600</b><div class="tiny">un</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">2.000</span></td>
+                  <td data-l="Dónde está"><span class="donde">D-3</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-bodega="BOD-04" data-unidad="par">
+                  <td data-l="Bodega"><b>BOD-04</b><div class="tiny">Insumos y químicos</div></td>
+                  <td data-l="Código">MP-08</td>
+                  <td data-l="Qué es">Cordón encerado 120 cm</td>
+                  <td class="num" data-l="Hay"><b class="hay">240</b><div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo"><span class="min">300</span></td>
+                  <td data-l="Dónde está"><span class="donde">D-4</span></td>
+                  <td data-l="Cómo está"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                  <td data-l="Acciones">
+                    <div class="acts">
+                      <button class="btn btn--sm" type="button">Meter</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Sacar</button>
+                      <button class="btn btn--sm btn--ghost" type="button">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 13 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Bajo el mínimo</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Cerca del mínimo</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Suficiente</b><span>9</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>13</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-04-adentro-tam">
+                Filas por página
+                <select id="dt-04-adentro-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag">2</button>
+                <button class="dt__pag dt__pag--n" aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="panel" id="p-mover">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 3 4 4-4 4"></path> <path d="M21 7H9"></path> <path d="m7 21-4-4 4-4"></path> <path d="M3 17h12"></path></svg>
+        <div>
+          <h2>Meter o sacar de la bodega</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--form">
+        <div class="field">
+          <label for="mb-bod">Bodega</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35"></path> <path d="M6 18h12"></path> <path d="M6 14h12"></path> <rect width="12" height="12" x="6" y="10"></rect></svg>
+            <select id="mb-bod">
+                <option value="BOD-01">BOD-01 · Principal</option>
+                <option value="BOD-02">BOD-02 · Producto terminado</option>
+                <option value="BOD-03">BOD-03 · Merma y reproceso</option>
+                <option value="BOD-04">BOD-04 · Insumos y químicos</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="mb-art">Artículo</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+            <select id="mb-art"></select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="mb-tipo">Qué va a hacer</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 3 4 4-4 4"></path> <path d="M21 7H9"></path> <path d="m7 21-4-4 4-4"></path> <path d="M3 17h12"></path></svg>
+            <select id="mb-tipo">
+              <option value="Entrada">Meter (entra a la bodega)</option>
+              <option value="Salida">Sacar (sale de la bodega)</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="mb-cant">Cuánto</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
+            <input id="mb-cant" type="number" min="1" placeholder="Cantidad">
+          </div>
+        </div>
+        <div class="field">
+          <label for="mb-mot">Por qué</label>
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            <select id="mb-mot">
+              <option>Compra recibida</option>
+              <option>Entrega a producción</option>
+              <option>Devolución del cliente</option>
+              <option>Ajuste por conteo</option>
+              <option>Baja por daño</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+        </div>
+        <button class="btn" type="button">Registrar movimiento</button>
+        <p class="tiny" id="mb-pie">Elija la bodega y el artículo. No se puede sacar más de lo que hay.</p>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"></path> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"></path> <circle cx="18" cy="20" r="2"></circle> <circle cx="8" cy="20" r="2"></circle></svg>
+        <div>
+          <h2>Qué hay que abastecer</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-04-abastecer">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-04-abastecer-q" type="search" value="" autocomplete="off" placeholder="Buscar bodega, insumo o proveedor…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="dt-04-abastecer-f-bod">Bodega</label>
+              <select id="dt-04-abastecer-f-bod" class="dt__in">
+                <option value="">Todas</option>
+                <option value="BOD-01">BOD-01 · Principal</option>
+                <option value="BOD-02">BOD-02 · Producto terminado</option>
+                <option value="BOD-03">BOD-03 · Merma y reproceso</option>
+                <option value="BOD-04">BOD-04 · Insumos y químicos</option>
+              </select>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Bodega"><span>Bodega</span><i class="dt__ind">▲</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Insumo"><span>Insumo</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Hay"><span>Hay</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Mínimo"><span>Mínimo</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Falta"><span>Falta</span><i class="dt__ind">⇅</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Cómo está"><span>Cómo está</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="acts dt__th--txt"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-01</b></td>
+                  <td data-l="Insumo">MP-05 · Plantilla EVA<div class="tiny">Suelas Pacífico</div></td>
+                  <td class="num" data-l="Hay">180<div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo">200</td>
+                  <td class="num falta" data-l="Falta">20</td>
+                  <td data-l="Cómo está"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-04</b></td>
+                  <td data-l="Insumo">MP-08 · Cordón encerado 120 cm<div class="tiny">Insumos Textiles JR</div></td>
+                  <td class="num" data-l="Hay">240<div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo">300</td>
+                  <td class="num falta" data-l="Falta">60</td>
+                  <td data-l="Cómo está"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-04</b></td>
+                  <td data-l="Insumo">MP-06 · Pegante poliuretano<div class="tiny">Químicos Andinos</div></td>
+                  <td class="num" data-l="Hay">22<div class="tiny">kg</div></td>
+                  <td class="num" data-l="Mínimo">15</td>
+                  <td class="num muted" data-l="Falta">—</td>
+                  <td data-l="Cómo está"><span class="pill pill--warn">Cerca del mínimo</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-04</b></td>
+                  <td data-l="Insumo">MP-04 · Hilo poliéster 40<div class="tiny">Insumos Textiles JR</div></td>
+                  <td class="num" data-l="Hay">34<div class="tiny">cono</div></td>
+                  <td class="num" data-l="Mínimo">20</td>
+                  <td class="num muted" data-l="Falta">—</td>
+                  <td data-l="Cómo está"><span class="pill pill--warn">Cerca del mínimo</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-01</b></td>
+                  <td data-l="Insumo">MP-01 · Cuero vacuno graso<div class="tiny">Curtiembre del Norte</div></td>
+                  <td class="num" data-l="Hay">2.400<div class="tiny">dm²</div></td>
+                  <td class="num" data-l="Mínimo">800</td>
+                  <td class="num muted" data-l="Falta">—</td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-01</b></td>
+                  <td data-l="Insumo">MP-02 · Suela de caucho 36-43<div class="tiny">Suelas Pacífico</div></td>
+                  <td class="num" data-l="Hay">420<div class="tiny">par</div></td>
+                  <td class="num" data-l="Mínimo">150</td>
+                  <td class="num muted" data-l="Falta">—</td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-01</b></td>
+                  <td data-l="Insumo">MP-03 · Forro textil<div class="tiny">Insumos Textiles JR</div></td>
+                  <td class="num" data-l="Hay">260<div class="tiny">m</div></td>
+                  <td class="num" data-l="Mínimo">120</td>
+                  <td class="num muted" data-l="Falta">—</td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Pedir a Compras</button></div></td>
+                </tr>
+                <tr>
+                  <td data-l="Bodega"><b>BOD-04</b></td>
+                  <td data-l="Insumo">MP-07 · Ojalete metálico<div class="tiny">Insumos Textiles JR</div></td>
+                  <td class="num" data-l="Hay">5.600<div class="tiny">un</div></td>
+                  <td class="num" data-l="Mínimo">2.000</td>
+                  <td class="num muted" data-l="Falta">—</td>
+                  <td data-l="Cómo está"><span class="pill pill--ok">Suficiente</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Pedir a Compras</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 8 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Bajo el mínimo</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Cerca del mínimo</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Suficiente</b><span>4</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–8</b> de <b>8</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-04-abastecer-tam">
+                Filas por página
+                <select id="dt-04-abastecer-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="nota">
+          <span class="dot"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg></span>
+          <p><b>Nota:</b> «Falta» es lo que hay que comprar para volver al mínimo. Al pulsar
+          «Pedir a Compras» se abre la solicitud con esa cantidad ya escrita.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div>
+          <h2>Historial de los últimos meses</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-04-historial">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-04-historial-q" type="search" value="" autocomplete="off" placeholder="Buscar día, persona o trabajo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="dt-04-historial-f-mes">Mes</label>
+              <select id="dt-04-historial-f-mes" class="dt__in">
+                <option value="">Todos</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l">Día</span>
+              <div class="dt__rango">
+                <input type="date" class="dt__in" value aria-label="Día desde" title="Desde">
+                <span class="dt__rango-s">–</span>
+                <input type="date" class="dt__in" value aria-label="Día hasta" title="Hasta">
+              </div>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table class="hist">
+              <thead>
+                <tr>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Día"><span>Día</span><i class="dt__ind">▼</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Desde"><span>Desde</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Hasta"><span>Hasta</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Duró"><span>Duró</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Qué se hizo"><span>Qué se hizo</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Quién"><span>Quién</span><i class="dt__ind">⇅</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Cómo quedó"><span>Cómo quedó</span><i class="dt__ind">⇅</i></button></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Día"><b>22/09/2026</b></td>
+                  <td class="num" data-l="Desde">10:00</td>
+                  <td class="num" data-l="Hasta">12:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Conteo de cuero · 8 referencias</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cuadró</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>21/09/2026</b></td>
+                  <td class="num" data-l="Desde">17:00</td>
+                  <td class="num" data-l="Hasta">17:40</td>
+                  <td class="num" data-l="Duró">40 min</td>
+                  <td data-l="Qué se hizo">Ajuste por conteo de la REF-1042</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--warn">Con diferencia</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>16/09/2026</b></td>
+                  <td class="num" data-l="Desde">06:30</td>
+                  <td class="num" data-l="Hasta">08:00</td>
+                  <td class="num" data-l="Duró">1,5 h</td>
+                  <td data-l="Qué se hizo">Entrada de suela de Suelas Pacífico</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Recibida</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>10/09/2026</b></td>
+                  <td class="num" data-l="Desde">13:00</td>
+                  <td class="num" data-l="Hasta">15:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Salida de material a la OP-2026-046</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Entregada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>04/09/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">12:00</td>
+                  <td class="num" data-l="Duró">4 h</td>
+                  <td data-l="Qué se hizo">Conteo general de materia prima</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cuadró</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>29/08/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">17:00</td>
+                  <td class="num" data-l="Duró">9 h</td>
+                  <td data-l="Qué se hizo">Inventario físico de agosto</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--warn">Con faltantes</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>11/08/2026</b></td>
+                  <td class="num" data-l="Desde">07:00</td>
+                  <td class="num" data-l="Hasta">09:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Entrada de pegante de Químicos Andinos</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Recibida</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>31/07/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">17:00</td>
+                  <td class="num" data-l="Duró">9 h</td>
+                  <td data-l="Qué se hizo">Inventario físico de julio</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cuadró</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>15/07/2026</b></td>
+                  <td class="num" data-l="Desde">14:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Baja de material averiado por humedad</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--crit">Dada de baja</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>30/06/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">8 h</td>
+                  <td data-l="Qué se hizo">Inventario físico de junio</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cuadró</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>29/05/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">8 h</td>
+                  <td data-l="Qué se hizo">Inventario físico de mayo</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cuadró</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>30/04/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">8 h</td>
+                  <td data-l="Qué se hizo">Inventario físico de abril</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cuadró</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 12 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Dada de baja</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Con diferencia</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Con faltantes</b><span>1</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>12</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-04-historial-tam">
+                Filas por página
+                <select id="dt-04-historial-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag">2</button>
+                <button class="dt__pag dt__pag--n" aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
     <section class="panel">
       <header class="panel__head panel__head--cobre">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path> <path d="M12 19V5"></path></svg>
         <div>
           <h2>Acciones Rápidas</h2>
-          <div class="sub">Registre un movimiento sin salir del panel</div>
         </div>
       </header>
       <div class="panel__body">
@@ -158,124 +1129,186 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
         <div>
           <h2>Existencias frente al Mínimo</h2>
-          <div class="sub">Saldo de cada referencia de materia prima contra su stock mínimo</div>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="tabla-tools">
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input type="search" id="ex-busca" placeholder="Buscar código o insumo…">
+        <div class="dt dt--acc" id="dt-04-existencias-frente-al-minimo">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-04-existencias-frente-al-minimo-q" type="search" value="" autocomplete="off" placeholder="Buscar código o insumo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
           </div>
-          <div class="control control--corto">
-            <select id="ex-estado" aria-label="Filtrar por estado">
-              <option>Todos los estados</option>
-              <option>Bajo el mínimo</option>
-              <option>Suficiente</option>
-            </select>
-            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="ex-estado">Estado</label>
+              <select id="ex-estado" class="dt__in">
+                <option value="">Todos los estados</option>
+                <option value="Bajo el mínimo">Bajo el mínimo</option>
+                <option value="Suficiente">Suficiente</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (2)</span>
+              </label>
+            </div>
           </div>
-          <span class="tabla-tools__n">8 referencias · 2 bajo el mínimo</span>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Código"><span>Código</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Insumo"><span>Insumo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Saldo"><span>Saldo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Mínimo"><span>Mínimo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Diferencia"><span>Diferencia</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Unidad"><span>Unidad</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="Código"><b>MP-01</b></td>
+                            <td data-l="Insumo">Cuero vacuno graso</td>
+                            <td class="num" data-l="Saldo">2.400</td>
+                            <td class="num muted" data-l="Mínimo">800</td>
+                            <td class="num" data-l="Diferencia">+1.600</td>
+                            <td class="muted" data-l="Unidad">dm²</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-02</b></td>
+                            <td data-l="Insumo">Suela de caucho 36-43</td>
+                            <td class="num" data-l="Saldo">420</td>
+                            <td class="num muted" data-l="Mínimo">150</td>
+                            <td class="num" data-l="Diferencia">+270</td>
+                            <td class="muted" data-l="Unidad">par</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-03</b></td>
+                            <td data-l="Insumo">Forro textil</td>
+                            <td class="num" data-l="Saldo">260</td>
+                            <td class="num muted" data-l="Mínimo">120</td>
+                            <td class="num" data-l="Diferencia">+140</td>
+                            <td class="muted" data-l="Unidad">m</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-04</b></td>
+                            <td data-l="Insumo">Hilo poliéster 40</td>
+                            <td class="num" data-l="Saldo">34</td>
+                            <td class="num muted" data-l="Mínimo">20</td>
+                            <td class="num" data-l="Diferencia">+14</td>
+                            <td class="muted" data-l="Unidad">cono</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-05</b></td>
+                            <td data-l="Insumo">Plantilla EVA</td>
+                            <td class="num" data-l="Saldo">180</td>
+                            <td class="num muted" data-l="Mínimo">200</td>
+                            <td class="num falta" data-l="Diferencia">−20</td>
+                            <td class="muted" data-l="Unidad">par</td>
+                            <td data-l="Estado"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-06</b></td>
+                            <td data-l="Insumo">Pegante poliuretano</td>
+                            <td class="num" data-l="Saldo">22</td>
+                            <td class="num muted" data-l="Mínimo">15</td>
+                            <td class="num" data-l="Diferencia">+7</td>
+                            <td class="muted" data-l="Unidad">kg</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-07</b></td>
+                            <td data-l="Insumo">Ojalete metálico</td>
+                            <td class="num" data-l="Saldo">5.600</td>
+                            <td class="num muted" data-l="Mínimo">2.000</td>
+                            <td class="num" data-l="Diferencia">+3.600</td>
+                            <td class="muted" data-l="Unidad">un</td>
+                            <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Código"><b>MP-08</b></td>
+                            <td data-l="Insumo">Cordón encerado 120 cm</td>
+                            <td class="num" data-l="Saldo">240</td>
+                            <td class="num muted" data-l="Mínimo">300</td>
+                            <td class="num falta" data-l="Diferencia">−60</td>
+                            <td class="muted" data-l="Unidad">par</td>
+                            <td data-l="Estado"><span class="pill pill--crit">Bajo el mínimo</span></td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="2"><b>8 referencias</b> <span class="tiny">2 por debajo del mínimo</span></td>
+                            <td class="num">9.156</td>
+                            <td class="num muted">3.605</td>
+                            <td class="num">+5.551</td>
+                            <td colspan="2" class="tiny">Suma en unidades propias de cada insumo</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 8 registro(s)</em></span>
+            <span class="dt__res-i"><b>Saldo</b><span>9.156</span></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Bajo el mínimo</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Suficiente</b><span>6</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–8</b> de <b>8</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-04-existencias-frente-al-minimo-tam">
+                Filas por página
+                <select id="dt-04-existencias-frente-al-minimo-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Insumo</th>
-                <th class="num">Saldo</th>
-                <th class="num">Mínimo</th>
-                <th class="num">Diferencia</th>
-                <th>Unidad</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Código"><b>MP-01</b></td>
-                <td data-l="Insumo">Cuero vacuno graso</td>
-                <td class="num" data-l="Saldo">2.400</td>
-                <td class="num muted" data-l="Mínimo">800</td>
-                <td class="num" data-l="Diferencia">+1.600</td>
-                <td class="muted" data-l="Unidad">dm²</td>
-                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-02</b></td>
-                <td data-l="Insumo">Suela de caucho 36-43</td>
-                <td class="num" data-l="Saldo">420</td>
-                <td class="num muted" data-l="Mínimo">150</td>
-                <td class="num" data-l="Diferencia">+270</td>
-                <td class="muted" data-l="Unidad">par</td>
-                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-03</b></td>
-                <td data-l="Insumo">Forro textil</td>
-                <td class="num" data-l="Saldo">260</td>
-                <td class="num muted" data-l="Mínimo">120</td>
-                <td class="num" data-l="Diferencia">+140</td>
-                <td class="muted" data-l="Unidad">m</td>
-                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-04</b></td>
-                <td data-l="Insumo">Hilo poliéster 40</td>
-                <td class="num" data-l="Saldo">34</td>
-                <td class="num muted" data-l="Mínimo">20</td>
-                <td class="num" data-l="Diferencia">+14</td>
-                <td class="muted" data-l="Unidad">cono</td>
-                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-05</b></td>
-                <td data-l="Insumo">Plantilla EVA</td>
-                <td class="num" data-l="Saldo">180</td>
-                <td class="num muted" data-l="Mínimo">200</td>
-                <td class="num falta" data-l="Diferencia">−20</td>
-                <td class="muted" data-l="Unidad">par</td>
-                <td data-l="Estado"><span class="pill pill--crit">Bajo el mínimo</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-06</b></td>
-                <td data-l="Insumo">Pegante poliuretano</td>
-                <td class="num" data-l="Saldo">22</td>
-                <td class="num muted" data-l="Mínimo">15</td>
-                <td class="num" data-l="Diferencia">+7</td>
-                <td class="muted" data-l="Unidad">kg</td>
-                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-07</b></td>
-                <td data-l="Insumo">Ojalete metálico</td>
-                <td class="num" data-l="Saldo">5.600</td>
-                <td class="num muted" data-l="Mínimo">2.000</td>
-                <td class="num" data-l="Diferencia">+3.600</td>
-                <td class="muted" data-l="Unidad">un</td>
-                <td data-l="Estado"><span class="pill pill--ok">Suficiente</span></td>
-              </tr>
-              <tr>
-                <td data-l="Código"><b>MP-08</b></td>
-                <td data-l="Insumo">Cordón encerado 120 cm</td>
-                <td class="num" data-l="Saldo">240</td>
-                <td class="num muted" data-l="Mínimo">300</td>
-                <td class="num falta" data-l="Diferencia">−60</td>
-                <td class="muted" data-l="Unidad">par</td>
-                <td data-l="Estado"><span class="pill pill--crit">Bajo el mínimo</span></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="2"><b>8 referencias</b> <span class="tiny">2 por debajo del mínimo</span></td>
-                <td class="num">9.156</td>
-                <td class="num muted">3.605</td>
-                <td class="num">+5.551</td>
-                <td colspan="2" class="tiny">Suma en unidades propias de cada insumo</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando 8 de 8 referencias · saldo al 2026-09-15 08:12</p>
       </div>
     </section>
     <section class="panel">
@@ -283,21 +1316,20 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
         <div>
           <h2>Alertas</h2>
-          <div class="sub">Stock bajo, averías y mantenimiento</div>
         </div>
       </header>
       <div class="panel__body">
         <div class="aviso aviso--warn">
           <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
           <div>
-            <b>Stock bajo · Plantilla EVA</b>
+            <b>Existencia bajo · Plantilla EVA</b>
             <p>180 par frente a un mínimo de 200.</p>
           </div>
         </div>
         <div class="aviso aviso--warn">
           <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
           <div>
-            <b>Stock bajo · Cordón encerado 120 cm</b>
+            <b>Existencia bajo · Cordón encerado 120 cm</b>
             <p>240 par frente a un mínimo de 300.</p>
           </div>
         </div>
@@ -322,99 +1354,157 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
         <div>
           <h2>Últimos Movimientos</h2>
-          <div class="sub">Trazabilidad inmediata del inventario</div>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="tabla-tools">
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input type="search" id="mv-busca" placeholder="Buscar movimiento, referencia o documento…">
+        <div class="dt dt--acc" id="dt-04-ultimos-movimientos">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-04-ultimos-movimientos-q" type="search" value="" autocomplete="off" placeholder="Buscar movimiento, referencia o documento…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
           </div>
-          <div class="control control--corto">
-            <select id="mv-filtro" aria-label="Filtrar la tabla">
-              <option>Todos los tipos</option>
-              <option>Entrada</option>
-              <option>Salida</option>
-              <option>Ajuste</option>
-              <option>Merma</option>
-            </select>
-            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="mv-filtro">Estado</label>
+              <select id="mv-filtro" class="dt__in">
+                <option value="">Todos los tipos</option>
+                <option value="Entrada">Entrada</option>
+                <option value="Salida">Salida</option>
+                <option value="Ajuste">Ajuste</option>
+                <option value="Merma">Merma</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l">Fecha</span>
+              <div class="dt__rango">
+                <input type="date" class="dt__in" value aria-label="Fecha desde" title="Desde">
+                <span class="dt__rango-s">–</span>
+                <input type="date" class="dt__in" value aria-label="Fecha hasta" title="Hasta">
+              </div>
+            </div>
           </div>
-          <span class="tabla-tools__n">10 movimientos en el periodo</span>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Mov."><span>Mov.</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Referencia"><span>Referencia</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Tipo"><span>Tipo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Cantidad"><span>Cantidad</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Documento"><span>Documento</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Fecha"><span>Fecha</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="Mov."><b>MV-0010</b></td>
+                            <td data-l="Referencia">PT-REF-1043</td>
+                            <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
+                            <td class="num" data-l="Cantidad">44</td>
+                            <td class="muted" data-l="Documento">Saldo inicial</td>
+                            <td class="tiny" data-l="Fecha">2026-09-15</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Mov."><b>MV-0009</b></td>
+                            <td data-l="Referencia">PT-REF-1042</td>
+                            <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
+                            <td class="num" data-l="Cantidad">78</td>
+                            <td class="muted" data-l="Documento">LT-2026-029</td>
+                            <td class="tiny" data-l="Fecha">2026-09-15</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Mov."><b>MV-0008</b></td>
+                            <td data-l="Referencia">MP-08</td>
+                            <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
+                            <td class="num" data-l="Cantidad">240</td>
+                            <td class="muted" data-l="Documento">Saldo inicial</td>
+                            <td class="tiny" data-l="Fecha">2026-09-15</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Mov."><b>MV-0007</b></td>
+                            <td data-l="Referencia">MP-07</td>
+                            <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
+                            <td class="num" data-l="Cantidad">5.600</td>
+                            <td class="muted" data-l="Documento">Saldo inicial</td>
+                            <td class="tiny" data-l="Fecha">2026-09-15</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Mov."><b>MV-0006</b></td>
+                            <td data-l="Referencia">MP-06</td>
+                            <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
+                            <td class="num" data-l="Cantidad">22</td>
+                            <td class="muted" data-l="Documento">Saldo inicial</td>
+                            <td class="tiny" data-l="Fecha">2026-09-15</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Mov."><b>MV-0005</b></td>
+                            <td data-l="Referencia">MP-05</td>
+                            <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
+                            <td class="num" data-l="Cantidad">180</td>
+                            <td class="muted" data-l="Documento">Saldo inicial</td>
+                            <td class="tiny" data-l="Fecha">2026-09-15</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="3"><b>Total del periodo</b> <span class="tiny">10 movimientos entre el 2026-09-01 y el 2026-09-15</span></td>
+                            <td class="num">9.278</td>
+                            <td colspan="2" class="tiny">Entradas 9.278 · salidas 0 · ajustes 0</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 6 registro(s)</em></span>
+            <span class="dt__res-i"><b>Cantidad</b><span>6.164</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–6</b> de <b>6</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-04-ultimos-movimientos-tam">
+                Filas por página
+                <select id="dt-04-ultimos-movimientos-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Mov.</th>
-                <th>Referencia</th>
-                <th>Tipo</th>
-                <th class="num">Cantidad</th>
-                <th>Documento</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Mov."><b>MV-0010</b></td>
-                <td data-l="Referencia">PT-REF-1043</td>
-                <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                <td class="num" data-l="Cantidad">44</td>
-                <td class="muted" data-l="Documento">Saldo inicial</td>
-                <td class="tiny" data-l="Fecha">2026-09-15</td>
-              </tr>
-              <tr>
-                <td data-l="Mov."><b>MV-0009</b></td>
-                <td data-l="Referencia">PT-REF-1042</td>
-                <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                <td class="num" data-l="Cantidad">78</td>
-                <td class="muted" data-l="Documento">LT-2026-029</td>
-                <td class="tiny" data-l="Fecha">2026-09-15</td>
-              </tr>
-              <tr>
-                <td data-l="Mov."><b>MV-0008</b></td>
-                <td data-l="Referencia">MP-08</td>
-                <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                <td class="num" data-l="Cantidad">240</td>
-                <td class="muted" data-l="Documento">Saldo inicial</td>
-                <td class="tiny" data-l="Fecha">2026-09-15</td>
-              </tr>
-              <tr>
-                <td data-l="Mov."><b>MV-0007</b></td>
-                <td data-l="Referencia">MP-07</td>
-                <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                <td class="num" data-l="Cantidad">5.600</td>
-                <td class="muted" data-l="Documento">Saldo inicial</td>
-                <td class="tiny" data-l="Fecha">2026-09-15</td>
-              </tr>
-              <tr>
-                <td data-l="Mov."><b>MV-0006</b></td>
-                <td data-l="Referencia">MP-06</td>
-                <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                <td class="num" data-l="Cantidad">22</td>
-                <td class="muted" data-l="Documento">Saldo inicial</td>
-                <td class="tiny" data-l="Fecha">2026-09-15</td>
-              </tr>
-              <tr>
-                <td data-l="Mov."><b>MV-0005</b></td>
-                <td data-l="Referencia">MP-05</td>
-                <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                <td class="num" data-l="Cantidad">180</td>
-                <td class="muted" data-l="Documento">Saldo inicial</td>
-                <td class="tiny" data-l="Fecha">2026-09-15</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="3"><b>Total del periodo</b> <span class="tiny">10 movimientos entre el 2026-09-01 y el 2026-09-15</span></td>
-                <td class="num">9.278</td>
-                <td colspan="2" class="tiny">Entradas 9.278 · salidas 0 · ajustes 0</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando los 6 más recientes de 10 · el histórico completo está en Kárdex</p>
       </div>
     </section>
 

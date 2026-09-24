@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Control de Calidad · En proceso</title>
+    <title>SICAF · Control de Calidad · En proceso</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
@@ -11,55 +11,17 @@
   </head>
   <body data-modulo="06-calidad" data-titulo="Control de Calidad · En proceso">
 
-    <section class="hero">
-      <div>
-        <h1>Control de Calidad</h1>
-        <p>Materia prima, proceso, producto terminado y no conformidades.</p>
-      </div>
-    </section>
-    <div class="kpis">
-      <article class="kpi kpi--arena">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path> <path d="M6.453 15h11.094"></path> <path d="M8.5 2h7"></path></svg>
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        Control de Calidad
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
         </span>
-        <div>
-          <div class="kpi__n">5</div>
-          <div class="kpi__l">Lotes por inspeccionar</div>
-        </div>
-        <span class="kpi__d down">↑ 25%</span>
-      </article>
-      <article class="kpi kpi--rosa">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">94,96 %</div>
-          <div class="kpi__l">Índice de conformidad</div>
-        </div>
-        <span class="kpi__d up">↑ 3%</span>
-      </article>
-      <article class="kpi kpi--oliva">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">41</div>
-          <div class="kpi__l">Unidades en reproceso</div>
-        </div>
-        <span class="kpi__d down">↑ 8%</span>
-      </article>
-      <article class="kpi kpi--cobre">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">$246.015</div>
-          <div class="kpi__l">Costo de la no calidad</div>
-        </div>
-        <span class="kpi__d up">↓ 12%</span>
-      </article>
-    </div>
-    <nav class="subnav" aria-label="Secciones de Control de Calidad">
+      </h2>
+    </header>
+    <nav class="subnav">
       <a class="subnav__i" data-ico="ruta" href="01-proceso.html">Proceso</a>
       <a class="subnav__i" data-ico="caja" data-ct="1" href="02-materia-prima.html">Materia prima</a>
       <a class="subnav__i" data-ico="portapapeles" href="03-estandares.html">Estándares</a>
@@ -73,518 +35,580 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
         <div>
           <h2>Inspección en Proceso</h2>
-          <div class="sub">Paso 3: puntos críticos y mediciones intermedias</div>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="tabla-tools">
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input type="search" id="ep-busca" placeholder="Buscar orden, etapa o criterio…">
+        <div class="dt dt--acc" id="dt-06-inspeccion-en-proceso">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-06-inspeccion-en-proceso-q" type="search" value="" autocomplete="off" placeholder="Buscar orden, etapa o criterio…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
           </div>
-          <div class="control control--corto">
-            <select id="ep-filtro" aria-label="Filtrar la tabla">
-              <option>Todas las etapas</option>
-              <option>Corte</option>
-              <option>Guarnición</option>
-              <option>Montaje</option>
-              <option>Terminado</option>
-            </select>
-            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="ep-filtro">Estado</label>
+              <select id="ep-filtro" class="dt__in">
+                <option value="">Todas las etapas</option>
+                <option value="Corte">Corte</option>
+                <option value="Guarnición">Guarnición</option>
+                <option value="Montaje">Montaje</option>
+                <option value="Terminado">Terminado</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l">Recibido</span>
+              <div class="dt__rango">
+                <input type="date" class="dt__in" value aria-label="Recibido desde" title="Desde">
+                <span class="dt__rango-s">–</span>
+                <input type="date" class="dt__in" value aria-label="Recibido hasta" title="Hasta">
+              </div>
+            </div>
           </div>
-          <span class="tabla-tools__n">29 órdenes en planta</span>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Orden"><span>Orden</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Etapa actual"><span>Etapa actual</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Recibido"><span>Recibido</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Procesado"><span>Procesado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Merma"><span>Merma</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Criterio a verificar"><span>Criterio a verificar</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="dt__th--txt"></th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-018</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">176</td>
+                            <td class="num" data-l="Procesado">176</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-019</b>
+                              <div class="tiny">REF-1043</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">147</td>
+                            <td class="num" data-l="Procesado">147</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-020</b>
+                              <div class="tiny">REF-1044</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">234</td>
+                            <td class="num" data-l="Procesado">234</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-021</b>
+                              <div class="tiny">REF-1046</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">118</td>
+                            <td class="num" data-l="Procesado">118</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-022</b>
+                              <div class="tiny">REF-1045</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">195</td>
+                            <td class="num" data-l="Procesado">195</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-023</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">157</td>
+                            <td class="num" data-l="Procesado">157</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-026</b>
+                              <div class="tiny">REF-1044</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">210</td>
+                            <td class="num" data-l="Procesado">206</td>
+                            <td class="num" data-l="Merma">4</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-027</b>
+                              <div class="tiny">REF-1045</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">138</td>
+                            <td class="num" data-l="Procesado">138</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-029</b>
+                              <div class="tiny">REF-1043</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">185</td>
+                            <td class="num" data-l="Procesado">185</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-030</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">216</td>
+                            <td class="num" data-l="Procesado">216</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-024</b>
+                              <div class="tiny">REF-1046</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">206</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-025</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">158</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-028</b>
+                              <div class="tiny">REF-1044</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">177</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-033</b>
+                              <div class="tiny">REF-1045</div>
+                            </td>
+                            <td data-l="Etapa actual">Terminado</td>
+                            <td class="num" data-l="Recibido">138</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-031</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Montaje</td>
+                            <td class="num" data-l="Recibido">118</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-034</b>
+                              <div class="tiny">REF-1046</div>
+                            </td>
+                            <td data-l="Etapa actual">Montaje</td>
+                            <td class="num" data-l="Recibido">235</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-035</b>
+                              <div class="tiny">REF-1043</div>
+                            </td>
+                            <td data-l="Etapa actual">Montaje</td>
+                            <td class="num" data-l="Recibido">167</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-036</b>
+                              <div class="tiny">REF-1044</div>
+                            </td>
+                            <td data-l="Etapa actual">Montaje</td>
+                            <td class="num" data-l="Recibido">148</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-037</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Montaje</td>
+                            <td class="num" data-l="Recibido">196</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-038</b>
+                              <div class="tiny">REF-1045</div>
+                            </td>
+                            <td data-l="Etapa actual">Guarnición</td>
+                            <td class="num" data-l="Recibido">157</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-039</b>
+                              <div class="tiny">REF-1046</div>
+                            </td>
+                            <td data-l="Etapa actual">Guarnición</td>
+                            <td class="num" data-l="Recibido">206</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-040</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Guarnición</td>
+                            <td class="num" data-l="Recibido">138</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-041</b>
+                              <div class="tiny">REF-1043</div>
+                            </td>
+                            <td data-l="Etapa actual">Guarnición</td>
+                            <td class="num" data-l="Recibido">177</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-042</b>
+                              <div class="tiny">REF-1044</div>
+                            </td>
+                            <td data-l="Etapa actual">Guarnición</td>
+                            <td class="num" data-l="Recibido">186</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-043</b>
+                              <div class="tiny">REF-1042</div>
+                            </td>
+                            <td data-l="Etapa actual">Corte</td>
+                            <td class="num" data-l="Recibido">180</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">—</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-044</b>
+                              <div class="tiny">REF-1046</div>
+                            </td>
+                            <td data-l="Etapa actual">Corte</td>
+                            <td class="num" data-l="Recibido">240</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">—</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-045</b>
+                              <div class="tiny">REF-1045</div>
+                            </td>
+                            <td data-l="Etapa actual">Corte</td>
+                            <td class="num" data-l="Recibido">150</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">—</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-046</b>
+                              <div class="tiny">REF-1044</div>
+                            </td>
+                            <td data-l="Etapa actual">Corte</td>
+                            <td class="num" data-l="Recibido">200</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">—</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td data-l="Orden">
+                              <b>OP-2026-047</b>
+                              <div class="tiny">REF-1043</div>
+                            </td>
+                            <td data-l="Etapa actual">Corte</td>
+                            <td class="num" data-l="Recibido">120</td>
+                            <td class="num" data-l="Procesado">0</td>
+                            <td class="num" data-l="Merma">0</td>
+                            <td class="muted" data-l="Criterio a verificar">—</td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--ghost">Registrar medición</button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="2"><b>29 órdenes en planta</b></td>
+                            <td class="num">3.297</td>
+                            <td class="num">3.254</td>
+                            <td class="num">43</td>
+                            <td class="tiny">1,3 % de merma en proceso</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 29 registro(s)</em></span>
+            <span class="dt__res-i"><b>Recibido</b><span>5.073</span></span>
+            <span class="dt__res-i"><b>Procesado</b><span>1.772</span></span>
+            <span class="dt__res-i"><b>Merma</b><span>4</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>29</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-06-inspeccion-en-proceso-tam">
+                Filas por página
+                <select id="dt-06-inspeccion-en-proceso-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag">2</button>
+                <button class="dt__pag">3</button>
+                <button class="dt__pag dt__pag--n" aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Orden</th>
-                <th>Etapa actual</th>
-                <th class="num">Recibido</th>
-                <th class="num">Procesado</th>
-                <th class="num">Merma</th>
-                <th>Criterio a verificar</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-018</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">176</td>
-                <td class="num" data-l="Procesado">176</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-019</b>
-                  <div class="tiny">REF-1043</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">147</td>
-                <td class="num" data-l="Procesado">147</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-020</b>
-                  <div class="tiny">REF-1044</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">234</td>
-                <td class="num" data-l="Procesado">234</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-021</b>
-                  <div class="tiny">REF-1046</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">118</td>
-                <td class="num" data-l="Procesado">118</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-022</b>
-                  <div class="tiny">REF-1045</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">195</td>
-                <td class="num" data-l="Procesado">195</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-023</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">157</td>
-                <td class="num" data-l="Procesado">157</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-026</b>
-                  <div class="tiny">REF-1044</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">210</td>
-                <td class="num" data-l="Procesado">206</td>
-                <td class="num" data-l="Merma">4</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-027</b>
-                  <div class="tiny">REF-1045</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">138</td>
-                <td class="num" data-l="Procesado">138</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-029</b>
-                  <div class="tiny">REF-1043</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">185</td>
-                <td class="num" data-l="Procesado">185</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-030</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">216</td>
-                <td class="num" data-l="Procesado">216</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-024</b>
-                  <div class="tiny">REF-1046</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">206</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-025</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">158</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-028</b>
-                  <div class="tiny">REF-1044</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">177</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-033</b>
-                  <div class="tiny">REF-1045</div>
-                </td>
-                <td data-l="Etapa actual">Terminado</td>
-                <td class="num" data-l="Recibido">138</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Acabado: Sin manchas ni rayones visibles</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-031</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Montaje</td>
-                <td class="num" data-l="Recibido">118</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-034</b>
-                  <div class="tiny">REF-1046</div>
-                </td>
-                <td data-l="Etapa actual">Montaje</td>
-                <td class="num" data-l="Recibido">235</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-035</b>
-                  <div class="tiny">REF-1043</div>
-                </td>
-                <td data-l="Etapa actual">Montaje</td>
-                <td class="num" data-l="Recibido">167</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-036</b>
-                  <div class="tiny">REF-1044</div>
-                </td>
-                <td data-l="Etapa actual">Montaje</td>
-                <td class="num" data-l="Recibido">148</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-037</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Montaje</td>
-                <td class="num" data-l="Recibido">196</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Pegue de suela: Resistencia ≥ 35 N/cm</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-038</b>
-                  <div class="tiny">REF-1045</div>
-                </td>
-                <td data-l="Etapa actual">Guarnición</td>
-                <td class="num" data-l="Recibido">157</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-039</b>
-                  <div class="tiny">REF-1046</div>
-                </td>
-                <td data-l="Etapa actual">Guarnición</td>
-                <td class="num" data-l="Recibido">206</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-040</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Guarnición</td>
-                <td class="num" data-l="Recibido">138</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-041</b>
-                  <div class="tiny">REF-1043</div>
-                </td>
-                <td data-l="Etapa actual">Guarnición</td>
-                <td class="num" data-l="Recibido">177</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-042</b>
-                  <div class="tiny">REF-1044</div>
-                </td>
-                <td data-l="Etapa actual">Guarnición</td>
-                <td class="num" data-l="Recibido">186</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">Costura: 12 puntadas por pulgada ±1</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-043</b>
-                  <div class="tiny">REF-1042</div>
-                </td>
-                <td data-l="Etapa actual">Corte</td>
-                <td class="num" data-l="Recibido">180</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">—</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-044</b>
-                  <div class="tiny">REF-1046</div>
-                </td>
-                <td data-l="Etapa actual">Corte</td>
-                <td class="num" data-l="Recibido">240</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">—</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-045</b>
-                  <div class="tiny">REF-1045</div>
-                </td>
-                <td data-l="Etapa actual">Corte</td>
-                <td class="num" data-l="Recibido">150</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">—</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-046</b>
-                  <div class="tiny">REF-1044</div>
-                </td>
-                <td data-l="Etapa actual">Corte</td>
-                <td class="num" data-l="Recibido">200</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">—</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Orden">
-                  <b>OP-2026-047</b>
-                  <div class="tiny">REF-1043</div>
-                </td>
-                <td data-l="Etapa actual">Corte</td>
-                <td class="num" data-l="Recibido">120</td>
-                <td class="num" data-l="Procesado">0</td>
-                <td class="num" data-l="Merma">0</td>
-                <td class="muted" data-l="Criterio a verificar">—</td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Registrar medición</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="2"><b>29 órdenes en planta</b></td>
-                <td class="num">3.297</td>
-                <td class="num">3.254</td>
-                <td class="num">43</td>
-                <td class="tiny">1,3 % de merma en proceso</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando 29 de 29 órdenes abiertas · corte del 2026-09-15</p>
       </div>
     </section>
 

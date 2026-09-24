@@ -39,7 +39,8 @@ de su carpeta `NN-modulo/mockup/`, tal cual: las mismas pantallas, su `estilos.c
 `prototipo.js`. Así lo que cada responsable dibuja en su carpeta es exactamente lo que se ve aquí.
 
 - **Cómo llegan aquí.** `node integrador/juntar-mockups.mjs`, desde la carpeta de SICAF, copia
-  cada `NN-modulo/mockup/` (solo las pantallas de su menú y lo que ellas cargan) y `comun/` dentro
+  cada `NN-modulo/mockup/` (las pantallas de su menú, las que se abren desde ellas o desde su
+  `prototipo.js`, como "Crear cotización", y lo que todas cargan) y `comun/` dentro
   de `modulos/`, con el mismo árbol de carpetas, y escribe `modulos/modulos.js`: las pantallas de
   cada módulo (para el menú lateral) y las filas de sus tablas (para el buscador de arriba).
   Cuando un compañero cambie su mockup, se vuelve a correr y se hace commit. Con `--revisar` solo
@@ -51,9 +52,13 @@ de su carpeta `NN-modulo/mockup/`, tal cual: las mismas pantallas, su `estilos.c
   miran la ventana). Con ese nombre, `comun/marco.js` no dibuja su propio menú: deja libre el hueco
   que ocupan el menú y la barra del general (el general le dice cuánto miden) y le avisa por
   mensajes en qué pantalla va y qué número tiene cada ítem de su sub-menú.
+- **Las ventanas de un módulo** (elegir productos, el detalle de una cotización, las fotos en
+  grande) tapan también el menú y la barra, como cuando el módulo se abre solo: mientras una está
+  abierta, el marco sube por encima de ellos y su fondo oscuro los cubre.
 - **El menú lateral** del módulo abierto muestra sus pantallas (las de su fila de pestañas), igual
-  que en su carpeta. Los enlaces que una pantalla tiene a otro módulo los abre el general, con sus
-  permisos: un enlace a Producción lleva a su proceso aquí.
+  que en su carpeta. Los enlaces que una pantalla tiene a otro módulo (y las tarjetas de indicador
+  que llevan a otro módulo) los abre el general, con sus permisos: un enlace a Producción lleva a
+  su proceso aquí.
 - **El buscador de arriba** encuentra las filas de las tablas de los mockups (como están en sus
   pantallas) y las órdenes de Producción. Al elegir una fila, se abre su pantalla y la fila queda
   resaltada un momento.

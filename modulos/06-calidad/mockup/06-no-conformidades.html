@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Control de Calidad · No conformidades</title>
+    <title>SICAF · Control de Calidad · No conformidades</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
@@ -11,55 +11,17 @@
   </head>
   <body data-modulo="06-calidad" data-titulo="Control de Calidad · No conformidades">
 
-    <section class="hero">
-      <div>
-        <h1>Control de Calidad</h1>
-        <p>Materia prima, proceso, producto terminado y no conformidades.</p>
-      </div>
-    </section>
-    <div class="kpis">
-      <article class="kpi kpi--arena">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path> <path d="M6.453 15h11.094"></path> <path d="M8.5 2h7"></path></svg>
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        Control de Calidad
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
         </span>
-        <div>
-          <div class="kpi__n">5</div>
-          <div class="kpi__l">Lotes por inspeccionar</div>
-        </div>
-        <span class="kpi__d down">↑ 25%</span>
-      </article>
-      <article class="kpi kpi--rosa">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">94,96 %</div>
-          <div class="kpi__l">Índice de conformidad</div>
-        </div>
-        <span class="kpi__d up">↑ 3%</span>
-      </article>
-      <article class="kpi kpi--oliva">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path> <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">41</div>
-          <div class="kpi__l">Unidades en reproceso</div>
-        </div>
-        <span class="kpi__d down">↑ 8%</span>
-      </article>
-      <article class="kpi kpi--cobre">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">$246.015</div>
-          <div class="kpi__l">Costo de la no calidad</div>
-        </div>
-        <span class="kpi__d up">↓ 12%</span>
-      </article>
-    </div>
-    <nav class="subnav" aria-label="Secciones de Control de Calidad">
+      </h2>
+    </header>
+    <nav class="subnav">
       <a class="subnav__i" data-ico="ruta" href="01-proceso.html">Proceso</a>
       <a class="subnav__i" data-ico="caja" data-ct="1" href="02-materia-prima.html">Materia prima</a>
       <a class="subnav__i" data-ico="portapapeles" href="03-estandares.html">Estándares</a>
@@ -73,7 +35,6 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
         <div>
           <h2>Registro de No Conformidad</h2>
-          <div class="sub">Pasos 7 a 9: desviación, causa raíz y acción correctiva</div>
         </div>
       </header>
       <div class="panel__body panel__body--form">
@@ -106,7 +67,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="nc-desv">Desviación detectada</label>
+          <label for="nc-desv">Qué se salió de lo normal</label>
           <div class="control">
             <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
             <input id="nc-desv" placeholder="Ej. Adherencia por debajo de 35 N/cm">
@@ -118,8 +79,8 @@
             <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
             <select id="nc-met">
               <option>5 porqués</option>
-              <option>Ishikawa</option>
-              <option>Pareto</option>
+              <option>Espina de pescado</option>
+              <option>Los pocos que causan casi todo</option>
             </select>
             <span class="ico chev">
               <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
@@ -144,7 +105,7 @@
           <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
           Abrir no conformidad
         </button>
-        <p class="tiny">Al abrir una NC se segrega el lote afectado, se detiene la producción implicada y se notifica a Producción y a Compras según el origen.</p>
+        <p class="tiny">Al abrir una NC se aparta el lote afectado, se detiene la producción implicada y se notifica a Producción y a Compras según el origen.</p>
       </div>
     </section>
     <section class="panel">
@@ -152,63 +113,121 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
         <div>
           <h2>No Conformidades</h2>
-          <div class="sub">Se monitorean hasta verificar la acción correctiva</div>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="tabla-tools">
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input type="search" id="nc-busca" placeholder="Buscar NC, lote o desviación…">
+        <div class="dt dt--acc" id="dt-06-no-conformidades">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-06-no-conformidades-q" type="search" value="" autocomplete="off" placeholder="Buscar NC, lote o desviación…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
           </div>
-          <div class="control control--corto">
-            <select id="nc-filtro" aria-label="Filtrar la tabla">
-              <option>Todos los estados</option>
-              <option>Abierta</option>
-              <option>En análisis</option>
-              <option>Cerrada</option>
-            </select>
-            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="nc-filtro">Estado</label>
+              <select id="nc-filtro" class="dt__in">
+                <option value="">Todos los estados</option>
+                <option value="Abierta">Abierta</option>
+                <option value="En análisis">En análisis</option>
+                <option value="Cerrada">Cerrada</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (1)</span>
+              </label>
+            </div>
           </div>
-          <span class="tabla-tools__n">1 no conformidad abierta</span>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por NC"><span>NC</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Lote"><span>Lote</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Desviación"><span>Desviación</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Análisis"><span>Análisis</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Acción correctiva"><span>Acción correctiva</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="dt__th--txt"></th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="NC">
+                              <b>NC-001</b>
+                              <div class="tiny">2026-09-12</div>
+                            </td>
+                            <td data-l="Lote">LT-2026-028</td>
+                            <td data-l="Desviación">Pegue de suela por debajo de 35 N/cm</td>
+                            <td data-l="Análisis">
+                              <span class="chip chip--cobre">5 porqués</span>
+                              <div class="tiny">Temperatura del horno reactivador fuera de rango</div>
+                            </td>
+                            <td class="muted" data-l="Acción correctiva">Calibrar horno y repetir prueba de resistencia</td>
+                            <td data-l="Estado"><span class="pill pill--crit">Abierta</span></td>
+                            <td>
+                              <div class="acts">
+                                <button class="btn btn--sm btn--oliva">Cerrar</button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 1 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Abierta</b><span>1</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–1</b> de <b>1</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-06-no-conformidades-tam">
+                Filas por página
+                <select id="dt-06-no-conformidades-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>NC</th>
-                <th>Lote</th>
-                <th>Desviación</th>
-                <th>Análisis</th>
-                <th>Acción correctiva</th>
-                <th>Estado</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="NC">
-                  <b>NC-001</b>
-                  <div class="tiny">2026-09-12</div>
-                </td>
-                <td data-l="Lote">LT-2026-028</td>
-                <td data-l="Desviación">Pegue de suela por debajo de 35 N/cm</td>
-                <td data-l="Análisis">
-                  <span class="chip chip--cobre">5 porqués</span>
-                  <div class="tiny">Temperatura del horno reactivador fuera de rango</div>
-                </td>
-                <td class="muted" data-l="Acción correctiva">Calibrar horno y repetir prueba de resistencia</td>
-                <td data-l="Estado"><span class="pill pill--crit">Abierta</span></td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--oliva">Cerrar</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando 1 de 1 no conformidad · cada una queda con su análisis y su acción correctiva</p>
       </div>
     </section>
 

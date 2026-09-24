@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Comercial · Cotizaciones</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="07-comercial" data-titulo="Comercial · Cotizaciones">
+
+    <nav class="subnav" aria-label="Secciones de Comercial">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="billete" data-ct="3" href="02-ventas.html">Ventas</a>
+      <a class="subnav__i" data-ico="zapato" data-ct="5" href="03-productos.html">Productos</a>
+      <a class="subnav__i" data-ico="usuarios" data-ct="8" href="04-clientes.html">Clientes</a>
+      <a class="subnav__i" data-ico="portapapeles" data-ct="6" href="05-pedidos.html">Pedidos</a>
+      <a class="subnav__i" data-ico="camion" data-ct="3" href="06-entregas.html">Entregas</a>
+      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="08-config.html">Config.</a>
+      <a class="subnav__i is-on" data-ico="etiqueta" data-ct="6" href="09-cotizacion.html">Cotizaciones</a>
+      <a class="subnav__i" data-ico="factura" data-ct="6" href="10-facturacion.html">Facturación</a>
+    </nav>
+
+    <!-- La misma pantalla que Órdenes de Producción (05-produccion/mockup/03-ordenes.html):
+         el título con su nota, cuatro tarjetas y la tabla de datos. La tabla ES la pantalla. -->
+    <header class="phead phead--fila">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+        Cotizaciones
+      </h2>
+      <!-- La casilla guarda si la nota está quitada. Sin JavaScript: la ✕ es su
+           <label>, y el CSS esconde la nota cuando la casilla queda marcada. -->
+      <input class="nota__ck" type="checkbox" id="quitar-nota" aria-label="Quitar la nota de la pantalla">
+      <div class="nota nota--info nota--lado">
+        <span class="dot">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+        </span>
+        <p><b>Nota:</b> El cliente no tiene que aceptar la cotización: al enviarla va a <b>Facturación</b> y a él le llega el PDF. Queda <b>por facturar</b> hasta que Facturación la facture; entonces pasa a <b>facturada</b> y su factura sale en la columna Factura. Cada una vale 15 días: la que no se factura a tiempo queda <b>vencida</b>. La columna Vence dice cuántos días le quedan.</p>
+        <label class="nota__x" for="quitar-nota" title="Quitar la nota">&times;</label>
+      </div>
+    </header>
+
+    <!-- Las tarjetas de color filtran la tabla: un clic pone el filtro y otro lo quita -->
+    <div class="kpis">
+      <article class="kpi kpi--arena" data-kpi="todas">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">18</div>
+          <div class="kpi__l">Cotizaciones</div>
+          <div class="kpi__s">726 pares cotizados</div>
+        </div>
+      </article>
+      <button class="kpi kpi--rosa kpi--btn" data-grupo="porfacturar" aria-pressed="false" title="Filtrar la tabla: Por facturar">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"></line> <line x1="12" x2="15" y1="14" y2="11"></line> <circle cx="12" cy="14" r="8"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n">6</div>
+          <div class="kpi__l">Por facturar</div>
+          <div class="kpi__s">$16.071.671</div>
+        </div>
+      </button>
+      <button class="kpi kpi--oliva kpi--btn" data-grupo="facturada" aria-pressed="false" title="Filtrar la tabla: Facturadas">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">8</div>
+          <div class="kpi__l">Facturadas</div>
+          <div class="kpi__s">$29.863.357 · 57 %</div>
+        </div>
+      </button>
+      <button class="kpi kpi--cobre kpi--btn" data-grupo="vencida" aria-pressed="false" title="Filtrar la tabla: Vencidas">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n">3</div>
+          <div class="kpi__l">Vencidas</div>
+          <div class="kpi__s">$4.978.000</div>
+        </div>
+      </button>
+    </div>
+
+    <section class="panel panel--tabla">
+      <div class="panel__body panel__body--flush">
+        <div class="dt" id="dt-cot">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-cot-q" type="search" autocomplete="off" placeholder="Buscar cotización, cliente, NIT o factura..." aria-label="Buscar en la tabla">
+            </div>
+            <!-- Los filtros: <details> abre y cierra solo, sin JavaScript -->
+            <details class="fil">
+              <summary class="fil__b" title="Filtrar la tabla por cualquier columna">
+                <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"></path></svg>
+                Filtros
+                <span class="fil__n" hidden>0</span>
+              </summary>
+              <div class="fil__caja" role="group" aria-label="Filtros de la tabla">
+                <div class="fil__t">Una condición por columna</div>
+                <label class="fil__c">
+                  <span class="fil__l">Cotización</span>
+                  <input class="dt__in" type="text" data-f="codigo" placeholder="CO-2026-...">
+                </label>
+                <label class="fil__c">
+                  <span class="fil__l">Cliente</span>
+                  <input class="dt__in" type="text" data-f="cliente" placeholder="Nombre del cliente">
+                </label>
+                <label class="fil__c">
+                  <span class="fil__l">Vendedor</span>
+                  <select class="dt__in" data-f="vendedor">
+                    <option value="">Todos</option>
+                    <option>Andrés Quintero</option>
+                    <option>Marcela Duarte</option>
+                    <option>Valentina Rojas</option>
+                  </select>
+                </label>
+                <label class="fil__c">
+                  <span class="fil__l">Estado</span>
+                  <select class="dt__in" data-f="estado">
+                    <option value="">Todos</option>
+                    <option value="borrador">Borrador</option>
+                    <option value="porfacturar">Por facturar</option>
+                    <option value="facturada">Facturada</option>
+                    <option value="vencida">Vencida</option>
+                  </select>
+                </label>
+                <div class="fil__c">
+                  <span class="fil__l">Valor</span>
+                  <span class="fil__r"><input class="dt__in" type="number" min="0" step="100000" data-f="valorMin" aria-label="Valor desde"><span class="fil__rs">–</span><input class="dt__in" type="number" min="0" step="100000" data-f="valorMax" aria-label="Valor hasta"></span>
+                </div>
+                <div class="fil__c">
+                  <span class="fil__l">Fecha</span>
+                  <span class="fil__r"><input class="dt__in" type="date" data-f="desde" aria-label="Fecha desde"><span class="fil__rs">–</span><input class="dt__in" type="date" data-f="hasta" aria-label="Fecha hasta"></span>
+                </div>
+                <div class="fil__pie">
+                  <span class="tiny" id="dt-cot-nfil">Sin filtros puestos</span>
+                  <button class="fil__x" type="button" data-quitar="todos">Borrar todos</button>
+                </div>
+              </div>
+            </details>
+            <!-- Lo que está filtrando ahora: una ficha por filtro, con su cruz -->
+            <span class="fil__act" id="dt-cot-fichas" aria-label="Filtros puestos"></span>
+            <div class="dt__acts">
+              <!-- No abre una ventana: lleva a su propia pantalla, con el formulario completo -->
+              <a class="btn btn--sm" href="09-cotizacion-nueva.html" title="Crear una cotización">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg>
+                Crear cotización
+              </a>
+              <button class="dt__b" type="button" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" type="button" title="Exportar a Excel lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar Excel</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th data-k="codigo">
+                    <button class="dt__orden" type="button" title="Ordenar por Cotización"><span>Cotización</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th class="is-on" data-k="fecha" aria-sort="descending">
+                    <button class="dt__orden" type="button" title="Ordenar por Fecha"><span>Fecha</span><i class="dt__ind">▼</i></button>
+                  </th>
+                  <th class="dt__thcli" data-k="cliente">
+                    <button class="dt__orden" type="button" title="Ordenar por Cliente"><span>Cliente</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th data-k="vendedor">
+                    <button class="dt__orden" type="button" title="Ordenar por Vendedor"><span>Vendedor</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th class="num" data-k="pares">
+                    <button class="dt__orden" type="button" title="Ordenar por Pares"><span>Pares</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th class="num" data-k="valor">
+                    <button class="dt__orden" type="button" title="Ordenar por Valor"><span>Valor</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th data-k="vence">
+                    <button class="dt__orden" type="button" title="Ordenar por Vence"><span>Vence</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th data-k="factura">
+                    <button class="dt__orden" type="button" title="Ordenar por Factura"><span>Factura</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                  <th data-k="estado">
+                    <button class="dt__orden" type="button" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
+                  </th>
+                </tr>
+              </thead>
+              <!-- Un clic en cualquier fila (o Enter sobre su número, que es un botón) abre
+                   el detalle de esa cotización a la derecha: #cot-det, al final del archivo -->
+              <tbody>
+                <tr data-estado="borrador" data-fecha="2026-09-23" data-vence="2026-10-08" data-pares="18" data-valor="1467270">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-018</button></td>
+                  <td class="dt__fec" data-l="Fecha">23-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Almacén La Bota Fina · NIT 901.455.210-2">Almacén La Bota Fina</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">18</td>
+                  <td class="num" data-l="Valor">$1.467.270</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 08-octubre-2026">en 15 días</td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--off">Borrador</span></td>
+                </tr>
+                <tr data-estado="porfacturar" data-fecha="2026-09-22" data-vence="2026-10-07" data-pares="48" data-valor="3472896">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-017</button></td>
+                  <td class="dt__fec" data-l="Fecha">22-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-4">Calzado Norte</td>
+                  <td data-l="Vendedor" title="Marcela Duarte">Marcela D.</td>
+                  <td class="num" data-l="Pares">48</td>
+                  <td class="num" data-l="Valor">$3.472.896</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 07-octubre-2026">en 14 días</td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
+                </tr>
+                <tr data-estado="porfacturar" data-fecha="2026-09-21" data-vence="2026-10-06" data-pares="55" data-valor="3467750">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-016</button></td>
+                  <td class="dt__fec" data-l="Fecha">21-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado del Oriente · NIT 901.220.556-8">Calzado del Oriente</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">55</td>
+                  <td class="num" data-l="Valor">$3.467.750</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 06-octubre-2026">en 13 días</td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
+                </tr>
+                <tr data-estado="facturada" data-fecha="2026-09-17" data-vence="2026-10-02" data-pares="60" data-valor="4646355">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-015</button></td>
+                  <td class="dt__fec" data-l="Fecha">17-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado El Dorado · NIT 830.112.991-1">Calzado El Dorado</td>
+                  <td data-l="Vendedor" title="Andrés Quintero">Andrés Q.</td>
+                  <td class="num" data-l="Pares">60</td>
+                  <td class="num" data-l="Valor">$4.646.355</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 02-octubre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0158</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr data-estado="porfacturar" data-fecha="2026-09-15" data-vence="2026-09-30" data-pares="12" data-valor="913920">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-014</button></td>
+                  <td class="dt__fec" data-l="Fecha">15-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Comercializadora Pamplona · NIT 900.664.812-3">Comercializadora Pamplona</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">12</td>
+                  <td class="num" data-l="Valor">$913.920</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 30-septiembre-2026">en 7 días</td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
+                </tr>
+                <tr data-estado="porfacturar" data-fecha="2026-09-14" data-vence="2026-09-29" data-pares="40" data-valor="2470000">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-013</button></td>
+                  <td class="dt__fec" data-l="Fecha">14-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Almacén Sur · NIT 901.778.043-5">Almacén Sur</td>
+                  <td data-l="Vendedor" title="Andrés Quintero">Andrés Q.</td>
+                  <td class="num" data-l="Pares">40</td>
+                  <td class="num" data-l="Valor">$2.470.000</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 29-septiembre-2026">en 6 días</td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
+                </tr>
+                <tr data-estado="porfacturar" data-fecha="2026-09-11" data-vence="2026-09-26" data-pares="35" data-valor="2853025" class="dt__tarde">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-012</button></td>
+                  <td class="dt__fec" data-l="Fecha">11-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Distribuidora Tamanaco · NIT 900.221.334-7">Distribuidora Tamanaco</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">35</td>
+                  <td class="num" data-l="Valor">$2.853.025</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 26-septiembre-2026"><span class="dt__flag dt__flag--solo">en 3 días</span></td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
+                </tr>
+                <tr data-estado="porfacturar" data-fecha="2026-09-09" data-vence="2026-09-24" data-pares="40" data-valor="2894080" class="dt__tarde">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-011</button></td>
+                  <td class="dt__fec" data-l="Fecha">09-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Comercial Los Andes · NIT 890.332.117-9">Comercial Los Andes</td>
+                  <td data-l="Vendedor" title="Marcela Duarte">Marcela D.</td>
+                  <td class="num" data-l="Pares">40</td>
+                  <td class="num" data-l="Valor">$2.894.080</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 24-septiembre-2026"><span class="dt__flag dt__flag--solo">mañana</span></td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
+                </tr>
+                <tr data-estado="facturada" data-fecha="2026-09-07" data-vence="2026-09-22" data-pares="84" data-valor="6299479">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-010</button></td>
+                  <td class="dt__fec" data-l="Fecha">07-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-4">Calzado Norte</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">84</td>
+                  <td class="num" data-l="Valor">$6.299.479</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 22-septiembre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0152</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr data-estado="vencida" data-fecha="2026-09-03" data-vence="2026-09-18" data-pares="20" data-valor="1523200">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-009</button></td>
+                  <td class="dt__fec" data-l="Fecha">03-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Almacén La Bota Fina · NIT 901.455.210-2">Almacén La Bota Fina</td>
+                  <td data-l="Vendedor" title="Marcela Duarte">Marcela D.</td>
+                  <td class="num" data-l="Pares">20</td>
+                  <td class="num" data-l="Valor">$1.523.200</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 18-septiembre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--crit">Vencida</span></td>
+                </tr>
+                <tr hidden data-estado="facturada" data-fecha="2026-09-01" data-vence="2026-09-16" data-pares="36" data-valor="2223000">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-008</button></td>
+                  <td class="dt__fec" data-l="Fecha">01-sep-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado del Oriente · NIT 901.220.556-8">Calzado del Oriente</td>
+                  <td data-l="Vendedor" title="Andrés Quintero">Andrés Q.</td>
+                  <td class="num" data-l="Pares">36</td>
+                  <td class="num" data-l="Valor">$2.223.000</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 16-septiembre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0144</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr hidden data-estado="facturada" data-fecha="2026-08-27" data-vence="2026-09-11" data-pares="26" data-valor="2119390">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-007</button></td>
+                  <td class="dt__fec" data-l="Fecha">27-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado El Dorado · NIT 830.112.991-1">Calzado El Dorado</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">26</td>
+                  <td class="num" data-l="Valor">$2.119.390</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 11-septiembre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0139</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr hidden data-estado="vencida" data-fecha="2026-08-24" data-vence="2026-09-08" data-pares="30" data-valor="2284800">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-006</button></td>
+                  <td class="dt__fec" data-l="Fecha">24-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Almacén Sur · NIT 901.778.043-5">Almacén Sur</td>
+                  <td data-l="Vendedor" title="Marcela Duarte">Marcela D.</td>
+                  <td class="num" data-l="Pares">30</td>
+                  <td class="num" data-l="Valor">$2.284.800</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 08-septiembre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--crit">Vencida</span></td>
+                </tr>
+                <tr hidden data-estado="facturada" data-fecha="2026-08-19" data-vence="2026-09-03" data-pares="48" data-valor="3795338">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-005</button></td>
+                  <td class="dt__fec" data-l="Fecha">19-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Distribuidora Tamanaco · NIT 900.221.334-7">Distribuidora Tamanaco</td>
+                  <td data-l="Vendedor" title="Andrés Quintero">Andrés Q.</td>
+                  <td class="num" data-l="Pares">48</td>
+                  <td class="num" data-l="Valor">$3.795.338</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 03-septiembre-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0131</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr hidden data-estado="facturada" data-fecha="2026-08-14" data-vence="2026-08-29" data-pares="72" data-valor="4305600">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-004</button></td>
+                  <td class="dt__fec" data-l="Fecha">14-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Comercial Los Andes · NIT 890.332.117-9">Comercial Los Andes</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">72</td>
+                  <td class="num" data-l="Valor">$4.305.600</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 29-agosto-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0127</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr hidden data-estado="vencida" data-fecha="2026-08-10" data-vence="2026-08-25" data-pares="18" data-valor="1170000">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-003</button></td>
+                  <td class="dt__fec" data-l="Fecha">10-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Comercializadora Pamplona · NIT 900.664.812-3">Comercializadora Pamplona</td>
+                  <td data-l="Vendedor" title="Marcela Duarte">Marcela D.</td>
+                  <td class="num" data-l="Pares">18</td>
+                  <td class="num" data-l="Valor">$1.170.000</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 25-agosto-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="dt__sinf">—</span></td>
+                  <td data-l="Estado"><span class="pill pill--crit">Vencida</span></td>
+                </tr>
+                <tr hidden data-estado="facturada" data-fecha="2026-08-06" data-vence="2026-08-21" data-pares="24" data-valor="1827840">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-002</button></td>
+                  <td class="dt__fec" data-l="Fecha">06-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Almacén La Bota Fina · NIT 901.455.210-2">Almacén La Bota Fina</td>
+                  <td data-l="Vendedor" title="Valentina Rojas">Valentina R.</td>
+                  <td class="num" data-l="Pares">24</td>
+                  <td class="num" data-l="Valor">$1.827.840</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 21-agosto-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0118</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr hidden data-estado="facturada" data-fecha="2026-08-03" data-vence="2026-08-18" data-pares="60" data-valor="4646355">
+                  <td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">CO-2026-001</button></td>
+                  <td class="dt__fec" data-l="Fecha">03-ago-2026</td>
+                  <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-4">Calzado Norte</td>
+                  <td data-l="Vendedor" title="Andrés Quintero">Andrés Q.</td>
+                  <td class="num" data-l="Pares">60</td>
+                  <td class="num" data-l="Valor">$4.646.355</td>
+                  <td class="dt__fec" data-l="Vence" title="Vence el 18-agosto-2026"><span class="dt__sinf">—</span></td>
+                  <td data-l="Factura"><span class="chip chip--oliva">FV-2026-0112</span></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Facturada</span></td>
+                </tr>
+                <tr class="dt__vacio" hidden><td colspan="9">Ninguna cotización cumple el filtro. Quite alguno de los filtros de arriba.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em id="dt-cot-de">de las 18 cotizaciones</em></span>
+            <span class="dt__res-i"><b>Cotizado</b><span data-tot="todas">$52.380.298</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Facturado</b><span data-tot="facturada">$29.863.357</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Por facturar</b><span data-tot="porfacturar">$16.071.671</span></span>
+            <span class="dt__res-i dt__res-i--off"><b>Borrador</b><span data-tot="borrador">$1.467.270</span></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Vencido</b><span data-tot="vencida">$4.978.000</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info" id="dt-cot-info" aria-live="polite">Mostrando <b>1&ndash;10</b> de <b>18</b> cotización(es)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-cot-tam">
+                Filas por página
+                <select id="dt-cot-tam" class="dt__in">
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" id="dt-cot-pag" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" type="button" data-pag="-1" disabled aria-label="Página anterior">&lsaquo;</button>
+                <button class="dt__pag is-on" type="button" data-pag="1" aria-current="page">1</button>
+                <button class="dt__pag" type="button" data-pag="2">2</button>
+                <button class="dt__pag dt__pag--n" type="button" data-pag="+1" aria-label="Página siguiente">&rsaquo;</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- El detalle de una cotización, esté en el estado que esté: se abre con un clic en
+         su fila y se cierra con la ✕, con Esc o pulsando fuera. Solo se lee.
+         Arriba el estado dicho con palabras y su recorrido; después el cliente y los
+         datos, los productos como en el carrito, las observaciones y los totales.
+         Lo de adentro es un ejemplo (CO-2026-012, por facturar, de un cliente con una
+         factura vencida): prototipo.js lo vuelve a dibujar con la que se abra. -->
+    <div class="overlay cot-det-fondo" id="cot-det" hidden>
+      <aside class="cot-det" role="dialog" aria-modal="true" aria-labelledby="cot-det-t" tabindex="-1">
+        <div class="modal__head">
+          <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+          <div>
+            <h3 id="cot-det-t">Cotización CO-2026-012</h3>
+            <span class="sub" id="cot-det-sub">Distribuidora Tamanaco · 35 pares · $2.853.025</span>
+          </div>
+          <button class="cot-x" type="button" data-det="cerrar" aria-label="Cerrar el detalle">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+        <div class="cot-det__cuerpo" tabindex="0" aria-label="Detalle de la cotización">
+          <section class="cot-det__estado cot-det__estado--warn" id="cot-det-estado" aria-label="Estado de la cotización">
+            <div class="cot-det__estado-cab">
+              <span class="pill pill--warn">Por facturar</span>
+              <p><b>Está en Facturación desde el <span class="cot-det__nw">11-septiembre-2026</span>.</b> Falta facturarla antes del <span class="cot-det__nw">26-septiembre-2026</span> (quedan 3 días).</p>
+            </div>
+            <ol class="cot-rec" aria-label="Recorrido de la cotización">
+              <li class="cot-rec__p is-hecho"><span class="cot-rec__n" aria-hidden="true">✓</span><b>Borrador</b><small>11-sep-2026</small></li>
+              <li class="cot-rec__p is-ahora" aria-current="step"><span class="cot-rec__n" aria-hidden="true">2</span><b>Por facturar</b><small>11-sep-2026</small></li>
+              <li class="cot-rec__p"><span class="cot-rec__n" aria-hidden="true">3</span><b>Facturada</b><small>pendiente</small></li>
+            </ol>
+            <div class="aviso aviso--crit">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+              <div>
+                <b>Facturación no la puede facturar mientras el cliente tenga facturas vencidas</b>
+                <p>Distribuidora Tamanaco debe <span class="cot-det__nw">FV-2026-0098</span> ($2.150.000, vencida hace <span class="cot-det__nw">11 días</span>). Primero tiene que pagarlas.</p>
+              </div>
+            </div>
+          </section>
+          <div class="cot-ficha">
+            <div class="cot-ficha__g cot-ficha__g--2" id="cot-det-ficha">
+              <section class="cot-ficha__s">
+                <h4>Cliente</h4>
+                <b class="cot-det__cli">Distribuidora Tamanaco</b><span class="tiny">NIT 900.221.334-7 · Cúcuta</span>
+                <div class="kv"><span>Contacto</span><b>Carmen Pabón · gerente</b></div>
+                <div class="kv"><span>Teléfono</span><b>315 882 1043</b></div>
+                <div class="kv"><span>Forma de pago</span><b>Crédito 60 días</b></div>
+              </section>
+              <section class="cot-ficha__s">
+                <h4>Datos</h4>
+                <div class="kv"><span>Fecha</span><b>11-septiembre-2026</b></div>
+                <div class="kv"><span>Válida hasta</span><b>26-septiembre-2026</b></div>
+                <div class="kv"><span>Vendedor</span><b>Valentina Rojas</b></div>
+                <div class="kv"><span>PDF enviado a</span><b>pedidos@<wbr>tamanaco.com.co</b></div>
+              </section>
+            </div>
+          </div>
+          <section class="cot-det__prod" aria-labelledby="cot-det-prod-t">
+            <h4 class="cot-det__t" id="cot-det-prod-t">Productos <span id="cot-det-prod-sub">1 modelo · 35 pares</span></h4>
+            <div class="cot-det__lineas" id="cot-det-lineas">
+              <article class="cot-item">
+                <span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span>
+                <div class="cot-item__x">
+                  <div class="cot-item__cab">
+                    <div><b>Bota Andina</b><span class="tiny">REF-1042 · 35 pares</span></div>
+                    <div class="cot-item__der"><b class="cot-item__total">$2.853.025</b></div>
+                  </div>
+                  <div class="cot-item__color"><i style="background:var(--cuero-negro)"></i><span>Negro</span><span class="vit__chips"><span>35<b>×2</b></span><span>36<b>×4</b></span><span>37<b>×7</b></span><span>38<b>×5</b></span><span>39<b>×3</b></span><span>40<b>×1</b></span></span></div>
+                  <div class="cot-item__color"><i style="background:var(--cuero-cafe)"></i><span>Café</span><span class="vit__chips"><span>35<b>×1</b></span><span>36<b>×3</b></span><span>37<b>×4</b></span><span>38<b>×3</b></span><span>39<b>×2</b></span></span></div>
+                  <div class="cot-item__pie"><span class="cot-item__desglose">35 × $68.500 = <b>$2.397.500</b> · Sin descuento · IVA 19 % <b>$455.525</b></span></div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <div class="cot-det__pie">
+            <section class="cot-det__obs" aria-labelledby="cot-det-obs-t">
+              <h4 class="cot-det__t" id="cot-det-obs-t">Observaciones para el cliente</h4>
+              <p id="cot-det-obs">Entrega en Cúcuta, en la bodega del cliente.</p>
+            </section>
+            <div class="cot-tot" id="cot-det-tot">
+              <div class="kv"><span>Subtotal <span class="tiny">35 pares</span></span><b>$2.397.500</b></div>
+              <div class="kv"><span>Descuentos</span><b>$0</b></div>
+              <div class="kv"><span>IVA 19 % <span class="tiny">sobre $2.397.500</span></span><b>$455.525</b></div>
+              <div class="kv kv--t"><span>Total</span><b>$2.853.025</b></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

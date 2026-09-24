@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Dashboard General · Inicio</title>
+    <title>SICAF · Dashboard General · Inicio</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
@@ -11,48 +11,52 @@
   </head>
   <body data-modulo="01-dashboard" data-titulo="Dashboard General · Inicio">
 
-    <section class="hero">
-      <div>
-        <h1>Dashboard General</h1>
-        <p>Cómo va la fábrica hoy, con los números que reporta cada módulo.</p>
-      </div>
-    </section>
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        Dashboard General
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
     <div class="kpis kpis--5">
-      <article class="kpi kpi--arena">
+      <button class="kpi kpi--arena kpi--btn" type="button" aria-pressed="false" data-kpi="url:../../05-produccion/mockup/03-ordenes.html" data-dice="las órdenes en Producción" title="Abrir las órdenes en Producción">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
         <div>
           <div class="kpi__n">24</div>
           <div class="kpi__l">Órdenes en producción</div>
         </div>
-      </article>
-      <article class="kpi kpi--rosa">
+      </button>
+      <button class="kpi kpi--rosa kpi--btn" type="button" aria-pressed="false" data-kpi="url:../../07-comercial/mockup/08-reportes.html" data-dice="el informe de ventas en Comercial" title="Abrir el informe de ventas en Comercial">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18h20"></path> <path d="M2 14h6l3-3 4 2h5a2 2 0 0 1 2 2v2H2z"></path> <path d="M8 14V8"></path></svg></span>
         <div>
           <div class="kpi__n">1.240</div>
           <div class="kpi__l">Pares vendidos este mes</div>
         </div>
-      </article>
-      <article class="kpi kpi--oliva">
+      </button>
+      <button class="kpi kpi--oliva kpi--btn" type="button" aria-pressed="false" data-kpi="url:../../07-comercial/mockup/08-reportes.html" data-dice="el informe de ventas en Comercial" title="Abrir el informe de ventas en Comercial">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"></rect> <circle cx="12" cy="12" r="2"></circle> <path d="M6 12h.01M18 12h.01"></path></svg></span>
         <div>
           <div class="kpi__n">$84.350.000</div>
           <div class="kpi__l">Venta del mes</div>
         </div>
-      </article>
-      <article class="kpi kpi--cobre">
+      </button>
+      <button class="kpi kpi--cobre kpi--btn" type="button" aria-pressed="false" data-kpi="ir:02-alertas.html" data-dice="las alertas abiertas" title="Abrir las alertas abiertas">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
         <div>
           <div class="kpi__n">7</div>
           <div class="kpi__l">Alertas abiertas</div>
         </div>
-      </article>
-      <article class="kpi kpi--arena">
+      </button>
+      <button class="kpi kpi--arena kpi--btn" type="button" aria-pressed="false" data-kpi="url:../../08-logistica/mockup/02-despachos.html" data-dice="los despachos en Logística" title="Abrir los despachos en Logística">
         <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
         <div>
           <div class="kpi__n">182</div>
           <div class="kpi__l">Pares en tránsito</div>
         </div>
-      </article>
+      </button>
     </div>
     <section class="saludo">
       <div class="saludo__t">
@@ -61,185 +65,765 @@
       </div>
       <div class="rapidas">
         <button class="btn btn--sm" data-rapida="alertas"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg> Ver alertas</button>
-        <button class="btn btn--sm btn--oliva" data-rapida="modulos"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"></path> <path d="M8 12h13"></path> <path d="M8 18h13"></path> <path d="M3 6h.01"></path> <path d="M3 12h.01"></path> <path d="M3 18h.01"></path></svg> Estado de módulos</button>
-        <button class="btn btn--sm btn--ghost" data-rapida="indicadores"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg> Indicadores</button>
       </div>
     </section>
-    <details class="avisos">
-      <summary class="avisos__cab">
-        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
-        <span class="avisos__t">
-          <b>Pendientes y notificaciones</b>
-          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
-        </span>
-        <span class="avisos__n">5</span>
-        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-      </summary>
-      <div class="avisos__cuerpo">
-        <div class="pend">
-          <button class="pend__i pend__i--crit" data-ir="04-alertas.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
-            <span class="pend__x"><b>Producción parada por falta de cuero</b><small>OP-2026-048 lleva 3 días esperando · el pedido a Compras es la OC-2026-014</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--crit" data-ir="04-alertas.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-            <span class="pend__x"><b>Comercial Los Andes pasó el cupo de crédito</b><small>$15.900.000 de $18.000.000 · el próximo pedido queda retenido</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="04-alertas.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
-            <span class="pend__x"><b>Retraso de entrega en la ruta de Cúcuta</b><small>ABC-987 lleva 40 minutos de demora · el cliente ya fue avisado</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="04-alertas.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
-            <span class="pend__x"><b>2 referencias bajo el stock mínimo</b><small>Cuero vacuno graso y plantilla EVA · Compras ya tiene la solicitud</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--info" data-ir="02-modulos.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
-            <span class="pend__x"><b>Los 9 módulos reportaron hoy</b><small>Último reporte: Admin. Usuarios a las 08:12</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-        </div>
-      </div>
-    </details>
     <nav class="subnav" aria-label="Secciones del tablero">
       <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
-      <a class="subnav__i" data-ico="lista" data-ct="8" href="02-modulos.html">Módulos</a>
+      <a class="subnav__i" data-ico="alerta" data-ct="7" href="02-alertas.html">Alertas</a>
       <a class="subnav__i" data-ico="barras" href="03-indicadores.html">Indicadores</a>
-      <a class="subnav__i" data-ico="alerta" data-ct="7" href="04-alertas.html">Alertas</a>
-      <a class="subnav__i" data-ico="engranaje" href="05-config.html">Config.</a>
     </nav>
+    <article class="graf graf--flujo graf--mes">
+      <header class="graf__h">
+        <svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <b>Pares terminados</b>
+        <span class="graf__t">cada mes, últimos seis</span>
+      </header>
+          <div class="colg">
+            <div class="colg__y"><span>1.600</span><span>1066,7</span><span>533,3</span><span>0</span></div>
+            <div class="colg__p">
+              <span class="colg__g"><i style="bottom:100%"></i><i style="bottom:66.66%"></i><i style="bottom:33.33%"></i><i style="bottom:0%"></i></span>
+              <button class="colg__b" style="--c:var(--paso-1)" title="Abril de 2026: 980 pares">
+                <span class="colg__t"><i style="height:61.25%"><em class="colg__tip">980 pares<small>12 órdenes cerradas</small></em></i></span>
+                <span class="colg__x">Abr</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-1)" title="Mayo de 2026: 1.120 pares">
+                <span class="colg__t"><i style="height:70.00%"><em class="colg__tip">1.120 pares<small>14 órdenes cerradas</small></em></i></span>
+                <span class="colg__x">May</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-1)" title="Junio de 2026: 1.045 pares">
+                <span class="colg__t"><i style="height:65.31%"><em class="colg__tip">1.045 pares<small>11 órdenes cerradas</small></em></i></span>
+                <span class="colg__x">Jun</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-1)" title="Julio de 2026: 1.180 pares">
+                <span class="colg__t"><i style="height:73.75%"><em class="colg__tip">1.180 pares<small>15 órdenes cerradas</small></em></i></span>
+                <span class="colg__x">Jul</span>
+              </button>
+              <button class="colg__b is-top" style="--c:var(--paso-1)" title="Agosto de 2026: 1.260 pares">
+                <span class="colg__t"><i style="height:78.75%"><em class="colg__tip">1.260 pares<small>16 órdenes cerradas</small></em></i></span>
+                <span class="colg__x">Ago</span>
+              </button>
+              <button class="colg__b" style="--c:var(--paso-1)" title="Septiembre de 2026: 1.240 pares">
+                <span class="colg__t"><i style="height:77.50%"><em class="colg__tip">1.240 pares<small>va hasta hoy</small></em></i></span>
+                <span class="colg__x">Sep</span>
+              </button>
+            </div>
+          </div>
+      <details class="g6__datos">
+        <summary>Ver los mismos números en una tabla</summary>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Mes</th><th class="num">Pares</th><th>Detalle</th></tr></thead>
+            <tbody><tr><td data-l="Mes">Abril</td><td class="num" data-l="pares">980</td><td data-l="Detalle">12 órdenes cerradas</td></tr><tr><td data-l="Mes">Mayo</td><td class="num" data-l="pares">1.120</td><td data-l="Detalle">14 órdenes cerradas</td></tr><tr><td data-l="Mes">Junio</td><td class="num" data-l="pares">1.045</td><td data-l="Detalle">11 órdenes cerradas</td></tr><tr><td data-l="Mes">Julio</td><td class="num" data-l="pares">1.180</td><td data-l="Detalle">15 órdenes cerradas</td></tr><tr><td data-l="Mes">Agosto</td><td class="num" data-l="pares">1.260</td><td data-l="Detalle">16 órdenes cerradas</td></tr><tr><td data-l="Mes">Septiembre</td><td class="num" data-l="pares">1.240</td><td data-l="Detalle">va hasta hoy</td></tr></tbody>
+          </table>
+        </div>
+      </details>
+    </article>
     <section class="panel">
-      <header class="panel__head panel__head--vino">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
         <div>
-          <h2>La Cadena Productiva Hoy</h2>
-          <div class="sub">Los nueve eslabones, del modelo aprobado al par entregado</div>
+          <h2>Historial de los últimos meses</h2>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                  <th class="num">Paso</th>
-                  <th>Qué pasa aquí</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="num" data-l="Paso"><b>1</b></td>
-                <td data-l="Qué pasa aquí"><b>Diseño aprueba el modelo</b><div class="tiny">12 modelos aprobados</div></td>
-                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../02-diseno/mockup/01-modelos.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>2</b></td>
-                <td data-l="Qué pasa aquí"><b>Comercial toma el pedido</b><div class="tiny">6 pedidos abiertos</div></td>
-                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/01-inicio.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>3</b></td>
-                <td data-l="Qué pasa aquí"><b>Producción arma la orden</b><div class="tiny">24 órdenes en curso</div></td>
-                <td data-l="Estado"><span class="pill pill--warn">3 sin material</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>4</b></td>
-                <td data-l="Qué pasa aquí"><b>Compras trae los insumos</b><div class="tiny">6 órdenes de compra abiertas</div></td>
-                <td data-l="Estado"><span class="pill pill--warn">1 entrega incompleta</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../03-compras/mockup/01-necesidad.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>5</b></td>
-                <td data-l="Qué pasa aquí"><b>Inventario entrega y descuenta</b><div class="tiny">8 referencias de insumo</div></td>
-                <td data-l="Estado"><span class="pill pill--crit">2 bajo mínimo</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../04-inventario/mockup/01-inicio.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>6</b></td>
-                <td data-l="Qué pasa aquí"><b>La planta corta, guarnece y monta</b><div class="tiny">28 % de avance promedio</div></td>
-                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>7</b></td>
-                <td data-l="Qué pasa aquí"><b>Calidad revisa el lote</b><div class="tiny">94,96 % de conformidad</div></td>
-                <td data-l="Estado"><span class="pill pill--ok">Al día</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../06-calidad/mockup/01-proceso.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>8</b></td>
-                <td data-l="Qué pasa aquí"><b>Logística despacha</b><div class="tiny">182 pares en tránsito</div></td>
-                <td data-l="Estado"><span class="pill pill--warn">1 retraso</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Abrir</a></div></td>
-              </tr>
-              <tr>
-                <td class="num" data-l="Paso"><b>9</b></td>
-                <td data-l="Qué pasa aquí"><b>Admin vigila quién hizo qué</b><div class="tiny">9 usuarios activos</div></td>
-                <td data-l="Estado"><span class="pill pill--warn">Respaldo fallido</span></td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../09-admin/mockup/01-inicio.html">Abrir</a></div></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="dt dt--acc" id="dt-01-historial">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-01-historial-q" type="search" value="" autocomplete="off" placeholder="Buscar día, persona o trabajo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="dt-01-historial-f-mes">Mes</label>
+              <select id="dt-01-historial-f-mes" class="dt__in">
+                <option value="">Todos</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l">Día</span>
+              <div class="dt__rango">
+                <input type="date" class="dt__in" value aria-label="Día desde" title="Desde">
+                <span class="dt__rango-s">–</span>
+                <input type="date" class="dt__in" value aria-label="Día hasta" title="Hasta">
+              </div>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table class="hist">
+              <thead>
+                <tr>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Día"><span>Día</span><i class="dt__ind">▼</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Desde"><span>Desde</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Hasta"><span>Hasta</span><i class="dt__ind">⇅</i></button></th>
+                  <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Duró"><span>Duró</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Qué se hizo"><span>Qué se hizo</span><i class="dt__ind">⇅</i></button></th>
+                  <th><button class="dt__orden" title="Ordenar por Quién"><span>Quién</span><i class="dt__ind">⇅</i></button></th>
+                  <th style="width:1%"><button class="dt__orden" title="Ordenar por Cómo quedó"><span>Cómo quedó</span><i class="dt__ind">⇅</i></button></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Día"><b>23/09/2026</b></td>
+                  <td class="num" data-l="Desde">06:00</td>
+                  <td class="num" data-l="Hasta">08:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Recepción de cuero de la OC-2026-014</td>
+                  <td data-l="Quién">Andrés Suárez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--crit">No llegó</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>23/09/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">11:00</td>
+                  <td class="num" data-l="Duró">3 h</td>
+                  <td data-l="Qué se hizo">Montaje de la OP-2026-048</td>
+                  <td data-l="Quién">Marta Villamizar</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--crit">Parada sin material</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>22/09/2026</b></td>
+                  <td class="num" data-l="Desde">07:00</td>
+                  <td class="num" data-l="Hasta">10:00</td>
+                  <td class="num" data-l="Duró">3 h</td>
+                  <td data-l="Qué se hizo">Cotización de la OC-2026-014</td>
+                  <td data-l="Quién">Carlos Ruiz</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>22/09/2026</b></td>
+                  <td class="num" data-l="Desde">14:00</td>
+                  <td class="num" data-l="Hasta">18:00</td>
+                  <td class="num" data-l="Duró">4 h</td>
+                  <td data-l="Qué se hizo">Guarnecido de la OP-2026-046</td>
+                  <td data-l="Quién">Marta Villamizar</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>21/09/2026</b></td>
+                  <td class="num" data-l="Desde">13:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">3 h</td>
+                  <td data-l="Qué se hizo">Corte de la OP-2026-045</td>
+                  <td data-l="Quién">Diego Peña</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>18/09/2026</b></td>
+                  <td class="num" data-l="Desde">07:00</td>
+                  <td class="num" data-l="Hasta">12:00</td>
+                  <td class="num" data-l="Duró">5 h</td>
+                  <td data-l="Qué se hizo">Cierre de pedidos de la semana</td>
+                  <td data-l="Quién">Sofía Ramírez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>31/08/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">17:00</td>
+                  <td class="num" data-l="Duró">9 h</td>
+                  <td data-l="Qué se hizo">Cierre de mes de agosto</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>14/08/2026</b></td>
+                  <td class="num" data-l="Desde">09:00</td>
+                  <td class="num" data-l="Hasta">11:30</td>
+                  <td class="num" data-l="Duró">2,5 h</td>
+                  <td data-l="Qué se hizo">Revisión de indicadores con gerencia</td>
+                  <td data-l="Quién">Sofía Ramírez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>30/07/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">8 h</td>
+                  <td data-l="Qué se hizo">Cierre de mes de julio</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>09/07/2026</b></td>
+                  <td class="num" data-l="Desde">10:00</td>
+                  <td class="num" data-l="Hasta">12:00</td>
+                  <td class="num" data-l="Duró">2 h</td>
+                  <td data-l="Qué se hizo">Ajuste de metas del trimestre</td>
+                  <td data-l="Quién">Sofía Ramírez</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>30/06/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">16:00</td>
+                  <td class="num" data-l="Duró">8 h</td>
+                  <td data-l="Qué se hizo">Cierre de mes de junio</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--warn">Con faltantes</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>29/05/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">15:00</td>
+                  <td class="num" data-l="Duró">7 h</td>
+                  <td data-l="Qué se hizo">Cierre de mes de mayo</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+                <tr>
+                  <td data-l="Día"><b>30/04/2026</b></td>
+                  <td class="num" data-l="Desde">08:00</td>
+                  <td class="num" data-l="Hasta">15:00</td>
+                  <td class="num" data-l="Duró">7 h</td>
+                  <td data-l="Qué se hizo">Cierre de mes de abril</td>
+                  <td data-l="Quién">Luisa Mendoza</td>
+                  <td data-l="Cómo quedó"><span class="pill pill--ok">Cerrada</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 13 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>No llegó</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Parada sin material</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>Con faltantes</b><span>1</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>13</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-01-historial-tam">
+                Filas por página
+                <select id="dt-01-historial-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag">2</button>
+                <button class="dt__pag dt__pag--n" aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
-        <p class="tabla-pie">De la aprobación del modelo hasta la entrega · si un paso se traba, los de abajo también</p>
+
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"></path> <path d="M16 2v4"></path> <rect width="18" height="18" x="3" y="4" rx="2"></rect> <path d="M3 10h18"></path> <path d="M8 14h.01"></path> <path d="M12 14h.01"></path> <path d="M16 14h.01"></path> <path d="M8 18h.01"></path> <path d="M12 18h.01"></path></svg>
+        <div>
+          <h2>Agenda de la semana</h2>
+        </div>
+      </header>
+      <div class="panel__body">
+        <div class="cal-caja">
+          <div class="cal">
+            <div class="cal__esq" aria-hidden="true"></div>
+            <div class="cal__dia" style="grid-column:2">Lun <b>21</b></div>
+            <div class="cal__dia" style="grid-column:3">Mar <b>22</b></div>
+            <div class="cal__dia cal__dia--hoy" style="grid-column:4">Mié <b>23</b> <span class="cal__hoyt">hoy</span></div>
+            <div class="cal__dia" style="grid-column:5">Jue <b>24</b></div>
+            <div class="cal__dia" style="grid-column:6">Vie <b>25</b></div>
+            <div class="cal__hora" style="grid-row:2">06:00</div>
+            <div class="cal__hora" style="grid-row:3">07:00</div>
+            <div class="cal__hora" style="grid-row:4">08:00</div>
+            <div class="cal__hora" style="grid-row:5">09:00</div>
+            <div class="cal__hora" style="grid-row:6">10:00</div>
+            <div class="cal__hora" style="grid-row:7">11:00</div>
+            <div class="cal__hora" style="grid-row:8">12:00</div>
+            <div class="cal__hora" style="grid-row:9">13:00</div>
+            <div class="cal__hora" style="grid-row:10">14:00</div>
+            <div class="cal__hora" style="grid-row:11">15:00</div>
+            <div class="cal__hora" style="grid-row:12">16:00</div>
+            <div class="cal__hora" style="grid-row:13">17:00</div>
+            <div class="cal__c" style="grid-column:2;grid-row:2" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:3" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:4" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:5" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:6" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:7" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:8" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:9" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:10" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:11" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:12" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:2;grid-row:13" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:2" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:3" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:4" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:5" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:6" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:7" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:8" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:9" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:10" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:11" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:12" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:3;grid-row:13" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:2" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:3" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:4" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:5" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:6" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:7" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:8" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:9" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:10" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:11" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:12" aria-hidden="true"></div>
+            <div class="cal__c cal__c--hoy" style="grid-column:4;grid-row:13" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:2" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:3" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:4" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:5" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:6" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:7" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:8" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:9" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:10" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:11" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:12" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:5;grid-row:13" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:2" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:3" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:4" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:5" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:6" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:7" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:8" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:9" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:10" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:11" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:12" aria-hidden="true"></div>
+            <div class="cal__c" style="grid-column:6;grid-row:13" aria-hidden="true"></div>
+            <a class="cal__b cal__b--listo" style="grid-column:2;grid-row:5/8" href="../../07-comercial/mockup/01-inicio.html" title="09:00 a 12:00 · Comercial · Cierre de pedidos · 6 pedidos a Producción">
+              <span class="cal__r">09:00 – 12:00</span>
+              <b>Cierre de pedidos</b>
+              <span class="cal__mo">Comercial</span>
+              <span class="cal__no">6 pedidos a Producción</span>
+            </a>
+            <a class="cal__b cal__b--listo" style="grid-column:2;grid-row:9/12" href="../../05-produccion/mockup/01-panel-principal.html" title="13:00 a 16:00 · Producción · OP-2026-045 · corte · 480 pares cortados">
+              <span class="cal__r">13:00 – 16:00</span>
+              <b>OP-2026-045 · corte</b>
+              <span class="cal__mo">Producción</span>
+              <span class="cal__no">480 pares cortados</span>
+            </a>
+            <a class="cal__b cal__b--atrasado" style="grid-column:2;grid-row:12/14" href="../../09-admin/mockup/01-inicio.html" title="16:00 a 18:00 · Configuraciones · Respaldo del día · quedó incompleto, se repite">
+              <span class="cal__r">16:00 – 18:00</span>
+              <b>Respaldo del día</b>
+              <span class="cal__mo">Configuraciones</span>
+              <span class="cal__no">quedó incompleto, se repite</span>
+            </a>
+            <a class="cal__b cal__b--listo" style="grid-column:3;grid-row:3/6" href="../../03-compras/mockup/01-necesidad.html" title="07:00 a 10:00 · Compras · Cotización OC-2026-014 · 3 proveedores respondieron">
+              <span class="cal__r">07:00 – 10:00</span>
+              <b>Cotización OC-2026-014</b>
+              <span class="cal__mo">Compras</span>
+              <span class="cal__no">3 proveedores respondieron</span>
+            </a>
+            <a class="cal__b cal__b--listo" style="grid-column:3;grid-row:6/8" href="../../04-inventario/mockup/01-inicio.html" title="10:00 a 12:00 · Inventario · Conteo de cuero · 8 referencias revisadas">
+              <span class="cal__r">10:00 – 12:00</span>
+              <b>Conteo de cuero</b>
+              <span class="cal__mo">Inventario</span>
+              <span class="cal__no">8 referencias revisadas</span>
+            </a>
+            <a class="cal__b cal__b--listo" style="grid-column:3;grid-row:9/11" href="../../06-calidad/mockup/01-proceso.html" title="13:00 a 15:00 · Calidad · Lote L-2026-091 · 96,1 % conforme">
+              <span class="cal__r">13:00 – 15:00</span>
+              <b>Lote L-2026-091</b>
+              <span class="cal__mo">Calidad</span>
+              <span class="cal__no">96,1 % conforme</span>
+            </a>
+            <a class="cal__b cal__b--listo" style="grid-column:3;grid-row:11/14" href="../../05-produccion/mockup/01-panel-principal.html" title="15:00 a 18:00 · Producción · OP-2026-046 · guarnecido · 320 pares guarnecidos">
+              <span class="cal__r">15:00 – 18:00</span>
+              <b>OP-2026-046 · guarnecido</b>
+              <span class="cal__mo">Producción</span>
+              <span class="cal__no">320 pares guarnecidos</span>
+            </a>
+            <a class="cal__b cal__b--atrasado" style="grid-column:4;grid-row:2/4" href="../../04-inventario/mockup/01-inicio.html" title="06:00 a 08:00 · Inventario · Recepción OC-2026-014 · el proveedor no llegó a la hora">
+              <span class="cal__r">06:00 – 08:00</span>
+              <b>Recepción OC-2026-014</b>
+              <span class="cal__mo">Inventario</span>
+              <span class="cal__no">el proveedor no llegó a la hora</span>
+            </a>
+            <a class="cal__b cal__b--atrasado" style="grid-column:4;grid-row:4/7" href="../../05-produccion/mockup/01-panel-principal.html" title="08:00 a 11:00 · Producción · OP-2026-048 · montaje · parada, lleva 3 días sin cuero">
+              <span class="cal__r">08:00 – 11:00</span>
+              <b>OP-2026-048 · montaje</b>
+              <span class="cal__mo">Producción</span>
+              <span class="cal__no">parada, lleva 3 días sin cuero</span>
+            </a>
+            <a class="cal__b cal__b--proceso" style="grid-column:4;grid-row:7/9" href="../../06-calidad/mockup/01-proceso.html" title="11:00 a 13:00 · Calidad · Lote L-2026-098 · van 240 de 400 pares revisados">
+              <span class="cal__r">11:00 – 13:00</span>
+              <b>Lote L-2026-098</b>
+              <span class="cal__mo">Calidad</span>
+              <span class="cal__no">van 240 de 400 pares revisados</span>
+            </a>
+            <a class="cal__b cal__b--proceso" style="grid-column:4;grid-row:9/11" href="../../07-comercial/mockup/01-inicio.html" title="13:00 a 15:00 · Comercial · Facturación FV-2026-042 · Calzado Norte · $6.140.400">
+              <span class="cal__r">13:00 – 15:00</span>
+              <b>Facturación FV-2026-042</b>
+              <span class="cal__mo">Comercial</span>
+              <span class="cal__no">Calzado Norte · $6.140.400</span>
+            </a>
+            <a class="cal__b cal__b--hoy" style="grid-column:4;grid-row:11/14" href="../../08-logistica/mockup/01-inicio.html" title="15:00 a 18:00 · Logística · Ruta DS-2026-057 · Cúcuta – Pamplona, falta el vehículo">
+              <span class="cal__r">15:00 – 18:00</span>
+              <b>Ruta DS-2026-057</b>
+              <span class="cal__mo">Logística</span>
+              <span class="cal__no">Cúcuta – Pamplona, falta el vehículo</span>
+            </a>
+            <a class="cal__b cal__b--prog" style="grid-column:5;grid-row:3/5" href="../../03-compras/mockup/01-necesidad.html" title="07:00 a 09:00 · Compras · Estudio de cotizaciones · van a aprobación">
+              <span class="cal__r">07:00 – 09:00</span>
+              <b>Estudio de cotizaciones</b>
+              <span class="cal__mo">Compras</span>
+              <span class="cal__no">van a aprobación</span>
+            </a>
+            <a class="cal__b cal__b--prog" style="grid-column:5;grid-row:5/9" href="../../05-produccion/mockup/01-panel-principal.html" title="09:00 a 13:00 · Producción · OP-2026-048 · montaje · se reprogramó al llegar el cuero">
+              <span class="cal__r">09:00 – 13:00</span>
+              <b>OP-2026-048 · montaje</b>
+              <span class="cal__mo">Producción</span>
+              <span class="cal__no">se reprogramó al llegar el cuero</span>
+            </a>
+            <a class="cal__b cal__b--prog" style="grid-column:5;grid-row:10/12" href="../../08-logistica/mockup/01-inicio.html" title="14:00 a 16:00 · Logística · Despacho DS-2026-058 · Cúcuta – Ocaña">
+              <span class="cal__r">14:00 – 16:00</span>
+              <b>Despacho DS-2026-058</b>
+              <span class="cal__mo">Logística</span>
+              <span class="cal__no">Cúcuta – Ocaña</span>
+            </a>
+            <a class="cal__b cal__b--prog" style="grid-column:6;grid-row:3/6" href="../../06-calidad/mockup/01-proceso.html" title="07:00 a 10:00 · Calidad · Auditoría de proceso · corte, guarnecido y montaje">
+              <span class="cal__r">07:00 – 10:00</span>
+              <b>Auditoría de proceso</b>
+              <span class="cal__mo">Calidad</span>
+              <span class="cal__no">corte, guarnecido y montaje</span>
+            </a>
+            <a class="cal__b cal__b--prog" style="grid-column:6;grid-row:6/8" href="../../04-inventario/mockup/01-inicio.html" title="10:00 a 12:00 · Inventario · Cierre parcial de mes · cuadre de entradas y salidas">
+              <span class="cal__r">10:00 – 12:00</span>
+              <b>Cierre parcial de mes</b>
+              <span class="cal__mo">Inventario</span>
+              <span class="cal__no">cuadre de entradas y salidas</span>
+            </a>
+            <a class="cal__b cal__b--prog" style="grid-column:6;grid-row:10/13" href="../../07-comercial/mockup/01-inicio.html" title="14:00 a 17:00 · Comercial · Entrega a Calzado Norte · 400 pares, factura FV-2026-042">
+              <span class="cal__r">14:00 – 17:00</span>
+              <b>Entrega a Calzado Norte</b>
+              <span class="cal__mo">Comercial</span>
+              <span class="cal__no">400 pares, factura FV-2026-042</span>
+            </a>
+            <div class="cal__ahora" style="grid-column:4;grid-row:6;margin-top:24.0px"><span>10:30</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <div>
+          <h2>Control de calidad por lote</h2>
+        </div>
+      </header>
+      <div class="panel__body carta__marco">
+          <svg class="carta" viewBox="0 0 760 250" role="img" aria-label="Carta de control del porcentaje de conformidad por lote. El lote LT-2026-078 quedó en 90,4 %, por debajo del límite inferior de 91 %.">
+          <line class="carta__rej" x1="46" y1="181.0" x2="676" y2="181.0"/>
+          <text class="carta__ejeY" x="37" y="185.0">90&#8201;%</text>
+          <line class="carta__rej" x1="46" y1="148.0" x2="676" y2="148.0"/>
+          <text class="carta__ejeY" x="37" y="152.0">92&#8201;%</text>
+          <line class="carta__rej" x1="46" y1="115.0" x2="676" y2="115.0"/>
+          <text class="carta__ejeY" x="37" y="119.0">94&#8201;%</text>
+          <line class="carta__rej" x1="46" y1="82.0" x2="676" y2="82.0"/>
+          <text class="carta__ejeY" x="37" y="86.0">96&#8201;%</text>
+          <line class="carta__rej" x1="46" y1="49.0" x2="676" y2="49.0"/>
+          <text class="carta__ejeY" x="37" y="53.0">98&#8201;%</text>
+          <line class="carta__rej" x1="46" y1="16.0" x2="676" y2="16.0"/>
+          <text class="carta__ejeY" x="37" y="20.0">100&#8201;%</text>
+          <rect class="carta__banda" x="46" y="32.5" width="630" height="132.0"/>
+          <line class="carta__lsc" x1="46" y1="32.5" x2="676" y2="32.5"/>
+          <text class="carta__rot carta__rot--lsc" x="684" y="36.5">LSC 99,0</text>
+          <line class="carta__lc" x1="46" y1="99.2" x2="676" y2="99.2"/>
+          <text class="carta__rot carta__rot--lc" x="684" y="103.2">LC 95,0</text>
+          <line class="carta__lic" x1="46" y1="164.5" x2="676" y2="164.5"/>
+          <text class="carta__rot carta__rot--lic" x="684" y="168.5">LIC 91,0</text>
+          <polyline class="carta__linea" points="46.0,78.7 103.3,85.3 160.5,113.4 217.8,90.2 275.1,68.8 332.4,128.2 389.6,100.1 446.9,96.9 504.2,174.4 561.5,105.1 618.7,93.6 676.0,80.4"/>
+          <circle class="carta__pt" cx="46.0" cy="78.7" r="4.5"><title>Lote LT-2026-070: 96,2 % de conformidad</title></circle>
+          <text class="carta__ejeX" x="46.0" y="236">070</text>
+          <circle class="carta__pt" cx="103.3" cy="85.3" r="4.5"><title>Lote LT-2026-071: 95,8 % de conformidad</title></circle>
+          <circle class="carta__pt" cx="160.5" cy="113.4" r="4.5"><title>Lote LT-2026-072: 94,1 % de conformidad</title></circle>
+          <text class="carta__ejeX" x="160.5" y="236">072</text>
+          <circle class="carta__pt" cx="217.8" cy="90.2" r="4.5"><title>Lote LT-2026-073: 95,5 % de conformidad</title></circle>
+          <circle class="carta__pt" cx="275.1" cy="68.8" r="4.5"><title>Lote LT-2026-074: 96,8 % de conformidad</title></circle>
+          <text class="carta__ejeX" x="275.1" y="236">074</text>
+          <circle class="carta__pt" cx="332.4" cy="128.2" r="4.5"><title>Lote LT-2026-075: 93,2 % de conformidad</title></circle>
+          <circle class="carta__pt" cx="389.6" cy="100.1" r="4.5"><title>Lote LT-2026-076: 94,9 % de conformidad</title></circle>
+          <text class="carta__ejeX" x="389.6" y="236">076</text>
+          <circle class="carta__pt" cx="446.9" cy="96.9" r="4.5"><title>Lote LT-2026-077: 95,1 % de conformidad</title></circle>
+          <circle class="carta__pt carta__pt--fuera" cx="504.2" cy="174.4" r="6"><title>Lote LT-2026-078: 90,4 % de conformidad</title></circle>
+          <text class="carta__ejeX" x="504.2" y="236">078</text>
+          <circle class="carta__pt" cx="561.5" cy="105.1" r="4.5"><title>Lote LT-2026-079: 94,6 % de conformidad</title></circle>
+          <circle class="carta__pt" cx="618.7" cy="93.6" r="4.5"><title>Lote LT-2026-080: 95,3 % de conformidad</title></circle>
+          <text class="carta__ejeX" x="618.7" y="236">080</text>
+          <circle class="carta__pt" cx="676.0" cy="80.4" r="4.5"><title>Lote LT-2026-081: 96,1 % de conformidad</title></circle>
+          <text class="carta__dato carta__dato--fuera" x="514.2" y="179.4">90,4 % · fuera de límite</text>
+          <text class="carta__dato" x="672.0" y="68.4">96,1 %</text>
+          </svg>
+      </div>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-01-control-de-calidad-por-lote">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-01-control-de-calidad-por-lote-q" type="search" value="" autocomplete="off" placeholder="Buscar en control de calidad por lote…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="dt-01-control-de-calidad-por-lote-f-estado">Estado</label>
+              <select id="dt-01-control-de-calidad-por-lote-f-estado" class="dt__in">
+                <option value="">Todos</option>
+                <option value="Bajo control">Bajo control</option>
+                <option value="Fuera de límite">Fuera de límite</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (1)</span>
+              </label>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Lote"><span>Lote</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Conformidad"><span>Conformidad</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Resultado"><span>Resultado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-070</b></td>
+                              <td class="num" data-l="Conformidad">96,2&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-071</b></td>
+                              <td class="num" data-l="Conformidad">95,8&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-072</b></td>
+                              <td class="num" data-l="Conformidad">94,1&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-073</b></td>
+                              <td class="num" data-l="Conformidad">95,5&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-074</b></td>
+                              <td class="num" data-l="Conformidad">96,8&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-075</b></td>
+                              <td class="num" data-l="Conformidad">93,2&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-076</b></td>
+                              <td class="num" data-l="Conformidad">94,9&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-077</b></td>
+                              <td class="num" data-l="Conformidad">95,1&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-078</b></td>
+                              <td class="num" data-l="Conformidad">90,4&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--crit">Fuera de límite</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-079</b></td>
+                              <td class="num" data-l="Conformidad">94,6&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-080</b></td>
+                              <td class="num" data-l="Conformidad">95,3&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Lote"><b>LT-2026-081</b></td>
+                              <td class="num" data-l="Conformidad">96,1&#8201;%</td>
+                              <td data-l="Resultado"><span class="pill pill--ok">Bajo control</span></td>
+                            </tr>
+                        </tbody>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 12 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--crit"><b>Fuera de límite</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Bajo control</b><span>11</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>12</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-01-control-de-calidad-por-lote-tam">
+                Filas por página
+                <select id="dt-01-control-de-calidad-por-lote-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag">2</button>
+                <button class="dt__pag dt__pag--n" aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <section class="panel">
       <header class="panel__head panel__head--cobre">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
         <div>
-          <h2>Lo Que Necesita Atención</h2>
-          <div class="sub">Lo más grave que hay abierto ahora mismo</div>
-        </div><button class="ghostbtn" data-ir="04-alertas.html"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg> Ver todas</button>
+          <h2>Alertas urgentes</h2>
+        </div>
       </header>
       <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                  <th>Alerta</th>
-                  <th>Qué pasa</th>
-                  <th>Desde</th>
-                  <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Alerta"><b>AL-007</b></td>
-                <td data-l="Qué pasa">OP-2026-048 lleva 3 días sin cuero<div class="tiny">Producción · Para la planta</div></td>
-                <td class="tiny falta" data-l="Desde">Hace 3 días</td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Ir al módulo</a></div></td>
-              </tr>
-              <tr>
-                <td data-l="Alerta"><b>AL-006</b></td>
-                <td data-l="Qué pasa">Comercial Los Andes pasó el cupo de crédito<div class="tiny">Comercial · Retiene pedidos</div></td>
-                <td class="tiny falta" data-l="Desde">Hace 1 día</td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/01-inicio.html">Ir al módulo</a></div></td>
-              </tr>
-              <tr>
-                <td data-l="Alerta"><b>AL-005</b></td>
-                <td data-l="Qué pasa">El respaldo de anoche falló<div class="tiny">Admin · Riesgo de datos</div></td>
-                <td class="tiny falta" data-l="Desde">Hace 10 horas</td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../09-admin/mockup/01-inicio.html">Ir al módulo</a></div></td>
-              </tr>
-              <tr>
-                <td data-l="Alerta"><b>AL-004</b></td>
-                <td data-l="Qué pasa">Retraso por tráfico en la ruta de Cúcuta<div class="tiny">Logística · Molesta al cliente</div></td>
-                <td class="tiny" data-l="Desde">Hace 40 minutos</td>
-                <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Ir al módulo</a></div></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="dt dt--acc" id="dt-01-alertas-urgentes">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-01-alertas-urgentes-q" type="search" value="" autocomplete="off" placeholder="Buscar en alertas urgentes…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Alerta"><span>Alerta</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Qué pasa"><span>Qué pasa</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Desde"><span>Desde</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="dt__th--txt" style="width:1%">Acciones</th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-007</b></td>
+                            <td data-l="Qué pasa">OP-2026-048 lleva 3 días sin cuero<div class="tiny">Producción · Para la planta</div></td>
+                            <td class="tiny falta" data-l="Desde">Hace 3 días</td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/01-panel-principal.html">Ir al módulo</a></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-006</b></td>
+                            <td data-l="Qué pasa">Comercial Los Andes pasó el cupo de crédito<div class="tiny">Comercial · Retiene pedidos</div></td>
+                            <td class="tiny falta" data-l="Desde">Hace 1 día</td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/01-inicio.html">Ir al módulo</a></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-005</b></td>
+                            <td data-l="Qué pasa">El respaldo de anoche falló<div class="tiny">Admin · Riesgo de datos</div></td>
+                            <td class="tiny falta" data-l="Desde">Hace 10 horas</td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../09-admin/mockup/01-inicio.html">Ir al módulo</a></div></td>
+                          </tr>
+                          <tr>
+                            <td data-l="Alerta"><b>AL-004</b></td>
+                            <td data-l="Qué pasa">Retraso por tráfico en la ruta de Cúcuta<div class="tiny">Logística · Molesta al cliente</div></td>
+                            <td class="tiny" data-l="Desde">Hace 40 minutos</td>
+                            <td data-l="Acciones"><div class="acts"><a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/01-inicio.html">Ir al módulo</a></div></td>
+                          </tr>
+                        </tbody>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 4 registro(s)</em></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–4</b> de <b>4</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-01-alertas-urgentes-tam">
+                Filas por página
+                <select id="dt-01-alertas-urgentes-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
-        <p class="tabla-pie">Las 4 más graves de 7 · la lista completa está en Alertas</p>
       </div>
     </section>
 

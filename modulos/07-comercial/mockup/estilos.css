@@ -138,7 +138,7 @@
 
 /* Títulos y elementos de interfaz: Poppins */
 
-/* Textos, descripciones y frases: Lora */
+/* Textos, descripciones y frases: también Poppins (en SICAF no se usa letra con serifa) */
 
 /* =====================================================================
    ESCALA COMPACTA — misma identidad, menos peso tipográfico
@@ -354,6 +354,21 @@ td.falta {
 .flash--warn { border-left-color: var(--warn); }
 .flash--crit { border-left-color: var(--crit); }
 
+/* Con una ventana abierta, el aviso sale arriba y al centro: abajo tapaba su
+   botón Listo y arriba a la derecha su ✕ */
+body:has(.overlay:not([hidden])) .flash {
+  top: 20px;
+  bottom: auto;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+/* Con el detalle de una cotización (el panel de la derecha), arriba a la izquierda,
+   sobre la lista, para no tapar el título del panel */
+body:has(#cot-det:not([hidden])) .flash { left: 24px; right: auto; margin: 0; }
+
 /* La fila que se acaba de agregar o de cambiar */
 
 tr.es-nueva > td {
@@ -562,3 +577,2320 @@ tr.va-a-borrarse > td {
 
 .rapidas { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto; }
 .rapidas .btn { gap: 6px; }
+
+/* =====================================================================
+   TABLA DE DATOS — la misma de Órdenes (05-produccion/mockup/03-ordenes.html):
+   buscador, caja de filtros, fichas de lo que filtra, orden por columna,
+   totales de lo filtrado y páginas.
+
+   Es una COPIA de 05-produccion/mockup/estilos.css: un módulo no carga el CSS
+   de otro (DECISIONES.md, punto 2). Si la tabla cambia allá, se copia otra vez.
+   La usa 09-cotizacion.html.
+   ===================================================================== */
+
+:root {
+  --banda: #EFE5DB;   /* la franja de la barra y los títulos de la tabla */
+}
+
+/* ---- Título de la pantalla, con la nota al lado ---- */
+
+.phead {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding-top: 8px;
+}
+
+.phead__t {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 2px 2px 0;
+  font-family: var(--letra-interfaz);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--vino-800);
+}
+
+.phead__t svg {
+  color: var(--cobre-700);
+}
+
+.phead--fila {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.phead--fila .phead__t { flex: 0 0 auto; }
+
+.nota--lado {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 40px 8px 12px;      /* hueco a la derecha para la ✕ */
+  gap: 11px;
+}
+
+.nota--lado .dot { width: 28px; height: 28px; }
+.nota--lado .dot .ico { width: 16px; height: 16px; }
+.nota--lado p { font-size: 12.5px; line-height: 1.4; }
+
+/* La ✕ que quita la nota. Sin JavaScript: es el <label> de una casilla escondida,
+   y el CSS esconde la nota cuando la casilla queda marcada. */
+.nota__ck {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nota__ck:checked ~ .nota--lado { display: none; }
+
+.nota__x {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--info);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .13s, color .13s;
+}
+
+.nota__x:hover { background: var(--info); color: #fff; }
+
+.nota__ck:focus-visible ~ .nota--lado .nota__x {
+  outline: 2.5px solid var(--cobre-600);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1100px) {
+  .phead--fila { flex-direction: column; align-items: stretch; gap: 10px; }
+}
+
+/* ---- La tarjeta de indicador puede filtrar su tabla ---- */
+
+.kpi--btn {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow .15s, transform .15s;
+}
+
+.kpi--btn:hover {
+  box-shadow: 0 10px 22px -16px rgba(58, 42, 34, .8);
+  transform: translateY(-1px);
+}
+
+.kpi--btn.is-on {
+  box-shadow: inset 0 0 0 2px var(--vino-700);
+}
+
+.kpi--btn.is-on .kpi__l::after {
+  content: " · filtrando";
+  font-weight: 700;
+}
+
+/* El dato de más de cada tarjeta va debajo de su nombre. En la esquina (como el
+   .kpi__d de Órdenes) le quitaba el ancho al nombre y "Sin venta" se partía. */
+.kpi__s {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi--arena .kpi__s { color: var(--cobre-800); }
+.kpi--rosa .kpi__s { color: var(--vino-700); }
+.kpi--oliva .kpi__s { color: var(--oliva-800); }
+.kpi--cobre .kpi__s { color: var(--vino-800); }
+
+/* ---- La tabla ---- */
+
+.dt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--papel);
+}
+
+.dt__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, var(--crema), var(--banda));
+  border-bottom: 1px solid var(--linea);
+}
+
+.dt__q {
+  position: relative;
+  flex: 1 1 230px;
+  max-width: 360px;
+  display: flex;
+  align-items: center;
+}
+
+.dt__q > svg {
+  position: absolute;
+  left: 12px;
+  color: var(--tinta-3);
+  pointer-events: none;
+}
+
+.dt__q input {
+  width: 100%;
+  height: 40px;
+  padding: 0 38px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-s);
+  background: var(--papel);
+}
+
+.dt__q input:focus {
+  border-color: var(--cobre-500);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(222, 123, 53, .16);
+}
+
+.dt__acts {
+  position: relative;
+  margin-left: auto;              /* las acciones siempre a la derecha, aunque la barra baje de renglón */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dt__b {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-s);
+  background: var(--papel);
+  color: var(--tinta);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.dt__b:hover {
+  border-color: var(--cobre-500);
+  color: var(--cobre-700);
+}
+
+.dt__in {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-s);
+  background: var(--papel);
+  font-size: 13.5px;
+  color: var(--tinta);
+}
+
+select.dt__in {
+  min-width: 140px;
+  max-width: 210px;
+  cursor: pointer;
+}
+
+.dt__in:hover { border-color: var(--cobre-400); }
+
+.dt__in:focus {
+  border-color: var(--cobre-500);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(222, 123, 53, .16);
+}
+
+.dt__scroll {
+  overflow: auto;
+  max-height: 66vh;
+}
+
+.dt thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--banda);
+  padding: 0;
+}
+
+.dt thead th.num { text-align: right; }
+
+.dt thead th.dt__th--txt { padding: 12px 12px 10px; }
+
+.dt thead th.is-on { box-shadow: inset 0 -2px 0 var(--cobre-600); }
+
+.dt thead th > .dt__orden {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px 12px 10px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.dt thead th.num > .dt__orden { justify-content: flex-end; }
+
+.dt__orden:hover {
+  background: rgba(222, 123, 53, .1);
+  color: var(--cobre-800);
+}
+
+.dt__ind {
+  font-style: normal;
+  font-size: 10px;
+  opacity: .45;
+}
+
+.dt thead th.is-on .dt__ind {
+  opacity: 1;
+  color: var(--cobre-700);
+}
+
+/* La fila que pide atención: la cotización está por vencerse */
+.dt tbody tr.dt__tarde td:first-child { box-shadow: inset 3px 0 0 var(--crit); }
+
+.dt__flag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--crit);
+  font-weight: 600;
+}
+
+/* ---- Totales de lo filtrado ---- */
+
+.dt__res {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 11px 14px;
+  background: var(--crema);
+  border-top: 1px solid var(--linea);
+}
+
+.dt__res-t {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--vino-700);
+}
+
+.dt__res-t em {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--tinta-3);
+}
+
+.dt__res-i {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 12px;
+  background: var(--papel);
+  border: 1px solid var(--linea-2);
+  border-left: 3px solid var(--cobre-600);
+  border-radius: var(--r-s);
+}
+
+.dt__res-i b {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tinta-3);
+}
+
+.dt__res-i span {
+  font-size: 14.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dt__res-i--ok { border-left-color: var(--ok); }
+.dt__res-i--ok span { color: var(--ok); }
+.dt__res-i--warn { border-left-color: var(--warn); }
+.dt__res-i--warn span { color: var(--warn); }
+.dt__res-i--crit { border-left-color: var(--crit); }
+.dt__res-i--crit span { color: var(--crit); }
+
+/* ---- Pie: cuántas filas, tamaño de página y paginador ---- */
+
+.dt__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 11px 14px;
+  border-top: 1px solid var(--linea-2);
+}
+
+.dt__info {
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.dt__info b {
+  font-variant-numeric: tabular-nums;
+  color: var(--tinta);
+}
+
+.dt__pieR {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.dt__tam {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--tinta-3);
+}
+
+.dt__tam .dt__in {
+  height: 32px;
+  min-width: 64px;
+}
+
+.dt__pager {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dt__pag {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-s);
+  background: var(--papel);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.dt__pag:hover:not(:disabled):not(.is-on) {
+  border-color: var(--cobre-500);
+  color: var(--cobre-700);
+}
+
+.dt__pag.is-on {
+  background: linear-gradient(180deg, var(--vino-600), var(--vino-700));
+  border-color: var(--vino-700);
+  color: #fff;
+  cursor: default;
+}
+
+.dt__pag--n {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.dt__pag:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+@media (min-width: 761px) {
+  .dt tbody tr:nth-child(even) td { background: rgba(239, 229, 219, .34); }
+  .dt tbody tr:hover td { background: #FEF7EE; }
+}
+
+@media (max-width: 760px) {
+  .dt__scroll {
+    overflow: visible;
+    max-height: none;
+  }
+
+  .dt tbody tr { margin: 0 12px 10px; }
+  .dt tbody tr:last-child { margin-bottom: 12px; }
+
+  .dt__bar, .dt__res, .dt__pie {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .dt__q { max-width: none; }
+  select.dt__in { min-width: 0; max-width: none; }
+  .dt__pie { justify-content: center; }
+}
+
+/* ---- Los filtros: un solo botón que despliega (<details>, sin JavaScript) ---- */
+
+.fil { position: static; }
+
+.fil__b {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: var(--r-m);
+  border: 1px solid var(--linea);
+  background: var(--papel);
+  color: var(--tinta-2);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  list-style: none;
+  transition: background .13s, border-color .13s, color .13s;
+}
+
+.fil__b::-webkit-details-marker { display: none; }
+.fil__b:hover { background: var(--cobre-100); border-color: var(--cobre-400); color: var(--cobre-800); }
+.fil[open] .fil__b { background: var(--cobre-100); border-color: var(--cobre-500); color: var(--cobre-800); }
+
+/* Cuántos filtros están puestos ahora mismo */
+.fil__n {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--cobre-600);
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* La caja flota para no empujar la tabla, anclada a la barra */
+.fil__caja {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 7px);
+  left: 14px;
+  width: min(560px, calc(100% - 28px));
+  padding: 14px 16px 12px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  box-shadow: 0 26px 48px -26px rgba(58, 42, 34, .6);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+}
+
+.fil__t {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cobre-700);
+}
+
+.fil__c { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fil__c--2 { grid-column: 1 / -1; }
+.fil__c select.dt__in { max-width: none; }
+
+.fil__l {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--tinta-2);
+}
+
+.fil__r { display: flex; align-items: center; gap: 7px; }
+.fil__r .dt__in { flex: 1; min-width: 0; }
+.fil__rs { color: var(--tinta-3); }
+
+.fil__pie {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--linea-2);
+}
+
+.fil__x {
+  margin-left: auto;
+  color: var(--vino-600);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fil__x:hover { text-decoration: underline; }
+
+/* Lo que está filtrando AHORA, cada ficha con su cruz */
+.fil__act { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.fil__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 4px 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--cobre-400);
+  background: var(--cobre-100);
+  color: var(--cobre-800);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+
+.fil__chip b { font-weight: 700; }
+
+.fil__chip button {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  color: var(--cobre-700);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.fil__chip button:hover { background: var(--cobre-400); color: #fff; }
+
+@media (max-width: 560px) {
+  .fil__caja { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* =====================================================================
+   COTIZACIONES — la lista (09-cotizacion.html)
+   Todo lleva apellido (.panel--tabla, .dt__cli, .dt__sinf) porque este
+   estilos.css es uno solo para todas las pantallas del módulo.
+   ===================================================================== */
+
+/* La caja de filtros flota fuera de la tarjeta, y .panel recorta lo que sobra */
+.panel--tabla { overflow: visible; }
+
+@media (min-width: 761px) {
+  .panel--tabla .dt__scroll { max-height: min(62vh, 620px); }
+  /* El cliente se recorta con puntos suspensivos antes que partir la fila en dos */
+  .panel--tabla .dt__thcli { min-width: 125px; }
+  .panel--tabla .dt tbody .dt__cli {
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* La fila, en una línea: la pantalla es la tabla. Con 10 px a los lados (y no
+   12, como en Órdenes) las nueve columnas caben enteras desde 1366 px de ancho. */
+.panel--tabla .dt tbody td { padding: 7px 10px; line-height: 1.3; white-space: nowrap; }
+.panel--tabla .dt thead th > .dt__orden { padding: 12px 10px 10px; }
+.panel--tabla .dt tbody .dt__flag { display: inline; font-size: 12px; }
+.panel--tabla .dt tbody .dt__flag::before { content: "· "; }
+.panel--tabla .dt tbody .dt__flag--solo::before { content: none; }   /* "mañana" sola, sin la fecha antes */
+.panel--tabla .dt tbody .pill,
+.panel--tabla .dt tbody .chip { vertical-align: middle; }
+.panel--tabla .dt tbody .pill { height: 22px; padding: 0 9px; }
+.panel--tabla .dt tbody .chip { padding: 2px 7px; font-size: 11.5px; font-weight: 600; letter-spacing: .02em; }
+.panel--tabla .dt__res { padding-top: 8px; padding-bottom: 8px; gap: 8px 10px; }
+.panel--tabla .dt__res-i { gap: 6px; padding: 5px 9px; }
+.panel--tabla .dt__res-i--off { border-left-color: var(--tinta-3); }
+
+/* Cinco totales (todo y uno por estado): en pantallas de menos de 1440 px el
+   título va en su propio renglón, corto, y los cinco caben debajo en uno solo */
+@media (min-width: 761px) and (max-width: 1439px) {
+  .panel--tabla .dt__res-t { flex: 1 1 100%; }
+  .panel--tabla .dt__res-t em { display: inline; margin-left: 6px; }
+  .panel--tabla .dt__res-i { padding: 4px 8px; }
+  .panel--tabla .dt__res-i span { font-size: 14px; }
+}
+
+/* Sin factura: la raya en --tinta-2, que sí se lee sobre blanco */
+.dt__sinf { color: var(--tinta-2); }
+
+/* La cotización que se acaba de crear en "Nueva cotización" */
+.dt tbody tr.es-nueva td { background: var(--oliva-100); }
+
+.dt__vacio td {
+  padding: 30px 16px;
+  text-align: center;
+  font-family: var(--letra-texto);
+  color: var(--tinta-2);
+}
+
+/* =====================================================================
+   NUEVA COTIZACIÓN (09-cotizacion-nueva.html)
+   Encabezado, cliente con su ficha, productos y la ventana para elegirlos.
+   ===================================================================== */
+
+/* ---- Título: volver, estado y pasos ---- */
+
+.cot-cab {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-top: 8px;
+}
+
+.cot-volver {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--linea);
+  background: var(--papel);
+  color: var(--vino-600);
+}
+
+.cot-volver:hover { border-color: var(--cobre-500); color: var(--cobre-700); }
+
+.cot-cab .steps {
+  flex: 0 1 430px;
+  margin-left: auto;
+}
+
+.cot-cab .step { font-size: 11.5px; padding: 7px 8px; }
+
+/* ---- Los datos que el vendedor no escribe: número, fecha, vigencia y él mismo ---- */
+
+.cot-datos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.cot-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 13px 18px;
+  border-left: 1px solid var(--linea-2);
+}
+
+.cot-dato:first-child { border-left: 0; }
+
+.cot-dato__l {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--tinta-2);
+}
+
+.cot-dato__l svg { color: var(--cobre-700); }
+
+.cot-dato b {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--vino-800);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cot-dato b.cot-dato--vacio { font-size: 14px; font-weight: 500; color: var(--tinta-2); }
+
+.cot-dato--vend {
+  flex-direction: row;
+  align-items: center;
+  gap: 11px;
+}
+
+.cot-dato--vend > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+@media (max-width: 1180px) {
+  .cot-datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cot-dato:nth-child(3) { border-left: 0; }
+  .cot-dato:nth-child(n+3) { border-top: 1px solid var(--linea-2); }
+}
+
+@media (max-width: 560px) {
+  .cot-datos { grid-template-columns: minmax(0, 1fr); }
+  .cot-dato { border-left: 0; border-top: 1px solid var(--linea-2); }
+  .cot-dato:first-child { border-top: 0; }
+}
+
+/* ---- La barra de cada sección, como la de la tabla de Órdenes ----
+   Una franja clara con el título pequeño y, en la misma línea, lo que se usa en
+   esa sección (el buscador o el botón). La franja de color de .panel__head se
+   llevaba 66 px de alto solo para decir el nombre. */
+
+.cot-barra {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--linea);
+  background: linear-gradient(180deg, var(--crema), var(--banda));
+}
+
+.cot-barra__t {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--vino-800);
+  white-space: nowrap;
+}
+
+.cot-barra__t svg { color: var(--cobre-700); }
+.cot-barra__ayuda { font-family: var(--letra-texto); font-size: 12.5px; color: var(--tinta-2); }
+.cot-barra__btn { margin-left: auto; }
+
+/* ---- Buscador con resultados debajo ---- */
+
+/* El panel deja salir la lista de resultados; las esquinas las redondea la barra */
+.cot-abierto { overflow: visible; }
+.cot-abierto > .cot-barra { border-radius: var(--r-l) var(--r-l) 0 0; }
+.cot-abierto > .panel__body { padding: 14px; border-radius: 0 0 var(--r-l) var(--r-l); }
+
+.cot-busca { position: relative; }
+.cot-barra .cot-busca { flex: 1 1 320px; max-width: 560px; }
+.cot-barra .cot-busca .control input { height: 40px; }
+.cot-barra .cot-busca .control > .ico { top: 11px; }
+
+.cot-res {
+  position: absolute;
+  z-index: 45;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 330px;
+  overflow: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  box-shadow: 0 26px 48px -26px rgba(58, 42, 34, .6);
+}
+
+.cot-res__i {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: var(--r-s);
+  text-align: left;
+}
+
+.cot-res__i:hover,
+.cot-res__i.is-on { background: var(--cobre-100); }
+
+.cot-res__i:disabled { cursor: not-allowed; }
+.cot-res__i:disabled:hover { background: none; }
+.cot-res__i:disabled .cot-res__x b { color: var(--tinta-2); }
+
+.cot-res__ic {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--arena);
+  color: var(--cobre-700);
+}
+
+.cot-res__x { flex: 1; min-width: 0; }
+.cot-res__x b { display: block; font-size: 13.5px; color: var(--vino-800); }
+.cot-res__x small { display: block; font-size: 12px; color: var(--tinta-2); }
+
+.cot-res__d {
+  flex: 0 0 auto;
+  text-align: right;
+  font-size: 12px;
+  color: var(--tinta-2);
+  white-space: nowrap;
+}
+
+.cot-res__d b { display: block; font-size: 13.5px; color: var(--tinta); font-variant-numeric: tabular-nums; }
+
+.cot-res__vacio {
+  padding: 12px;
+  font-family: var(--letra-texto);
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+/* ---- La ficha del cliente: todo lo que se sabe de él ---- */
+
+.cot-ficha-vacia { padding: 2px 4px; font-family: var(--letra-texto); font-size: 13px; color: var(--tinta-2); }
+
+.cot-ficha {
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+}
+
+.cot-ficha__cab {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--linea-2);
+}
+
+.cot-ficha__cab .who { flex: 1 1 240px; min-width: 0; }
+.cot-ficha__cab .who b { font-size: 17px; }
+.cot-ficha__cab .who small { font-size: 12.5px; color: var(--tinta-2); }
+.cot-ficha__estados { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+
+/* Contacto, entrega y crédito. El contacto (con el correo) y el crédito piden más ancho */
+.cot-ficha__g {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.3fr);
+}
+
+.cot-ficha__s {
+  min-width: 0;
+  padding: 11px 16px 13px;
+  border-left: 1px solid var(--linea-2);
+}
+
+.cot-ficha__s:first-child { border-left: 0; }
+
+.cot-ficha__s h4 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--cobre-700);
+}
+
+.cot-ficha .kv { font-size: 13px; padding: 5px 0; }
+.cot-ficha .kv > span { color: var(--tinta-2); flex: 0 0 auto; }
+.cot-ficha .kv > b { font-weight: 600; text-align: right; min-width: 0; overflow-wrap: break-word; }
+.cot-ficha .bar { margin: 6px 0 2px; }
+.cot-ficha .tiny + .kv { margin-top: 4px; border-top: 1px dashed var(--linea); }
+.cot-ficha .aviso { margin: 0 16px 14px; }
+.cot-bien { color: var(--ok); font-weight: 600; }
+
+/* Las facturas vencidas: cuáles, cuándo vencieron, hace cuánto y por cuánto.
+   Con una sola, en Facturación no se le podrá facturar hasta que pague. */
+.cot-vencidas {
+  margin: 0 16px 14px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--crit) 30%, transparent);
+  border-left: 4px solid var(--crit);
+  border-radius: var(--r-m);
+  background: var(--crit-bg);
+}
+
+.cot-vencidas__cab { display: flex; align-items: flex-start; gap: 12px; padding: 11px 14px; color: var(--crit); }
+.cot-vencidas__cab b { display: block; font-size: 13.5px; }
+.cot-vencidas__cab p { font-family: var(--letra-texto); font-size: 12.5px; color: var(--tinta-2); }
+.cot-vencidas__t { background: var(--papel); }
+.cot-vencidas__t th { padding: 7px 14px; }
+.cot-vencidas__t td { padding: 7px 14px; font-size: 13px; }
+.cot-vencidas__t td > b:first-child { color: var(--crit); }
+
+@media (max-width: 1180px) {
+  .cot-ficha__g { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cot-ficha__s:nth-child(3) { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--linea-2); }
+}
+
+@media (max-width: 560px) {
+  .cot-ficha__g { grid-template-columns: minmax(0, 1fr); }
+  .cot-ficha__s { border-left: 0; border-top: 1px solid var(--linea-2); }
+  .cot-ficha__s:first-child { border-top: 0; }
+}
+
+/* ---- El cliente resumido: después de Cotizar, una sola línea ----
+   La ficha completa se abre debajo con "Ver ficha completa" y ya no trae su
+   cabecera (clase sin-cab), porque el nombre y los botones están en la línea. */
+
+.cot-cli-mini {
+  flex: 1 1 520px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.cot-cli-mini .avatar { width: 34px; height: 34px; font-size: 14px; }
+.cot-cli-mini__x { flex: 1 1 260px; min-width: 0; }
+/* Arriba el nombre con su estado; debajo NIT, ciudad, forma de pago y cupo disponible */
+.cot-cli-mini__n { display: flex; align-items: center; flex-wrap: wrap; gap: 3px 10px; }
+.cot-cli-mini__n b { font-size: 14.5px; color: var(--vino-800); }
+.cot-cli-mini .pill { padding: 2px 9px; font-size: 11px; }
+.cot-cli-mini__x small { display: block; font-size: 12px; color: var(--tinta-2); }
+
+.cot-ficha.sin-cab .cot-ficha__cab { display: none; }
+
+/* Con la ficha cerrada, la barra es toda la sección */
+.cot-abierto:has(> .panel__body[hidden]) > .cot-barra { border-bottom: 0; border-radius: var(--r-l); }
+
+/* ---- Los productos cotizados: la lista tipo carrito y el resumen ---- */
+
+.cot-prod__cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  background: var(--crema);
+}
+
+.cot-prod__lista {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+}
+
+.cot-prod__resumen {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px 12px;
+  border-left: 1px solid var(--linea);
+}
+
+.cot-prod__resumen .field { margin-bottom: 0; }
+.cot-prod__resumen .control textarea { height: 52px; padding: 8px 12px; font-size: 13px; }
+
+/* Los totales, más apretados que en una ficha: tienen que caber junto a la lista */
+.cot-prod__resumen .cot-tot { padding: 4px 14px 8px; }
+.cot-prod__resumen .cot-tot .kv { padding: 5px 0; font-size: 13px; }
+.cot-prod__resumen .cot-tot .kv--t { padding-top: 8px; margin-top: 2px; }
+.cot-prod__resumen .cot-tot .kv--t > b { font-size: 20px; }
+/* En el resumen, el detalle de cada total va en la misma línea para que quepa */
+.cot-prod__resumen .cot-tot .kv > span .tiny { display: inline; }
+.cot-prod__resumen .cot-tot .kv > span .tiny::before { content: "· "; }
+.cot-prod__avisos { display: flex; flex-direction: column; gap: 8px; }
+.cot-prod__avisos:empty { display: none; }
+.cot-prod__avisos .aviso { margin: 0; padding: 9px 11px; gap: 10px; }
+.cot-prod__avisos .aviso b { font-size: 12.5px; }
+.cot-prod__avisos .aviso p { font-size: 12px; }
+
+/* Un modelo, como en el carrito: la foto, el nombre y su total; debajo sus
+   colores con los pares por talla y el desglose (precio, descuento e IVA) */
+.cot-item {
+  display: flex;
+  gap: 12px;
+  padding: 9px 12px;
+  border: 1px solid var(--linea-2);
+  border-radius: var(--r-m);
+  background: var(--papel);
+}
+
+.cot-item .cot-foto--sm { width: 84px; height: 58px; }
+.cot-item__x { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.cot-item__cab { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.cot-item__cab > div > b { display: block; font-size: 14.5px; color: var(--vino-800); }
+.cot-item__cab .tiny { display: block; }
+/* A la derecha, el total del modelo y, a su lado, Cambiar y Quitar */
+.cot-item__der { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; }
+.cot-item__total { font-size: 15.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cot-item__acc { display: flex; gap: 6px; }
+
+/* ---- Los botones de ícono de un modelo: Cambiar (lápiz, azul) y Quitar (papelera, rojo) ----
+   Van en la lista de la pantalla y en el carrito de la ventana. El tooltip sale
+   de data-tip a la izquierda del botón: arriba se cortaría en el primer modelo
+   de una lista que se desplaza */
+.cot-ico {
+  --tono: var(--info);
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--tono) 24%, transparent);
+  background: color-mix(in srgb, var(--tono) 8%, var(--papel));
+  color: var(--tono);
+  transition: background .15s, border-color .15s;
+}
+
+.cot-ico--quitar { --tono: var(--crit); }
+.cot-ico:hover { background: color-mix(in srgb, var(--tono) 16%, var(--papel)); border-color: color-mix(in srgb, var(--tono) 50%, transparent); }
+.cot-ico:focus-visible { outline: 2px solid var(--tono); outline-offset: 2px; }
+
+.cot-ico[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 8px);
+  z-index: 5;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--tinta);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(4px, -50%);
+  transition: opacity .12s, transform .12s;
+}
+
+.cot-ico[data-tip]:hover::after,
+.cot-ico[data-tip]:focus-visible::after { opacity: 1; transform: translate(0, -50%); transition-delay: .2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cot-ico[data-tip]::after { transition: none; }
+}
+.cot-item__color { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-size: 12.5px; color: var(--tinta-2); }
+.cot-item__color > i { width: 13px; height: 13px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
+.cot-item__color > span:first-of-type { min-width: 42px; }
+.cot-item .vit__chips span { font-size: 12px; }
+
+/* La talla que pide más de lo que hay: se cotiza igual, pero se ve */
+.vit__chips span.is-mal { border-color: color-mix(in srgb, var(--crit) 45%, transparent); background: var(--crit-bg); color: var(--crit); }
+.vit__chips span.is-mal b { color: var(--crit); }
+
+.cot-item__pie { padding-top: 5px; border-top: 1px dashed var(--linea); }
+.cot-item__desglose { font-size: 12px; color: var(--tinta-2); }
+.cot-item__desglose b { font-weight: 600; color: var(--tinta); }
+
+/* Sin productos: el aviso en medio de la lista, como el carrito vacío de la ventana */
+.cot-vacio { flex: 1; display: grid; place-content: center; justify-items: center; gap: 8px; padding: 28px 16px; text-align: center; color: var(--tinta-3); }
+.cot-vacio b { font-size: 14.5px; color: var(--vino-800); }
+.cot-vacio p { max-width: 420px; font-family: var(--letra-texto); font-size: 13px; color: var(--tinta-2); }
+.cot-vacio .btn { margin-top: 4px; }
+
+.cot-tot {
+  padding: 8px 16px 10px;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+}
+
+.cot-tot .kv > span { color: var(--tinta-2); }
+.cot-tot .kv > span .tiny { display: block; }
+.cot-tot .kv--t { padding-top: 10px; margin-top: 4px; border-top: 1.5px solid var(--linea); border-bottom: 0; }
+.cot-tot .kv--t > span { color: var(--vino-800); font-weight: 700; font-size: 14px; }
+.cot-tot .kv--t > b { font-size: 21px; font-weight: 700; color: var(--vino-700); letter-spacing: -.02em; }
+
+/* Lo que se aprieta en computador para que quepa todo a lo alto */
+@media (min-width: 901px) {
+  .page:has(> .cot-prod:not([hidden])) { gap: 12px; }
+  .cot-dato { padding: 8px 16px; }
+  .cot-dato:not(.cot-dato--vend),
+  .cot-dato--vend > div { gap: 1px; }
+  .cot-dato b { font-size: 15.5px; }
+  .cot-dato--vend .avatar { width: 34px; height: 34px; font-size: 14px; }
+  .cot-barra { padding-top: 8px; padding-bottom: 8px; }
+}
+
+/* Pantallas bajitas (un portátil de 768 px con la barra del navegador): los datos
+   de arriba sin su renglón de ayuda, para que el alto sea de los productos */
+@media (min-width: 901px) and (max-height: 800px) {
+  .cot-dato .tiny { display: none; }
+}
+
+/* Computador (ancho y con alto suficiente): la pantalla no se desplaza. Los
+   productos ocupan el alto que queda, la lista se desplaza sola y el resumen
+   (totales y observaciones) siempre está a la vista */
+@media (min-width: 1181px) and (min-height: 600px) {
+  .page > .cot-prod { flex: 1 1 auto; min-height: 300px; display: flex; flex-direction: column; }
+  .cot-prod__cuerpo { flex: 1; min-height: 0; }
+  .cot-prod__lista,
+  .cot-prod__resumen { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  /* Los totales y las observaciones no se mueven: si los avisos no caben, se
+     desplazan en su espacio */
+  .cot-prod__resumen > * { flex: 0 0 auto; }
+  .cot-prod__resumen > .cot-prod__avisos { flex: 1 1 auto; min-height: 56px; overflow-y: auto; overscroll-behavior: contain; }
+}
+
+/* Y si es muy bajita (menos de 720 px), el resumen se aprieta un poco más */
+@media (min-width: 1181px) and (min-height: 600px) and (max-height: 720px) {
+  .page:has(> .cot-prod:not([hidden])) { gap: 10px; }
+  .cot-prod__resumen { gap: 8px; padding: 8px 12px 10px; }
+  .cot-prod__resumen .cot-tot { padding: 2px 12px 6px; }
+  .cot-prod__resumen .cot-tot .kv { padding: 3px 0; }
+  .cot-prod__resumen .cot-tot .kv--t { padding-top: 6px; }
+  .cot-prod__resumen .cot-tot .kv--t > b { font-size: 18px; }
+  .cot-prod__resumen .field > label { margin-bottom: 3px; }
+  .cot-prod__resumen .control textarea { height: 40px; }
+}
+
+@media (min-width: 1181px) {
+  .cot-cli-mini { flex-wrap: nowrap; }
+  .cot-cli-mini > .btn { flex: 0 0 auto; }
+}
+
+/* Tableta y celular: todo en una columna y se recorre la pantalla. El resumen va
+   debajo de la lista; en tableta, las observaciones y avisos a la izquierda y
+   los totales a la derecha */
+@media (max-width: 1180px) {
+  .cot-prod__cuerpo { grid-template-columns: minmax(0, 1fr); }
+  .cot-prod__resumen { border-left: 0; border-top: 1px solid var(--linea); }
+}
+
+@media (min-width: 561px) and (max-width: 1180px) {
+  .cot-prod__resumen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+    grid-template-areas: "obs tot" "avisos tot";
+    align-content: start;
+    gap: 12px 16px;
+    padding: 14px 16px 16px;
+  }
+  .cot-prod__resumen > .cot-tot { grid-area: tot; align-self: start; }
+  .cot-prod__resumen > .field { grid-area: obs; }
+  .cot-prod__resumen > .cot-prod__avisos { grid-area: avisos; }
+}
+
+@media (max-width: 560px) {
+  .cot-item { padding: 9px 10px; gap: 10px; }
+  .cot-item .cot-foto--sm { width: 60px; height: 42px; }
+  .cot-item__cab { flex-wrap: wrap; }
+}
+
+/* ---- La barra de acciones: siempre a la vista, abajo ---- */
+
+.cot-acciones {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--papel);
+  border: 1px solid var(--linea-2);
+  border-radius: var(--r-l);
+  box-shadow: 0 -10px 26px -18px rgba(58, 42, 34, .45);
+}
+
+.cot-acciones__msg {
+  flex: 1 1 240px;
+  min-width: 0;
+  font-family: var(--letra-texto);
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.cot-acciones .btn { height: 46px; }
+.cot-cotizar { min-width: 190px; font-size: 15px; }
+.cot-acciones .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+@media (min-width: 901px) {
+  .cot-acciones { padding: 9px 14px; }
+  .cot-acciones .btn { height: 42px; }
+}
+
+@media (max-width: 760px) {
+  .cot-acciones { position: static; }
+}
+
+@media (max-width: 560px) {
+  .cot-acciones .btn { flex: 1 1 auto; }
+}
+
+/* ---- La ventana para elegir productos: más ancha y más alta que la de comun/ ---- */
+
+.cot-modal {
+  width: min(1280px, 100%);
+  /* Casi todo el alto: el fondo oscuro deja 20 px arriba y abajo.
+     dvh es el alto que de verdad se ve en el celular; si no lo entiende, usa vh. */
+  height: calc(100vh - 40px);
+  height: calc(100dvh - 40px);
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cot-modal .modal__head { padding: 12px 20px; }
+.cot-modal .modal__head > div { flex: 1; min-width: 0; }
+.cot-modal .modal__head .sub { display: block; font-family: var(--letra-texto); font-size: 12.5px; opacity: .85; }
+
+.cot-modal .modal__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 14px 22px 16px;
+}
+
+.cot-modal .modal__foot {
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 22px;
+  background: var(--papel);
+  border-top: 1px solid var(--linea);
+}
+
+.cot-x {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: #fff;
+  opacity: .85;
+}
+
+.cot-x:hover { opacity: 1; background: rgba(255, 255, 255, .14); }
+
+/* Sin las flechitas que el navegador le pone a los números: los pares y el
+   descuento se escriben. Las flechas del teclado siguen subiendo y bajando. */
+.cot-modal input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+.cot-modal input[type="number"]::-webkit-inner-spin-button,
+.cot-modal input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+.cot-pct { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.cot-mal { color: var(--crit); font-weight: 600; }
+.dt__in.is-mal { border-color: var(--crit); background: var(--crit-bg); }
+
+/* El resumen del pie de la ventana, en una línea */
+.cot-sum {
+  flex: 1 1 auto;                 /* auto y no un ancho: en el celular el pie va en columna */
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 12.5px;
+  color: var(--tinta-2);
+}
+
+.cot-sum b { color: var(--tinta); font-variant-numeric: tabular-nums; }
+.cot-sum .cot-sum__t b { font-size: 17px; color: var(--vino-700); }
+
+/* =====================================================================
+   LA VITRINA — el catálogo, el modelo abierto en tres pasos y el carrito
+   ===================================================================== */
+
+/* El color de cada cuero. Son datos del producto, pero con nombre, como todo color */
+:root {
+  --cuero-negro: #2B2420;
+  --cuero-cafe: #6E4327;
+  --cuero-miel: #C58B45;
+  --cuero-gris: #BDB2A9;
+  --suela: #2A1E18;
+}
+
+/* Así el color del dibujo cambia suave al elegir otro cuero */
+@property --piel {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #BDB2A9;
+}
+
+/* ---- Piezas de la vitrina ---- */
+
+/* El dibujo del modelo: toma el color del cuero elegido */
+.cot-foto {
+  --piel: var(--cuero-gris);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: var(--r-m);
+  background: radial-gradient(120% 95% at 50% 18%, var(--papel), var(--arena));
+  transition: --piel .3s ease;
+}
+
+.cot-foto svg { width: 84%; height: auto; overflow: visible; }
+.cot-foto .piel { fill: var(--piel); }
+.cot-foto .suela { fill: var(--suela); }
+.cot-foto .brillo { fill: #fff; opacity: .16; }
+.cot-foto .sombra { fill: rgba(58, 42, 34, .16); }
+.cot-foto .costura { fill: none; stroke: rgba(255, 255, 255, .5); stroke-width: 1.2; stroke-dasharray: 2.4 2; stroke-linecap: round; }
+.cot-foto .cordon { fill: none; stroke: rgba(255, 255, 255, .85); stroke-width: 1.8; stroke-linecap: round; }
+.cot-foto .tira { fill: none; stroke: var(--piel); stroke-width: 5; stroke-linecap: round; }
+
+.cot-foto--sm { width: 66px; height: 46px; }
+.cot-foto--card { width: 100%; aspect-ratio: 16 / 10; border-radius: 0; }
+.cot-foto--mini { width: 100%; height: 27px; border-radius: 0; }
+.cot-foto--mini svg { width: 92%; }
+.cot-foto--gal { width: 100%; aspect-ratio: 16 / 9; border-radius: 0; }
+.cot-foto--caja { width: 100%; height: 100%; border-radius: 0; }
+
+/* Las piezas de los otros ángulos: por dentro, la caña, las franjas, el borde de
+   la suela, las huellas de la suela y la marca. La foto del otro lado, volteada */
+.cot-foto svg.es-espejo { transform: scaleX(-1); }
+.cot-foto .adentro { fill: rgba(30, 18, 12, .72); }
+.cot-foto .cana { fill: none; stroke: rgba(30, 18, 12, .35); stroke-width: 2.2; }
+.cot-foto .banda { fill: rgba(30, 18, 12, .28); }
+.cot-foto .borde { stroke: var(--suela); stroke-width: 2.4; }
+.cot-foto .huella { fill: none; stroke: rgba(255, 255, 255, .14); stroke-width: 2; stroke-linecap: round; }
+.cot-foto .marca { fill: rgba(255, 255, 255, .45); font-family: var(--letra-interfaz); font-size: 6.5px; font-weight: 700; letter-spacing: .12em; text-anchor: middle; }
+
+/* IVA y descuento del modelo, en pequeño */
+.cot-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 21px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: var(--info-bg);
+  color: var(--info);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.cot-badge--sin { background: #EFEAE4; color: var(--tinta-2); }
+.cot-badge--promo { background: var(--oliva-100); color: var(--oliva-800); }
+
+/* Los colores del cuero, como muestras redondas */
+.cot-colores { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.cot-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border: 1.5px solid var(--linea);
+  border-radius: 999px;
+  background: var(--papel);
+  text-align: left;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.cot-color i {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .3), 0 1px 3px rgba(0, 0, 0, .25);
+}
+
+.cot-color span { display: flex; flex-direction: column; line-height: 1.15; font-size: 12.5px; font-weight: 600; color: var(--tinta); }
+.cot-color small { font-size: 10.5px; font-weight: 500; color: var(--tinta-2); }
+.cot-color small b { color: var(--cobre-700); }
+.cot-color:hover { border-color: var(--cobre-400); }
+.cot-color.is-on { border-color: var(--vino-600); box-shadow: 0 0 0 3px var(--vino-tint); }
+
+/* Una casilla por talla: el número, los pares que se piden y lo que hay */
+.cot-tallas { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 8px; }
+
+.cot-talla {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 8px 6px 7px;
+  border: 1.5px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  cursor: text;
+  transition: border-color .15s, background .15s;
+}
+
+.cot-talla__n { font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: var(--tinta-2); white-space: nowrap; }
+
+.cot-talla input {
+  width: 100%;
+  height: 38px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--arena);
+  text-align: center;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--vino-800);
+  font-variant-numeric: tabular-nums;
+}
+
+.cot-talla input::placeholder { color: #CDBFB3; font-weight: 500; }
+.cot-talla input:focus { outline: none; background: var(--papel); box-shadow: inset 0 0 0 2px var(--cobre-500); }
+
+/* El punto de lo que hay: verde si alcanza, ámbar si quedan pocos, gris si no hay, rojo si falta */
+.cot-talla__hay,
+.vit__leyenda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cot-talla__hay::before,
+.vit__leyenda span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+.cot-talla--ok .cot-talla__hay, .vit__leyenda .is-ok { color: var(--ok); }
+.cot-talla--poco .cot-talla__hay, .vit__leyenda .is-poco { color: var(--warn); }
+.cot-talla--cero .cot-talla__hay, .vit__leyenda .is-cero { color: var(--tinta-2); }
+.cot-talla.is-mal .cot-talla__hay, .vit__leyenda .is-mal { color: var(--crit); }
+
+.cot-talla.is-on { border-color: var(--cobre-500); background: var(--cobre-100); }
+.cot-talla.is-on input { background: var(--papel); }
+.cot-talla.is-mal { border-color: var(--crit); background: var(--crit-bg); }
+
+/* El desglose de un modelo: pares × precio, descuento, IVA y total */
+.cot-desglose {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--linea-2);
+  border-radius: var(--r-m);
+  background: var(--crema);
+  font-size: 12.5px;
+  color: var(--tinta-2);
+}
+
+.cot-desglose b { color: var(--tinta); font-variant-numeric: tabular-nums; }
+.cot-desglose .cot-mal b { color: var(--crit); }
+.cot-desglose__t { margin-left: auto; font-size: 13px; }
+.cot-desglose__t b { font-size: 17px; color: var(--vino-700); }
+
+.cot-solo { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--tinta-2); white-space: nowrap; cursor: pointer; }
+.cot-solo input { width: 16px; height: 16px; accent-color: var(--vino-600); }
+
+.cot-vacio { padding: 30px 16px; text-align: center; font-family: var(--letra-texto); color: var(--tinta-2); }
+
+/* ---- El armazón: catálogo a la izquierda, carrito a la derecha ---- */
+
+.vit {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 370px;
+  gap: 18px;
+}
+
+.vit__main { min-height: 0; overflow: auto; padding: 0 4px 4px 0; }
+
+/* La barra de arriba no se va al bajar: buscador y, con un modelo abierto, "← Catálogo" */
+.vit__bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 12px;
+  background: var(--crema);
+}
+
+.vit__bar .control { flex: 1 1 240px; }
+
+.vit__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 14px 0 10px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vino-600);
+}
+
+.vit__volver:hover { border-color: var(--vino-600); background: var(--vino-tint); }
+
+/* ---- El catálogo ---- */
+
+.vit__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 14px; }
+
+.vit__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+  text-align: left;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+
+.vit__card:hover { transform: translateY(-2px); border-color: var(--cobre-400); box-shadow: 0 16px 30px -20px rgba(58, 42, 34, .6); }
+.vit__card.is-en { border-color: var(--vino-600); box-shadow: 0 0 0 2px var(--vino-tint); }
+.vit__card.is-bloqueado { opacity: .62; cursor: not-allowed; }
+.vit__card.is-bloqueado:hover { transform: none; box-shadow: none; border-color: var(--linea); }
+
+.vit__en {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px 4px 7px;
+  border-radius: 999px;
+  background: var(--vino-700);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.vit__cuerpo { display: flex; flex-direction: column; gap: 3px; padding: 11px 14px 13px; }
+.vit__nom { font-size: 15px; color: var(--vino-800); }
+.vit__ref { font-size: 12px; color: var(--tinta-2); }
+.vit__puntos { display: flex; gap: 6px; margin: 5px 0 3px; }
+.vit__puntos i { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--papel), 0 0 0 3px var(--linea); }
+.vit__precio { font-size: 12.5px; color: var(--tinta-2); }
+.vit__precio b { font-size: 17px; color: var(--tinta); font-variant-numeric: tabular-nums; }
+.vit__fila { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.vit__badges { display: flex; flex-wrap: wrap; gap: 5px; }
+.vit__disp { font-size: 12px; font-weight: 600; color: var(--ok); }
+.vit__motivo { font-family: var(--letra-texto); font-size: 12.5px; font-style: italic; color: var(--tinta-2); }
+
+/* ---- El modelo abierto: dos columnas para que todo quepa sin desplazarse ----
+   A la izquierda las fotos, los datos y el color; a la derecha las tallas, el
+   descuento y el total. En una sola columna había que bajar para ver el total. */
+
+.vit__modelo {
+  display: grid;
+  grid-template-columns: minmax(270px, .82fr) minmax(0, 1.18fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.vit__col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+.vit__ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+}
+
+.vit__ficha-x { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.vit__ficha-x h4 { font-size: 18px; letter-spacing: -.02em; color: var(--vino-800); }
+.vit__precio--lg b { font-size: 19px; }
+.vit__ficha-datos { font-size: 12px; color: var(--tinta-2); }
+/* El precio y sus etiquetas en un solo renglón */
+.vit__ficha .vit__fila { justify-content: flex-start; column-gap: 10px; }
+.vit__ficha .cot-badge { height: 20px; padding: 0 6px; font-size: 10.5px; }
+
+/* ---- La galería: miniaturas a la izquierda, la foto grande y sus flechas ---- */
+
+.gal { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 8px; }
+.gal__minis { display: flex; flex-direction: column; gap: 5px; }
+
+.gal__mini {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 1.5px solid var(--linea);
+  border-radius: 8px;
+  background: var(--papel);
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.gal__mini:hover { border-color: var(--cobre-400); }
+.gal__mini.is-on { border-color: var(--vino-600); box-shadow: 0 0 0 2px var(--vino-tint); }
+
+.gal__principal { position: relative; min-width: 0; }
+
+.gal__ver {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--linea-2);
+  border-radius: var(--r-m);
+  cursor: zoom-in;
+}
+
+.gal__flecha {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .94);
+  color: var(--vino-700);
+  box-shadow: 0 2px 10px rgba(58, 42, 34, .28);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity .15s, background .15s;
+}
+
+.gal__flecha--ant { left: 6px; }
+.gal__flecha--sig { right: 6px; }
+.gal__principal:hover .gal__flecha,
+.gal__flecha:focus-visible { opacity: 1; }
+.gal__flecha:hover { background: #fff; }
+
+/* En pantallas táctiles no hay ratón que las muestre: se ven siempre */
+@media (hover: none) { .gal__flecha { opacity: 1; } }
+
+.gal__cuenta,
+.gal__lupa {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .92);
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.gal__cuenta { left: 8px; bottom: 8px; color: var(--tinta-2); }
+.gal__lupa { right: 8px; top: 8px; color: var(--vino-600); }
+
+/* ---- Las fotos en grande, encima de todo ---- */
+
+.gal-caja {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px 16px;
+  background: rgba(24, 10, 8, .93);
+  color: #fff;
+}
+
+.gal-caja__cab { display: flex; align-items: center; gap: 16px; width: min(1100px, 100%); }
+.gal-caja__cab > div { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.gal-caja__cab b { font-size: 17px; }
+.gal-caja__cab span { font-size: 12.5px; opacity: .75; }
+
+.gal-caja__x {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+}
+
+.gal-caja__x:hover { background: rgba(255, 255, 255, .22); }
+
+.gal-caja__escena {
+  flex: 1;
+  min-height: 0;
+  width: min(1100px, 100%);
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 12px;
+}
+
+.gal-caja__escena .gal__flecha { position: static; align-self: center; width: 46px; height: 46px; transform: none; opacity: 1; }
+
+.gal-caja__foto { min-height: 0; overflow: hidden; border-radius: var(--r-l); cursor: zoom-in; }
+.gal-caja__foto svg { width: 84%; max-height: 90%; transform-origin: var(--zx, 50%) var(--zy, 50%); transition: transform .2s ease; }
+.gal-caja__foto.is-zoom { cursor: zoom-out; }
+.gal-caja__foto.is-zoom svg { transform: scale(2.4); }
+.gal-caja__foto.is-zoom svg.es-espejo { transform: scaleX(-1) scale(2.4); }
+
+.gal-caja__minis { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.gal-caja__minis .gal__mini { width: 74px; }
+.gal-caja__minis .cot-foto--mini { height: 54px; }
+.gal-caja__minis .gal__mini.is-on { border-color: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, .35); }
+.gal-caja__ayuda { font-size: 12px; opacity: .7; text-align: center; }
+
+/* Cada paso es una tarjeta: el número (verde con ✓ cuando ya está), el título,
+   la ayuda y, a la derecha, lo que se eligió. Así cada parte se ve aparte. */
+.vit__paso {
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+}
+
+.vit__paso-cab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--linea);
+  background: linear-gradient(180deg, var(--crema), var(--banda));
+}
+
+.vit__paso-n {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--vino-600);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  transition: background .2s;
+}
+
+.vit__paso.is-listo .vit__paso-n { background: var(--ok); }
+
+.vit__paso-t { flex: 1; min-width: 0; }
+.vit__paso-t h5 { margin: 0; font-size: 14px; font-weight: 700; color: var(--vino-800); }
+.vit__paso-t small { display: block; font-size: 11.5px; color: var(--tinta-2); line-height: 1.35; }
+
+.vit__paso-estado {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  background: var(--papel);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--tinta-2);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.vit__paso-estado i { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .3); }
+.vit__paso-estado.is-on { border-color: var(--cobre-200); background: var(--cobre-100); color: var(--cobre-800); }
+.vit__paso-estado.is-mal { border-color: var(--crit); background: var(--crit-bg); color: var(--crit); }
+
+.vit__paso-cuerpo { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+
+/* Qué quiere decir el punto de cada talla */
+.vit__leyenda { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+
+/* Las ayudas para llenar: separadas de las tallas por una raya */
+.vit__atajos {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--linea);
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.vit__atajos .dt__in { width: 58px; text-align: center; }
+.vit__atajos-mas { display: contents; }
+.vit__borrar { color: var(--crit); }
+
+/* El total del modelo: el descuento se escribe ahí mismo, donde se ve lo que resta */
+.vit__total { align-items: center; }
+.vit__desc { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.vit__desc .dt__in { width: 54px; height: 30px; text-align: right; }
+
+.vit__modelo-fin { display: flex; justify-content: flex-end; }
+
+/* ---- El carrito: lo que lleva la cotización, por modelo ---- */
+
+.vit__carro {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+}
+
+.vit__carro-cab { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 13px 16px; border-bottom: 1px solid var(--linea-2); }
+.vit__carro-cab b { font-size: 15px; color: var(--vino-800); }
+.vit__carro-cab span { font-size: 12px; color: var(--tinta-2); }
+
+.vit__items { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 8px; padding: 10px; }
+
+.vit__item { display: flex; gap: 11px; padding: 10px; border: 1px solid var(--linea-2); border-radius: var(--r-m); background: var(--crema); }
+.vit__item.is-abierto { border-color: var(--cobre-400); background: var(--cobre-100); }
+.vit__item-x { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.vit__item-cab { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; }
+.vit__item-cab b:first-child { color: var(--vino-800); }
+.vit__item-cab b:last-child { font-variant-numeric: tabular-nums; }
+.vit__item-color { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--tinta-2); }
+.vit__item-color > i { width: 12px; height: 12px; border-radius: 50%; }
+.vit__chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.vit__chips span { padding: 1px 6px; border: 1px solid var(--linea); border-radius: 6px; background: var(--papel); font-size: 11.5px; color: var(--tinta-2); }
+.vit__chips b { margin-left: 2px; color: var(--tinta); }
+.vit__item-pie { display: flex; align-items: center; gap: 8px; }
+.vit__item-pie .tiny { flex: 1 1 auto; min-width: 0; }   /* el desglose; los botones, a su derecha */
+
+.vit__carro-vacio { flex: 1; display: grid; place-content: center; justify-items: center; gap: 10px; padding: 30px 26px; text-align: center; color: var(--tinta-3); }
+.vit__carro-vacio p { font-family: var(--letra-texto); font-size: 13px; color: var(--tinta-2); }
+.vit__carro-pie { padding: 6px 16px 12px; border-top: 1px solid var(--linea); background: var(--crema); }
+.vit__carro-pie .kv > span { color: var(--tinta-2); }
+.vit__carro-pie .kv > span .tiny { display: block; }
+.vit__carro-pie .kv--t { padding-top: 9px; border-bottom: 0; }
+.vit__carro-pie .kv--t > span { font-weight: 700; color: var(--vino-800); }
+.vit__carro-pie .kv--t > b { font-size: 20px; color: var(--vino-700); }
+
+/* ---- En pantallas angostas: el carrito pasa debajo y todo se desplaza junto ---- */
+
+@media (max-width: 1000px) {
+  .vit { display: block; overflow: auto; }
+  .vit__main { overflow: visible; }
+  .vit__carro { margin-top: 18px; overflow: visible; }
+}
+
+@media (max-width: 760px) {
+  .vit__modelo { grid-template-columns: minmax(0, 1fr); }
+  .gal-caja { padding: 12px; }
+  .gal-caja__escena { grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 6px; }
+  .gal-caja__escena .gal__flecha { width: 36px; height: 36px; }
+  .gal-caja__minis .gal__mini { width: 54px; }
+  .gal-caja__minis .cot-foto--mini { height: 40px; }
+  .vit__paso-cab { flex-wrap: wrap; }
+  .vit__paso-estado { margin-left: 40px; }
+}
+
+/* =====================================================================
+   EL DETALLE DE UNA COTIZACIÓN (09-cotizacion.html)
+   Un panel a la derecha, a todo el alto, que se abre con un clic en la fila:
+   el estado y su recorrido, el cliente y los datos, los productos como en
+   el carrito, las observaciones y los totales. Solo se lee.
+   ===================================================================== */
+
+/* La fila se pulsa entera; el número es un botón para llegar con el teclado */
+.panel--tabla .dt tbody tr[data-estado] { cursor: pointer; }
+
+.dt__ver {
+  padding: 0;                  /* sin el relleno que el navegador le pone a los botones */
+  font-weight: 700;
+  color: var(--vino-800);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color .15s;
+}
+
+.dt tbody tr[data-estado]:hover .dt__ver,
+.dt__ver:focus-visible { text-decoration-color: currentColor; }
+.dt__ver:focus-visible { outline: 2px solid var(--cobre-500); outline-offset: 2px; border-radius: 4px; }
+
+/* La que se está viendo en el detalle */
+.dt tbody tr.is-sel td { background: var(--cobre-100); }
+.dt tbody tr.is-sel td:first-child { box-shadow: inset 3px 0 0 var(--cobre-600); }
+
+/* El fondo oscuro de comun/ (.overlay), con el panel pegado a la derecha */
+.cot-det-fondo { place-items: stretch end; padding: 0; }
+
+.cot-det {
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--crema);
+  border-radius: var(--r-l) 0 0 var(--r-l);
+  box-shadow: -24px 0 60px -30px rgba(0, 0, 0, .6);
+  animation: cot-det-entra .22s ease-out;
+}
+
+.cot-det:focus { outline: none; }
+
+@keyframes cot-det-entra { from { transform: translateX(48px); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cot-det { animation: none; }
+}
+
+.cot-det .modal__head { flex: 0 0 auto; }
+.cot-det .modal__head .sub { display: block; font-family: var(--letra-texto); font-size: 12.5px; opacity: .85; }
+
+.cot-det__cuerpo {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 18px 22px;
+}
+
+.cot-det__cuerpo:focus-visible { outline: 2px solid var(--cobre-500); outline-offset: -2px; }
+
+/* ---- El estado: la píldora, qué pasó y qué sigue, con el borde de su color ---- */
+
+.cot-det__estado {
+  --tono: var(--tinta-3);
+  padding: 14px 16px 16px;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--tono);
+  border-radius: var(--r-m);
+}
+
+.cot-det__estado--ok { --tono: var(--ok); }
+.cot-det__estado--warn { --tono: var(--warn); }
+.cot-det__estado--crit { --tono: var(--crit); }
+
+.cot-det__estado-cab { display: flex; align-items: flex-start; gap: 12px; }
+.cot-det__estado-cab .pill { flex: 0 0 auto; padding: 6px 12px; font-size: 12.5px; }
+.cot-det__estado-cab p { font-family: var(--letra-texto); font-size: 13.5px; line-height: 1.5; color: var(--tinta-2); }
+.cot-det__estado-cab p b { color: var(--tinta); }
+.cot-det__estado .aviso { margin: 14px 0 0; }
+.cot-det__nw { white-space: nowrap; }
+
+/* El recorrido: un círculo por paso, unidos por una raya que se pone verde
+   hasta donde llegó la cotización */
+.cot-rec { display: flex; margin: 16px 0 0; padding: 0; list-style: none; }
+
+.cot-rec__p {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  text-align: center;
+  color: var(--tinta-3);
+}
+
+.cot-rec__p::before {          /* la raya que llega desde el paso anterior */
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--linea);
+}
+
+.cot-rec__p:first-child::before { display: none; }
+
+.cot-rec__n {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  border: 2px solid var(--linea);
+  background: var(--papel);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tinta-3);
+}
+
+.cot-rec__p b { font-size: 12.5px; font-weight: 600; color: var(--tinta-2); }
+.cot-rec__p small { font-size: 11.5px; }
+
+.cot-rec__p.is-hecho::before,
+.cot-rec__p.is-ahora::before { background: var(--ok); }
+.cot-rec__p.is-hecho .cot-rec__n { border-color: var(--ok); background: var(--ok); color: #fff; }
+.cot-rec__p.is-hecho b { color: var(--tinta); }
+.cot-rec__p.is-hecho small { color: var(--tinta-2); }
+
+/* Donde está ahora (si todavía no termina) */
+.cot-rec__p.is-ahora .cot-rec__n { border-color: var(--cobre-600); color: var(--cobre-700); box-shadow: 0 0 0 4px var(--cobre-100); }
+.cot-rec__p.is-ahora b { color: var(--cobre-800); }
+.cot-rec__p.is-ahora small { color: var(--tinta-2); }
+
+/* Facturada: el camino completo */
+.cot-rec__p.is-fin .cot-rec__n { box-shadow: 0 0 0 4px var(--oliva-200); }
+.cot-rec__p.is-fin b { color: var(--ok); }
+
+/* Vencida: el camino termina ahí */
+.cot-rec__p.is-mal::before { background: var(--crit); }
+.cot-rec__p.is-mal .cot-rec__n { border-color: var(--crit); background: var(--crit); color: #fff; }
+.cot-rec__p.is-mal b { color: var(--crit); }
+.cot-rec__p.is-mal small { color: var(--tinta-2); }
+
+/* ---- Cliente y datos: las secciones de la ficha de la nueva cotización, en dos columnas ---- */
+
+.cot-ficha__g--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cot-det__cli { display: block; font-size: 14.5px; color: var(--vino-800); }
+.cot-det__cli + .tiny { display: block; margin-bottom: 4px; }
+
+/* ---- Productos, observaciones y totales ---- */
+
+.cot-det__t {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-bottom: 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--cobre-700);
+}
+
+.cot-det__t span { font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--tinta-2); }
+.cot-det__lineas { display: flex; flex-direction: column; gap: 8px; }
+
+.cot-det__pie {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.cot-det__obs {
+  padding: 12px 14px 14px;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+}
+
+.cot-det__obs .cot-det__t { margin-bottom: 6px; }
+.cot-det__obs p { font-family: var(--letra-texto); font-size: 13px; line-height: 1.5; color: var(--tinta); }
+.cot-det__obs p.is-vacio { color: var(--tinta-3); }
+
+@media (max-width: 560px) {
+  .cot-det { border-radius: 0; }
+  .cot-det__cuerpo { padding: 14px 12px 18px; }
+  .cot-det__estado-cab { flex-direction: column; gap: 8px; }
+  .cot-ficha__g--2,
+  .cot-det__pie { grid-template-columns: minmax(0, 1fr); }
+  .cot-rec__p b { font-size: 11.5px; }
+  .cot-rec__p small { font-size: 10.5px; }
+}
+
+/* =====================================================================
+   FACTURACIÓN (10-facturacion.html y 10-facturacion-nueva.html)
+   La lista usa la misma tabla de datos de Cotizaciones. La nueva factura va
+   en tres columnas, como una caja registradora: el cliente y las cotizaciones
+   por facturar | los productos | los totales, el pago y Facturar.
+   ===================================================================== */
+
+.fac {
+  display: grid;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr) minmax(300px, 350px);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.fac__col { display: flex; flex-direction: column; min-width: 0; }
+.fac__col > .cot-barra { flex: 0 0 auto; }
+
+/* ---- Columna 1: el cliente y las cotizaciones por facturar ---- */
+
+.fac__cli { flex: 0 0 auto; border-bottom: 1px solid var(--linea); background: var(--papel); }
+
+.fac-cli {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 40px 12px 14px;
+}
+
+.fac-cli .avatar { width: 44px; height: 44px; font-size: 16px; }
+.fac-cli__x { min-width: 0; display: flex; flex-direction: column; gap: 1px; font-size: 12.5px; color: var(--tinta-2); }
+.fac-cli__x > b { font-size: 14.5px; color: var(--vino-800); margin-bottom: 2px; }
+.fac-cli__x span b { color: var(--tinta); font-weight: 600; }
+.fac-cli__credito { margin-top: 3px; font-weight: 600; color: var(--tinta); }
+.fac-cli .cot-ficha__estados { margin-top: 5px; }
+.fac-cli .pill { padding: 2px 9px; font-size: 11px; }
+
+.fac-cli__quitar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--tinta-2);
+}
+
+.fac-cli__quitar:hover { background: var(--crit-bg); color: var(--crit); }
+
+.fac__busca { flex: 0 0 auto; padding: 10px 12px 6px; }
+.fac__busca .control input { height: 38px; }
+.fac__busca .control > .ico { top: 10px; }
+
+.fac__lista { display: flex; flex-direction: column; gap: 8px; padding: 6px 12px 12px; }
+
+/* Una cotización por facturar: número y total, cliente, vendedor y vigencia */
+.fac-op {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  background: var(--papel);
+  border: 1px solid var(--linea-2);
+  border-radius: var(--r-m);
+  transition: border-color .15s, background .15s;
+}
+
+.fac-op:hover { border-color: var(--cobre-400); }
+.fac-op.is-on { border-color: var(--cobre-500); background: var(--cobre-100); box-shadow: inset 3px 0 0 var(--cobre-600); }
+.fac-op:focus-visible { outline: 2px solid var(--cobre-500); outline-offset: 2px; }
+.fac-op__cab { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; color: var(--vino-800); }
+.fac-op__total { font-variant-numeric: tabular-nums; color: var(--tinta); }
+.fac-op__cli { font-size: 12.5px; color: var(--tinta); }
+.fac-op__pie { font-size: 12px; color: var(--tinta-2); }
+.fac-op__mal { display: flex; align-items: center; gap: 5px; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--crit); }
+
+/* ---- Columna 2: los productos ---- */
+
+.fac__iq { flex: 1 1 200px; max-width: 280px; margin-left: auto; }
+.fac__iq input { height: 34px; font-size: 13px; }
+.fac__iq > .ico { top: 8px; }
+.fac__lineas { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--crema); }
+
+.fac__obs {
+  flex: 0 0 auto;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--linea);
+  background: var(--papel);
+}
+
+.fac__obs .cot-det__t { margin-bottom: 4px; }
+.fac__obs p { font-family: var(--letra-texto); font-size: 13px; color: var(--tinta); }
+.fac__obs p.is-vacio { color: var(--tinta-3); }
+
+/* ---- Columna 3: totales, el total en letras, el pago y Facturar ---- */
+
+.fac__res-cuerpo { display: flex; flex-direction: column; gap: 12px; padding: 12px 14px; background: var(--crema); }
+.fac__res .cot-tot .kv { padding: 5px 0; font-size: 13px; }
+.fac__res .cot-tot .kv > span .tiny { display: inline; }
+.fac__res .cot-tot .kv > span .tiny::before { content: "· "; }
+.fac__res .cot-tot .kv--t > b { font-size: 21px; }
+
+/* "Son: …": el total escrito, como lo pide la factura */
+.fac-letras {
+  padding: 9px 12px;
+  border: 1px dashed var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  font-family: var(--letra-texto);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--tinta);
+}
+
+.fac-letras b { color: var(--vino-800); }
+
+/* El método de pago: una opción por renglón, con su punto y lo que significa */
+.fac-pago { display: flex; flex-direction: column; gap: 6px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.fac-pago legend { margin-bottom: 6px; padding: 0; }
+
+.fac-pago__op {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+
+.fac-pago__op input { position: absolute; opacity: 0; pointer-events: none; }
+/* El punto del radio, dibujado: vacío, o lleno cuando está elegido */
+.fac-pago__op::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 2px solid var(--linea);
+  background: var(--papel);
+}
+
+.fac-pago__op > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.fac-pago__op b { font-size: 13px; color: var(--tinta); }
+.fac-pago__op small { font-size: 11.5px; line-height: 1.35; color: var(--tinta-2); }
+.fac-pago__op:hover { border-color: var(--ok); }
+.fac-pago__op:focus-within { outline: 2px solid var(--cobre-500); outline-offset: 2px; }
+.fac-pago__op.is-on { border-color: var(--ok); background: var(--oliva-100); }
+.fac-pago__op.is-on::before { border-color: var(--ok); background: radial-gradient(circle, var(--ok) 0 4px, var(--papel) 5px); }
+.fac-pago__op.is-on b { color: var(--ok); }
+.fac-pago__op.is-off { cursor: not-allowed; opacity: .6; }
+.fac-pago__op.is-off:hover { border-color: var(--linea); }
+.fac-pago__op.is-mal small { color: var(--crit); }
+.fac-pago[disabled] .fac-pago__op { cursor: not-allowed; opacity: .55; }
+.fac-pago[disabled] .fac-pago__op:hover { border-color: var(--linea); }
+
+.fac__avisos:empty { display: none; }
+.fac__avisos .cot-vencidas { margin: 0; }
+
+/* Las facturas vencidas del cliente, una por renglón */
+.fac-venc { margin: 0; padding: 0; list-style: none; background: var(--papel); }
+.fac-venc li { display: flex; flex-direction: column; gap: 1px; padding: 8px 14px; border-top: 1px solid var(--linea-2); font-size: 12.5px; color: var(--tinta-2); }
+.fac-venc__cab { display: flex; justify-content: space-between; gap: 10px; }
+.fac-venc__cab b:first-child { color: var(--crit); }
+.fac-venc__cab b:last-child { font-variant-numeric: tabular-nums; color: var(--tinta); }
+
+.fac__acc {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--linea);
+  background: var(--papel);
+}
+
+.fac__msg { flex: 1 1 100%; font-family: var(--letra-texto); font-size: 12.5px; color: var(--tinta-2); }
+.fac__acc .btn { flex: 1 1 0; height: 44px; }
+.fac__acc .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Computador (ancho y con alto suficiente): la pantalla no se desplaza; cada
+   columna lo hace sola y los totales y Facturar siempre están a la vista */
+@media (min-width: 1181px) and (min-height: 600px) {
+  .page:has(> .fac) { gap: 12px; }
+  .page > .fac { flex: 1 1 auto; min-height: 380px; }
+  .fac__col { min-height: 0; }
+  .fac__lista,
+  .fac__lineas,
+  .fac__res-cuerpo { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+}
+
+/* Tableta y celular: las tres columnas una debajo de la otra */
+@media (max-width: 1180px) {
+  .fac { grid-template-columns: minmax(0, 1fr); }
+  .fac__iq { max-width: none; }
+}
+

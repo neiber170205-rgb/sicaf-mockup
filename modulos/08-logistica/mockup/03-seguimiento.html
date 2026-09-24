@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SICAF · Logística y Despacho · Seguimiento</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Seguimiento">
+
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        Logística y Despacho
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
+    <nav class="subnav" aria-label="Secciones de Logística">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
+      <a class="subnav__i is-on" data-ico="ubicacion" data-ct="4" href="03-seguimiento.html">Seguimiento</a>
+      <a class="subnav__i" data-ico="caja" data-ct="3" href="04-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="05-log-inversa.html">Devoluciones</a>
+      <a class="subnav__i" data-ico="camion" data-ct="4" href="06-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path> <circle cx="12" cy="10" r="3"></circle></svg>
+        <div>
+          <h2>Seguimiento de la guía</h2>
+        </div>
+      </header>
+      <div class="panel__body">
+        <div class="gbusca">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="sg-guia" value="GR-88241" placeholder="GR-00000, DS-2026-000 o FV-2026-000">
+          </div>
+          <button class="btn" data-accion="rastrear">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path> <circle cx="12" cy="10" r="3"></circle></svg>
+            Rastrear
+          </button>
+        </div>
+
+        <div class="gficha" id="sg-ficha">
+          <div class="gficha__c">
+            <span class="gficha__e">Guía</span>
+            <b class="gficha__g">GR-88241</b>
+            <span class="pill pill--warn">En tránsito</span>
+          </div>
+          <dl class="gficha__d">
+            <div><dt>Despacho</dt><dd>DS-2026-057</dd></div>
+            <div><dt>Factura</dt><dd>FV-2026-042</dd></div>
+            <div><dt>Cliente</dt><dd>Calzado Norte</dd></div>
+            <div><dt>Contenido</dt><dd>400 pares · REF-1042</dd></div>
+            <div><dt>Vehículo</dt><dd>DEF-455 · Hernán Ruiz</dd></div>
+            <div><dt>Destino</dt><dd>Pamplona, Norte de Santander</dd></div>
+            <div><dt>Salió</dt><dd>23/09 09:05</dd></div>
+            <div><dt>Llega (estimado)</dt><dd>23/09 13:40</dd></div>
+          </dl>
+        </div>
+
+        <ol class="gtl">
+            <li class="gtl__i gtl__i--ok">
+              <b>Guía generada</b>
+              <span class="gtl__c">23/09 07:12</span>
+              <span class="gtl__q">GR-88241 · salió de Comercial con la factura FV-2026-042</span>
+            </li>
+            <li class="gtl__i gtl__i--ok">
+              <b>Cargado</b>
+              <span class="gtl__c">23/09 08:40</span>
+              <span class="gtl__q">400 pares subidos al DEF-455 · sello de seguridad 4471</span>
+            </li>
+            <li class="gtl__i gtl__i--ok">
+              <b>Salió de la planta</b>
+              <span class="gtl__c">23/09 09:05</span>
+              <span class="gtl__q">Cúcuta · vía Pamplona</span>
+            </li>
+            <li class="gtl__i gtl__i--ahora">
+              <b>En tránsito</b>
+              <span class="gtl__c">23/09 10:30</span>
+              <span class="gtl__q">va por el km 38 de la vía Pamplona, 62 km por recorrer</span>
+            </li>
+            <li class="gtl__i">
+              <b>En reparto</b>
+              <span class="gtl__c">pendiente</span>
+              <span class="gtl__q">cuando el vehículo entre al casco urbano de Pamplona</span>
+            </li>
+            <li class="gtl__i">
+              <b>Entregado</b>
+              <span class="gtl__c">pendiente</span>
+              <span class="gtl__q">con firma y sello del cliente en la guía</span>
+            </li>
+        </ol>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>Dónde va el pedido</h2>
+        </div>
+      </header>
+      <div class="panel__body">
+        <div class="mapa">
+          <div class="mapa__g"></div>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M 11 80 Q 28 68 50 74" fill="none" stroke="#B4453F" stroke-width="2.2" vector-effect="non-scaling-stroke"></path></svg>
+          <span class="nodo nodo--pl" style="left:11%;top:80%"><i></i><b>Planta · Cúcuta</b></span>
+          <span class="nodo" style="left:50%;top:74%"><i></i><b>Pamplona</b></span>
+          <span class="veh veh--ruta" style="left:31%;top:68%"><b>DEF-455</b><small>GR-88241</small></span>
+          <span class="mapa__pie">
+            <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path> <circle cx="12" cy="10" r="3"></circle></svg>
+            7,8939° N · 72,5078° O · km 38 de la vía Pamplona · señal recibida hace 4 minutos
+          </span>
+        </div>
+        <div class="gdatos">
+          <span><b>62 km</b><small>faltan para el destino</small></span>
+          <span><b>38 %</b><small>de la ruta recorrida</small></span>
+          <span><b>13:40</b><small>hora estimada de entrega</small></span>
+          <span><b>4 min</b><small>desde la última señal</small></span>
+        </div>
+        <div class="nota">
+          <span class="dot"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg></span>
+          <p><b>Nota:</b> La posición llega del GPS del vehículo cada 5 minutos. Si pasan más de 30 minutos sin señal, el despacho se marca en alerta y Logística llama al conductor.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        <div>
+          <h2>Guías en camino</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-08-guias-en-camino">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input id="dt-08-guias-en-camino-q" type="search" value="" autocomplete="off" placeholder="Buscar guía, cliente o vehículo…" aria-label="Buscar en la tabla">
+            </div>
+            <div class="dt__acts">
+              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+                <span>Exportar reporte</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">
+              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              Filtros
+            </span>
+            <div class="dt__f">
+              <label class="dt__f-l" for="gc-filtro">Estado</label>
+              <select id="gc-filtro" class="dt__in">
+                <option value="">Todos los estados</option>
+                <option value="En tránsito">En tránsito</option>
+                <option value="En reparto">En reparto</option>
+                <option value="Entregado">Entregado</option>
+              </select>
+            </div>
+            <div class="dt__f">
+              <span class="dt__f-l"></span>
+              <label class="dt__si">
+                <input type="checkbox">
+                <span class="dt__si-p"><i></i></span>
+                <span>Solo lo que falta (3)</span>
+              </label>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+                                      <thead>
+                            <tr>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Guía"><span>Guía</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Origen"><span>Origen</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Cliente"><span>Cliente</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th>
+                                <button class="dt__orden" title="Ordenar por Vehículo"><span>Vehículo</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Va por"><span>Va por</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="dt__th--txt" style="width:1%">Acciones</th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                            <tr>
+                              <td data-l="Guía"><b>GR-88241</b><div class="tiny">DS-2026-057</div></td>
+                              <td data-l="Origen">FV-2026-042<div class="tiny">DS-2026-057</div></td>
+                              <td data-l="Cliente">Calzado Norte</td>
+                              <td data-l="Vehículo">DEF-455<div class="tiny">Hernán Ruiz</div></td>
+                              <td style="min-width:140px" data-l="Va por">
+                                <div class="bar"><i style="width:62%"></i></div>
+                                <div class="tiny">km 38 vía Pamplona · 62 % de la ruta</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
+                              <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Ver en el mapa</button></div></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Guía"><b>GR-88238</b><div class="tiny">DS-2026-056</div></td>
+                              <td data-l="Origen">FV-2026-041<div class="tiny">DS-2026-056</div></td>
+                              <td data-l="Cliente">La Bota Fina</td>
+                              <td data-l="Vehículo">XYZ-123<div class="tiny">Jorge Peña</div></td>
+                              <td style="min-width:140px" data-l="Va por">
+                                <div class="bar"><i style="width:91%"></i></div>
+                                <div class="tiny">Entrada a Bogotá · 91 % de la ruta</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--warn">En reparto</span></td>
+                              <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Ver en el mapa</button></div></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Guía"><b>GR-88229</b><div class="tiny">DS-2026-055</div></td>
+                              <td data-l="Origen">FV-2026-039<div class="tiny">DS-2026-055</div></td>
+                              <td data-l="Cliente">Distribuidora Sur</td>
+                              <td data-l="Vehículo">GHI-302<div class="tiny">Marta Villamizar</div></td>
+                              <td style="min-width:140px" data-l="Va por">
+                                <div class="bar"><i style="width:78%"></i></div>
+                                <div class="tiny">Piedecuesta · 78 % de la ruta</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
+                              <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Ver en el mapa</button></div></td>
+                            </tr>
+                            <tr>
+                              <td data-l="Guía"><b>GR-88190</b><div class="tiny">DS-2026-051</div></td>
+                              <td data-l="Origen">FV-2026-038<div class="tiny">DS-2026-051</div></td>
+                              <td data-l="Cliente">La Bota Fina</td>
+                              <td data-l="Vehículo">JKL-778<div class="tiny">Andrés Parra</div></td>
+                              <td style="min-width:140px" data-l="Va por">
+                                <div class="bar"><i style="width:100%"></i></div>
+                                <div class="tiny">Entregado en tienda · 100 % de la ruta</div>
+                              </td>
+                              <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
+                              <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost">Ver en el mapa</button></div></td>
+                            </tr>
+                        </tbody>
+                      </table>
+          </div>
+          <div class="dt__res">
+            <span class="dt__res-t">Totales<em>de los 4 registro(s)</em></span>
+            <span class="dt__res-i dt__res-i--warn"><b>En tránsito</b><span>2</span></span>
+            <span class="dt__res-i dt__res-i--warn"><b>En reparto</b><span>1</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Entregado</b><span>1</span></span>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–4</b> de <b>4</b> registro(s)</div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="dt-08-guias-en-camino-tam">
+                Filas por página
+                <select id="dt-08-guias-en-camino-tam" class="dt__in">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <nav class="dt__pager" aria-label="Paginación">
+                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
+                <button class="dt__pag is-on" aria-current="page">1</button>
+                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>
