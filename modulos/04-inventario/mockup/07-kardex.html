@@ -7,7 +7,7 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css" />
+    <link rel="stylesheet" href="estilos.css?v=20260927i" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Kárdex">
 
@@ -23,6 +23,8 @@
     </header>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
+      <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
       <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
       <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
@@ -73,6 +75,13 @@
               </select>
             </div>
             <div class="dt__f">
+              <label class="dt__f-l" for="kx-bod">Bodega</label>
+              <select id="kx-bod" class="dt__in">
+                <option value="">Todas las bodegas</option>
+                <option>BOD-01</option><option>BOD-02</option><option>BOD-03</option><option>BOD-04</option><option>Planta</option>
+              </select>
+            </div>
+            <div class="dt__f">
               <span class="dt__f-l">Fecha</span>
               <div class="dt__rango">
                 <input type="date" class="dt__in" value aria-label="Fecha desde" title="Desde">
@@ -92,10 +101,16 @@
                                 <button class="dt__orden" title="Ordenar por Referencia"><span>Referencia</span><i class="dt__ind">⇅</i></button>
                               </th>
                               <th style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Bodega"><span>Bodega</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th style="width:1%">
                                 <button class="dt__orden" title="Ordenar por Tipo"><span>Tipo</span><i class="dt__ind">⇅</i></button>
                               </th>
                               <th class="num" style="width:1%">
                                 <button class="dt__orden" title="Ordenar por Cantidad"><span>Cantidad</span><i class="dt__ind">⇅</i></button>
+                              </th>
+                              <th class="num" style="width:1%">
+                                <button class="dt__orden" title="Ordenar por Saldo"><span>Saldo</span><i class="dt__ind">⇅</i></button>
                               </th>
                               <th>
                                 <button class="dt__orden" title="Ordenar por Documento"><span>Documento</span><i class="dt__ind">⇅</i></button>
@@ -110,91 +125,111 @@
                           </thead>
                         <tbody>
                           <tr>
-                            <td data-l="Mov."><b>MV-0010</b></td>
-                            <td data-l="Referencia">PT-REF-1043</td>
+                            <td data-l="Mov."><b class="nw">MV-0010</b></td>
+                            <td data-l="Referencia"><b>PT-REF-1043</b><div class="tiny">Mocasín Cúcuta</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-02</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">44</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+44</span><div class="tiny">pares</div></td>
+                            <td class="num" data-l="Saldo"><b>44</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0009</b></td>
-                            <td data-l="Referencia">PT-REF-1042</td>
+                            <td data-l="Mov."><b class="nw">MV-0009</b></td>
+                            <td data-l="Referencia"><b>PT-REF-1042</b><div class="tiny">Bota Andina</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-02</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">78</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+78</span><div class="tiny">pares</div></td>
+                            <td class="num" data-l="Saldo"><b>78</b></td>
                             <td class="muted" data-l="Documento">LT-2026-029</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0008</b></td>
-                            <td data-l="Referencia">MP-08</td>
+                            <td data-l="Mov."><b class="nw">MV-0008</b></td>
+                            <td data-l="Referencia"><b>MP-08</b><div class="tiny">Cordón encerado 120 cm</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-04</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">240</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+240</span><div class="tiny">par</div></td>
+                            <td class="num" data-l="Saldo"><b>240</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0007</b></td>
-                            <td data-l="Referencia">MP-07</td>
+                            <td data-l="Mov."><b class="nw">MV-0007</b></td>
+                            <td data-l="Referencia"><b>MP-07</b><div class="tiny">Ojalete metálico</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-04</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">5.600</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+5.600</span><div class="tiny">un</div></td>
+                            <td class="num" data-l="Saldo"><b>5.600</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0006</b></td>
-                            <td data-l="Referencia">MP-06</td>
+                            <td data-l="Mov."><b class="nw">MV-0006</b></td>
+                            <td data-l="Referencia"><b>MP-06</b><div class="tiny">Pegante poliuretano</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-04</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">22</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+22</span><div class="tiny">kg</div></td>
+                            <td class="num" data-l="Saldo"><b>22</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0005</b></td>
-                            <td data-l="Referencia">MP-05</td>
+                            <td data-l="Mov."><b class="nw">MV-0005</b></td>
+                            <td data-l="Referencia"><b>MP-05</b><div class="tiny">Plantilla EVA</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-01</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">180</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+180</span><div class="tiny">par</div></td>
+                            <td class="num" data-l="Saldo"><b>180</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0004</b></td>
-                            <td data-l="Referencia">MP-04</td>
+                            <td data-l="Mov."><b class="nw">MV-0004</b></td>
+                            <td data-l="Referencia"><b>MP-04</b><div class="tiny">Hilo poliéster 40</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-04</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">34</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+34</span><div class="tiny">cono</div></td>
+                            <td class="num" data-l="Saldo"><b>34</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0003</b></td>
-                            <td data-l="Referencia">MP-03</td>
+                            <td data-l="Mov."><b class="nw">MV-0003</b></td>
+                            <td data-l="Referencia"><b>MP-03</b><div class="tiny">Forro textil</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-01</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">260</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+260</span><div class="tiny">m</div></td>
+                            <td class="num" data-l="Saldo"><b>260</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0002</b></td>
-                            <td data-l="Referencia">MP-02</td>
+                            <td data-l="Mov."><b class="nw">MV-0002</b></td>
+                            <td data-l="Referencia"><b>MP-02</b><div class="tiny">Suela de caucho 36-43</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-01</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">420</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+420</span><div class="tiny">par</div></td>
+                            <td class="num" data-l="Saldo"><b>420</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
                           </tr>
                           <tr>
-                            <td data-l="Mov."><b>MV-0001</b></td>
-                            <td data-l="Referencia">MP-01</td>
+                            <td data-l="Mov."><b class="nw">MV-0001</b></td>
+                            <td data-l="Referencia"><b>MP-01</b><div class="tiny">Cuero vacuno graso</div></td>
+                            <td data-l="Bodega"><b class="nw">BOD-01</b></td>
                             <td data-l="Tipo"><span class="chip chip--oliva">Entrada</span></td>
-                            <td class="num" data-l="Cantidad">2.400</td>
+                            <td class="num" data-l="Cantidad"><span class="mov mov--mas">+2.400</span><div class="tiny">dm²</div></td>
+                            <td class="num" data-l="Saldo"><b>2.400</b></td>
                             <td class="muted" data-l="Documento">Saldo inicial</td>
                             <td class="muted" data-l="Responsable">Sistema</td>
                             <td class="tiny" data-l="Fecha">2026-09-15</td>
@@ -202,16 +237,15 @@
                         </tbody>
                         <tfoot>
                           <tr>
-                            <td colspan="3"><b>10 movimientos</b> <span class="tiny">Todos de tipo entrada</span></td>
-                            <td class="num">9.278</td>
-                            <td colspan="3" class="tiny">Saldo acumulado del módulo</td>
+                            <td colspan="3"><b>10 movimientos</b> <span class="tiny">10 entradas · 0 salidas · 0 ajustes · 0 mermas</span></td>
+                            <td colspan="6" class="tiny">Saldo = lo que queda de esa referencia después del movimiento. Las cantidades no se suman entre referencias.</td>
                           </tr>
                         </tfoot>
                       </table>
           </div>
           <div class="dt__res">
             <span class="dt__res-t">Totales<em>de los 10 registro(s)</em></span>
-            <span class="dt__res-i"><b>Cantidad</b><span>9.278</span></span>
+            <span class="dt__res-i dt__res-i--ok"><b>Entrada</b><span>10</span></span>
           </div>
           <div class="dt__pie">
             <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–10</b> de <b>10</b> registro(s)</div>
@@ -239,6 +273,6 @@
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js"></script>
+    <script src="prototipo.js?v=20260927i"></script>
   </body>
 </html>

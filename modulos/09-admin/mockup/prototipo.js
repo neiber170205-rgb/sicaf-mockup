@@ -384,14 +384,14 @@
   var ESTADOS = {
     "Suspender":  { pill: "crit", texto: "Suspendido", dice: "queda suspendido · conserva su historial en la bitácora", tono: "warn" },
     "Reactivar":  { pill: "ok",   texto: "Activo",     dice: "vuelve a tener acceso a su módulo",  tono: "ok" },
-    "Reintentar": { pill: "ok",   texto: "Completo",   dice: "corrió bien esta vez",               tono: "ok", menos: "06-respaldos.html" },
+    "Reintentar": { pill: "ok",   texto: "Completo",   dice: "corrió bien esta vez",               tono: "ok", menos: "05-respaldos.html" },
     "Restaurar":  { pill: "warn", texto: "Restaurando", dice: "devuelve TODO el sistema a esa fecha", tono: "warn" }
   };
 
   var RAPIDAS = {
     "usuario":  { a: "02-usuarios.html",  dice: "Llene el nombre, el correo, el módulo y el rol." },
     "rol":      { a: "03-roles.html",     dice: "Revise quién hace y quién autoriza cada acción delicada." },
-    "respaldo": { a: "06-respaldos.html", dice: "Desde aquí se corre el respaldo a mano." }
+    "respaldo": { a: "05-respaldos.html", dice: "Desde aquí se corre el respaldo a mano." }
   };
 
   document.addEventListener("click", function (e) {
@@ -709,4 +709,52 @@
   /* Al entrar, y cada vez que se cambia de pantalla, las tablas se reparten en páginas */
   function dtArrancar() { todos(".dt").forEach(dtPintar); }
 
+})();
+
+/* ---------------------------------------------------------------- Inicio: gráfica de uso del sistema
+   Entradas al sistema y cambios que quedaron en la bitácora, mes a mes.
+   Se filtra con los botones Todo / Entradas / Cambios. */
+(function () {
+  var MESES = [["Abr", "Abril"], ["May", "Mayo"], ["Jun", "Junio"], ["Jul", "Julio"], ["Ago", "Agosto"], ["Sep", "Septiembre"]];
+  var ENT = [620, 700, 655, 740, 810, 690], CAM = [140, 165, 150, 172, 190, 158], USR = [9, 9, 9, 10, 10, 9];
+  var VER = "ambos", TIP = null;
+  function mil(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+  function techo(v) { var p = Math.pow(10, Math.floor(Math.log10(Math.max(v, 10)))); return Math.ceil(v / p) * p; }
+  function pintar() {
+    var caja = document.getElementById("ia");
+    if (!caja) return;
+    var vE = VER !== "c", vC = VER !== "e";
+    var max = techo(Math.max.apply(null, (vE ? ENT : []).concat(vC ? CAM : [])));
+    var ejes = [1, .75, .5, .25, 0].map(function (f) { return '<span style="bottom:' + f * 100 + '%"><em>' + mil(Math.round(max * f)) + "</em></span>"; }).join("");
+    var cols = MESES.map(function (m, i) {
+      function b(v, k) { return '<span class="ia__b ia__b--' + k + '" style="height:' + (v * 100 / max).toFixed(1) + '%"><em>' + mil(v) + "</em></span>"; }
+      return '<div class="ia__mes' + (i === MESES.length - 1 ? " ia__mes--hoy" : "") + '" data-i="' + i + '"><div class="ia__par">' +
+        (vE ? b(ENT[i], "e") : "") + (vC ? b(CAM[i], "c") : "") + '</div><span class="ia__x">' + m[0] + (i === MESES.length - 1 ? " · va" : "") + "</span></div>";
+    }).join("");
+    document.getElementById("ia-barras").innerHTML = '<div class="ia__ejes">' + ejes + '</div><div class="ia__cols">' + cols + "</div>";
+    var te = ENT.reduce(function (a, b) { return a + b; }, 0), tc = CAM.reduce(function (a, b) { return a + b; }, 0);
+    document.getElementById("ia-resumen").innerHTML =
+      (vE ? '<span class="ia__dato ia__dato--e"><i></i><b>' + mil(te) + "</b> entradas</span>" : "") +
+      (vC ? '<span class="ia__dato ia__dato--c"><i></i><b>' + mil(tc) + "</b> cambios</span>" : "") +
+      '<span class="ia__dato"><b>' + mil(Math.round((vE ? te : tc) / 6)) + "</b> " + (vE ? "entradas" : "cambios") + " por mes</span>" +
+      '<span class="ia__dato ia__dato--nota">abril a septiembre</span>';
+    [].forEach.call(caja.querySelectorAll("[data-ia]"), function (x) { x.classList.toggle("is-on", x.getAttribute("data-ia") === VER); });
+  }
+  function tip(mes, e) {
+    if (!TIP) { TIP = document.createElement("div"); TIP.className = "ia-tip"; TIP.setAttribute("role", "tooltip"); document.body.appendChild(TIP); }
+    if (!mes) { TIP.classList.remove("is-on"); return; }
+    var i = +mes.getAttribute("data-i"), m = MESES[i];
+    TIP.innerHTML = "<b>" + m[1] + (i === MESES.length - 1 ? " (va hasta hoy)" : "") + "</b>" +
+      (VER !== "c" ? mil(ENT[i]) + " entradas<br>" : "") + (VER !== "e" ? mil(CAM[i]) + " cambios en la bitácora<br>" : "") +
+      "<i>" + USR[i] + " usuarios usaron el sistema</i>";
+    TIP.style.left = Math.min(e.clientX + 14, window.innerWidth - 250) + "px";
+    TIP.style.top = (e.clientY + 14) + "px";
+    TIP.classList.add("is-on");
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("#ia [data-ia]") : null;
+    if (b) { e.preventDefault(); VER = b.getAttribute("data-ia"); pintar(); }
+  });
+  document.addEventListener("mousemove", function (e) { tip(e.target.closest ? e.target.closest("#ia .ia__mes") : null, e); });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", pintar); else pintar();
 })();

@@ -7,7 +7,7 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css" />
+    <link rel="stylesheet" href="estilos.css?v=20260927i" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Merma">
 
@@ -23,6 +23,8 @@
     </header>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
+      <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
       <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
       <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
@@ -100,6 +102,10 @@
           <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
           Registrar merma
         </button>
+        <div class="calc" id="mr-calc" aria-live="polite">
+          <span class="calc__t"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg> Lo que hay de esta referencia (RN-INV-05)</span>
+          <div class="calc__f" id="mr-hay">REF-1042 · Bota Andina: <b>868</b> unidades (790 en planta y 78 en bodega). No se puede registrar una merma mayor.</div>
+        </div>
         <p class="tiny">La merma descuenta la existencia y queda valorizada: alimenta el costo de la no calidad y el análisis de causas.</p>
       </div>
     </section>
@@ -175,57 +181,141 @@
                         <tbody>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-001</b>
-                              <div class="tiny">2026-09-13</div>
+                              <b>ME-025</b>
+                              <div class="tiny">2026-09-15</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-030</div>
+                              <div class="tiny">OP-2026-041</div>
                             </td>
                             <td data-l="Referencia">
-                              REF-1042
+                              REF-1043
                               <div class="tiny">Corte</div>
                             </td>
-                            <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Corte fuera de molde</td>
-                            <td class="num" data-l="Costo">$74.050</td>
+                            <td class="num" data-l="Cantidad">3</td>
+                            <td data-l="Causa">Talla fuera de curva</td>
+                            <td class="num" data-l="Costo">$90.540</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-003</b>
-                              <div class="tiny">2026-07-26</div>
+                              <b>ME-024</b>
+                              <div class="tiny">2026-09-15</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-018</div>
+                              <div class="tiny">OP-2026-042</div>
                             </td>
                             <td data-l="Referencia">
-                              REF-1042
+                              REF-1044
                               <div class="tiny">Corte</div>
                             </td>
                             <td class="num" data-l="Cantidad">4</td>
                             <td data-l="Causa">Corte fuera de molde</td>
+                            <td class="num" data-l="Costo">$121.100</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-023</b>
+                              <div class="tiny">2026-09-15</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-039</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1046
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">4</td>
+                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td class="num" data-l="Costo">$143.320</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-022</b>
+                              <div class="tiny">2026-09-15</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-038</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1045
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">3</td>
+                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td class="num" data-l="Costo">$69.510</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-021</b>
+                              <div class="tiny">2026-09-15</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-037</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1042
+                              <div class="tiny">Guarnición</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">4</td>
+                            <td data-l="Causa">Costura defectuosa</td>
                             <td class="num" data-l="Costo">$148.100</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-004</b>
-                              <div class="tiny">2026-07-30</div>
+                              <b>ME-020</b>
+                              <div class="tiny">2026-09-15</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-019</div>
+                              <div class="tiny">OP-2026-036</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1044
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">2</td>
+                            <td data-l="Causa">Material rayado</td>
+                            <td class="num" data-l="Costo">$60.550</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-019</b>
+                              <div class="tiny">2026-09-15</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-035</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1043
@@ -238,169 +328,106 @@
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-005</b>
-                              <div class="tiny">2026-08-04</div>
+                              <b>ME-018</b>
+                              <div class="tiny">2026-09-15</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-020</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1044
-                              <div class="tiny">Corte</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">6</td>
-                            <td data-l="Causa">Material rayado</td>
-                            <td class="num" data-l="Costo">$181.650</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-006</b>
-                              <div class="tiny">2026-08-08</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-021</div>
+                              <div class="tiny">OP-2026-034</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1046
-                              <div class="tiny">Montaje</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Pegue de suela defectuoso</td>
-                            <td class="num" data-l="Costo">$71.660</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-007</b>
-                              <div class="tiny">2026-08-13</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-022</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1045
                               <div class="tiny">Corte</div>
                             </td>
                             <td class="num" data-l="Cantidad">5</td>
                             <td data-l="Causa">Corte fuera de molde</td>
-                            <td class="num" data-l="Costo">$115.850</td>
+                            <td class="num" data-l="Costo">$179.150</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-008</b>
-                              <div class="tiny">2026-08-19</div>
+                              <b>ME-017</b>
+                              <div class="tiny">2026-09-14</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-023</div>
+                              <div class="tiny">OP-2026-031</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1042
                               <div class="tiny">Guarnición</div>
                             </td>
-                            <td class="num" data-l="Cantidad">3</td>
+                            <td class="num" data-l="Cantidad">2</td>
                             <td data-l="Causa">Costura defectuosa</td>
-                            <td class="num" data-l="Costo">$111.075</td>
+                            <td class="num" data-l="Costo">$74.050</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-009</b>
-                              <div class="tiny">2026-08-27</div>
+                              <b>ME-016</b>
+                              <div class="tiny">2026-09-14</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-026</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1044
-                              <div class="tiny">Terminado</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">4</td>
-                            <td data-l="Causa">Quemado en reactivado</td>
-                            <td class="num" data-l="Costo">$121.100</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-010</b>
-                              <div class="tiny">2026-09-01</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-027</div>
+                              <div class="tiny">OP-2026-033</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1045
-                              <div class="tiny">Corte</div>
+                              <div class="tiny">Guarnición</div>
                             </td>
                             <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Material rayado</td>
+                            <td data-l="Causa">Costura defectuosa</td>
                             <td class="num" data-l="Costo">$46.340</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-011</b>
-                              <div class="tiny">2026-09-05</div>
+                              <b>ME-015</b>
+                              <div class="tiny">2026-09-13</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-029</div>
+                              <div class="tiny">OP-2026-028</div>
                             </td>
                             <td data-l="Referencia">
-                              REF-1043
+                              REF-1044
                               <div class="tiny">Montaje</div>
                             </td>
-                            <td class="num" data-l="Cantidad">5</td>
+                            <td class="num" data-l="Cantidad">3</td>
                             <td data-l="Causa">Pegue de suela defectuoso</td>
-                            <td class="num" data-l="Costo">$150.900</td>
+                            <td class="num" data-l="Costo">$90.825</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-012</b>
-                              <div class="tiny">2026-09-10</div>
+                              <b>ME-014</b>
+                              <div class="tiny">2026-09-12</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-030</div>
+                              <div class="tiny">OP-2026-025</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1042
-                              <div class="tiny">Montaje</div>
+                              <div class="tiny">Corte</div>
                             </td>
                             <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Horma equivocada</td>
+                            <td data-l="Causa">Corte fuera de molde</td>
                             <td class="num" data-l="Costo">$74.050</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
@@ -427,254 +454,212 @@
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-014</b>
-                              <div class="tiny">2026-09-12</div>
+                              <b>ME-012</b>
+                              <div class="tiny">2026-09-10</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-025</div>
+                              <div class="tiny">OP-2026-030</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1042
-                              <div class="tiny">Corte</div>
+                              <div class="tiny">Montaje</div>
                             </td>
                             <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td data-l="Causa">Horma equivocada</td>
                             <td class="num" data-l="Costo">$74.050</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-015</b>
-                              <div class="tiny">2026-09-13</div>
+                              <b>ME-011</b>
+                              <div class="tiny">2026-09-05</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-028</div>
+                              <div class="tiny">OP-2026-029</div>
                             </td>
                             <td data-l="Referencia">
-                              REF-1044
+                              REF-1043
                               <div class="tiny">Montaje</div>
                             </td>
-                            <td class="num" data-l="Cantidad">3</td>
+                            <td class="num" data-l="Cantidad">5</td>
                             <td data-l="Causa">Pegue de suela defectuoso</td>
-                            <td class="num" data-l="Costo">$90.825</td>
+                            <td class="num" data-l="Costo">$150.900</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-016</b>
-                              <div class="tiny">2026-09-14</div>
+                              <b>ME-010</b>
+                              <div class="tiny">2026-09-01</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-033</div>
+                              <div class="tiny">OP-2026-027</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1045
-                              <div class="tiny">Guarnición</div>
+                              <div class="tiny">Corte</div>
                             </td>
                             <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Costura defectuosa</td>
+                            <td data-l="Causa">Material rayado</td>
                             <td class="num" data-l="Costo">$46.340</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-017</b>
-                              <div class="tiny">2026-09-14</div>
+                              <b>ME-009</b>
+                              <div class="tiny">2026-08-27</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-031</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1042
-                              <div class="tiny">Guarnición</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Costura defectuosa</td>
-                            <td class="num" data-l="Costo">$74.050</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-018</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-034</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1046
-                              <div class="tiny">Corte</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">5</td>
-                            <td data-l="Causa">Corte fuera de molde</td>
-                            <td class="num" data-l="Costo">$179.150</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-019</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-035</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1043
-                              <div class="tiny">Guarnición</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">3</td>
-                            <td data-l="Causa">Costura defectuosa</td>
-                            <td class="num" data-l="Costo">$90.540</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-020</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-036</div>
+                              <div class="tiny">OP-2026-026</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1044
-                              <div class="tiny">Corte</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">2</td>
-                            <td data-l="Causa">Material rayado</td>
-                            <td class="num" data-l="Costo">$60.550</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-021</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-037</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1042
-                              <div class="tiny">Guarnición</div>
+                              <div class="tiny">Terminado</div>
                             </td>
                             <td class="num" data-l="Cantidad">4</td>
-                            <td data-l="Causa">Costura defectuosa</td>
-                            <td class="num" data-l="Costo">$148.100</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-022</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-038</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1045
-                              <div class="tiny">Corte</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">3</td>
-                            <td data-l="Causa">Corte fuera de molde</td>
-                            <td class="num" data-l="Costo">$69.510</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-023</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-039</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1046
-                              <div class="tiny">Corte</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">4</td>
-                            <td data-l="Causa">Corte fuera de molde</td>
-                            <td class="num" data-l="Costo">$143.320</td>
-                            <td class="muted" data-l="Responsable">Admin Principal</td>
-                          </tr>
-                          <tr>
-                            <td data-l="Registro">
-                              <b>ME-024</b>
-                              <div class="tiny">2026-09-15</div>
-                            </td>
-                            <td data-l="Origen">
-                              <span class="chip chip--tinta">
-                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
-                                Producción
-                              </span>
-                              <div class="tiny">OP-2026-042</div>
-                            </td>
-                            <td data-l="Referencia">
-                              REF-1044
-                              <div class="tiny">Corte</div>
-                            </td>
-                            <td class="num" data-l="Cantidad">4</td>
-                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td data-l="Causa">Quemado en reactivado</td>
                             <td class="num" data-l="Costo">$121.100</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
                             <td data-l="Registro">
-                              <b>ME-025</b>
-                              <div class="tiny">2026-09-15</div>
+                              <b>ME-008</b>
+                              <div class="tiny">2026-08-19</div>
                             </td>
                             <td data-l="Origen">
                               <span class="chip chip--tinta">
                                 <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
                                 Producción
                               </span>
-                              <div class="tiny">OP-2026-041</div>
+                              <div class="tiny">OP-2026-023</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1042
+                              <div class="tiny">Guarnición</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">3</td>
+                            <td data-l="Causa">Costura defectuosa</td>
+                            <td class="num" data-l="Costo">$111.075</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-007</b>
+                              <div class="tiny">2026-08-13</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-022</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1045
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">5</td>
+                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td class="num" data-l="Costo">$115.850</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-006</b>
+                              <div class="tiny">2026-08-08</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-021</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1046
+                              <div class="tiny">Montaje</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">2</td>
+                            <td data-l="Causa">Pegue de suela defectuoso</td>
+                            <td class="num" data-l="Costo">$71.660</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-005</b>
+                              <div class="tiny">2026-08-04</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-020</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1044
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">6</td>
+                            <td data-l="Causa">Material rayado</td>
+                            <td class="num" data-l="Costo">$181.650</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-004</b>
+                              <div class="tiny">2026-07-30</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-019</div>
                             </td>
                             <td data-l="Referencia">
                               REF-1043
-                              <div class="tiny">Corte</div>
+                              <div class="tiny">Guarnición</div>
                             </td>
                             <td class="num" data-l="Cantidad">3</td>
-                            <td data-l="Causa">Talla fuera de curva</td>
+                            <td data-l="Causa">Costura defectuosa</td>
                             <td class="num" data-l="Costo">$90.540</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-003</b>
+                              <div class="tiny">2026-07-26</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-018</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1042
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">4</td>
+                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td class="num" data-l="Costo">$148.100</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                           <tr>
@@ -696,6 +681,27 @@
                             <td class="num" data-l="Cantidad">2</td>
                             <td data-l="Causa">Pegue de suela defectuoso</td>
                             <td class="num" data-l="Costo">$60.360</td>
+                            <td class="muted" data-l="Responsable">Admin Principal</td>
+                          </tr>
+                          <tr>
+                            <td data-l="Registro">
+                              <b>ME-001</b>
+                              <div class="tiny">2026-09-13</div>
+                            </td>
+                            <td data-l="Origen">
+                              <span class="chip chip--tinta">
+                                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path> <circle cx="12" cy="12" r="3"></circle></svg>
+                                Producción
+                              </span>
+                              <div class="tiny">OP-2026-030</div>
+                            </td>
+                            <td data-l="Referencia">
+                              REF-1042
+                              <div class="tiny">Corte</div>
+                            </td>
+                            <td class="num" data-l="Cantidad">2</td>
+                            <td data-l="Causa">Corte fuera de molde</td>
+                            <td class="num" data-l="Costo">$74.050</td>
                             <td class="muted" data-l="Responsable">Admin Principal</td>
                           </tr>
                         </tbody>
@@ -750,6 +756,6 @@
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js"></script>
+    <script src="prototipo.js?v=20260927i"></script>
   </body>
 </html>

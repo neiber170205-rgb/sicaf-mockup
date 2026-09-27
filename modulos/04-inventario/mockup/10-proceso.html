@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SICAF · Inventario · Proceso</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css?v=20260927i" />
+  </head>
+  <body data-modulo="04-inventario" data-titulo="Inventario · Proceso">
+
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/> <path d="M12 22V12"/> <polyline points="3.29 7 12 12 20.71 7"/> <path d="m7.5 4.27 9 5.15"/></svg>
+        Inventario
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/> <path d="M12 11h4"/> <path d="M12 16h4"/> <path d="M8 11h.01"/> <path d="M8 16h.01"/></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
+    <nav class="subnav" aria-label="Secciones de Inventario">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i is-on" data-ico="lista" href="10-proceso.html">Proceso</a>
+      <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
+      <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
+      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
+      <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
+      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
+      <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
+      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
+      <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
+      <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
+    </nav>
+    <section class="panel">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/> <path d="M3 12h.01"/> <path d="M3 19h.01"/> <path d="M8 5h13"/> <path d="M8 12h13"/> <path d="M8 19h13"/></svg>
+        <div>
+          <h2>Proceso de Inventario</h2>
+        </div>
+        <span class="ghostbtn" style="pointer-events:none">9 pasos</span>
+      </header>
+      <div class="panel__body">
+        <p class="pr__intro">Los nueve pasos del módulo. Pulse un paso para ver qué se hace en él, qué regla lo cuida y abrir la pantalla donde se registra. Las flechas marcan el orden: un paso no empieza hasta que el anterior queda en el kárdex.</p>
+        <div class="pr">
+          <input class="pr__r" type="radio" name="paso" id="pr-1" checked>
+          <input class="pr__r" type="radio" name="paso" id="pr-2">
+          <input class="pr__r" type="radio" name="paso" id="pr-3">
+          <input class="pr__r" type="radio" name="paso" id="pr-4">
+          <input class="pr__r" type="radio" name="paso" id="pr-5">
+          <input class="pr__r" type="radio" name="paso" id="pr-6">
+          <input class="pr__r" type="radio" name="paso" id="pr-7">
+          <input class="pr__r" type="radio" name="paso" id="pr-8">
+          <input class="pr__r" type="radio" name="paso" id="pr-9">
+          <div class="pr__lienzo" role="group" aria-label="Pasos del proceso">
+            <label class="pr__n" for="pr-1" style="--c:var(--vino-600);grid-row:1;grid-column:1">
+              <span class="pr__num">1</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/> <path d="M12 22V12"/> <polyline points="3.29 7 12 12 20.71 7"/> <path d="m7.5 4.27 9 5.15"/></svg></span>
+              <b>Recepción de compra</b>
+              <span class="pr__pant">M. Prima</span>
+            </label>
+            <label class="pr__n" for="pr-2" style="--c:var(--cobre-600);grid-row:1;grid-column:3">
+              <span class="pr__num">2</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+              <b>Valorización</b>
+              <span class="pr__pant">M. Prima</span>
+            </label>
+            <label class="pr__n" for="pr-3" style="--c:var(--info);grid-row:1;grid-column:5">
+              <span class="pr__num">3</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/> <path d="M12 9v4"/> <path d="M12 17h.01"/></svg></span>
+              <b>Control de stock mínimo</b>
+              <span class="pr__pant">M. Prima</span>
+            </label>
+            <label class="pr__n" for="pr-4" style="--c:var(--oliva-600);grid-row:3;grid-column:5">
+              <span class="pr__num">4</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span>
+              <b>Verificar material de la OP</b>
+              <span class="pr__pant">En proceso</span>
+            </label>
+            <label class="pr__n" for="pr-5" style="--c:var(--vino-500);grid-row:3;grid-column:3">
+              <span class="pr__num">5</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+              <b>Salida a planta</b>
+              <span class="pr__pant">Inicio</span>
+            </label>
+            <label class="pr__n" for="pr-6" style="--c:var(--cobre-700);grid-row:3;grid-column:1">
+              <span class="pr__num">6</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/> <circle cx="12" cy="12" r="3"/></svg></span>
+              <b>Producto en proceso</b>
+              <span class="pr__pant">En proceso</span>
+            </label>
+            <label class="pr__n" for="pr-7" style="--c:var(--crit);grid-row:5;grid-column:1">
+              <span class="pr__num">7</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></svg></span>
+              <b>Registro de merma</b>
+              <span class="pr__pant">Merma</span>
+            </label>
+            <label class="pr__n" for="pr-8" style="--c:var(--oliva-800);grid-row:5;grid-column:3">
+              <span class="pr__num">8</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg></span>
+              <b>Entrada de terminado</b>
+              <span class="pr__pant">Terminado</span>
+            </label>
+            <label class="pr__n" for="pr-9" style="--c:var(--info);grid-row:5;grid-column:5">
+              <span class="pr__num">9</span>
+              <span class="pr__ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/> <path d="M15 18H9"/> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/> <circle cx="17" cy="18" r="2"/> <circle cx="7" cy="18" r="2"/></svg></span>
+              <b>Despacho y conteo</b>
+              <span class="pr__pant">Kárdex</span>
+            </label>
+            <span class="pr__fl pr__fl--der" style="grid-row:1;grid-column:2" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="pr__fl pr__fl--der" style="grid-row:1;grid-column:4" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="pr__fl pr__fl--aba" style="grid-row:2;grid-column:5" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+            <span class="pr__fl pr__fl--izq" style="grid-row:3;grid-column:4" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="pr__fl pr__fl--izq" style="grid-row:3;grid-column:2" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="pr__fl pr__fl--aba" style="grid-row:4;grid-column:1" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+            <span class="pr__fl pr__fl--der" style="grid-row:5;grid-column:2" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="pr__fl pr__fl--der" style="grid-row:5;grid-column:4" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+          </div>
+          <div class="pr__fichas">
+            <article class="pr__ficha pr__ficha--1" style="--c:var(--vino-600)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/> <path d="M12 22V12"/> <polyline points="3.29 7 12 12 20.71 7"/> <path d="m7.5 4.27 9 5.15"/></svg></span>
+                <div>
+                  <h3>Recepción de compra</h3>
+                  <span>Paso 1 de 9 · se registra en M. Prima</span>
+                </div>
+              </header>
+              <p class="pr__sub">Entra la materia prima al kárdex</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Compras avisa lo que llegó con su orden de compra (OC)</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Se registra una ENTRADA con consecutivo MV</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>La cantidad y el costo unitario tienen que ser mayores que cero</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-07</span>
+                <p>Toda cantidad de un movimiento es mayor que cero</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>2 solicitudes esperando que Compras las entregue</b>
+              </div>
+              <a class="btn btn--sm" href="02-m-prima.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a M. Prima</a>
+            </article>
+            <article class="pr__ficha pr__ficha--2" style="--c:var(--cobre-600)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+                <div>
+                  <h3>Valorización</h3>
+                  <span>Paso 2 de 9 · se registra en M. Prima</span>
+                </div>
+              </header>
+              <p class="pr__sub">Costo promedio ponderado</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Cada entrada recalcula el costo de la referencia</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Costo nuevo = (saldo × costo + entra × costo de entrada) ÷ saldo nuevo</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Si el saldo total queda en 0, no se divide</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-03</span>
+                <p>Cada entrada recalcula el costo promedio ponderado</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>La materia prima vale $9.974.000</b>
+              </div>
+              <a class="btn btn--sm" href="02-m-prima.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a M. Prima</a>
+            </article>
+            <article class="pr__ficha pr__ficha--3" style="--c:var(--info)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/> <path d="M12 9v4"/> <path d="M12 17h.01"/></svg></span>
+                <div>
+                  <h3>Control de stock mínimo</h3>
+                  <span>Paso 3 de 9 · se registra en M. Prima</span>
+                </div>
+              </header>
+              <p class="pr__sub">Saldo frente al mínimo</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Suficiente: el saldo es 1,6 veces el mínimo o más</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Cerca del mínimo: está por debajo de 1,6 veces el mínimo</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Bajo el mínimo: sale la alerta y se pide a Compras</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-02</span>
+                <p>El estado de la referencia sale del saldo frente al mínimo</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>2 bajo el mínimo · 1 cerca del mínimo</b>
+              </div>
+              <a class="btn btn--sm" href="02-m-prima.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a M. Prima</a>
+            </article>
+            <article class="pr__ficha pr__ficha--4" style="--c:var(--oliva-600)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg></span>
+                <div>
+                  <h3>Verificar material de la OP</h3>
+                  <span>Paso 4 de 9 · se registra en En proceso</span>
+                </div>
+              </header>
+              <p class="pr__sub">Producción pregunta si alcanza</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Material que pide la orden = pares × consumo por par</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Inventario responde el saldo disponible</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Quien libera la orden es Producción, no Inventario</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-01</span>
+                <p>Una salida nunca deja el saldo negativo</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>5 órdenes en corte esperando material</b>
+              </div>
+              <a class="btn btn--sm" href="03-en-proceso.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a En proceso</a>
+            </article>
+            <article class="pr__ficha pr__ficha--5" style="--c:var(--vino-500)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg></span>
+                <div>
+                  <h3>Salida a planta</h3>
+                  <span>Paso 5 de 9 · se registra en Inicio</span>
+                </div>
+              </header>
+              <p class="pr__sub">La orden liberada saca material</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Una SALIDA por cada insumo de la orden</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Nunca deja el saldo por debajo de cero</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Queda ligada al número de la orden</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-01</span>
+                <p>Una salida nunca deja el saldo negativo</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>Se prueba en Inicio → Mover en bodega</b>
+              </div>
+              <a class="btn btn--sm" href="01-inicio.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a Inicio</a>
+            </article>
+            <article class="pr__ficha pr__ficha--6" style="--c:var(--cobre-700)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/> <circle cx="12" cy="12" r="3"/></svg></span>
+                <div>
+                  <h3>Producto en proceso</h3>
+                  <span>Paso 6 de 9 · se registra en En proceso</span>
+                </div>
+              </header>
+              <p class="pr__sub">La tercera existencia del módulo</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Corte → Guarnición → Montaje → Terminado</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Unidades y avance de cada orden por etapa</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Ya no es materia prima y todavía no es producto terminado</span></li>
+              </ul>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>19 órdenes · 3.297 unidades en planta</b>
+              </div>
+              <a class="btn btn--sm" href="03-en-proceso.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a En proceso</a>
+            </article>
+            <article class="pr__ficha pr__ficha--7" style="--c:var(--crit)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></svg></span>
+                <div>
+                  <h3>Registro de merma</h3>
+                  <span>Paso 7 de 9 · se registra en Merma</span>
+                </div>
+              </header>
+              <p class="pr__sub">Lo que se pierde se descuenta</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Cantidad, etapa y causa son obligatorias</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>No se puede perder más de lo que hay</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Queda valorizada: es el costo de la no calidad</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-05</span>
+                <p>La merma no puede superar la existencia</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>25 registros · $2.577.070</b>
+              </div>
+              <a class="btn btn--sm" href="05-merma.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a Merma</a>
+            </article>
+            <article class="pr__ficha pr__ficha--8" style="--c:var(--oliva-800)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg></span>
+                <div>
+                  <h3>Entrada de terminado</h3>
+                  <span>Paso 8 de 9 · se registra en Terminado</span>
+                </div>
+              </header>
+              <p class="pr__sub">Solo lotes aprobados por Calidad</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Calidad revisa el lote y lo marca conforme</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Entra a BOD-02 en pares, con su costo por par</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Un lote no conforme vuelve a Producción</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-06</span>
+                <p>Solo entra producto terminado de lotes conformes</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>122 pares en BOD-02 · 3 lotes por recibir</b>
+              </div>
+              <a class="btn btn--sm" href="04-terminado.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a Terminado</a>
+            </article>
+            <article class="pr__ficha pr__ficha--9" style="--c:var(--info)">
+              <header class="pr__cab">
+                <span class="pr__cabic"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/> <path d="M15 18H9"/> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/> <circle cx="17" cy="18" r="2"/> <circle cx="7" cy="18" r="2"/></svg></span>
+                <div>
+                  <h3>Despacho y conteo</h3>
+                  <span>Paso 9 de 9 · se registra en Kárdex</span>
+                </div>
+              </header>
+              <p class="pr__sub">Salida por pedido y cuadre físico</p>
+              <ul class="pr__lista">
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>Logística registra la salida del pedido</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>El conteo físico se guarda como AJUSTE con justificación</span></li>
+                <li><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg><span>El saldo nunca se escribe a mano</span></li>
+              </ul>
+              <div class="pr__regla">
+                <span class="pr__rid">RN-INV-04</span>
+                <p>Todo ajuste por conteo físico lleva justificación</p>
+                <span class="pill pill--ok">Funciona en el mockup</span>
+              </div>
+              <div class="pr__hoy">
+                <span>Cómo va hoy</span>
+                <b>10 movimientos en el kárdex</b>
+              </div>
+              <a class="btn btn--sm" href="07-kardex.html"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="m12 5 7 7-7 7"/></svg> Ir a Kárdex</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        <div>
+          <h2>Reglas del Módulo</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table class="pr__tabla">
+            <thead>
+              <tr><th style="width:1%">ID</th><th>Regla</th><th>Qué pasa si no se cumple</th><th style="width:1%">Dónde se prueba</th><th style="width:1%">Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="ID"><b>RN-INV-01</b></td>
+                <td data-l="Regla">Una salida nunca deja el saldo negativo</td>
+                <td class="muted" data-l="Si no se cumple">Se rechaza: «En BOD-01 solo hay 180 par de MP-05. No se puede sacar más.»</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="01-inicio.html">Inicio · Mover en bodega</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+              <tr>
+                <td data-l="ID"><b>RN-INV-02</b></td>
+                <td data-l="Regla">El estado sale del saldo frente al mínimo (suficiente, cerca, bajo)</td>
+                <td class="muted" data-l="Si no se cumple">Bajo el mínimo: sale la alerta y se ofrece pedir a Compras</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="02-m-prima.html">M. Prima</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+              <tr>
+                <td data-l="ID"><b>RN-INV-03</b></td>
+                <td data-l="Regla">Cada entrada recalcula el costo promedio ponderado</td>
+                <td class="muted" data-l="Si no se cumple">Si el saldo total es 0 no se divide: queda el costo de la entrada</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="02-m-prima.html">M. Prima · Entrada de compra</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+              <tr>
+                <td data-l="ID"><b>RN-INV-04</b></td>
+                <td data-l="Regla">El saldo no se edita a mano: el ajuste lleva justificación</td>
+                <td class="muted" data-l="Si no se cumple">Se rechaza: «El ajuste necesita una justificación.»</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="02-m-prima.html">M. Prima · Ajuste</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+              <tr>
+                <td data-l="ID"><b>RN-INV-05</b></td>
+                <td data-l="Regla">La merma exige cantidad, etapa y causa, y no supera la existencia</td>
+                <td class="muted" data-l="Si no se cumple">Se rechaza: «Solo hay 0 unidades de REF-1051: no se puede perder más de lo que hay.»</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="05-merma.html">Merma</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+              <tr>
+                <td data-l="ID"><b>RN-INV-06</b></td>
+                <td data-l="Regla">Solo entra producto terminado de lotes conformes</td>
+                <td class="muted" data-l="Si no se cumple">El lote no entra a BOD-02 y vuelve a Producción</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="04-terminado.html">Terminado · Lotes de Calidad</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+              <tr>
+                <td data-l="ID"><b>RN-INV-07</b></td>
+                <td data-l="Regla">Toda cantidad de un movimiento es mayor que cero</td>
+                <td class="muted" data-l="Si no se cumple">Se rechaza: «Escriba una cantidad mayor que cero.»</td>
+                <td data-l="Dónde se prueba"><a class="pr__ir" href="05-merma.html">Merma · Entrada · Mover</a></td>
+                <td data-l="Estado"><span class="pill pill--ok">Funciona</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel__body">
+        <div class="nota">
+          <span class="dot">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg>
+          </span>
+          <p><b>Nota:</b> El conteo físico (paso 9) se puede hacer en cualquier momento. Todo lo que cambia un saldo queda como movimiento en el kárdex, con su responsable.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js?v=20260927i"></script>
+  </body>
+</html>

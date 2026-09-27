@@ -68,7 +68,7 @@ const uid=p=>p+'-'+String(Math.floor(Math.random()*9000+1000));
    c = su carpeta en SICAF. Menos Producción, cada uno se ve con su propio mockup
    (ver MOCKUPS DE LOS MÓDULOS, más abajo). */
 const MODS=[
- {id:'dashboard',  n:'Dashboard General', ic:'grid',     c:'01-dashboard'},
+ {id:'usuarios',   n:'Inicio',            ic:'grid',     c:'09-admin'},
  {id:'diseno',     n:'Diseño',            ic:'pencil',   c:'02-diseno'},
  {id:'compras',    n:'Compras',           ic:'cart',     c:'03-compras'},
  {id:'inventario', n:'Inventario',        ic:'box',      c:'04-inventario'},
@@ -76,11 +76,11 @@ const MODS=[
  {id:'calidad',    n:'Control de Calidad', ic:'check',   c:'06-calidad'},
  {id:'comercial',  n:'Comercial',         ic:'bars',     c:'07-comercial'},
  {id:'logistica',  n:'Logística y Despacho', ic:'truck', c:'08-logistica'},
- {id:'usuarios',   n:'Admin. Usuarios',   ic:'userplus', c:'09-admin'}
+ {id:'dashboard',  n:'Dashboard General', ic:'grid',   c:'01-dashboard'}
 ];
 const AREA_CHIP={diseno:'vino',compras:'vino',inventario:'cobre',produccion:'tinta',calidad:'oliva',comercial:'cobre',logistica:'cobre',usuarios:'vino',dashboard:'tinta'};
 const modName=id=>(MODS.find(m=>m.id===id)||{n:id}).n;
-const CORTO={logistica:'Logística',calidad:'Calidad',usuarios:'Usuarios',dashboard:'Dashboard'};
+const CORTO={logistica:'Logística',calidad:'Calidad',usuarios:'Inicio',dashboard:'Dashboard'};
 const modCorto=id=>CORTO[id]||modName(id);
 const modIcon=id=>(MODS.find(m=>m.id===id)||{ic:'grid'}).ic;
 
@@ -2342,9 +2342,9 @@ function rotularTablas(){
    módulo abierto, las pantallas de su mockup (igual que en comun/marco.js). */
 const TINTE={dashboard:'#FFFFFF',diseno:'var(--cobre-400)',compras:'#F2E3DE',inventario:'var(--cobre-400)',produccion:'#F2E3DE',calidad:'#5CBB7B',comercial:'var(--cobre-400)',logistica:'var(--cobre-400)',usuarios:'#FFFFFF'};
 function pintarMenu(){
- $('#nav').innerHTML=MODS.map(m=>{
+ $('#nav').innerHTML=MODS.filter(m=>m.id!=='dashboard').map(m=>{
   const ver=puedeVer(m.id), cur=S.vista===m.id;
-  const item='<button class="nav__item'+(cur?' is-current':m.id==='dashboard'?' is-home':'')+'" data-act="ir" data-mod="'+m.id+'"'+(ver?'':' disabled')+' style="'+(ver?'':'opacity:.35;')+'" title="'+esc(m.n)+'" aria-current="'+(cur?'page':'false')+'">'
+  const item='<button class="nav__item'+(cur?' is-current':m.id==='usuarios'?' is-home':'')+'" data-act="ir" data-mod="'+m.id+'"'+(ver?'':' disabled')+' style="'+(ver?'':'opacity:.35;')+'" title="'+esc(m.n)+'" aria-current="'+(cur?'page':'false')+'">'
    +'<span style="color:'+(cur?'#fff':TINTE[m.id])+';display:flex">'+ico(m.ic,22)+'</span><span>'+m.n+'</span>'+(ver?'':'<span class="nav__lock">'+ico('lock',16)+'</span>')+'</button>';
   if(m.id!=='produccion'){
    if(!cur||!MOCK[m.id])return item;

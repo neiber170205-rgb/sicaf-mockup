@@ -40,15 +40,14 @@
     // El menú lateral: la carpeta de cada módulo, el nombre que se ve y su ícono (de comun/iconos.svg).
     // "primera" es la pantalla con la que abre su mockup (en las pantallas de React se abre su app/).
     modulos: [
-      { carpeta: "01-dashboard", primera: "01-inicio.html",  nombre: "Dashboard General",    icono: "cuadricula",  color: "#FFFFFF" },
+      { carpeta: "09-admin", primera: "01-inicio.html",      nombre: "Inicio",               icono: "cuadricula",  color: "#FFFFFF" },
       { carpeta: "02-diseno", primera: "01-modelos.html",     nombre: "Diseño",               icono: "lapiz",       color: "var(--cobre-400)" },
       { carpeta: "03-compras", primera: "01-necesidad.html",  nombre: "Compras",              icono: "carrito",     color: "#F2E3DE" },
       { carpeta: "04-inventario", primera: "01-inicio.html", nombre: "Inventario",           icono: "caja",        color: "var(--cobre-400)" },
       { carpeta: "05-produccion", primera: "01-panel-principal.html", nombre: "Producción",           icono: "engranaje",   color: "#F2E3DE" },
       { carpeta: "06-calidad", primera: "01-proceso.html",    nombre: "Control de Calidad",   icono: "casilla-llena", color: "#5CBB7B" },
       { carpeta: "07-comercial", primera: "01-inicio.html",  nombre: "Comercial",            icono: "barras",      color: "var(--cobre-400)" },
-      { carpeta: "08-logistica", primera: "01-inicio.html",  nombre: "Logística y Despacho", icono: "camion",      color: "var(--cobre-400)" },
-      { carpeta: "09-admin", primera: "01-inicio.html",      nombre: "Admin. Usuarios",      icono: "usuario-mas", color: "#FFFFFF" }
+      { carpeta: "08-logistica", primera: "01-inicio.html",  nombre: "Logística y Despacho", icono: "camion",      color: "var(--cobre-400)" }
     ]
   };
 

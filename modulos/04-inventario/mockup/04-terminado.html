@@ -7,7 +7,7 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css" />
+    <link rel="stylesheet" href="estilos.css?v=20260927i" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Terminado">
 
@@ -23,6 +23,8 @@
     </header>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
+      <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
       <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
       <a class="subnav__i is-on" data-ico="visto" href="04-terminado.html">Terminado</a>
@@ -124,7 +126,7 @@
                           <tr>
                             <td colspan="2"><b>2 referencias</b> <span class="tiny">Bodega BOD-02 · producto terminado</span></td>
                             <td class="num">122</td>
-                            <td class="num muted">$34.556</td>
+                            <td class="num muted">$34.556<div class="tiny">promedio</div></td>
                             <td class="num">$4.215.870</td>
                           </tr>
                         </tfoot>
@@ -132,7 +134,6 @@
           </div>
           <div class="dt__res">
             <span class="dt__res-t">Totales<em>de los 2 registro(s)</em></span>
-            <span class="dt__res-i"><b>Costo/par</b><span>$67.205</span></span>
             <span class="dt__res-i"><b>Valor en bodega</b><span>$4.215.870</span></span>
           </div>
           <div class="dt__pie">
@@ -157,10 +158,63 @@
         </div>
       </div>
     </section>
+    <section class="panel" id="p-lotes">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        <div>
+          <h2>Lotes que Llegan de Calidad</h2>
+        </div>
+        <span class="ghostbtn" style="pointer-events:none" id="lotes-n">3 por recibir</span>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table class="tabla-simple">
+            <thead>
+              <tr><th>Lote</th><th>Referencia</th><th class="num" style="width:1%">Pares</th><th class="num" style="width:1%">Costo/par</th><th style="width:1%">Dictamen de Calidad</th><th style="width:1%">Acciones</th></tr>
+            </thead>
+            <tbody>
+                <tr data-lote="LT-2026-031" data-ref="REF-1044" data-modelo="Zapato Colegial Reforzado" data-pares="120" data-costo="28400" data-dictamen="Conforme">
+                  <td data-l="Lote"><b>LT-2026-031</b><div class="tiny">OP-2026-028</div></td>
+                  <td data-l="Referencia"><b>REF-1044</b><div class="tiny">Zapato Colegial Reforzado</div></td>
+                  <td class="num" data-l="Pares"><b>120</b></td>
+                  <td class="num muted" data-l="Costo/par">$28.400</td>
+                  <td data-l="Dictamen de Calidad"><span class="pill pill--ok">Conforme</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--oliva" data-acc="recibir-lote">Recibir en bodega</button></div></td>
+                </tr>
+                <tr data-lote="LT-2026-032" data-ref="REF-1045" data-modelo="Sandalia Verano" data-pares="90" data-costo="23170" data-dictamen="No conforme">
+                  <td data-l="Lote"><b>LT-2026-032</b><div class="tiny">OP-2026-033</div></td>
+                  <td data-l="Referencia"><b>REF-1045</b><div class="tiny">Sandalia Verano</div></td>
+                  <td class="num" data-l="Pares"><b>90</b></td>
+                  <td class="num muted" data-l="Costo/par">$23.170</td>
+                  <td data-l="Dictamen de Calidad"><span class="pill pill--crit">No conforme</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--ghost" data-acc="recibir-lote">Recibir en bodega</button></div></td>
+                </tr>
+                <tr data-lote="LT-2026-033" data-ref="REF-1042" data-modelo="Bota Andina" data-pares="60" data-costo="37025" data-dictamen="Conforme">
+                  <td data-l="Lote"><b>LT-2026-033</b><div class="tiny">OP-2026-025</div></td>
+                  <td data-l="Referencia"><b>REF-1042</b><div class="tiny">Bota Andina</div></td>
+                  <td class="num" data-l="Pares"><b>60</b></td>
+                  <td class="num muted" data-l="Costo/par">$37.025</td>
+                  <td data-l="Dictamen de Calidad"><span class="pill pill--ok">Conforme</span></td>
+                  <td data-l="Acciones"><div class="acts"><button class="btn btn--sm btn--oliva" data-acc="recibir-lote">Recibir en bodega</button></div></td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel__body">
+        <div class="nota">
+          <span class="dot">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg>
+          </span>
+          <p><b>Nota:</b> Un lote no conforme no entra a la bodega: vuelve a Producción para reproceso. Al recibir un lote conforme, sube el disponible, se recalcula el valor y queda la entrada en el kárdex.</p>
+          <span class="firma">Calzado que<br>impulsa tus metas</span>
+        </div>
+      </div>
+    </section>
 
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js"></script>
+    <script src="prototipo.js?v=20260927i"></script>
   </body>
 </html>
