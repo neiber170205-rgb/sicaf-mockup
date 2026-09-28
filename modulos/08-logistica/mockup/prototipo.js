@@ -50,6 +50,27 @@
     return td;
   }
 
+  /* Alternar vistas del espacio de trabajo segmentado (Anti-Cabina de Avión) */
+  function activarPestanaVista(vistaId) {
+    var todasVistas = todos(".vista-seccion");
+    if (!todasVistas.length) return;
+    var tabTarget = uno('.ws-tab[data-vista="' + vistaId + '"]');
+    if (tabTarget) {
+      var contenedor = tabTarget.closest(".workspace-nav");
+      if (contenedor) {
+        todos(".ws-tab", contenedor).forEach(function (t) { t.classList.remove("is-active"); });
+        tabTarget.classList.add("is-active");
+      }
+    }
+    if (vistaId === "todas") {
+      todasVistas.forEach(function (v) { v.hidden = false; });
+    } else {
+      todasVistas.forEach(function (v) {
+        v.hidden = (v.id !== vistaId);
+      });
+    }
+  }
+
   /* ---------------------------------------------------------------- 2. Aviso flotante */
 
   var flash;
@@ -82,32 +103,15 @@
     }
 
     var filas = todos("tbody tr", tabla);
+    var vistas = 0;
     filas.forEach(function (fila) {
       var t = fila.textContent.toLowerCase();
       var pasa = (!texto || t.indexOf(texto) >= 0) &&
                  palabras.every(function (p) { return t.indexOf(p) >= 0; });
-      fila.dataset.pasa = pasa ? "si" : "no";
-    });
-
-    var vacio = uno(".sin-filas", cuerpo);
-    if (!vacio) {
-      vacio = document.createElement("p");
-      vacio.className = "empty sin-filas";
-      vacio.textContent = "Ninguna fila coincide con lo que buscó.";
-      tabla.parentNode.appendChild(vacio);
-    }
-
-    var dt = tools.classList.contains("dt") ? tools : tabla.closest(".dt");
-    if (dt) { dt.dataset.pag = 1; dtPintar(dt); return; }
-
-    /* tablas viejas, sin el bloque .dt */
-    var vistas = 0;
-    filas.forEach(function (f) {
-      var pasa = f.dataset.pasa !== "no";
-      f.style.display = pasa ? "" : "none";
+      fila.style.display = pasa ? "" : "none";
       if (pasa) vistas++;
     });
-    vacio.style.display = vistas ? "none" : "";
+
     var pie = uno(".tabla-pie", cuerpo);
     if (pie) {
       if (!pie.dataset.original) pie.dataset.original = pie.textContent;
@@ -115,22 +119,27 @@
         ? "Mostrando " + vistas + " de " + filas.length + " filas que coinciden con el filtro"
         : pie.dataset.original;
     }
+    var vacio = uno(".sin-filas", cuerpo);
+    if (!vacio) {
+      vacio = document.createElement("p");
+      vacio.className = "empty sin-filas";
+      vacio.textContent = "Ninguna fila coincide con lo que buscó.";
+      tabla.parentNode.appendChild(vacio);
+    }
+    vacio.style.display = vistas ? "none" : "";
   }
 
   document.addEventListener("input", function (e) {
     var t = e.target;
-    if (t.matches && t.matches('.tabla-tools input[type="search"], .dt input[type="search"]'))
-      filtrar(t.closest(".tabla-tools, .dt"));
+    if (t.matches && t.matches('.tabla-tools input[type="search"]')) filtrar(t.closest(".tabla-tools"));
   });
   document.addEventListener("change", function (e) {
     var t = e.target;
-    if (t.matches && t.matches(".tabla-tools select, .dt__filtros select"))
-      filtrar(t.closest(".tabla-tools, .dt"));
+    if (t.matches && t.matches(".tabla-tools select")) filtrar(t.closest(".tabla-tools"));
   });
 
   /* ---------------------------------------------------------------- 4. Ir de una pantalla a otra */
 
-  var PRIMERA = "01-inicio.html";
   var ES_PANTALLA = /^\d\d-[a-z-]+\.html$/;
   var actual = (location.pathname.split("/").pop() || "01-inicio.html");
   if (!ES_PANTALLA.test(actual)) actual = "01-inicio.html";
@@ -155,13 +164,15 @@
     function terminar() {
       actual = archivo;
       marcarMenu();
-  setTimeout(dtArrancar, 0);
       if (guardarEnHistorial) history.pushState({ pantalla: archivo }, "", archivo);
       window.scrollTo(0, 0);
       var p = pagina();
       if (p.parentNode) p.parentNode.scrollTop = 0;
-      dtArrancar();
-      refrescarVehiculos();
+      actualizarMonitorDespacho();
+      actualizarMonitorFlota();
+      actualizarMonitorProyeccion();
+      cargarCotizacionesPreventivas();
+      sincronizarPedidosProduccion();
     }
 
     if (guardadas[archivo]) {
@@ -201,6 +212,12 @@
   /* ---------------------------------------------------------------- 5. El contador de la campana */
 
   function contarPendientes(delta) {
+    var n = uno(".avisos__n");
+    if (n) {
+      var v = Math.max(0, numero(n.textContent) + delta);
+      n.textContent = v;
+      n.style.display = v ? "" : "none";
+    }
     var campana = uno(".bell__n");
     if (campana) {
       var c = Math.max(0, numero(campana.textContent) + delta);
@@ -209,38 +226,17 @@
     }
   }
 
-  /* La campanita lleva a donde este módulo tiene sus alertas.
-     Si el módulo no maneja alertas, la campanita se queda sin número. */
-  var PANTALLA_ALERTAS = "01-inicio.html";
-
-  if (!PANTALLA_ALERTAS) {
-    var globo = uno(".bell__n");
-    if (globo) globo.style.display = "none";
-  }
-
+  /* La campana de la barra de arriba abre los pendientes de Inicio */
   document.addEventListener("click", function (e) {
     if (!e.target.closest || !e.target.closest(".bell")) return;
     e.preventDefault();
-
-    function mostrar() {
-      var panel = todos(".panel").filter(function (x) {
-        var h = uno("h2", x);
-        return h && /alerta|novedad|pendiente/i.test(h.textContent);
-      })[0];
-      if (panel) {
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-        panel.classList.add("es-nueva");
-        return;
-      }
-      aviso("Este módulo no maneja alertas propias.", "ok");
+    function abrir() {
+      var d = uno(".avisos");
+      if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "center" }); }
+      else aviso("No hay pendientes sin atender.", "ok");
     }
-
-    if (PANTALLA_ALERTAS && actual !== PANTALLA_ALERTAS) {
-      ir(PANTALLA_ALERTAS, true);
-      setTimeout(mostrar, 280);
-    } else {
-      mostrar();
-    }
+    if (actual !== "01-inicio.html") { ir("01-inicio.html", true); setTimeout(abrir, 260); }
+    else abrir();
   });
 
 
@@ -338,48 +334,635 @@
 
   /* ---------------------------------------------------------------- 7. Los formularios de Logística */
 
+  var filaModalActiva = null;
+  var filaModalProyActiva = null;
+
+  /* Directorio maestro de conductores registrados (Personal oficial de Logística) */
+  var CONDUCTORES_CATALOGO = [
+    { id: "DRV-01", nombre: "Hernán Ruiz", cc: "1.090.441.203", lic: "C2 (Vence 2028)", tel: "312 455-8821", vehiculo: "DEF-455", estado: "Disponible" },
+    { id: "DRV-02", nombre: "Jorge Peña", cc: "88.234.910", lic: "C3 (Vence 2027)", tel: "315 889-1200", vehiculo: "XYZ-123", estado: "En ruta" },
+    { id: "DRV-03", nombre: "Luisa Mora", cc: "1.090.312.445", lic: "C2 (Vence 2029)", tel: "318 201-9944", vehiculo: "ABC-987", estado: "En ruta" },
+    { id: "DRV-04", nombre: "Marta Villamizar", cc: "60.334.120", lic: "C3 (Vence 2027)", tel: "311 774-3209", vehiculo: "GHI-302", estado: "En ruta" },
+    { id: "DRV-05", nombre: "Carlos Beltrán", cc: "1.093.882.114", lic: "C2 (Vence 2028)", tel: "314 552-3011", vehiculo: "Disponible", estado: "Disponible" }
+  ];
+
+  /* Cálculo automático de la fecha estimada de entrega (Temu / E-commerce style) */
+  function actualizarEntregaEstimada() {
+    var selRuta = uno("#f-l-ruta");
+    var chkUrg = uno("#chk-despacho-urgente");
+    var box = uno("#box-entrega-estimada");
+    var txtVen = uno("#txt-entrega-ventana");
+    var txtSub = uno("#txt-entrega-sub");
+    var bgeDias = uno("#badge-entrega-dias");
+    var fFecha = uno("#f-l-fecha");
+    if (!txtVen) return;
+
+    var esUrgente = chkUrg ? chkUrg.checked : false;
+    var rutaVal = selRuta ? selRuta.value : "RUT-BGA";
+
+    var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    function formatearFecha(d) {
+      return d.getDate() + " de " + meses[d.getMonth()];
+    }
+
+    var diasMin = 2, diasMax = 3;
+    var ciudadNom = "Bucaramanga";
+
+    if (rutaVal === "RUT-CUC") {
+      diasMin = 0; diasMax = 1; ciudadNom = "Cúcuta Metropolitano";
+    } else if (rutaVal === "RUT-PAM") {
+      diasMin = 1; diasMax = 2; ciudadNom = "Pamplona";
+    } else if (rutaVal === "RUT-BGA") {
+      diasMin = 2; diasMax = 3; ciudadNom = "Bucaramanga";
+    } else if (rutaVal === "RUT-BOG") {
+      diasMin = 3; diasMax = 4; ciudadNom = "Bogotá";
+    }
+
+    if (esUrgente) {
+      if (box) box.classList.add("is-urgente");
+      var dUrg = new Date();
+      if (diasMin > 0) dUrg.setDate(dUrg.getDate() + Math.max(1, diasMin - 1));
+      txtVen.innerHTML = '⚡ Llegada Express Estimada: ' + (diasMin === 0 ? 'Mismo día (en 3 a 5 horas)' : formatearFecha(dUrg) + ' (Servicio Inmediato)');
+      txtSub.textContent = 'Salida prioritaria autorizada por Logística · Transporte directo sin escalas de consolidación.';
+      if (bgeDias) {
+        bgeDias.textContent = '⚡ Prioridad Express (1-2 días)';
+      }
+      if (fFecha) fFecha.value = dUrg.toISOString().slice(0, 10);
+    } else {
+      if (box) box.classList.remove("is-urgente");
+      var d1 = new Date();
+      d1.setDate(d1.getDate() + diasMin);
+      var d2 = new Date();
+      d2.setDate(d2.getDate() + diasMax);
+
+      txtVen.textContent = 'Llegada estimada al cliente: ' + d1.getDate() + ' al ' + formatearFecha(d2) + ' (' + diasMin + ' a ' + diasMax + ' días hábiles)';
+      txtSub.textContent = 'Ventana estimada según tiempo de alistamiento en muelle y tránsito en el corredor ' + ciudadNom + '.';
+      if (bgeDias) {
+        bgeDias.textContent = 'En tiempo estándar (' + diasMin + '-' + diasMax + ' días)';
+      }
+      if (fFecha) fFecha.value = d2.toISOString().slice(0, 10);
+    }
+  }
+
+  /* Sincronización automática de pedido cotizado con el formulario de despacho */
+  function sincronizarPedidoDespacho() {
+    var sel = uno("#f-l-ped");
+    if (!sel) return;
+    var opt = sel.options[sel.selectedIndex];
+    if (!opt) return;
+
+    var pares = numero(opt.getAttribute("data-pares") || 40);
+    var cajas = opt.getAttribute("data-cajas") || Math.ceil(pares / 10);
+    var destino = opt.getAttribute("data-destino") || "Bucaramanga";
+    var lote = opt.getAttribute("data-lote") || "LOT-2026-B14";
+    var ruta = opt.getAttribute("data-ruta") || "RUT-BGA";
+
+    /* 1. Cantidad bloqueada (no editable por despacho para evitar discrepancias) */
+    var inAlist = uno("#f-l-alist");
+    if (inAlist) {
+      inAlist.value = pares;
+      inAlist.setAttribute("readonly", "readonly");
+    }
+
+    var txtCajas = uno("#f-l-cajas-txt");
+    if (txtCajas) {
+      txtCajas.textContent = "Empaque: " + cajas + " cajas corrugadas (" + Math.round(pares / cajas) + " pares/caja)";
+    }
+
+    var meta = uno("#f-l-ped-meta");
+    if (meta) {
+      meta.textContent = "Destino: " + destino + " · Lote: " + lote;
+    }
+
+    /* 2. Asignación automática de ruta según destino del pedido */
+    var selRuta = uno("#f-l-ruta");
+    if (selRuta) {
+      todos("option", selRuta).forEach(function(o) {
+        if (o.value === ruta || (o.getAttribute("data-ciudad") && o.getAttribute("data-ciudad").toLowerCase() === destino.toLowerCase())) {
+          o.selected = true;
+        }
+      });
+    }
+
+    /* 3. Si despacho urgente está activo, buscar el vehículo más inmediato */
+    var chkUrg = uno("#chk-despacho-urgente");
+    if (chkUrg && chkUrg.checked) {
+      asignarVehiculoMasInmediato(pares);
+    }
+
+    actualizarEntregaEstimada();
+    actualizarMonitorDespacho();
+  }
+
+  /* Búsqueda de vehículo apto para transporte más inmediato (Despacho Urgente) */
+  function asignarVehiculoMasInmediato(pares) {
+    var selTra = uno("#f-l-tra");
+    if (!selTra) return;
+    var opcionElegida = null;
+    todos("option", selTra).forEach(function(op) {
+      var cap = numero(op.getAttribute("data-cap"));
+      var est = op.getAttribute("data-estado");
+      if (est === "disponible" && cap >= pares && !opcionElegida) {
+        opcionElegida = op;
+      }
+    });
+    if (opcionElegida) {
+      opcionElegida.selected = true;
+      sincronizarConductorSegunVehiculo();
+      actualizarMonitorDespacho();
+    }
+  }
+
+  /* Sincronización de conductor registrado según el vehículo seleccionado */
+  function sincronizarConductorSegunVehiculo() {
+    var selTra = uno("#f-l-tra");
+    var selChofer = uno("#f-l-chofer-reg");
+    var infoChofer = uno("#f-l-chofer-info");
+    var infoTra = uno("#f-l-tra-info");
+    if (!selTra || !selChofer) return;
+
+    var vOp = selTra.options[selTra.selectedIndex];
+    var placa = vOp ? vOp.value : "DEF-455";
+    var cap = vOp ? vOp.getAttribute("data-cap") : "120";
+
+    if (infoTra) infoTra.textContent = "Capacidad útil: " + cap + " pares · Furgón cerrado";
+
+    var condFound = null;
+    CONDUCTORES_CATALOGO.forEach(function(c) {
+      if (c.vehiculo === placa) condFound = c;
+    });
+
+    if (condFound) {
+      todos("option", selChofer).forEach(function(op) {
+        if (op.value === condFound.id || op.textContent.indexOf(condFound.nombre) >= 0) {
+          op.selected = true;
+        }
+      });
+      if (infoChofer) infoChofer.textContent = "Licencia " + condFound.lic + " · Tel: " + condFound.tel;
+    }
+  }
+
+  /* Alternar entre Flota Propia SICAF y Transportadora Externa */
+  function alternarModalidadTransporte(modo) {
+    var camposPropia = todos(".campo-flota-propia");
+    var camposExterna = todos(".campo-transp-externa");
+    var monitor = uno("#monitor-capacidad-flota");
+    var btnPropia = uno("#btn-modo-propia");
+    var btnExterna = uno("#btn-modo-externa");
+
+    if (modo === "externa") {
+      camposPropia.forEach(function(el) { el.style.display = "none"; });
+      camposExterna.forEach(function(el) { el.style.display = "block"; });
+      if (monitor) monitor.style.display = "none";
+      if (btnPropia) btnPropia.classList.remove("is-active");
+      if (btnExterna) btnExterna.classList.add("is-active");
+      aviso("Modalidad cambiada a Transportadora Externa (Tercerizado).", "warn");
+    } else {
+      camposPropia.forEach(function(el) { el.style.display = "block"; });
+      camposExterna.forEach(function(el) { el.style.display = "none"; });
+      if (monitor) monitor.style.display = "block";
+      if (btnPropia) btnPropia.classList.add("is-active");
+      if (btnExterna) btnExterna.classList.remove("is-active");
+      actualizarMonitorDespacho();
+      aviso("Modalidad cambiada a Flota Propia SICAF.", "ok");
+    }
+    actualizarEntregaEstimada();
+  }
+
+  /* Generador y visualizador de Rótulo / Etiqueta de Embalaje Logístico */
+  function mostrarRotuloEnvio(datos) {
+    var modal = uno("#modal-etiqueta");
+    if (!modal) return;
+
+    var selPed = uno("#f-l-ped");
+    var optPed = selPed ? selPed.options[selPed.selectedIndex] : null;
+
+    var cliente = datos && datos.cliente ? datos.cliente : (optPed ? optPed.getAttribute("data-cliente") : "Calzado Bucaramanga S.A.S.");
+    var destino = datos && datos.destino ? datos.destino : (optPed ? optPed.getAttribute("data-destino") : "Bucaramanga, Santander");
+    var direccion = datos && datos.direccion ? datos.direccion : (optPed && optPed.getAttribute("data-direccion") ? optPed.getAttribute("data-direccion") : "Calle 35 # 18-42, Centro");
+    var ref = datos && datos.ref ? datos.ref : (optPed ? optPed.getAttribute("data-ref") : "REF-1042 · Bota Andina Cuero");
+    var pares = datos && datos.pares ? datos.pares : numero(uno("#f-l-alist") ? uno("#f-l-alist").value : 40);
+    var cajas = Math.ceil(pares / 10);
+    var lote = datos && datos.lote ? datos.lote : (optPed && optPed.getAttribute("data-lote") ? optPed.getAttribute("data-lote") : "LOT-2026-B14");
+    var precinto = uno("#f-l-obs") && uno("#f-l-obs").value ? (uno("#f-l-obs").value.match(/#PRC-\d+/) || ["#PRC-8841"])[0] : "#PRC-8841";
+    var fechaEmb = hoy();
+
+    var esUrgente = uno("#chk-despacho-urgente") ? uno("#chk-despacho-urgente").checked : false;
+    var modoExterna = uno("#btn-modo-externa") && uno("#btn-modo-externa").classList.contains("is-active");
+
+    var transporteTxt = "";
+    var guiaTxt = datos && datos.guia ? datos.guia : ("GR-" + (77443 + Math.floor(Math.random() * 50)));
+
+    if (modoExterna) {
+      var carrier = uno("#f-l-transp-ext") ? uno("#f-l-transp-ext").value : "Servientrega";
+      var extGuia = uno("#f-l-guia-ext") && uno("#f-l-guia-ext").value ? uno("#f-l-guia-ext").value : "SRV-2026-904128";
+      transporteTxt = "Transportadora Externa · " + carrier;
+      guiaTxt = extGuia;
+    } else {
+      var selTra = uno("#f-l-tra");
+      var selCho = uno("#f-l-chofer-reg");
+      var placa = selTra ? selTra.value : "DEF-455";
+      var choferNom = selCho ? (selCho.options[selCho.selectedIndex].getAttribute("data-nombre") || selCho.options[selCho.selectedIndex].text.split("·")[0].trim()) : "Hernán Ruiz";
+      transporteTxt = "Flota Propia · " + placa + " (" + choferNom + ")";
+    }
+
+    if (uno("#lbl-destinatario")) uno("#lbl-destinatario").textContent = cliente;
+    if (uno("#lbl-direccion")) uno("#lbl-direccion").textContent = direccion;
+    if (uno("#lbl-ciudad")) uno("#lbl-ciudad").textContent = destino;
+    if (uno("#lbl-ref-modelo")) uno("#lbl-ref-modelo").textContent = ref;
+    if (uno("#lbl-total-pares")) uno("#lbl-total-pares").textContent = pares + " Pares (" + cajas + " Cajas)";
+    if (uno("#lbl-lote-cod")) uno("#lbl-lote-cod").textContent = lote;
+    if (uno("#lbl-precinto-cod")) uno("#lbl-precinto-cod").textContent = precinto;
+    if (uno("#lbl-fecha-emb")) uno("#lbl-fecha-emb").textContent = fechaEmb;
+    if (uno("#lbl-transporte-txt")) uno("#lbl-transporte-txt").textContent = transporteTxt;
+    if (uno("#lbl-guia-txt")) uno("#lbl-guia-txt").textContent = guiaTxt;
+
+    if (uno("#lbl-tag-prioridad")) {
+      uno("#lbl-tag-prioridad").textContent = esUrgente ? "⚡ DESPACHO URGENTE / PRIORITARIO" : "DESPACHO ESTÁNDAR";
+      uno("#lbl-tag-prioridad").style.color = esUrgente ? "var(--crit, #C5221F)" : "var(--vino-800, #5B141B)";
+    }
+
+    /* Curva de tallas proporcional según los pares */
+    var curvaBody = uno("#lbl-curva-body");
+    if (curvaBody) {
+      var t36 = Math.max(0, Math.round(pares * 0.05));
+      var t37 = Math.max(0, Math.round(pares * 0.1));
+      var t38 = Math.max(1, Math.round(pares * 0.2));
+      var t39 = Math.max(1, Math.round(pares * 0.25));
+      var t40 = Math.max(1, Math.round(pares * 0.22));
+      var t41 = Math.max(1, Math.round(pares * 0.12));
+      var t42 = pares - (t36 + t37 + t38 + t39 + t40 + t41);
+      if (t42 < 0) { t40 += t42; t42 = 0; }
+      curvaBody.innerHTML = '<tr><td><b>Pares</b></td><td>' + t36 + '</td><td>' + t37 + '</td><td>' + t38 + '</td><td>' + t39 + '</td><td>' + t40 + '</td><td>' + t41 + '</td><td>' + t42 + '</td><td><b>' + pares + '</b></td></tr>';
+    }
+
+    if (uno("#lbl-barcode-cod")) {
+      uno("#lbl-barcode-cod").textContent = "(01)7709991204(21)" + (optPed ? optPed.value : "PD-088") + "-" + guiaTxt;
+    }
+
+    modal.classList.add("is-open");
+  }
+
+  /* Monitor de capacidad en vivo para Despachos (RN-LOG-02) */
+  function actualizarMonitorDespacho() {
+    var ped = uno("#f-l-ped"), alist = uno("#f-l-alist"), tra = uno("#f-l-tra");
+    var pctEl = uno("#ds-cap-pct"), progEl = uno("#ds-cap-prog"), msgEl = uno("#ds-cap-msg");
+    if (!pctEl || !progEl || !msgEl) return;
+
+    var pares = numero(alist ? alist.value : 0);
+    var vehOp = tra ? tra.options[tra.selectedIndex] : null;
+    var cap = vehOp ? numero(vehOp.getAttribute("data-cap")) : 120;
+    var estado = vehOp ? vehOp.getAttribute("data-estado") : "disponible";
+    var placa = vehOp ? vehOp.value : "DEF-455";
+
+    if (estado === "mantenimiento") {
+      pctEl.textContent = "Bloqueado · Taller";
+      progEl.style.width = "100%";
+      progEl.style.background = "var(--crit, #C5221F)";
+      msgEl.style.color = "var(--crit, #C5221F)";
+      msgEl.innerHTML = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>Vehículo en taller mecánico. Bloqueado por mantenimiento preventivo (RN-LOG-01).</span>';
+      return;
+    }
+
+    if (pares > cap) {
+      pctEl.textContent = Math.round((pares / cap) * 100) + "% (Sobrecupo)";
+      progEl.style.width = "100%";
+      progEl.style.background = "var(--crit, #C5221F)";
+      msgEl.style.color = "var(--crit, #C5221F)";
+      msgEl.innerHTML = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>Sobrecupo detectado: ' + pares + ' pares superan la capacidad útil de ' + cap + ' pares (' + placa + '). Asigne unidad mayor o fraccione el pedido (RN-LOG-02).</span>';
+    } else {
+      var pct = cap > 0 ? Math.min(100, Math.round((pares / cap) * 100)) : 0;
+      pctEl.textContent = pct + "% ocupado";
+      progEl.style.width = pct + "%";
+      var color = pct > 85 ? "var(--cobre, #B45309)" : "var(--oliva-600, #4D7C0F)";
+      progEl.style.background = color;
+      msgEl.style.color = color;
+      msgEl.innerHTML = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Carga dentro de la capacidad autorizada: ' + pares + ' pares asignados de ' + cap + ' pares disponibles (' + placa + '). Apto para despacho.</span>';
+    }
+  }
+
+  /* Monitor de capacidad en vivo para Flota (RN-LOG-02) */
+  function actualizarMonitorFlota() {
+    var veh = uno("#fl-prog-veh"), paresIn = uno("#fl-prog-pares");
+    var pctEl = uno("#fl-cap-pct"), progEl = uno("#fl-cap-prog"), msgEl = uno("#fl-cap-msg");
+    if (!pctEl || !progEl || !msgEl) return;
+
+    var pares = numero(paresIn ? paresIn.value : 0);
+    var vehOp = veh ? veh.options[veh.selectedIndex] : null;
+    var cap = vehOp ? numero(vehOp.getAttribute("data-cap")) : 120;
+    var estado = vehOp ? vehOp.getAttribute("data-estado") : "Disponible";
+    var placa = vehOp ? vehOp.value : "DEF-455";
+
+    if (estado === "En taller") {
+      pctEl.textContent = "Bloqueado · Taller";
+      progEl.style.width = "100%";
+      progEl.style.background = "var(--crit, #C5221F)";
+      msgEl.style.color = "var(--crit, #C5221F)";
+      msgEl.innerHTML = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>Vehículo en taller mecánico. Bloqueado por mantenimiento preventivo (RN-LOG-01).</span>';
+      return;
+    }
+
+    if (pares > cap) {
+      pctEl.textContent = Math.round((pares / cap) * 100) + "% (Sobrecupo)";
+      progEl.style.width = "100%";
+      progEl.style.background = "var(--crit, #C5221F)";
+      msgEl.style.color = "var(--crit, #C5221F)";
+      msgEl.innerHTML = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>Sobrecupo: ' + pares + ' pares exceden la capacidad de ' + cap + ' pares (' + placa + '). Reasigne unidad mayor.</span>';
+    } else {
+      var pct = cap > 0 ? Math.min(100, Math.round((pares / cap) * 100)) : 0;
+      pctEl.textContent = pct + "% ocupado";
+      progEl.style.width = pct + "%";
+      var color = pct > 85 ? "var(--cobre, #B45309)" : "var(--oliva-600, #4D7C0F)";
+      progEl.style.background = color;
+      msgEl.style.color = color;
+      msgEl.innerHTML = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Vehículo ' + placa + ' con ' + pares + ' pares asignados de ' + cap + ' de capacidad. Apto para salida.</span>';
+    }
+  }
+
+  /* Monitor interactivo de capacidad y cubicaje proyectado para preventa Comercial */
+  function actualizarMonitorProyeccion() {
+    var vSel = uno("#mp-vehiculo");
+    var cSel = uno("#mp-corredor");
+    var pctEl = uno("#mp-cap-pct");
+    var progEl = uno("#mp-cap-prog");
+    var txtEl = uno("#mp-cap-txt");
+    var tEl = uno("#mp-tiempo");
+    var cEl = uno("#mp-costo");
+    var vEl = uno("#mp-ventana");
+    if (!vSel || !cSel) return;
+
+    var vOp = vSel.options[vSel.selectedIndex];
+    var cOp = cSel.options[cSel.selectedIndex];
+    var cap = vOp ? numero(vOp.getAttribute("data-cap")) : 120;
+    var placa = vOp ? vOp.value : "DEF-455";
+    var tipoVeh = vOp ? vOp.getAttribute("data-tipo") : "Camioneta Furgón";
+
+    var horas = cOp ? cOp.getAttribute("data-horas") : "6.0";
+    var peajes = cOp ? numero(cOp.getAttribute("data-peajes")) : 42000;
+
+    var pares = 55;
+    if (filaModalProyActiva) {
+      var btn = uno(".btn-proyectar", filaModalProyActiva) || uno("button", filaModalProyActiva);
+      if (btn && btn.getAttribute("data-pares")) {
+        pares = numero(btn.getAttribute("data-pares"));
+      } else {
+        var mCell = celda(filaModalProyActiva, "Modelo / Pares") || celda(filaModalProyActiva, "Modelo");
+        if (mCell) pares = numero(mCell.textContent);
+      }
+    }
+
+    var pct = cap > 0 ? ((pares / cap) * 100).toFixed(1) : "0.0";
+    if (pctEl) pctEl.textContent = pct + "% ocupado";
+    if (progEl) {
+      progEl.style.width = Math.min(100, Math.round(pct)) + "%";
+      progEl.style.background = pct > 100 ? "var(--crit, #C5221F)" : (pct > 75 ? "var(--cobre-600, #9C4121)" : "var(--oliva-600, #4D7C0F)");
+    }
+    if (txtEl) {
+      if (pct > 100) {
+        txtEl.textContent = "Sobrecupo proyectado: " + pares + " pares exceden la capacidad útil de " + cap + " pares (" + placa + "). Asigne camión NPR de 400 pares.";
+      } else {
+        txtEl.textContent = pares + " pares proyectados ocupan " + pct + "% de " + placa + " (" + cap + " pares). Capacidad holgada para consolidar con otras cotizaciones.";
+      }
+    }
+    if (tEl) tEl.textContent = horas + " hrs";
+    if (cEl) {
+      var costoPar = pares > 0 ? Math.round((peajes + (parseFloat(horas) * 22000)) / pares) : 1850;
+      cEl.textContent = pesos(costoPar) + " / par";
+    }
+    if (vEl) {
+      vEl.textContent = parseFloat(horas) > 10 ? "+3 días" : "+2 días";
+    }
+  }
+
+  /* Cargar cotizaciones preventivas enviadas por Comercial desde localStorage */
+  function cargarCotizacionesPreventivas() {
+    var tabla = uno("#tabla-proyecciones");
+    if (!tabla) return;
+    var cuerpo = uno("tbody", tabla);
+    if (!cuerpo) return;
+
+    var lista = [];
+    try {
+      lista = JSON.parse(localStorage.getItem("sicaf_cotizaciones_preventivas") || "[]");
+    } catch (e) {}
+    if (!lista.length) return;
+
+    var existentes = todos("tr", cuerpo).map(function (tr) {
+      var b = tr.querySelector("b");
+      return b ? b.textContent.trim() : "";
+    });
+
+    lista.forEach(function (c) {
+      if (existentes.indexOf(c.id) >= 0) return;
+      var tr = document.createElement("tr");
+      tr.className = "es-nueva";
+      var esProy = c.estado === "Ruta Proyectada";
+      var estadoHtml = esProy
+        ? '<span class="pill pill--ok">Ruta Proyectada</span>'
+        : '<span class="pill pill--warn">Por calcular</span>';
+      var unidadHtml = c.unidad
+        ? '<b>' + c.unidad + '</b><div class="tiny">' + (c.ocupacion || 'Proyectado') + '</div>'
+        : '<span class="tiny" style="color:var(--tinta-3)">Sin asignar</span>';
+      var btnTxt = esProy ? 'Revisar cálculo' : 'Calcular y proyectar';
+      var btnClase = esProy ? 'btn btn--sm btn--ghost btn-proyectar' : 'btn btn--sm btn--oliva btn-proyectar';
+
+      tr.innerHTML =
+        '<td data-l="Cotización"><b>' + c.id + '</b><div class="tiny">Emitida en Comercial (' + (c.fecha || hoy()) + ')</div></td>' +
+        '<td data-l="Cliente"><b>' + c.cliente + '</b><div class="tiny">' + (c.destino || 'Destino') + ' · Preventa</div></td>' +
+        '<td data-l="Modelo"><b>' + (c.modelo || 'REF-1042') + '</b><div class="tiny">' + c.pares + ' pares cotizados</div></td>' +
+        '<td data-l="Ruta"><b>' + (c.corredor || 'RUT-BGA') + '</b><div class="tiny">Estimado Preventa</div></td>' +
+        '<td data-l="Unidad">' + unidadHtml + '</td>' +
+        '<td data-l="Estado">' + estadoHtml + '</td>' +
+        '<td data-l="Acciones">' +
+          '<div class="acts">' +
+            '<button type="button" class="' + btnClase + '" data-id="' + c.id + '" data-cliente="' + c.cliente + '" data-destino="' + c.destino + '" data-corredor="' + (c.corredor || 'RUT-BGA') + '" data-modelo="' + c.modelo + '" data-pares="' + c.pares + '">' + btnTxt + '</button>' +
+            '<a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/02-ventas.html">Ver en Comercial</a>' +
+          '</div>' +
+        '</td>';
+      cuerpo.insertBefore(tr, cuerpo.firstChild);
+    });
+
+    var badge = uno("#badge-proy-pendientes");
+    if (badge) {
+      badge.textContent = cuerpo.rows.length + " cotizaciones";
+    }
+
+    /* Comprobar si hay una alerta de cotización recién emitida desde Comercial */
+    try {
+      var alertaReciente = JSON.parse(localStorage.getItem("sicaf_alerta_nueva_cotizacion") || "null");
+      if (alertaReciente) {
+        var modalLlegada = uno("#modal-alerta-llegada-cotizacion");
+        if (modalLlegada) {
+          if (uno("#al-llegada-id")) uno("#al-llegada-id").textContent = alertaReciente.id;
+          if (uno("#al-llegada-cli")) uno("#al-llegada-cli").textContent = alertaReciente.cliente + " · " + alertaReciente.destino;
+          if (uno("#al-llegada-mod")) uno("#al-llegada-mod").textContent = alertaReciente.modelo + " · " + alertaReciente.pares + " pares";
+          if (uno("#al-llegada-ruta")) uno("#al-llegada-ruta").textContent = alertaReciente.corredor;
+          modalLlegada.dataset.id = alertaReciente.id;
+          modalLlegada.dataset.cliente = alertaReciente.cliente;
+          modalLlegada.dataset.destino = alertaReciente.destino;
+          modalLlegada.dataset.modelo = alertaReciente.modelo;
+          modalLlegada.dataset.pares = alertaReciente.pares;
+          modalLlegada.dataset.corredor = alertaReciente.corredor.indexOf("RUT-") >= 0 ? alertaReciente.corredor.match(/RUT-[A-Z]+/)[0] : "RUT-BGA";
+          modalLlegada.classList.add("is-open");
+        }
+        localStorage.removeItem("sicaf_alerta_nueva_cotizacion");
+      }
+    } catch (err) {}
+  }
+
+  /* Sincronizar estados de pedidos en fabricación enviados por Producción */
+  function sincronizarPedidosProduccion() {
+    var tabla = uno("#tabla-pedidos-produccion");
+    if (!tabla) return;
+    try {
+      var etapasMap = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
+      todos("tbody tr", tabla).forEach(function (tr) {
+        var ordTd = celda(tr, "Orden / Pedido") || celda(tr, "Orden");
+        if (!ordTd) return;
+        var mPed = ordTd.textContent.match(/PD-\d{4}-\d+/);
+        if (!mPed) return;
+        var pedId = mPed[0];
+        if (etapasMap[pedId]) {
+          var info = etapasMap[pedId];
+          var pct = info.pct || (info.paso === 4 ? 100 : (info.paso === 3 ? 75 : (info.paso === 2 ? 50 : 25)));
+          var nombre = info.etapa || (pct === 100 ? "4. Embalaje" : (pct === 75 ? "3. Montaje" : (pct === 50 ? "2. Guarnición" : "1. Corte")));
+
+          var tdEt = celda(tr, "Etapa en Planta") || celda(tr, "Etapa");
+          var tdProg = celda(tr, "Progreso");
+          var tdEst = celda(tr, "Estado Logístico") || celda(tr, "Estado");
+          var tdAcc = celda(tr, "Acción") || celda(tr, "Acciones");
+
+          if (tdEt) {
+            tdEt.innerHTML = '<span class="pill pill--' + (pct === 100 ? "ok" : "warn") + '">' + nombre + '</span><div class="tiny" style="color:var(--tinta-3)">' + (pct === 100 ? "Cajas listas en muelle" : "En línea de proceso") + '</div>';
+          }
+          if (tdProg) {
+            tdProg.innerHTML = '<div style="font-weight:700;color:' + (pct === 100 ? "var(--ok)" : "var(--cobre-600)") + '">' + pct + '%</div><div class="tiny">' + (pct === 100 ? "Listo en muelle" : "En fabricación") + '</div>';
+          }
+          if (tdEst) {
+            if (pct === 100) {
+              tdEst.innerHTML = '<span class="pill pill--ok">Embalado · Listo</span><div class="tiny" style="color:var(--ok)">Listo para cargar</div>';
+            } else {
+              tdEst.innerHTML = '<span class="pill pill--warn">En Fabricación</span><div class="tiny">Avance planta ' + pct + '%</div>';
+            }
+          }
+          if (tdAcc && pct === 100) {
+            var btnCargar = uno(".btn-cargar-despacho", tdAcc);
+            if (!btnCargar) {
+              var cliCel = celda(tr, "Cliente y Destino") || celda(tr, "Cliente");
+              var cliNom = cliCel ? (cliCel.querySelector("b") || {}).textContent : "Cliente";
+              var modCel = celda(tr, "Modelo / Pares") || celda(tr, "Modelo");
+              var pares = modCel ? numero(modCel.textContent) : 48;
+              tdAcc.innerHTML =
+                '<div class="acts">' +
+                  '<button type="button" class="btn btn--sm btn--oliva btn-cargar-despacho" data-pedido="' + pedId + '" data-cliente="' + cliNom + '" data-pares="' + pares + '" data-ref="Calzado Terminado" data-destino="Bucaramanga" data-ruta="RUT-BGA">Pasar a Despacho</button>' +
+                '</div>';
+            }
+          }
+        }
+      });
+    } catch (e) {}
+  }
+
   function generarDespacho() {
     var ped = uno("#f-l-ped"), alist = uno("#f-l-alist"), tra = uno("#f-l-tra");
-    var p = leerPedido(ped ? ped.options[ped.selectedIndex].text : "");
+    var rutaSel = uno("#f-l-ruta"), fechaSel = uno("#f-l-fecha"), obsIn = uno("#f-l-obs");
+    var pares = numero(alist ? alist.value : 0);
 
-    if (!tra || !tra.value) return aviso("No hay vehículo que sirva para este pedido todavía.", "crit");
-
-    var alistados = numero(alist && alist.value);
-    if (alistados !== p.pares) {
+    if (!pares || pares <= 0) {
       if (alist) alist.focus();
-      return aviso("El pedido " + p.codigo + " es de " + p.pares + " pares y usted alistó " +
-                   alistados + ". Mientras no coincidan, el despacho no cierra.", "crit");
+      return aviso("Ingrese una cantidad válida de pares a despachar.", "crit");
     }
 
-    var v = VEHICULOS.filter(function (x) { return x.placa === tra.value; })[0];
-    if (!v) return aviso("Ese vehículo ya no está disponible.", "crit");
-    if (libre(v) < p.pares) {
-      return aviso("En el " + v.placa + " solo caben " + libre(v) + " pares más.", "crit");
+    var modoExterna = uno("#btn-modo-externa") && uno("#btn-modo-externa").classList.contains("is-active");
+    var esUrgente = uno("#chk-despacho-urgente") ? uno("#chk-despacho-urgente").checked : false;
+
+    var placa = "DEF-455";
+    var chofer = "Hernán Ruiz";
+    var guia = "";
+
+    if (modoExterna) {
+      var transpExt = uno("#f-l-transp-ext") ? uno("#f-l-transp-ext").value : "Servientrega";
+      var guiaExt = uno("#f-l-guia-ext") && uno("#f-l-guia-ext").value.trim() ? uno("#f-l-guia-ext").value.trim() : "SRV-2026-904128";
+      placa = transpExt;
+      chofer = "Guía ext: " + guiaExt;
+      guia = guiaExt;
+    } else {
+      var vehOp = tra ? tra.options[tra.selectedIndex] : null;
+      var cap = vehOp ? numero(vehOp.getAttribute("data-cap")) : 120;
+      var estadoVeh = vehOp ? vehOp.getAttribute("data-estado") : "disponible";
+      placa = vehOp ? vehOp.value : "DEF-455";
+
+      var selCho = uno("#f-l-chofer-reg");
+      chofer = selCho ? (selCho.options[selCho.selectedIndex].getAttribute("data-nombre") || selCho.options[selCho.selectedIndex].text.split("·")[0].trim()) : "Hernán Ruiz";
+
+      if (estadoVeh === "mantenimiento") {
+        return aviso("No se puede despachar: el vehículo seleccionado está en taller mecánico (RN-LOG-01).", "crit");
+      }
+
+      if (pares > cap) {
+        return aviso("Sobrecupo detectado (" + pares + " pares > " + cap + " pares). Reasigne unidad de mayor capacidad (RN-LOG-02).", "crit");
+      }
+      guia = "GR-" + (77442 + (uno("#tabla-despachos") ? (uno("tbody", uno("#tabla-despachos")) || {}).rows.length : 1));
     }
 
-    var panel = panelPorTitulo("Órdenes de Despacho");
-    if (!panel) return aviso("Despacho generado.", "ok");
+    var tabla = uno("#tabla-despachos") || (panelPorTitulo("Órdenes de Despacho y Guías Activas") && uno("table", panelPorTitulo("Órdenes de Despacho y Guías Activas")));
+    if (!tabla) return aviso("Despacho generado.", "ok");
 
+    var cuerpo = uno("tbody", tabla);
+    var panel = tabla.closest(".panel");
+
+    /* Consecutivo de Despacho DS-2026-06X */
     var codigo = siguienteCodigo(panel, "Despacho");
-    var guia = nuevaGuia();
-    var fila = nuevaFila(panel, "Despacho");
-    ponerCelda(fila, "Despacho", "<b>" + codigo + "</b><div class=\"tiny\">" +
-               p.codigo + " · ruta " + p.destino + "</div>");
-    ponerCelda(fila, "Modelo", p.modelo + '<div class="tiny">' + p.pares + " pares</div>");
-    ponerCelda(fila, "Guía", "<b>" + guia + "</b>" +
-               '<div class="tiny">' + v.placa + " · " + v.cond + "</div>");
-    ponerCelda(fila, "Fechas", "Sale " + hoy() + '<div class="tiny">Entrega por confirmar</div>');
-    ponerCelda(fila, "Estado", '<span class="pill pill--warn">Alistando</span>');
+    if (!codigo || codigo.indexOf("DS-") === -1) {
+      codigo = "DS-2026-061";
+    }
 
-    /* el vehículo queda cargado y sale a esa ruta */
-    v.cargado += p.pares;
-    if (v.estado === "Disponible") { v.estado = "En ruta"; v.ruta = p.destino; }
-    refrescarVehiculos();
+    var pedOp = ped ? ped.options[ped.selectedIndex] : null;
+    var cliente = pedOp ? (pedOp.getAttribute("data-cliente") || "Cliente General") : "Cliente";
+    var destino = pedOp ? (pedOp.getAttribute("data-destino") || "Destino") : "Destino";
+    var ref = pedOp ? (pedOp.getAttribute("data-ref") || "Calzado Terminado") : "Calzado";
+    var ruta = rutaSel ? rutaSel.options[rutaSel.selectedIndex].text.split("·")[0].trim() : "Ruta Principal";
+    var fechaComp = fechaSel && fechaSel.value ? fechaSel.value : hoy();
+    var obs = obsIn && obsIn.value ? obsIn.value : "Alistamiento en muelle verificado";
 
-    recontar(panel, "despachos");
+    var cajas = Math.ceil(pares / 10);
+    var badgeTransp = modoExterna
+      ? '<span class="chip chip--cobre" style="font-size:10px;margin-top:3px">Transportadora Externa</span>'
+      : '<span class="chip chip--oliva" style="font-size:10px;margin-top:3px">Flota Propia</span>';
+    var badgeUrg = esUrgente ? '<span class="pill pill--crit" style="font-size:10.5px;margin-left:4px">⚡ Urgente</span>' : '';
+
+    var tr = document.createElement("tr");
+    tr.className = "es-nueva";
+    tr.innerHTML =
+      '<td data-l="Despacho"><b>' + codigo + '</b><div class="tiny">' + hoy() + ' · ' + obs + '</div>' + badgeTransp + '</td>' +
+      '<td data-l="Cliente y Destino"><b>' + cliente + '</b><div class="tiny">' + destino + ' · ' + ruta + '</div></td>' +
+      '<td data-l="Modelo / Pares"><b>' + ref + '</b><div class="tiny">' + pares + ' pares (' + cajas + ' cajas)</div></td>' +
+      '<td data-l="Guía Remisión"><b>' + guia + '</b><div class="tiny">' + placa + ' · ' + chofer + '</div></td>' +
+      '<td data-l="Fechas">Alista: ' + hoy() + '<div class="tiny" style="color:var(--oliva-700);font-weight:600">Compromiso: ' + fechaComp + '</div></td>' +
+      '<td data-l="Estado"><span class="pill pill--warn">Alistando</span>' + badgeUrg + '</td>' +
+      '<td data-l="Acciones">' +
+        '<div class="acts">' +
+          '<button type="button" class="btn btn--sm btn--ghost btn-rotulo-fila" data-despacho="' + codigo + '" data-cliente="' + cliente + '" data-destino="' + destino + '" data-ref="' + ref + '" data-pares="' + pares + '" data-guia="' + guia + '" title="Ver rótulo de envío">🏷️ Rótulo</button>' +
+          '<button type="button" class="btn btn--sm btn--oliva" data-accion="entrega" data-despacho="' + codigo + '" data-cliente="' + cliente + '">Registrar entrega</button>' +
+          '<button type="button" class="btn btn--sm btn--ghost" data-accion="devolucion" data-despacho="' + codigo + '">Novedad</button>' +
+        '</div>' +
+      '</td>';
+
+    cuerpo.insertBefore(tr, cuerpo.firstChild);
+
+    /* Actualizar contadores */
+    var n = cuerpo.rows.length;
+    var txtConteo = uno("#ds-conteo-txt");
+    if (txtConteo) txtConteo.textContent = n + " despachos activos";
+    var pie = uno(".tabla-pie", panel);
+    if (pie) pie.textContent = "Mostrando " + n + " de " + n + " despachos · Guía emitida";
+
+    /* Actualizar KPIs */
+    var kPares = uno("#k-pares");
+    if (kPares) kPares.textContent = numero(kPares.textContent) + pares;
+
     sumarAlMenu("02-despachos.html", 1);
-    aviso("Despacho " + codigo + " con guía " + guia + " · va en el " + v.placa + " (" +
-          libre(v) + " pares libres) · ya se puede rastrear en Seguimiento.", "ok");
+    aviso("Despacho " + codigo + " y Guía " + guia + " emitidos · Rótulo de embalaje listo para imprimir.", "ok");
   }
 
   function registrarRecepcion() {
@@ -420,179 +1003,73 @@
     ponerCelda(fila, "Destino", "Control de Calidad");
     ponerCelda(fila, "Estado", '<span class="pill pill--warn">Programada</span>');
     recontar(panel, "recolecciones");
-    sumarAlMenu("05-log-inversa.html", 1);
+    sumarAlMenu("04-log-inversa.html", 1);
     if (cant) cant.value = "";
     aviso("Recolección " + codigo + " programada · lo que vuelve pasa primero por Control de Calidad.", "warn");
   }
 
+  function asignarFlota() {
+    var veh = uno("#fl-prog-veh"), choferIn = uno("#fl-prog-chofer");
+    var rutaSel = uno("#fl-prog-ruta"), paresIn = uno("#fl-prog-pares"), kmIn = uno("#fl-prog-km");
 
-  /* ---------------------------------------------------------------- 7-bis. Los vehículos
+    var vehOp = veh ? veh.options[veh.selectedIndex] : null;
+    var placa = vehOp ? vehOp.value : "DEF-455";
+    var cap = vehOp ? numero(vehOp.getAttribute("data-cap")) : 120;
+    var estado = vehOp ? vehOp.getAttribute("data-estado") : "Disponible";
+    var pares = numero(paresIn ? paresIn.value : 0);
+    var chofer = choferIn && choferIn.value.trim() ? choferIn.value.trim() : (vehOp ? vehOp.getAttribute("data-chofer") : "Conductor");
+    var ruta = rutaSel ? rutaSel.value : "Corredor Nacional";
+    var km = kmIn ? kmIn.value : "142500";
 
-     Un despacho solo se le puede montar a un vehículo que:
-       · no esté en el taller,
-       · tenga espacio libre para los pares del pedido, y
-       · esté en la base o ya vaya para esa misma ciudad.
-     La lista del formulario se arma sola con esa regla.
-  */
-
-  var VEHICULOS = [
-    { placa: "XYZ-123", tipo: "Camión NPR", cond: "Jorge Peña",       estado: "En ruta",          ruta: "Bogotá",      cargado: 320, cap: 400 },
-    { placa: "ABC-987", tipo: "Furgón",     cond: "Luisa Mora",       estado: "En ruta",          ruta: "Cúcuta",      cargado: 210, cap: 250 },
-    { placa: "GHI-302", tipo: "Camión NPR", cond: "Marta Villamizar", estado: "En ruta",          ruta: "Bucaramanga", cargado: 180, cap: 400 },
-    { placa: "JKL-778", tipo: "Camioneta",  cond: "Andrés Parra",     estado: "En ruta",          ruta: "Pamplona",    cargado: 120, cap: 150 },
-    { placa: "DEF-455", tipo: "Camioneta",  cond: "Hernán Ruiz",      estado: "Disponible",       ruta: "En base",     cargado: 0,   cap: 150 },
-    { placa: "MNO-514", tipo: "Furgón",     cond: "Sin asignar",      estado: "En mantenimiento", ruta: "Taller",      cargado: 0,   cap: 250 }
-  ];
-
-  function libre(v) { return v.cap - v.cargado; }
-
-  /* Del texto del pedido saco los pares y la ciudad: "PD-2026-088 · REF-1042 · 40 pares · Pamplona" */
-  function leerPedido(texto) {
-    var partes = (texto || "").split("·").map(function (t) { return t.trim(); });
-    return {
-      codigo: partes[0] || "",
-      modelo: partes[1] || "",
-      pares: numero(partes[2] || "0"),
-      destino: partes[3] || ""
-    };
-  }
-
-  function sirve(v, ped) {
-    if (v.estado === "En mantenimiento") return false;
-    if (libre(v) < ped.pares) return false;
-    return v.estado === "Disponible" || v.ruta === ped.destino;
-  }
-
-  function refrescarVehiculos() {
-    var sel = uno("#f-l-tra"), ped = uno("#f-l-ped");
-    if (!sel || !ped) return;
-
-    var p = leerPedido(ped.options[ped.selectedIndex].text);
-    var pueden = VEHICULOS.filter(function (v) { return sirve(v, p); });
-
-    sel.innerHTML = "";
-    if (!pueden.length) {
-      sel.appendChild(new Option("Ningún vehículo alcanza para " + p.pares + " pares a " + p.destino, ""));
-      sel.disabled = true;
-    } else {
-      sel.disabled = false;
-      pueden.forEach(function (v) {
-        sel.appendChild(new Option(
-          v.placa + " · " + v.tipo + " · " + v.cond + " · quedan " + libre(v) + " pares", v.placa));
-      });
+    if (estado === "En taller") {
+      return aviso("Vehículo en taller mecánico. Bloqueado para salida (RN-LOG-01).", "crit");
     }
 
-    var pie = uno("#f-l-cap");
-    if (!pie) {
-      pie = document.createElement("p");
-      pie.id = "f-l-cap";
-      pie.className = "tiny";
-      sel.closest(".field").appendChild(pie);
-    }
-    pie.innerHTML = pueden.length
-      ? (pueden.length === 1
-          ? "Solo un vehículo sirve para estos " + p.pares + " pares a " + p.destino + "."
-          : "Sirven " + pueden.length + " vehículos para estos " + p.pares + " pares a " + p.destino + ".") +
-        " Los que están en el taller, llenos o yendo para otro lado no salen en la lista."
-      : '<span class="falta">Toca esperar a que se libere un vehículo o partir el pedido en dos despachos.</span>';
-
-    var alist = uno("#f-l-alist");
-    if (alist && !alist.value) alist.placeholder = "Deben ser " + p.pares + " pares";
-  }
-
-  /* El número de guía: va corrido desde la última que salió */
-  var ULTIMA_GUIA = 88241;
-  function nuevaGuia() { ULTIMA_GUIA += 1; return "GR-" + ULTIMA_GUIA; }
-
-  /* ---------------------------------------------------------------- 7-ter. Rastrear una guía */
-
-  var GUIAS = {
-    "GR-88241": {
-      ds: "DS-2026-057", fv: "FV-2026-042", cliente: "Calzado Norte",
-      contenido: "400 pares · REF-1042", veh: "DEF-455 · Hernán Ruiz", destino: "Pamplona, Norte de Santander",
-      salio: "23/09 09:05", eta: "23/09 13:40", estado: "En tránsito", pill: "warn",
-      x: 31, y: 68, km: "62 km", pct: "38 %", hora: "13:40", senal: "4 min",
-      geo: "7,8939° N · 72,5078° O · km 38 de la vía Pamplona · señal recibida hace 4 minutos"
-    },
-    "GR-88238": {
-      ds: "DS-2026-056", fv: "FV-2026-041", cliente: "La Bota Fina",
-      contenido: "260 pares · REF-1041", veh: "XYZ-123 · Jorge Peña", destino: "Bogotá, Cundinamarca",
-      salio: "22/09 05:20", eta: "23/09 11:30", estado: "En reparto", pill: "warn",
-      x: 74, y: 21, km: "9 km", pct: "91 %", hora: "11:30", senal: "2 min",
-      geo: "4,7110° N · 74,0721° O · entrando a Bogotá por la autopista norte · señal recibida hace 2 minutos"
-    },
-    "GR-88229": {
-      ds: "DS-2026-055", fv: "FV-2026-039", cliente: "Distribuidora Sur",
-      contenido: "180 pares · REF-1043", veh: "GHI-302 · Marta Villamizar", destino: "Bucaramanga, Santander",
-      salio: "23/09 06:10", eta: "23/09 14:20", estado: "En tránsito", pill: "warn",
-      x: 50, y: 46, km: "24 km", pct: "78 %", hora: "14:20", senal: "6 min",
-      geo: "6,9880° N · 73,0500° O · pasando Piedecuesta · señal recibida hace 6 minutos"
-    },
-    "GR-88190": {
-      ds: "DS-2026-051", fv: "FV-2026-038", cliente: "La Bota Fina",
-      contenido: "24 pares · REF-1041", veh: "JKL-778 · Andrés Parra", destino: "Bogotá, Cundinamarca",
-      salio: "09/09 05:40", eta: "09/09 16:05", estado: "Entregado", pill: "ok",
-      x: 80, y: 16, km: "0 km", pct: "100 %", hora: "16:05", senal: "entregada",
-      geo: "4,6510° N · 74,0550° O · entregado en tienda, guía firmada · cerrado el 09/09"
-    }
-  };
-
-  /* Por el número que sea: guía, despacho o factura */
-  function buscarGuia(texto) {
-    var q = (texto || "").trim().toUpperCase();
-    if (GUIAS[q]) return q;
-    for (var g in GUIAS) {
-      if (GUIAS[g].ds === q || GUIAS[g].fv === q) return g;
-    }
-    return null;
-  }
-
-  function rastrear() {
-    var campo = uno("#sg-guia");
-    var g = buscarGuia(campo && campo.value);
-    if (!g) return aviso("No hay ninguna guía con ese número. Pruebe con GR-88241, DS-2026-057 o FV-2026-042.", "crit");
-
-    var d = GUIAS[g], ficha = uno("#sg-ficha");
-    if (ficha) {
-      uno(".gficha__g", ficha).textContent = g;
-      var p = uno(".pill", ficha);
-      p.className = "pill pill--" + d.pill;
-      p.textContent = d.estado;
-      var vs = todos("dd", ficha);
-      [d.ds, d.fv, d.cliente, d.contenido, d.veh, d.destino, d.salio, d.eta]
-        .forEach(function (t, i) { if (vs[i]) vs[i].textContent = t; });
-      ficha.classList.add("es-nueva");
+    if (pares > cap) {
+      return aviso("Sobrecupo detectado (" + pares + " pares > " + cap + " pares). Reasigne unidad mayor (RN-LOG-02).", "crit");
     }
 
-    var veh = uno(".mapa .veh");
-    if (veh) {
-      veh.style.left = d.x + "%";
-      veh.style.top = d.y + "%";
-      uno("small", veh).textContent = g;
-      uno("b", veh).textContent = d.veh.split("·")[0].trim();
+    /* Buscar fila del vehículo en la tabla de flota */
+    var tabla = uno(".panel table");
+    if (!tabla) return aviso("Flota asignada.", "ok");
+
+    var filas = todos("tbody tr", tabla);
+    var filaEncontrada = null;
+
+    filas.forEach(function (tr) {
+      var txt = tr.textContent;
+      if (txt.indexOf(placa) >= 0) filaEncontrada = tr;
+    });
+
+    var pct = Math.min(100, Math.round((pares / cap) * 100));
+
+    if (filaEncontrada) {
+      ponerCelda(filaEncontrada, "Conductor", chofer);
+      ponerCelda(filaEncontrada, "Estado", '<span class="pill pill--warn">En ruta</span>');
+      ponerCelda(filaEncontrada, "Ruta", ruta);
+      ponerCelda(filaEncontrada, "Ocupación",
+        '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+        '<div class="tiny">' + pares + ' / ' + cap + ' pares</div>'
+      );
+      var tdAct = uno(".acts", filaEncontrada);
+      if (tdAct) tdAct.innerHTML = '<button class="btn btn--sm btn--ghost">Cerrar ruta</button>';
+      filaEncontrada.classList.add("es-nueva");
     }
-    var pie = uno(".mapa__pie");
-    if (pie) pie.lastChild.textContent = " " + d.geo;
 
-    var datos = todos(".gdatos b");
-    [d.km, d.pct, d.hora, d.senal].forEach(function (t, i) { if (datos[i]) datos[i].textContent = t; });
+    /* Actualizar KPIs */
+    var kRuta = uno("#k-ruta");
+    if (kRuta) kRuta.textContent = numero(kRuta.textContent) + 1;
+    var kPares = uno("#k-pares");
+    if (kPares) kPares.textContent = numero(kPares.textContent) + pares;
 
-    var sub = uno(".panel__head--oliva .sub");
-    if (sub) sub.textContent = "Posición del vehículo que lleva la guía " + g;
-
-    aviso("Guía " + g + " · " + d.estado.toLowerCase() + " · " + d.geo.split("·")[2].trim() + ".", d.pill);
+    aviso("Vehículo " + placa + " despachado a ruta hacia " + ruta + " con " + pares + " pares (Odómetro: " + km + " km).", "ok");
   }
 
   /* ---------------------------------------------------------------- 8. Un solo oyente para los botones */
 
   var ESTADOS = {
-    "Registrar entrega": { pill: "ok",   texto: "Entregado", dice: "queda entregado al cliente",       tono: "ok" },
-    "Devolución":        { pill: "crit", texto: "Devuelto",  dice: "queda como devuelto · abra la recolección", tono: "crit" },
     "Procesar":          { pill: "ok",   texto: "Procesada", dice: "pasa a Control de Calidad",        tono: "ok" },
-    "Asignar ruta":      { pill: "warn", texto: "En ruta",   dice: "sale a ruta",                       tono: "ok" },
-    "Cerrar ruta":       { pill: "ok",   texto: "Disponible", dice: "vuelve a estar disponible",        tono: "ok" },
     "Asignar vehículo":  { pill: "warn", texto: "En tránsito", dice: "sale con el vehículo asignado",    tono: "ok" },
-    "Dar de alta":       { pill: "ok",   texto: "Disponible", dice: "sale del taller y queda disponible", tono: "ok" },
     "Registrar llegada": { pill: "ok",   texto: "Recibida",   dice: "llegó a la planta · falta la revisión de Calidad", tono: "ok" },
     "Validar a mano":    { pill: "ok",   texto: "Validado",   dice: "queda validado con la guía digitada", tono: "ok" },
     "Reclamar":          { pill: "warn", texto: "En reclamo", dice: "queda en reclamo · se avisó a Compras", tono: "warn" },
@@ -601,8 +1078,8 @@
 
   /* Las tres acciones rápidas del tablero de Inicio */
   var RAPIDAS = {
-    "ruta":      { a: "02-despachos.html", dice: "Arme la orden: pedido, cantidad alistada y vehículo." },
-    "recepcion": { a: "04-recepcion.html", dice: "Registre la llegada del proveedor con su número de guía." }
+    "ruta":      { a: "02-despachos.html", dice: "Arme la orden: pedido facturado, capacidad y vehículo." },
+    "recepcion": { a: "03-recepcion.html", dice: "Registre la llegada del proveedor con su número de guía." }
   };
 
   /* Lectura simulada del escáner: saca una guía de las que están en camino */
@@ -612,7 +1089,7 @@
     aviso("Guía " + leida + " leída por el escáner · confirme los bultos antes de dar entrada.", "ok");
     var campo = uno("#rp-guia");
     if (campo) { campo.value = leida; campo.focus(); return; }
-    ir("04-recepcion.html", true);
+    ir("03-recepcion.html", true);
     setTimeout(function () {
       var c = uno("#rp-guia");
       if (c) { c.value = leida; c.focus(); }
@@ -636,14 +1113,67 @@
     aviso("Reporte " + codigo + " generado · queda en la lista para volver a descargarlo.", "ok");
   }
 
+  /* Listeners dinámicos en inputs para monitoreo de capacidad en tiempo real */
+  document.addEventListener("input", function (e) {
+    var id = e.target.id;
+    if (id === "f-l-alist") actualizarMonitorDespacho();
+    if (id === "fl-prog-pares") actualizarMonitorFlota();
+  });
+
   document.addEventListener("change", function (e) {
-    if (e.target && e.target.id === "f-l-ped") refrescarVehiculos();
+    var id = e.target.id;
+    if (id === "f-l-ped") {
+      sincronizarPedidoDespacho();
+    }
+    if (id === "f-l-tra") {
+      sincronizarConductorSegunVehiculo();
+      actualizarMonitorDespacho();
+    }
+    if (id === "f-l-chofer-reg") {
+      var opCh = e.target.options[e.target.selectedIndex];
+      if (opCh && uno("#f-l-chofer-info")) {
+        var lic = opCh.getAttribute("data-lic") || "C2 Vigente";
+        var tel = opCh.getAttribute("data-tel") || "312 455-8821";
+        uno("#f-l-chofer-info").textContent = "Licencia " + lic + " · Tel: " + tel;
+      }
+    }
+    if (id === "f-l-ruta") {
+      actualizarEntregaEstimada();
+    }
+    if (id === "chk-despacho-urgente") {
+      var pedSel = uno("#f-l-ped");
+      var paresUrg = pedSel ? numero(pedSel.options[pedSel.selectedIndex].getAttribute("data-pares")) : 40;
+      if (e.target.checked) {
+        asignarVehiculoMasInmediato(paresUrg);
+        aviso("⚡ Prioridad express activada: Se asignó vehículo para salida inmediata.", "warn");
+      }
+      actualizarEntregaEstimada();
+    }
+    if (id === "f-l-transp-ext") {
+      actualizarEntregaEstimada();
+    }
+    if (id === "mp-vehiculo" || id === "mp-corredor") actualizarMonitorProyeccion();
+    if (id === "fl-prog-veh") {
+      var veh = e.target;
+      var opVeh = veh.options[veh.selectedIndex];
+      if (opVeh) {
+        var chofer = opVeh.getAttribute("data-chofer");
+        var choferSel = uno("#fl-prog-chofer");
+        if (chofer && choferSel) {
+          todos("option", choferSel).forEach(function(o) {
+            if (o.value === chofer || o.textContent.indexOf(chofer) >= 0) o.selected = true;
+          });
+        }
+      }
+      actualizarMonitorFlota();
+    }
   });
 
   document.addEventListener("click", function (e) {
     var b = e.target.closest ? e.target.closest("button") : null;
     if (!b) return;
     var texto = b.textContent.trim();
+    var accion = b.getAttribute("data-accion");
 
     var rapida = b.getAttribute("data-rapida");
     if (rapida === "ocr") { e.preventDefault(); return escanearGuia(); }
@@ -653,15 +1183,536 @@
       return ir(RAPIDAS[rapida].a, true);
     }
 
-    /* Los botones de las alertas llevan a la pantalla donde se resuelven */
+    /* Modalidad de transporte: Flota Propia vs Externa */
+    if (b.id === "btn-modo-propia" || b.getAttribute("data-modo") === "propia") {
+      e.preventDefault();
+      alternarModalidadTransporte("propia");
+      return;
+    }
+    if (b.id === "btn-modo-externa" || b.getAttribute("data-modo") === "externa") {
+      e.preventDefault();
+      alternarModalidadTransporte("externa");
+      return;
+    }
+
+    /* Rótulo / Etiqueta de Embalaje Logístico */
+    if (b.id === "btn-abrir-rotulo") {
+      e.preventDefault();
+      mostrarRotuloEnvio(null);
+      return;
+    }
+    if (b.classList.contains("btn-rotulo-fila")) {
+      e.preventDefault();
+      var despFila = b.closest("tr");
+      var dCode = b.getAttribute("data-despacho") || (despFila ? (despFila.querySelector("b") || {}).textContent : "DS-2026-061");
+      var dCli = b.getAttribute("data-cliente") || "Cliente";
+      var dDest = b.getAttribute("data-destino") || "Destino";
+      var dRef = b.getAttribute("data-ref") || "Calzado Terminado";
+      var dPar = numero(b.getAttribute("data-pares") || 40);
+      var dGuia = b.getAttribute("data-guia") || "GR-77443";
+      mostrarRotuloEnvio({
+        despacho: dCode,
+        cliente: dCli,
+        destino: dDest,
+        ref: dRef,
+        pares: dPar,
+        guia: dGuia
+      });
+      return;
+    }
+    if (b.id === "btn-cerrar-rotulo" || b.id === "btn-cerrar-modal-etiqueta") {
+      e.preventDefault();
+      var mEtq = uno("#modal-etiqueta");
+      if (mEtq) mEtq.classList.remove("is-open");
+      return;
+    }
+    if (b.id === "btn-imprimir-rotulo") {
+      e.preventDefault();
+      window.print();
+      return;
+    }
+
+    /* Ficha de conductor registrado */
+    if (b.classList.contains("btn-ver-chofer")) {
+      e.preventDefault();
+      var chNom = b.getAttribute("data-nombre") || "Conductor";
+      return aviso("Ficha laboral de " + chNom + ": ARL nivel 4, examen ocupacional vigente y sin infracciones de tránsito.", "ok");
+    }
+
+    /* Registrar nuevo vehículo en flota (05-flota.html) */
+    if (b.id === "btn-guardar-nuevo-vehiculo") {
+      e.preventDefault();
+      var inPlaca = uno("#reg-v-placa");
+      var selTipo = uno("#reg-v-tipo");
+      var inCap = uno("#reg-v-cap");
+      var inKm = uno("#reg-v-km");
+
+      var placaVal = inPlaca ? inPlaca.value.trim().toUpperCase() : "";
+      var tipoVal = selTipo ? selTipo.value : "Furgón";
+      var capVal = numero(inCap ? inCap.value : 250);
+      var kmVal = inKm ? inKm.value : "85000";
+
+      if (!placaVal || placaVal.length < 5) {
+        if (inPlaca) inPlaca.focus();
+        return aviso("Ingrese una placa de vehículo válida (ej. KOP-882).", "crit");
+      }
+      if (capVal <= 0) {
+        if (inCap) inCap.focus();
+        return aviso("Ingrese una capacidad válida de pares.", "crit");
+      }
+
+      var tblVeh = uno("#tabla-vehiculos");
+      if (tblVeh) {
+        var tbodyV = uno("tbody", tblVeh);
+        var trV = document.createElement("tr");
+        trV.className = "es-nueva";
+        trV.innerHTML =
+          '<td data-l="Vehículo"><b>' + placaVal + '</b><div class="tiny">' + tipoVal + '</div></td>' +
+          '<td data-l="Conductor"><b>Sin asignar</b><div class="tiny">Disponible</div></td>' +
+          '<td data-l="Estado"><span class="pill pill--ok">Disponible</span></td>' +
+          '<td data-l="Ruta">—</td>' +
+          '<td style="min-width:120px" data-l="Ocupación"><div class="bar"><i style="width:0.0%"></i></div><div class="tiny">0 / ' + capVal + ' pares</div></td>' +
+          '<td><div class="acts"><button class="btn btn--sm btn--ghost">Asignar ruta</button></div></td>';
+        tbodyV.insertBefore(trV, tbodyV.firstChild);
+
+        var countVeh = uno("#tab-count-vehiculos");
+        if (countVeh) countVeh.textContent = tbodyV.rows.length + " unidades";
+      }
+
+      var selProgVeh = uno("#fl-prog-veh");
+      if (selProgVeh) {
+        var optV = document.createElement("option");
+        optV.value = placaVal;
+        optV.setAttribute("data-cap", capVal);
+        optV.setAttribute("data-tipo", tipoVal);
+        optV.setAttribute("data-estado", "Disponible");
+        optV.textContent = placaVal + " · " + tipoVal + " · Cap: " + capVal + " pares · Disponible";
+        selProgVeh.insertBefore(optV, selProgVeh.firstChild);
+        optV.selected = true;
+      }
+
+      if (inPlaca) inPlaca.value = "";
+      activarPestanaVista("panel-parque-automotor");
+      return aviso("Vehículo " + placaVal + " (" + tipoVal + " · " + capVal + " pares) registrado con éxito.", "ok");
+    }
+
+    /* Registrar nuevo conductor en directorio (05-flota.html) */
+    if (b.id === "btn-guardar-nuevo-conductor") {
+      e.preventDefault();
+      var inDNom = uno("#reg-d-nombre");
+      var inDCC = uno("#reg-d-cc");
+      var selDLic = uno("#reg-d-lic");
+      var inDVence = uno("#reg-d-vence");
+      var inDTel = uno("#reg-d-tel");
+
+      var dNom = inDNom ? inDNom.value.trim() : "";
+      var dCC = inDCC ? inDCC.value.trim() : "";
+      var dLic = selDLic ? selDLic.value : "C2";
+      var dVence = inDVence && inDVence.value ? inDVence.value : "2028-12-31";
+      var dTel = inDTel ? inDTel.value.trim() : "310 000-0000";
+
+      if (!dNom || dNom.length < 3) {
+        if (inDNom) inDNom.focus();
+        return aviso("Escriba el nombre completo del conductor.", "crit");
+      }
+      if (!dCC) {
+        if (inDCC) inDCC.focus();
+        return aviso("Escriba el número de cédula del conductor.", "crit");
+      }
+
+      var init = dNom.split(" ").map(function(w){return w[0];}).slice(0,2).join("").toUpperCase();
+
+      CONDUCTORES_CATALOGO.push({
+        id: "DRV-" + (CONDUCTORES_CATALOGO.length + 1),
+        nombre: dNom,
+        cc: dCC,
+        lic: "Cat. " + dLic + " Vigente (" + dVence.slice(0,4) + ")",
+        tel: dTel,
+        vehiculo: "Disponible",
+        estado: "Disponible"
+      });
+
+      var tblDrv = uno("#tabla-conductores");
+      if (tblDrv) {
+        var tbodyD = uno("tbody", tblDrv);
+        var trD = document.createElement("tr");
+        trD.className = "es-nueva";
+        trD.innerHTML =
+          '<td data-l="Empleado"><div class="driver-card"><div class="driver-card__avatar">' + init + '</div><div class="driver-card__info"><b>' + dNom + '</b><span>Conductor Logística</span></div></div></td>' +
+          '<td data-l="Cédula"><b>CC ' + dCC + '</b></td>' +
+          '<td data-l="Licencia"><span class="chip chip--oliva">Cat. ' + dLic + ' Vigente</span><div class="tiny">Vence: ' + dVence + '</div></td>' +
+          '<td data-l="Contacto"><b>' + dTel + '</b></td>' +
+          '<td data-l="Vehículo"><b>Disponible</b><div class="tiny">Sin unidad fija</div></td>' +
+          '<td data-l="Estado"><span class="pill pill--ok">Disponible</span></td>' +
+          '<td><div class="acts"><button type="button" class="btn btn--sm btn--ghost btn-ver-chofer" data-nombre="' + dNom + '">Ficha</button></div></td>';
+        tbodyD.insertBefore(trD, tbodyD.firstChild);
+
+        var countDrv = uno("#tab-count-conductores");
+        if (countDrv) countDrv.textContent = tbodyD.rows.length + " empleados";
+        var countPie = uno("#drv-conteo");
+        if (countPie) countPie.textContent = tbodyD.rows.length + " conductores registrados";
+      }
+
+      var selChFlota = uno("#fl-prog-chofer");
+      if (selChFlota) {
+        var optCh = document.createElement("option");
+        optCh.value = dNom;
+        optCh.textContent = dNom + " · CC " + dCC + " · Lic. " + dLic;
+        selChFlota.appendChild(optCh);
+        optCh.selected = true;
+      }
+      var selChDesp = uno("#f-l-chofer-reg");
+      if (selChDesp) {
+        var optCh2 = document.createElement("option");
+        optCh2.value = "DRV-" + CONDUCTORES_CATALOGO.length;
+        optCh2.setAttribute("data-nombre", dNom);
+        optCh2.setAttribute("data-lic", dLic + " (Vence " + dVence.slice(0,4) + ")");
+        optCh2.setAttribute("data-tel", dTel);
+        optCh2.textContent = dNom + " · CC " + dCC + " · Lic. " + dLic;
+        selChDesp.appendChild(optCh2);
+      }
+
+      if (inDNom) inDNom.value = "";
+      if (inDCC) inDCC.value = "";
+      activarPestanaVista("panel-directorio-conductores");
+      return aviso("Conductor " + dNom + " (CC " + dCC + " · Lic. " + dLic + ") registrado con éxito en el directorio.", "ok");
+    }
+
+    /* Selector de Espacio de Trabajo (Tabs / Vistas: Anti-Cabina de Avión) */
+    var tabWs = b.closest(".ws-tab");
+    if (tabWs) {
+      e.preventDefault();
+      var vId = tabWs.getAttribute("data-vista");
+      if (vId) activarPestanaVista(vId);
+      return;
+    }
+
+    /* Limpiar / Reestablecer formulario de despacho */
+    if (b.id === "btn-limpiar-despacho") {
+      e.preventDefault();
+      var selP = uno("#f-l-ped");
+      if (selP) selP.selectedIndex = 0;
+      var inA = uno("#f-l-alist");
+      if (inA) inA.value = 40;
+      var selT = uno("#f-l-tra");
+      if (selT) selT.selectedIndex = 0;
+      var selR = uno("#f-l-ruta");
+      if (selR) selR.selectedIndex = 0;
+      var inO = uno("#f-l-obs");
+      if (inO) inO.value = "";
+      var chkU = uno("#chk-despacho-urgente");
+      if (chkU) chkU.checked = false;
+      alternarModalidadTransporte("propia");
+      sincronizarPedidoDespacho();
+      return aviso("Formulario de despacho reestablecido.", "ok");
+    }
+
     var lleva = b.getAttribute("data-ir");
     if (lleva && ES_PANTALLA.test(lleva)) { e.preventDefault(); return ir(lleva, true); }
 
-    if (texto === "Rastrear") { e.preventDefault(); return rastrear(); }
-    if (texto === "Generar reporte")       { e.preventDefault(); return generarReporte(); }
-    if (texto === "Generar despacho")      { e.preventDefault(); return generarDespacho(); }
-    if (texto === "Registrar recepción")   { e.preventDefault(); return registrarRecepcion(); }
-    if (texto === "Programar recolección") { e.preventDefault(); return programarRecoleccion(); }
+    /* Botones de formularios principales */
+    if (texto === "Generar reporte" || b.id === "btn-generar-reporte") { e.preventDefault(); return generarReporte(); }
+    if (texto === "Generar despacho" || texto === "Generar Despacho y Guía" || b.id === "btn-generar-despacho") { e.preventDefault(); return generarDespacho(); }
+    if (texto === "Registrar recepción" || b.id === "btn-registrar-recepcion") { e.preventDefault(); return registrarRecepcion(); }
+    if (texto === "Programar recolección" || b.id === "btn-programar-recoleccion") { e.preventDefault(); return programarRecoleccion(); }
+    if (texto === "Programar y Despachar a Ruta" || b.id === "btn-asignar-flota") { e.preventDefault(); return asignarFlota(); }
+
+    /* Modales: Apertura de Modal Entrega */
+    if (accion === "entrega" || texto === "Registrar entrega" || b.classList.contains("btn-entregar")) {
+      e.preventDefault();
+      filaModalActiva = b.closest("tr");
+      var modalEnt = uno("#modal-entrega");
+      if (modalEnt) {
+        var despCode = b.getAttribute("data-despacho") || (filaModalActiva ? (filaModalActiva.querySelector("b") || {}).textContent : "DS-2026-060");
+        var clientTxt = b.getAttribute("data-cliente") || (filaModalActiva ? (celda(filaModalActiva, "Cliente y Destino") ? celda(filaModalActiva, "Cliente y Destino").querySelector("b").textContent : (celda(filaModalActiva, "Cliente") ? celda(filaModalActiva, "Cliente").querySelector("b").textContent : "Cliente")) : "Cliente");
+        if (uno("#md-ent-despacho")) uno("#md-ent-despacho").value = despCode;
+        if (uno("#md-ent-info")) uno("#md-ent-info").value = despCode + " · " + clientTxt;
+        var rIn = uno("#md-ent-receptor") || uno("#md-ent-nombre");
+        if (rIn) { rIn.value = ""; rIn.focus(); }
+        modalEnt.classList.add("is-open");
+      }
+      return;
+    }
+
+    /* Modales: Confirmar Entrega */
+    if (b.id === "btn-confirmar-entrega") {
+      e.preventDefault();
+      var rIn2 = uno("#md-ent-receptor") || uno("#md-ent-nombre");
+      var receptor = rIn2 ? rIn2.value.trim() : "";
+      if (!receptor) {
+        if (rIn2) rIn2.focus();
+        return aviso("El nombre y documento del receptor son obligatorios para cerrar la entrega (RN-LOG-04).", "crit");
+      }
+      if (filaModalActiva) {
+        ponerCelda(filaModalActiva, "Estado", '<span class="pill pill--ok">Entregado</span>');
+        ponerCelda(filaModalActiva, "Fechas", 'Entregado: ' + ahora() + '<div class="tiny">Receptor: ' + receptor + '</div>');
+        var actCel = celda(filaModalActiva, "Acciones");
+        if (actCel) actCel.innerHTML = '<span class="pill pill--ok">Listo para cobro</span>';
+        filaModalActiva.classList.add("es-nueva");
+      }
+      var mEnt = uno("#modal-entrega");
+      if (mEnt) mEnt.classList.remove("is-open");
+      contarPendientes(-1);
+      return aviso("Entrega legalizada por " + receptor + " · Notificación emitida a Comercial: 'Listo para Cobro' (RN-LOG-04).", "ok");
+    }
+
+    /* Modales: Cancelar / Cerrar Entrega */
+    if (b.id === "btn-cancelar-modal-entrega" || b.id === "btn-cerrar-modal-ent" || b.id === "btn-cerrar-modal-entrega") {
+      e.preventDefault();
+      var mEnt2 = uno("#modal-entrega");
+      if (mEnt2) mEnt2.classList.remove("is-open");
+      return;
+    }
+
+    /* Modales: Alerta de llegada de cotización desde Comercial */
+    if (b.id === "btn-cerrar-alerta-llegada" || b.id === "btn-x-alerta-llegada") {
+      e.preventDefault();
+      var mLlegada = uno("#modal-alerta-llegada-cotizacion");
+      if (mLlegada) mLlegada.classList.remove("is-open");
+      return;
+    }
+
+    if (b.id === "btn-abrir-proyeccion-desde-alerta") {
+      e.preventDefault();
+      var mLlegada2 = uno("#modal-alerta-llegada-cotizacion");
+      if (mLlegada2) {
+        mLlegada2.classList.remove("is-open");
+        activarPestanaVista("panel-proyecciones");
+        var cIdA = mLlegada2.dataset.id || (uno("#al-llegada-id") ? uno("#al-llegada-id").textContent : "CO-2026-011");
+        var cCliA = mLlegada2.dataset.cliente || "Cliente";
+        var cDestA = mLlegada2.dataset.destino || "Destino";
+        var cModA = mLlegada2.dataset.modelo || "REF-1042";
+        var cParA = mLlegada2.dataset.pares || "55";
+        var cCorA = mLlegada2.dataset.corredor || "RUT-BGA";
+
+        var tablaP = uno("#tabla-proyecciones");
+        if (tablaP) {
+          todos("tbody tr", tablaP).forEach(function (tr) {
+            var bTr = tr.querySelector("b");
+            if (bTr && bTr.textContent.indexOf(cIdA) >= 0) filaModalProyActiva = tr;
+          });
+        }
+
+        var mProyA = uno("#modal-proyeccion");
+        if (mProyA) {
+          if (uno("#mp-cotizacion")) uno("#mp-cotizacion").textContent = cIdA;
+          if (uno("#mp-info")) uno("#mp-info").textContent = cCliA + " · " + cModA + " · " + cParA + " pares · Destino: " + cDestA;
+          if (uno("#mp-corredor")) uno("#mp-corredor").value = cCorA;
+          actualizarMonitorProyeccion();
+          mProyA.classList.add("is-open");
+        }
+      }
+      return;
+    }
+
+    /* Modales: Proyección preventiva de transporte y rutas (Comercial) */
+    if (b.classList.contains("btn-proyectar") || texto === "Calcular y proyectar" || texto === "Revisar cálculo") {
+      e.preventDefault();
+      filaModalProyActiva = b.closest("tr");
+      var mProy = uno("#modal-proyeccion");
+      if (mProy) {
+        var cId = b.getAttribute("data-id") || (filaModalProyActiva ? (filaModalProyActiva.querySelector("b") || {}).textContent.trim() : "CO-2026-011");
+        var cCli = b.getAttribute("data-cliente") || "Cliente";
+        var cDest = b.getAttribute("data-destino") || "Destino";
+        var cCor = b.getAttribute("data-corredor") || "RUT-BGA";
+        var cMod = b.getAttribute("data-modelo") || "REF-1042";
+        var cPar = b.getAttribute("data-pares") || "50";
+        var cVeh = b.getAttribute("data-veh") || "DEF-455";
+
+        if (uno("#mp-cotizacion")) uno("#mp-cotizacion").textContent = cId;
+        if (uno("#mp-info")) uno("#mp-info").textContent = cCli + " · " + cMod + " · " + cPar + " pares · Destino: " + cDest;
+        if (uno("#mp-corredor")) uno("#mp-corredor").value = cCor;
+        if (uno("#mp-vehiculo")) uno("#mp-vehiculo").value = cVeh;
+
+        actualizarMonitorProyeccion();
+        mProy.classList.add("is-open");
+      }
+      return;
+    }
+
+    if (b.id === "btn-guardar-proyeccion") {
+      e.preventDefault();
+      var vSelG = uno("#mp-vehiculo");
+      var cSelG = uno("#mp-corredor");
+      var vOpG = vSelG ? vSelG.options[vSelG.selectedIndex] : null;
+      var cOpG = cSelG ? cSelG.options[cSelG.selectedIndex] : null;
+      var placaG = vOpG ? vOpG.value : "DEF-455";
+      var tipoG = vOpG ? vOpG.getAttribute("data-tipo") : "Camioneta Furgón";
+      var capG = vOpG ? numero(vOpG.getAttribute("data-cap")) : 120;
+      var horasG = cOpG ? cOpG.getAttribute("data-horas") : "6.0";
+      var rutaCodG = cOpG ? cOpG.value : "RUT-BGA";
+      var cotIdG = uno("#mp-cotizacion") ? uno("#mp-cotizacion").textContent.trim() : "CO-2026-011";
+
+      if (filaModalProyActiva) {
+        var btnG = uno(".btn-proyectar", filaModalProyActiva) || uno("button", filaModalProyActiva);
+        var paresG = btnG && btnG.getAttribute("data-pares") ? numero(btnG.getAttribute("data-pares")) : 55;
+        var pctG = capG > 0 ? ((paresG / capG) * 100).toFixed(1) : "0.0";
+
+        ponerCelda(filaModalProyActiva, "Ruta y Tiempo Est.", "<b>" + rutaCodG + "</b><div class=\"tiny\">" + horasG + " hrs · Proyectado</div>");
+        ponerCelda(filaModalProyActiva, "Unidad Proyectada", "<b>" + placaG + "</b><div class=\"tiny\">" + pctG + "% ocupación (" + tipoG + ")</div>");
+        ponerCelda(filaModalProyActiva, "Estado", '<span class="pill pill--ok">Ruta Proyectada</span>');
+        var tdActsG = celda(filaModalProyActiva, "Acciones");
+        if (tdActsG) {
+          tdActsG.innerHTML =
+            '<div class="acts">' +
+              '<button type="button" class="btn btn--sm btn--ghost btn-proyectar" data-id="' + cotIdG + '" data-pares="' + paresG + '" data-veh="' + placaG + '" data-corredor="' + rutaCodG + '">Revisar cálculo</button>' +
+              '<a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/02-ventas.html">Ver en Comercial</a>' +
+            '</div>';
+        }
+        filaModalProyActiva.classList.add("es-nueva");
+      }
+
+      /* Guardar estado en localStorage para sincronizar con Comercial */
+      try {
+        var lCot = JSON.parse(localStorage.getItem("sicaf_cotizaciones_preventivas") || "[]");
+        lCot.forEach(function(item) {
+          if (item.id === cotIdG) {
+            item.estado = "Ruta Proyectada";
+            item.unidad = placaG;
+            item.corredor = rutaCodG;
+            item.tiempo = horasG;
+          }
+        });
+        localStorage.setItem("sicaf_cotizaciones_preventivas", JSON.stringify(lCot));
+      } catch(err) {}
+
+      var mProyG = uno("#modal-proyeccion");
+      if (mProyG) mProyG.classList.remove("is-open");
+      return aviso("Proyección confirmada para " + cotIdG + ": " + placaG + " asignado en " + rutaCodG + " (" + horasG + " hrs). Preventa asegurada.", "ok");
+    }
+
+    if (b.id === "btn-cancelar-modal-proy" || b.id === "btn-cerrar-modal-proy") {
+      e.preventDefault();
+      var mProyC = uno("#modal-proyeccion");
+      if (mProyC) mProyC.classList.remove("is-open");
+      return;
+    }
+
+    /* Enlace Producción → Despacho: Cargar pedido terminado al formulario de despacho */
+    if (b.classList.contains("btn-cargar-despacho") || texto === "Pasar a Despacho") {
+      e.preventDefault();
+      var pedCod = b.getAttribute("data-pedido") || "PD-2026-094";
+      var pedCli = b.getAttribute("data-cliente") || "Calzado Bucaramanga";
+      var pedPar = b.getAttribute("data-pares") || "40";
+      var pedRef = b.getAttribute("data-ref") || "REF-1042 · Bota Andina";
+      var pedRuta = b.getAttribute("data-ruta") || "RUT-BGA";
+
+      var fPed = uno("#f-l-ped");
+      if (fPed) {
+        var existePed = false;
+        todos("option", fPed).forEach(function(opt) {
+          if (opt.value === pedCod) {
+            opt.selected = true;
+            existePed = true;
+          }
+        });
+        if (!existePed) {
+          var optNuevo = document.createElement("option");
+          optNuevo.value = pedCod;
+          optNuevo.selected = true;
+          optNuevo.setAttribute("data-pares", pedPar);
+          optNuevo.setAttribute("data-cliente", pedCli);
+          optNuevo.setAttribute("data-ref", pedRef);
+          optNuevo.setAttribute("data-ruta", pedRuta);
+          optNuevo.textContent = pedCod + " · " + pedCli + " (" + pedPar + " pares)";
+          fPed.insertBefore(optNuevo, fPed.firstChild);
+        }
+      }
+      if (uno("#f-l-alist")) uno("#f-l-alist").value = pedPar;
+      if (uno("#f-l-ruta")) uno("#f-l-ruta").value = pedRuta;
+      if (uno("#f-l-obs")) uno("#f-l-obs").value = "Pedido terminado en Planta (Embalaje 100%) · Listo en muelle";
+      actualizarMonitorDespacho();
+      activarPestanaVista("panel-despachos");
+      if (fPed) fPed.scrollIntoView({ behavior: "smooth", block: "center" });
+      return aviso("Pedido " + pedCod + " (" + pedCli + " · " + pedPar + " pares) cargado en el formulario de despacho.", "ok");
+    }
+
+    /* Modales: Apertura de Modal Devolución */
+    if (accion === "devolucion" || texto === "Novedad" || texto === "Devolución") {
+      e.preventDefault();
+      filaModalActiva = b.closest("tr");
+      var modalDev = uno("#modal-devolucion");
+      if (modalDev) {
+        var cod = b.getAttribute("data-despacho") || (filaModalActiva ? (filaModalActiva.querySelector("b") || {}).textContent : "DS-2026-060");
+        if (uno("#md-dev-info")) uno("#md-dev-info").value = cod;
+        if (uno("#md-dev-obs")) uno("#md-dev-obs").value = "";
+        modalDev.classList.add("is-open");
+      }
+      return;
+    }
+
+    /* Modales: Confirmar Devolución */
+    if (b.id === "btn-confirmar-devolucion") {
+      e.preventDefault();
+      var motivo = uno("#md-dev-motivo") ? uno("#md-dev-motivo").value : "Rechazo de calzado";
+      if (filaModalActiva) {
+        ponerCelda(filaModalActiva, "Estado", '<span class="pill pill--crit">Devuelto</span>');
+        var actCelDev = celda(filaModalActiva, "Acciones");
+        if (actCelDev) actCelDev.innerHTML = '<span class="pill pill--crit">Nota Crédito</span>';
+        filaModalActiva.classList.add("es-nueva");
+      }
+      var mDev = uno("#modal-devolucion");
+      if (mDev) mDev.classList.remove("is-open");
+      sumarAlMenu("04-log-inversa.html", 1);
+      return aviso("Devolución por '" + motivo + "' registrada · Mercancía en cuarentena y alerta emitida para Nota Crédito (RN-LOG-05).", "crit");
+    }
+
+    /* Modales: Cancelar / Cerrar Devolución */
+    if (b.id === "btn-cancelar-modal-dev" || b.id === "btn-cerrar-modal-dev") {
+      e.preventDefault();
+      var mDev2 = uno("#modal-devolucion");
+      if (mDev2) mDev2.classList.remove("is-open");
+      return;
+    }
+
+    /* Acciones en la tabla de Flota */
+    if (texto === "Cerrar ruta") {
+      e.preventDefault();
+      var filaRuta = b.closest("tr");
+      if (filaRuta) {
+        ponerCelda(filaRuta, "Estado", '<span class="pill pill--ok">Disponible</span>');
+        ponerCelda(filaRuta, "Ruta", "—");
+        var vehB = filaRuta.querySelector("b");
+        var placaNom = vehB ? vehB.textContent : "Vehículo";
+        var capPares = (placaNom === "DEF-455" || placaNom === "MNO-214") ? 120 : (placaNom === "ABC-987" || placaNom === "JKL-778" ? 250 : 400);
+        ponerCelda(filaRuta, "Ocupación", '<div class="bar"><i style="width:0.0%"></i></div><div class="tiny">0 / ' + capPares + ' pares</div>');
+        var actsDiv = uno(".acts", filaRuta);
+        if (actsDiv) actsDiv.innerHTML = '<button class="btn btn--sm btn--ghost">Asignar ruta</button>';
+        filaRuta.classList.add("es-nueva");
+        var kRutaC = uno("#k-ruta");
+        if (kRutaC) kRutaC.textContent = Math.max(0, numero(kRutaC.textContent) - 1);
+        return aviso("Ruta cerrada: " + placaNom + " liberado y listo para nueva asignación.", "ok");
+      }
+    }
+
+    if (texto === "Dar de alta") {
+      e.preventDefault();
+      var filaAlta = b.closest("tr");
+      if (filaAlta) {
+        ponerCelda(filaAlta, "Estado", '<span class="pill pill--ok">Disponible</span>');
+        var actsAlta = uno(".acts", filaAlta);
+        if (actsAlta) actsAlta.innerHTML = '<button class="btn btn--sm btn--ghost">Asignar ruta</button>';
+        filaAlta.classList.add("es-nueva");
+        var vAlta = (filaAlta.querySelector("b") || {}).textContent || "Vehículo";
+        return aviso(vAlta + " dado de alta del taller mecánico y habilitado para rodar.", "ok");
+      }
+    }
+
+    if (texto === "Asignar ruta") {
+      e.preventDefault();
+      var filaAsig = b.closest("tr");
+      if (filaAsig) {
+        var vCod = (filaAsig.querySelector("b") || {}).textContent;
+        var selV = uno("#fl-prog-veh");
+        if (selV && vCod) {
+          selV.value = vCod;
+          var evt = new Event("change");
+          selV.dispatchEvent(evt);
+          selV.scrollIntoView({ behavior: "smooth", block: "center" });
+          return aviso("Vehículo " + vCod + " seleccionado en el formulario superior.", "ok");
+        }
+      }
+    }
 
     if (texto === "Marcar atendida") {
       e.preventDefault();
@@ -683,7 +1734,6 @@
       fila.classList.add("es-nueva");
       b.disabled = true;
       var cual = (fila.querySelector("b") || {}).textContent || "El registro";
-      if (texto === "Devolución") sumarAlMenu("05-log-inversa.html", 1);
       return aviso(cual + " " + destino.dice + ".", destino.tono);
     }
 
@@ -697,259 +1747,24 @@
   /* ---------------------------------------------------------------- 9. Arranque */
 
   marcarMenu();
-  refrescarVehiculos();
   history.replaceState({ pantalla: actual }, "", actual);
 
+  /* Inicializar monitores y sincronizaciones si están presentes */
+  sincronizarPedidoDespacho();
+  sincronizarConductorSegunVehiculo();
+  actualizarEntregaEstimada();
+  actualizarMonitorDespacho();
+  actualizarMonitorFlota();
+  actualizarMonitorProyeccion();
+  cargarCotizacionesPreventivas();
+  sincronizarPedidosProduccion();
 
-  /* ---------------------------------------------------------------- Las tarjetas de indicador
-
-     Cada tarjeta es un botón: unas llevan a la pantalla donde vive ese número,
-     otras filtran la tabla de abajo. */
-
-  document.addEventListener("click", function (e) {
-    var k = e.target.closest ? e.target.closest("[data-kpi]") : null;
-    if (!k) return;
-    e.preventDefault();
-
-    var orden = k.getAttribute("data-kpi");
-    var dice = k.getAttribute("data-dice") || "";
-
-    if (orden.indexOf("url:") === 0) { location.href = orden.slice(4); return; }
-
-    if (orden.indexOf("ir:") === 0) {
-      aviso("Le abro " + dice + ".", "ok");
-      return ir(orden.slice(3), true);
-    }
-
-    if (orden.indexOf("ver:") === 0) {
-      var titulo = orden.slice(4).toLowerCase();
-      var panel = todos(".panel").filter(function (x) {
-        var h = uno("h2", x);
-        return h && h.textContent.trim().toLowerCase() === titulo;
-      })[0];
-      if (!panel) return aviso("Esa parte no está en esta pantalla.", "warn");
-      panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      panel.classList.add("es-nueva");
-      return;
-    }
-
-    if (orden.indexOf("filtro:") === 0) {
-      var termino = orden.slice(7);
-      var dt = uno(".dt");
-      var caja = dt && uno('input[type="search"]', dt);
-      if (!caja) return aviso("Aquí no hay tabla que filtrar.", "warn");
-
-      var estaba = k.classList.contains("is-on");
-      todos("[data-kpi]").forEach(function (x) {
-        x.classList.remove("is-on");
-        x.setAttribute("aria-pressed", "false");
-      });
-      caja.value = estaba ? "" : termino;
-      if (!estaba) { k.classList.add("is-on"); k.setAttribute("aria-pressed", "true"); }
-      filtrar(dt);
-      dt.scrollIntoView({ behavior: "smooth", block: "start" });
-      return aviso(estaba ? "Se quitó el filtro: vuelve a verse todo."
-                          : "Tabla filtrada: " + dice + ".", "ok");
-    }
-  });
-
-  /* ---------------------------------------------------------------- La tabla de datos, viva
-
-     Ordenar por columna, pasar páginas, cambiar cuántas filas se ven, esconder
-     columnas y bajar lo que está en pantalla. Todo sobre el mismo bloque .dt.
-  */
-
-  function dtTabla(dt) { return uno("table", dt); }
-  function dtFilas(dt) { return todos("tbody tr", dtTabla(dt)); }
-
-  /* Las que pasan el filtro; si nunca se filtró, pasan todas */
-  function dtPasan(dt) {
-    return dtFilas(dt).filter(function (f) { return f.dataset.pasa !== "no"; });
+  /* Si hay campo de fecha en despachos y está vacío, prellenar con hoy + 2 días */
+  var fFecha = uno("#f-l-fecha");
+  if (fFecha && !fFecha.value) {
+    var d2 = new Date();
+    d2.setDate(d2.getDate() + 2);
+    fFecha.value = d2.toISOString().slice(0, 10);
   }
-
-  function dtTam(dt) {
-    var s = uno(".dt__tam select", dt);
-    return s ? numero(s.value) || 10 : 10;
-  }
-
-  /* Reparte las filas en páginas y reescribe el pie */
-  function dtPintar(dt) {
-    var pasan = dtPasan(dt), tam = dtTam(dt);
-    var paginas = Math.max(1, Math.ceil(pasan.length / tam));
-    var pag = Math.min(Math.max(1, numero(dt.dataset.pag || "1")), paginas);
-    dt.dataset.pag = pag;
-
-    dtFilas(dt).forEach(function (f) { f.style.display = "none"; });
-    var desde = (pag - 1) * tam;
-    pasan.slice(desde, desde + tam).forEach(function (f) { f.style.display = ""; });
-
-    var info = uno(".dt__info", dt);
-    if (info) {
-      info.innerHTML = pasan.length
-        ? "Mostrando <b>" + (desde + 1) + "–" + Math.min(desde + tam, pasan.length) +
-          "</b> de <b>" + pasan.length + "</b> registro(s)"
-        : "Ninguna fila coincide con lo que buscó.";
-    }
-
-    var pager = uno(".dt__pager", dt);
-    if (pager) {
-      var h = ['<button class="dt__pag dt__pag--n" ' + (pag === 1 ? "disabled " : "") +
-               'data-pag="' + (pag - 1) + '" aria-label="‹">‹</button>'];
-      var primera = Math.max(1, Math.min(pag - 2, paginas - 4));
-      for (var i = primera; i <= Math.min(paginas, primera + 4); i++) {
-        h.push('<button class="dt__pag' + (i === pag ? " is-on" : "") + '" data-pag="' + i + '"' +
-               (i === pag ? ' aria-current="page"' : "") + ">" + i + "</button>");
-      }
-      h.push('<button class="dt__pag dt__pag--n" ' + (pag === paginas ? "disabled " : "") +
-             'data-pag="' + (pag + 1) + '" aria-label="›">›</button>');
-      pager.innerHTML = h.join("");
-    }
-
-    var vacio = uno(".sin-filas", dt);
-    if (vacio) vacio.style.display = pasan.length ? "none" : "";
-  }
-
-  /* Ordenar por la columna que se pulse */
-  function dtOrdenar(dt, indice, boton) {
-    var cuerpo = uno("tbody", dtTabla(dt));
-    var filas = dtFilas(dt);
-    var arriba = boton.dataset.dir !== "asc";
-    todos(".dt__orden", dt).forEach(function (o) {
-      if (o !== boton) { o.dataset.dir = ""; uno(".dt__ind", o).textContent = "⇅"; }
-      o.closest("th").classList.remove("is-on");
-      o.closest("th").removeAttribute("aria-sort");
-    });
-    boton.dataset.dir = arriba ? "asc" : "des";
-    uno(".dt__ind", boton).textContent = arriba ? "▲" : "▼";
-    boton.closest("th").classList.add("is-on");
-    boton.closest("th").setAttribute("aria-sort", arriba ? "ascending" : "descending");
-
-    function valor(f) {
-      var c = f.cells[indice];
-      return c ? c.textContent.replace(/\s+/g, " ").trim() : "";
-    }
-    var numerico = filas.every(function (f) {
-      var t = valor(f).replace(/[$\s.]/g, "").replace(",", ".");
-      return t === "" || t === "—" || !isNaN(parseFloat(t));
-    });
-
-    filas.sort(function (a, b) {
-      var x = valor(a), y = valor(b);
-      if (numerico) {
-        x = parseFloat(x.replace(/[$\s.]/g, "").replace(",", ".")) || 0;
-        y = parseFloat(y.replace(/[$\s.]/g, "").replace(",", ".")) || 0;
-        return arriba ? x - y : y - x;
-      }
-      return arriba ? x.localeCompare(y, "es") : y.localeCompare(x, "es");
-    });
-    filas.forEach(function (f) { cuerpo.appendChild(f); });
-    dt.dataset.pag = 1;
-    dtPintar(dt);
-  }
-
-  /* Esconder o mostrar columnas */
-  function dtColumnas(dt, boton) {
-    var caja = uno(".dt__cols", dt);
-    if (caja) {
-      caja.remove();
-      boton.setAttribute("aria-expanded", "false");
-      return;
-    }
-    caja = document.createElement("div");
-    caja.className = "dt__cols";
-    var th = todos("thead th", dtTabla(dt));
-    caja.innerHTML = th.map(function (c, i) {
-      var nombre = c.textContent.replace(/[⇅▲▼]/g, "").trim();
-      if (!nombre) return "";
-      return '<label><input type="checkbox" data-col="' + i + '"' +
-             (c.style.display === "none" ? "" : " checked") + "> " + nombre + "</label>";
-    }).join("");
-    boton.closest(".dt__acts").appendChild(caja);
-    boton.setAttribute("aria-expanded", "true");
-  }
-
-  function dtVerColumna(dt, indice, ver) {
-    var t = dtTabla(dt);
-    todos("tr", t).forEach(function (f) {
-      var c = f.cells[indice];
-      if (c) c.style.display = ver ? "" : "none";
-    });
-  }
-
-  /* Bajar a un archivo lo que se ve en pantalla */
-  function dtExportar(dt) {
-    var t = dtTabla(dt);
-    var cab = todos("thead th", t).filter(function (c) { return c.style.display !== "none"; })
-      .map(function (c) { return c.textContent.replace(/[⇅▲▼]/g, "").trim(); });
-    var lineas = [cab];
-    dtPasan(dt).forEach(function (f) {
-      lineas.push(todos("td", f).filter(function (c) { return c.style.display !== "none"; })
-        .map(function (c) { return c.textContent.replace(/\s+/g, " ").trim(); }));
-    });
-    var texto = lineas.map(function (l) {
-      return l.map(function (v) { return '"' + v.replace(/"/g, '""') + '"'; }).join(";");
-    }).join("\n");
-
-    var nombre = "sicaf-" + (dt.id || "tabla") + "-" + hoy() + ".csv";
-    try {
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob(["﻿" + texto], { type: "text/csv;charset=utf-8" }));
-      a.download = nombre;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      aviso("Reporte bajado: " + nombre + " · " + (lineas.length - 1) + " fila(s). Se abre con Excel.", "ok");
-    } catch (x) {
-      aviso("Aquí el navegador no deja bajar archivos. En el sistema real saldría " +
-            nombre + " con " + (lineas.length - 1) + " fila(s).", "warn");
-    }
-  }
-
-  document.addEventListener("click", function (e) {
-    var t = e.target;
-    if (!t.closest) return;
-
-    var orden = t.closest(".dt__orden");
-    if (orden) {
-      e.preventDefault();
-      var th = orden.closest("th");
-      return dtOrdenar(orden.closest(".dt"), todos("thead th", th.closest("table")).indexOf(th), orden);
-    }
-
-    var pag = t.closest(".dt__pag");
-    if (pag && !pag.disabled) {
-      e.preventDefault();
-      var dt = pag.closest(".dt");
-      dt.dataset.pag = pag.getAttribute("data-pag");
-      dtPintar(dt);
-      dtTabla(dt).scrollIntoView({ behavior: "smooth", block: "nearest" });
-      return;
-    }
-
-    var b = t.closest(".dt__b");
-    if (b) {
-      e.preventDefault();
-      var dt2 = b.closest(".dt");
-      if (b.textContent.indexOf("Columnas") >= 0) return dtColumnas(dt2, b);
-      return dtExportar(dt2);
-    }
-  });
-
-  document.addEventListener("change", function (e) {
-    var t = e.target;
-    if (!t.closest) return;
-    if (t.matches(".dt__tam select")) {
-      var dt = t.closest(".dt");
-      dt.dataset.pag = 1;
-      return dtPintar(dt);
-    }
-    if (t.matches(".dt__cols input")) {
-      var dt2 = t.closest(".dt");
-      return dtVerColumna(dt2, numero(t.getAttribute("data-col")), t.checked);
-    }
-  });
-
-  /* Al entrar, y cada vez que se cambia de pantalla, las tablas se reparten en páginas */
-  function dtArrancar() { todos(".dt").forEach(dtPintar); }
-
 })();
+

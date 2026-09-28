@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SICAF · Logística y Despacho · Despachos</title>
+    <title>Mockup · Logística y Despacho · Despachos</title>
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
@@ -11,359 +11,1146 @@
   </head>
   <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Despachos">
 
-    <header class="phead">
-      <h2 class="phead__t">
-        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
-        Logística y Despacho
-        <span class="phead__f">
-          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
-          2026-09-23
+    <section class="hero">
+      <div>
+        <h1>Logística y Despacho</h1>
+        <p>Alistamiento de pedidos, control de capacidad de flota, guías de remisión y trazabilidad.</p>
+      </div>
+    </section>
+
+    <!-- Indicadores KPI superiores -->
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
         </span>
-      </h2>
-    </header>
-        <span class="kpi__d up">↓ 100%</span>
+        <div>
+          <div class="kpi__n" id="k-ruta">4</div>
+          <div class="kpi__l">Vehículos en ruta</div>
+        </div>
+      </article>
+
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n" id="k-pares">182</div>
+          <div class="kpi__l">Pares en tránsito</div>
+        </div>
+      </article>
+
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n" id="k-prov">2</div>
+          <div class="kpi__l">Proveedores en camino</div>
+        </div>
+      </article>
+
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <div class="kpi__n" id="k-alertas">3</div>
+          <div class="kpi__l">Alertas comerciales</div>
+        </div>
+      </article>
+
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+        </span>
+        <div>
+          <div class="kpi__n" id="k-recol">5</div>
+          <div class="kpi__l">Recolecciones</div>
+        </div>
       </article>
     </div>
+
+    <!-- Navegación por pestañas del módulo -->
     <nav class="subnav" aria-label="Secciones de Logística">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
       <a class="subnav__i is-on" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
-      <a class="subnav__i" data-ico="ubicacion" data-ct="4" href="03-seguimiento.html">Seguimiento</a>
-      <a class="subnav__i" data-ico="caja" data-ct="3" href="04-recepcion.html">Recepción</a>
-      <a class="subnav__i" data-ico="ruta" data-ct="5" href="05-log-inversa.html">Devoluciones</a>
-      <a class="subnav__i" data-ico="camion" data-ct="4" href="06-flota.html">Flota</a>
-      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="caja" data-ct="3" href="03-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="04-log-inversa.html">Log. inversa</a>
+      <a class="subnav__i" data-ico="camion" data-ct="4" href="05-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="06-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="07-config.html">Config.</a>
     </nav>
+
+    <!-- Panel 1: FORMULARIO DE ORDEN DE DESPACHO -->
     <section class="panel">
       <header class="panel__head panel__head--vino">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
         <div>
-          <h2>Orden de Despacho</h2>
+          <h2>Programar Orden de Despacho</h2>
+          <div class="sub">Paso 1: Alistamiento verificado · Paso 2: Validación de capacidad · Paso 3: Guía consecutiva</div>
         </div>
       </header>
-      <div class="panel__body panel__body--form">
-        <div class="field">
-          <label for="f-l-ped">Pedido listo</label>
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
-            <select id="f-l-ped">
-              <option value="PD-2026-088">PD-2026-088 · REF-1042 · 40 pares · Pamplona</option>
-              <option value="PD-2026-089">PD-2026-089 · REF-1043 · 26 pares · Bucaramanga</option>
-              <option value="PD-2026-090">PD-2026-090 · REF-1041 · 18 pares · Bogotá</option>
-            </select>
-            <span class="ico chev">
-              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            </span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="f-l-alist">Cantidad alistada</label>
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
-            <input id="f-l-alist" type="number" min="0" placeholder="Debe coincidir con el pedido">
-          </div>
-        </div>
-        <div class="field">
-          <label for="f-l-tra">Vehículo</label>
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
-            <select id="f-l-tra">
-              <option value="DEF-455">DEF-455 · Camioneta · Hernán Ruiz</option>
-            </select>
-            <span class="ico chev">
-              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            </span>
-          </div>
-        </div>
-        <button class="btn">
-          <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
-          Generar despacho
-        </button>
-        <p class="tiny">La guía se genera sola al cerrar el despacho. Si lo alistado no coincide con el pedido, no cierra.</p>
-      </div>
-    </section>
-    <section class="panel">
-      <header class="panel__head panel__head--oliva">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
-        <div>
-          <h2>Órdenes de Despacho</h2>
-        </div>
-      </header>
-      <div class="panel__body panel__body--flush">
-        <div class="dt dt--acc" id="dt-08-ordenes-de-despacho">
-          <div class="dt__bar">
-            <div class="dt__q">
-              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-              <input id="dt-08-ordenes-de-despacho-q" type="search" value="" autocomplete="off" placeholder="Buscar despacho, modelo, guía o cliente…" aria-label="Buscar en la tabla">
-            </div>
-            <div class="dt__acts">
-              <button class="dt__b" aria-expanded="false" title="Mostrar u ocultar columnas">
-                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
-                <span>Columnas</span>
+
+      <div class="panel__body">
+        <!-- ── Modalidad de Transporte y Urgencia (Reducción de trabajo manual) ── -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px dashed var(--linea, #E5E0D8)">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap">
+            <span style="font-size:13px; font-weight:700; color:var(--tinta-2, #6B584E)">Modalidad de Transporte:</span>
+            <div class="toggle-transporte" id="toggle-modo-transporte">
+              <button type="button" class="toggle-transporte__btn is-active" id="btn-modo-propia" data-modo="propia">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+                <span>Flota Propia SICAF</span>
               </button>
-              <button class="dt__b" title="Bajar un reporte con lo que ve en pantalla">
-                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
-                <span>Exportar reporte</span>
+              <button type="button" class="toggle-transporte__btn" id="btn-modo-externa" data-modo="externa">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
+                <span>Transportadora Externa</span>
               </button>
             </div>
           </div>
-          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
-            <span class="dt__filtros-t">
-              <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-              Filtros
-            </span>
-            <div class="dt__f">
-              <label class="dt__f-l" for="ds-filtro">Estado</label>
-              <select id="ds-filtro" class="dt__in">
-                <option value="">Todos los estados</option>
-                <option value="Alistando">Alistando</option>
-                <option value="En ruta">En ruta</option>
-                <option value="Entregado">Entregado</option>
-                <option value="Devuelto">Devuelto</option>
+
+          <!-- Asignación Urgente con búsqueda de vehículo más inmediato -->
+          <label class="chk-urgencia" title="Prioriza el despacho y asigna automáticamente el vehículo más rápido">
+            <input type="checkbox" id="chk-despacho-urgente">
+            <span>⚡ Despacho Urgente (Asignar transporte inmediato)</span>
+          </label>
+        </div>
+
+        <div class="form-grid">
+          <!-- 1. Pedido facturado de Comercial -->
+          <div class="field">
+            <label for="f-l-ped">1. Pedido Facturado (Comercial y Ventas)</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
+              <select id="f-l-ped">
+                <option value="PD-2026-088" data-cliente="Calzado Bucaramanga S.A.S." data-pares="40" data-cajas="4" data-ref="REF-1042 · Bota Andina" data-destino="Bucaramanga" data-direccion="Calle 35 # 18-42, Centro" data-lote="LOT-2026-B14" data-ruta="RUT-BGA">PD-2026-088 · Calzado Bucaramanga · REF-1042 · 40 pares (Bucaramanga)</option>
+                <option value="PD-2026-089" data-cliente="Calzado El Dorado" data-pares="26" data-cajas="3" data-ref="REF-1043 · Mocasín Cúcuta" data-destino="Bogotá" data-direccion="Cra 13 # 64-20, Chapinero" data-lote="LOT-2026-M09" data-ruta="RUT-BOG">PD-2026-089 · Calzado El Dorado · REF-1043 · 26 pares (Bogotá)</option>
+                <option value="PD-2026-090" data-cliente="Distribuidora Cúcuta" data-pares="18" data-cajas="2" data-ref="REF-1041 · Zapato Colegial" data-destino="Cúcuta" data-direccion="Av 5 # 10-22, Centro" data-lote="LOT-2026-C03" data-ruta="RUT-CUC">PD-2026-090 · Distribuidora Cúcuta · REF-1041 · 18 pares (Cúcuta)</option>
+                <option value="PD-2026-091" data-cliente="Almacén La Sultana" data-pares="32" data-cajas="3" data-ref="REF-1044 · Botín Casual" data-destino="Pamplona" data-direccion="Calle 6 # 4-15, Plaza Central" data-lote="LOT-2026-P22" data-ruta="RUT-PAM">PD-2026-091 · Almacén La Sultana · REF-1044 · 32 pares (Pamplona)</option>
+                <option value="PD-2026-092" data-cliente="Zapatería Central Bogotá" data-pares="75" data-cajas="8" data-ref="REF-1045 · Bota Montaña" data-destino="Bogotá" data-direccion="Calle 19 # 27-50, Paloquemao" data-lote="LOT-2026-M18" data-ruta="RUT-BOG">PD-2026-092 · Zapatería Central · REF-1045 · 75 pares (Bogotá)</option>
               </select>
+              <span class="ico chev">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
             </div>
-            <div class="dt__f">
-              <span class="dt__f-l">Fechas</span>
-              <div class="dt__rango">
-                <input type="date" class="dt__in" value aria-label="Fechas desde" title="Desde">
-                <span class="dt__rango-s">–</span>
-                <input type="date" class="dt__in" value aria-label="Fechas hasta" title="Hasta">
-              </div>
-            </div>
-            <div class="dt__f">
-              <span class="dt__f-l"></span>
-              <label class="dt__si">
-                <input type="checkbox">
-                <span class="dt__si-p"><i></i></span>
-                <span>Solo lo que falta (4)</span>
-              </label>
-            </div>
+            <div class="tiny" id="f-l-ped-meta" style="color:var(--tinta-3);margin-top:2px">Destino: Bucaramanga · Lote: LOT-2026-B14</div>
           </div>
-          <div class="dt__scroll">
-            <table>
-                                      <thead>
-                            <tr>
-                              <th>
-                                <button class="dt__orden" title="Ordenar por Despacho"><span>Despacho</span><i class="dt__ind">⇅</i></button>
-                              </th>
-                              <th>
-                                <button class="dt__orden" title="Ordenar por Modelo"><span>Modelo</span><i class="dt__ind">⇅</i></button>
-                              </th>
-                              <th>
-                                <button class="dt__orden" title="Ordenar por Origen"><span>Origen</span><i class="dt__ind">⇅</i></button>
-                              </th>
-                              <th>
-                                <button class="dt__orden" title="Ordenar por Guía"><span>Guía</span><i class="dt__ind">⇅</i></button>
-                              </th>
-                              <th>
-                                <button class="dt__orden" title="Ordenar por Fechas"><span>Fechas</span><i class="dt__ind">⇅</i></button>
-                              </th>
-                              <th style="width:1%">
-                                <button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button>
-                              </th>
-                              <th class="dt__th--txt" style="width:1%">Acciones</th>
-                            </tr>
-                          </thead>
-                        <tbody>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-051</b>
-                              <div class="tiny">Almacén La Bota Fina · ruta Bogotá</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1041
-                              <div class="tiny">24 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">FV-2026-038</td>
-                            <td class="muted" data-l="Guía">GR-88190</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-09<br>Ent. 2026-09-09</td>
-                            <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--ghost">Devolución</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-052</b>
-                              <div class="tiny">Comercial Los Andes · ruta Bucaramanga</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1044
-                              <div class="tiny">36 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">FV-2026-040</td>
-                            <td class="muted" data-l="Guía">GR-88201</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-11<br>Ent. 2026-09-11</td>
-                            <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--ghost">Devolución</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-054</b>
-                              <div class="tiny">Calzado El Dorado · ruta Bogotá</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1043
-                              <div class="tiny">30 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">—</td>
-                            <td class="muted" data-l="Guía">GR-88214</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-12<br>Ent. 2026-09-12</td>
-                            <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--ghost">Devolución</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-055</b>
-                              <div class="tiny">Distribuidora Tamanaco · ruta Cúcuta</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1042
-                              <div class="tiny">48 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">FV-2026-039</td>
-                            <td class="muted" data-l="Guía">GR-88231</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-16<br>ABC-987</td>
-                            <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--oliva">Registrar entrega</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-056</b>
-                              <div class="tiny">Calzado Norte · ruta Bogotá</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1042
-                              <div class="tiny">62 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">FV-2026-041</td>
-                            <td class="muted" data-l="Guía">GR-88238</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-18<br>XYZ-123</td>
-                            <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--oliva">Registrar entrega</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-057</b>
-                              <div class="tiny">Almacén Sur · ruta Bucaramanga</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1044
-                              <div class="tiny">40 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">FV-2026-042</td>
-                            <td class="muted" data-l="Guía">GR-88244</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-19<br>GHI-302</td>
-                            <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--oliva">Registrar entrega</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-058</b>
-                              <div class="tiny">Comercializadora Pamplona</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1041
-                              <div class="tiny">32 pares</div>
-                            </td>
-                            <td class="muted" data-l="Origen">—</td>
-                            <td class="muted" data-l="Guía">GR-88250</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-20<br>JKL-778</td>
-                            <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--oliva">Registrar entrega</button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td data-l="Despacho">
-                              <b>DS-2026-059</b>
-                              <div class="tiny">Calzado El Dorado · ruta Bogotá</div>
-                            </td>
-                            <td data-l="Modelo">
-                              REF-1043
-                              <div class="tiny">26 pares</div>
-                            </td>
-                            <td class="tiny falta" data-l="Origen">Por facturar</td>
-                            <td class="muted" data-l="Guía">—</td>
-                            <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-23</td>
-                            <td data-l="Estado"><span class="pill pill--off">Alistando</span></td>
-                            <td data-l="Acciones">
-                              <div class="acts">
-                                <button class="btn btn--sm btn--ghost">Asignar vehículo</button>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <td colspan="2"><b>8 despachos</b> <span class="tiny">4 en tránsito · 1 alistando · 3 entregados</span></td>
-                            <td colspan="5" class="tiny">182 pares en tránsito · 26 pares esperando vehículo</td>
-                          </tr>
-                        </tfoot>
-                      </table>
-          </div>
-          <div class="dt__res">
-            <span class="dt__res-t">Totales<em>de los 8 registro(s)</em></span>
-            <span class="dt__res-i dt__res-i--warn"><b>En tránsito</b><span>4</span></span>
-            <span class="dt__res-i"><b>Alistando</b><span>1</span></span>
-            <span class="dt__res-i dt__res-i--ok"><b>Entregado</b><span>3</span></span>
-          </div>
-          <div class="dt__pie">
-            <div class="dt__info tabla-pie" aria-live="polite">Mostrando <b>1–8</b> de <b>8</b> registro(s)</div>
-            <div class="dt__pieR">
-              <label class="dt__tam" for="dt-08-ordenes-de-despacho-tam">
-                Filas por página
-                <select id="dt-08-ordenes-de-despacho-tam" class="dt__in">
-                  <option value="5">5</option>
-                  <option value="10" selected>10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                </select>
-              </label>
-              <nav class="dt__pager" aria-label="Paginación">
-                <button class="dt__pag dt__pag--n" disabled aria-label="‹">‹</button>
-                <button class="dt__pag is-on" aria-current="page">1</button>
-                <button class="dt__pag dt__pag--n" disabled aria-label="›">›</button>
-              </nav>
+
+          <!-- 2. Cantidad de Pares / Cajas (BLOQUEADA POR COTIZACIÓN) -->
+          <div class="field">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <label for="f-l-alist">2. Cantidad de Pares a Despachar</label>
+              <span class="badge-locked" title="Cantidad calculada por la cotización comercial. No modificable por despacho para evitar discrepancias de inventario.">
+                <svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Bloqueado (Cotización)
+              </span>
             </div>
+            <div class="control control--locked">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+              <input id="f-l-alist" type="number" min="1" value="40" readonly title="Cantidad fija y calculada según la cotización/factura comercial">
+            </div>
+            <div class="tiny" id="f-l-cajas-txt" style="color:var(--oliva-700);margin-top:2px;font-weight:600">Empaque: 4 cajas corrugadas (10 pares/caja)</div>
+          </div>
+
+          <!-- 3A. Flota Propia: Vehículo SICAF -->
+          <div class="field campo-flota-propia">
+            <label for="f-l-tra">3. Vehículo Asignado (RN-LOG-01)</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+              <select id="f-l-tra">
+                <option value="DEF-455" data-cap="120" data-chofer="DRV-01" data-tipo="Camioneta Rápida" data-estado="disponible">DEF-455 · Camioneta Furgón (Capacidad: 120 pares · Disponible)</option>
+                <option value="XYZ-123" data-cap="400" data-chofer="DRV-02" data-tipo="Camión NPR" data-estado="disponible">XYZ-123 · Camión NPR (Capacidad: 400 pares · Disponible)</option>
+                <option value="ABC-987" data-cap="250" data-chofer="DRV-03" data-tipo="Furgón Ligero" data-estado="disponible">ABC-987 · Furgón Ligero (Capacidad: 250 pares · Disponible)</option>
+                <option value="GHI-302" data-cap="400" data-chofer="DRV-04" data-tipo="Camión NPR" data-estado="disponible">GHI-302 · Camión NPR (Capacidad: 400 pares · Disponible)</option>
+                <option value="MNO-214" data-cap="0" data-chofer="" data-tipo="Camioneta" data-estado="mantenimiento">MNO-214 · Camioneta · En taller mecánico (Bloqueado por mantenimiento)</option>
+              </select>
+              <span class="ico chev">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
+            </div>
+            <div class="tiny" id="f-l-tra-info" style="color:var(--tinta-3);margin-top:2px">Capacidad útil: 120 pares · Furgón cerrado</div>
+          </div>
+
+          <!-- 3B. Flota Propia: Conductor Registrado (Directorio de Personal) -->
+          <div class="field campo-flota-propia">
+            <label for="f-l-chofer-reg">Conductor Registrado (Personal de Logística)</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <select id="f-l-chofer-reg">
+                <option value="DRV-01" data-nombre="Hernán Ruiz" data-cc="1.090.441.203" data-lic="C2 (Vence 2028)" data-tel="312 455-8821" data-veh="DEF-455">Hernán Ruiz · CC 1.090.441.203 · Lic. C2 · Camioneta DEF-455</option>
+                <option value="DRV-02" data-nombre="Jorge Peña" data-cc="88.234.910" data-lic="C3 (Vence 2027)" data-tel="315 889-1200" data-veh="XYZ-123">Jorge Peña · CC 88.234.910 · Lic. C3 · Camión XYZ-123</option>
+                <option value="DRV-03" data-nombre="Luisa Mora" data-cc="1.090.312.445" data-lic="C2 (Vence 2029)" data-tel="318 201-9944" data-veh="ABC-987">Luisa Mora · CC 1.090.312.445 · Lic. C2 · Furgón ABC-987</option>
+                <option value="DRV-04" data-nombre="Marta Villamizar" data-cc="60.334.120" data-lic="C3 (Vence 2027)" data-tel="311 774-3209" data-veh="GHI-302">Marta Villamizar · CC 60.334.120 · Lic. C3 · Camión GHI-302</option>
+                <option value="DRV-05" data-nombre="Carlos Beltrán" data-cc="1.093.882.114" data-lic="C2 (Vence 2028)" data-tel="314 552-3011" data-veh="Disponible">Carlos Beltrán · CC 1.093.882.114 · Lic. C2 (Conductor Relevo)</option>
+              </select>
+              <span class="ico chev">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
+            </div>
+            <div class="tiny" id="f-l-chofer-info" style="color:var(--tinta-3);margin-top:2px">Licencia C2 Vigente (2028) · Tel: 312 455-8821</div>
+          </div>
+
+          <!-- 3C. Transportadora Externa: Empresa (Oculto en modo flota propia) -->
+          <div class="field campo-transp-externa" style="display:none">
+            <label for="f-l-transp-ext">3. Empresa Transportadora Externa</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+              <select id="f-l-transp-ext">
+                <option value="Servientrega" data-dias="2">Servientrega · Cobertura Nacional Express</option>
+                <option value="Coordinadora" data-dias="2">Coordinadora Mercantil · Paquetería y Carga</option>
+                <option value="Envía Colvanes" data-dias="3">Envía Colvanes · Servicio Terrestre</option>
+                <option value="TCC" data-dias="3">TCC Carga y Paquetería Masiva</option>
+                <option value="Interrapidísimo" data-dias="2">Interrapidísimo · Reexpedición Regional</option>
+              </select>
+              <span class="ico chev">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
+            </div>
+            <div class="tiny" style="color:var(--tinta-3);margin-top:2px">Convenio corporativo con recolección en muelle de fábrica</div>
+          </div>
+
+          <!-- 3D. Transportadora Externa: Número de Guía Externa (Oculto en modo flota propia) -->
+          <div class="field campo-transp-externa" style="display:none">
+            <label for="f-l-guia-ext">Número de Guía Externa / Tracking</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
+              <input id="f-l-guia-ext" type="text" value="SRV-2026-904128" placeholder="Ej. SRV-2026-904128 o ENV-883100">
+            </div>
+            <div class="tiny" style="color:var(--tinta-3);margin-top:2px">Número de remesa/tracking emitido por la empresa transportadora</div>
+          </div>
+
+          <!-- 4. Corredor de ruta (CALCULADO AUTOMÁTICAMENTE SEGÚN DESTINO) -->
+          <div class="field">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <label for="f-l-ruta">4. Corredor Geográfico / Ruta</label>
+              <span class="badge-locked" style="background:var(--papel-2);color:var(--tinta-2)" title="Calculado automáticamente por el destino del pedido. Puede modificarse ante contingencias de vía.">
+                Auto / Ajustable
+              </span>
+            </div>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+              <select id="f-l-ruta">
+                <option value="RUT-BGA" data-ciudad="Bucaramanga" data-horas="6.0" data-dias="2">RUT-BGA · Corredor Cúcuta - Bucaramanga (6.0 hrs)</option>
+                <option value="RUT-BOG" data-ciudad="Bogotá" data-horas="14.0" data-dias="3">RUT-BOG · Corredor Cúcuta - Bogotá (14.0 hrs)</option>
+                <option value="RUT-CUC" data-ciudad="Cúcuta" data-horas="1.5" data-dias="1">RUT-CUC · Corredor Metropolitano Cúcuta (1.5 hrs)</option>
+                <option value="RUT-PAM" data-ciudad="Pamplona" data-horas="2.5" data-dias="1">RUT-PAM · Corredor Cúcuta - Pamplona (2.5 hrs)</option>
+              </select>
+              <span class="ico chev">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
+            </div>
+            <div class="tiny" id="f-l-ruta-nota" style="color:var(--tinta-3);margin-top:2px">Asignada automáticamente por destino. Modifique ante desvíos o cierres viales.</div>
+          </div>
+
+          <!-- 5. Observaciones / Precinto de Seguridad -->
+          <div class="field">
+            <label for="f-l-obs">5. Observaciones / Precinto de Seguridad</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <input id="f-l-obs" type="text" value="Precinto #PRC-8841 · Embalaje verificado en muelle" placeholder="Ej. Precinto #PRC-8841 · Descarga en muelle principal">
+            </div>
+            <div class="tiny" style="color:var(--tinta-3);margin-top:2px">Identificador de seguridad para garantizar integridad de carga</div>
           </div>
         </div>
-        <div class="nota">
-          <span class="dot">
-            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
-          </span>
-          <p><b>Nota:</b> Al confirmar el despacho se descuenta el producto terminado del inventario y se genera la guía de remisión.</p>
-          <span class="firma">Calzado que<br>impulsa tus metas</span>
+
+        <!-- ── Fecha de Entrega Calculada Automáticamente (Estilo E-Commerce / Temu) ── -->
+        <div class="entrega-estimada-box" id="box-entrega-estimada">
+          <div class="entrega-estimada-box__izq">
+            <div class="entrega-estimada-box__ico">
+              <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16v-2"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
+            </div>
+            <div class="entrega-estimada-box__txt">
+              <b id="txt-entrega-ventana">Llegada estimada al cliente: 28 al 30 de Sep (2 a 3 días hábiles)</b>
+              <span id="txt-entrega-sub">Ventana de entrega calculada automáticamente según tiempo de alistamiento y tránsito en el corredor Bucaramanga.</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="hidden" id="f-l-fecha" value="">
+            <span class="entrega-estimada-box__badge" id="badge-entrega-dias">En tiempo estándar (2-3 días)</span>
+          </div>
+        </div>
+
+        <!-- ── Monitor interactivo de capacidad del vehículo (RN-LOG-02 - Flota Propia) ── -->
+        <div class="cap-monitor" id="monitor-capacidad-flota">
+          <div class="cap-monitor__cab">
+            <span>Ocupación y Capacidad de Flota (RN-LOG-02):</span>
+            <span class="cap-monitor__pct" id="ds-cap-pct">33.3% ocupado</span>
+          </div>
+          <div class="cap-monitor__barra">
+            <div class="cap-monitor__prog" id="ds-cap-prog" style="width: 33.3%;"></div>
+          </div>
+          <div class="cap-monitor__msg" id="ds-cap-msg">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+            <span>Carga dentro de la capacidad autorizada: 40 pares asignados de 120 pares disponibles (DEF-455).</span>
+          </div>
+        </div>
+
+        <!-- Barra de acciones simétrica y equilibrada -->
+        <div class="form-actions">
+          <div class="form-actions__info">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Emisión de guía consecutiva única (GR-XXXXX). Etiquetado de bultos bajo responsabilidad de despacho.</span>
+          </div>
+          <div class="form-actions__btns">
+            <button type="button" class="btn btn--sm btn--cobre" id="btn-abrir-rotulo" title="Generar rótulo de embalaje e identificación del pedido">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+              <span>Generar Rótulo de Envío</span>
+            </button>
+            <button type="button" class="btn btn--sm btn--ghost" id="btn-limpiar-despacho">Reestablecer</button>
+            <button type="button" class="btn btn--vino" id="btn-generar-despacho">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+              <span>Generar Despacho y Guía</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- Selector de Espacio de Trabajo (Anti-Cabina de Avión: Enfoca la atención y evita sobrecarga) -->
+    <nav class="workspace-nav" aria-label="Espacio de trabajo operativo">
+      <button type="button" class="ws-tab is-active" data-vista="panel-despachos">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+        <span>1. Guías y Despachos Activos</span>
+        <span class="ws-badge" id="tab-count-despachos">6</span>
+      </button>
+      <button type="button" class="ws-tab" data-vista="panel-proyecciones">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+        <span>2. Cotizaciones Preventivas (Comercial)</span>
+        <span class="ws-badge ws-badge--cobre" id="tab-count-proyecciones">3 alertas</span>
+      </button>
+      <button type="button" class="ws-tab" data-vista="panel-produccion">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        <span>3. Pedidos en Fabricación (Producción)</span>
+        <span class="ws-badge ws-badge--oliva" id="tab-count-produccion">4 órdenes</span>
+      </button>
+      <button type="button" class="ws-tab" data-vista="todas" style="margin-left:auto;font-size:12px">
+        <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>
+        <span>Ver todas</span>
+      </button>
+    </nav>
+
+    <!-- Panel 1: TABLA DE ÓRDENES DE DESPACHO Y GUÍAS ACTIVAS (Vista Primaria) -->
+    <section class="panel vista-seccion" id="panel-despachos">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>Órdenes de Despacho y Guías Activas</h2>
+          <div class="sub">Trazabilidad de remesas: Alistando → En tránsito → Entregado / Devuelto</div>
+        </div>
+      </header>
+
+      <div class="panel__body panel__body--flush">
+        <div class="tabla-tools">
+          <div class="control">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+            <input type="search" id="ds-busca" placeholder="Buscar despacho, cliente, guía o destino…">
+          </div>
+          <div class="control control--corto">
+            <select id="ds-filtro" aria-label="Filtrar la tabla">
+              <option value="">Todos los estados</option>
+              <option value="Alistando">Alistando</option>
+              <option value="En tránsito">En tránsito</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Devuelto">Devuelto</option>
+            </select>
+            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+          </div>
+          <span class="tabla-tools__n" id="ds-conteo-txt">6 despachos activos</span>
+        </div>
+
+        <div class="scroll-x">
+          <table id="tabla-despachos">
+            <thead>
+              <tr>
+                <th>Despacho</th>
+                <th>Cliente y Destino</th>
+                <th>Modelo / Pares</th>
+                <th>Guía Remisión</th>
+                <th>Fechas</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Despacho">
+                  <b>DS-2026-055</b>
+                  <div class="tiny">Vehículo: ABC-987</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Distribuidora Tamanaco</b>
+                  <div class="tiny">Ruta Cúcuta · Muelle Centro</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1042
+                  <div class="tiny">48 pares alistados</div>
+                </td>
+                <td class="muted" data-l="Guía"><b>GR-88231</b></td>
+                <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-24<br>Salida hoy</td>
+                <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--oliva btn-entregar" data-despacho="DS-2026-055" data-cliente="Distribuidora Tamanaco" data-pares="48">Registrar entrega</button>
+                    <button type="button" class="btn btn--sm btn--ghost btn-devolucion" data-despacho="DS-2026-055" data-cliente="Distribuidora Tamanaco">Novedad</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td data-l="Despacho">
+                  <b>DS-2026-056</b>
+                  <div class="tiny">Vehículo: DEF-455</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Calzado Norte S.A.</b>
+                  <div class="tiny">Ruta Bogotá · Terminal Carga</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1043
+                  <div class="tiny">62 pares alistados</div>
+                </td>
+                <td class="muted" data-l="Guía"><b>GR-88238</b></td>
+                <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-25<br>Salida hoy</td>
+                <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--oliva btn-entregar" data-despacho="DS-2026-056" data-cliente="Calzado Norte S.A." data-pares="62">Registrar entrega</button>
+                    <button type="button" class="btn btn--sm btn--ghost btn-devolucion" data-despacho="DS-2026-056" data-cliente="Calzado Norte S.A.">Novedad</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td data-l="Despacho">
+                  <b>DS-2026-057</b>
+                  <div class="tiny">Vehículo: GHI-302</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Almacén Sur Bucaramanga</b>
+                  <div class="tiny">Ruta Bucaramanga · Cabecera</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1044
+                  <div class="tiny">40 pares alistados</div>
+                </td>
+                <td class="muted" data-l="Guía"><b>GR-88244</b></td>
+                <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-24<br>Salida hoy</td>
+                <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--oliva btn-entregar" data-despacho="DS-2026-057" data-cliente="Almacén Sur Bucaramanga" data-pares="40">Registrar entrega</button>
+                    <button type="button" class="btn btn--sm btn--ghost btn-devolucion" data-despacho="DS-2026-057" data-cliente="Almacén Sur Bucaramanga">Novedad</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td data-l="Despacho">
+                  <b>DS-2026-058</b>
+                  <div class="tiny">Vehículo: JKL-778</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Comercializadora Pamplona</b>
+                  <div class="tiny">Ruta Pamplona · Parque Central</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1041
+                  <div class="tiny">32 pares alistados</div>
+                </td>
+                <td class="muted" data-l="Guía"><b>GR-88250</b></td>
+                <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-23<br>Ent. 2026-09-23</td>
+                <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
+                <td data-l="Acciones">
+                  <span class="tiny" style="color:var(--oliva-700)">✓ Cobro notificado</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td data-l="Despacho">
+                  <b>DS-2026-051</b>
+                  <div class="tiny">Vehículo: XYZ-123</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Almacén La Bota Fina</b>
+                  <div class="tiny">Ruta Bogotá · San Victorino</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1041
+                  <div class="tiny">24 pares alistados</div>
+                </td>
+                <td class="muted" data-l="Guía"><b>GR-88190</b></td>
+                <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-20<br>Ent. 2026-09-20</td>
+                <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
+                <td data-l="Acciones">
+                  <span class="tiny" style="color:var(--oliva-700)">✓ Cobro notificado</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td data-l="Despacho">
+                  <b>DS-2026-052</b>
+                  <div class="tiny">Vehículo: DEF-455</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Comercial Los Andes</b>
+                  <div class="tiny">Ruta Bucaramanga · Centro</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1044
+                  <div class="tiny">36 pares alistados</div>
+                </td>
+                <td class="muted" data-l="Guía"><b>GR-88201</b></td>
+                <td class="tiny" style="line-height:1.5" data-l="Fechas">Comp. 2026-09-21<br>Rechazo en muelle</td>
+                <td data-l="Estado"><span class="pill pill--crit">Devuelto</span></td>
+                <td data-l="Acciones">
+                  <span class="tiny" style="color:var(--crit)">⚠️ Nota crédito</span>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3"><b>6 despachos en el sistema</b> <span class="tiny">3 en tránsito · 2 entregados · 1 devuelto</span></td>
+                <td colspan="4" class="tiny">150 pares en tránsito rodando · 60 pares finalizados</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <p class="tabla-pie">Actualizado en vivo · El soporte de entrega genera alerta automática a Comercial para radicación de factura.</p>
+      </div>
+    </section>
+
+    <!-- Panel 2: ALERTAS DE COMERCIAL · PROYECCIÓN PREVENTIVA DE TRANSPORTE Y RUTAS (Vista Secundaria) -->
+    <section class="panel vista-seccion" id="panel-proyecciones" hidden>
+      <header class="panel__head panel__head--cobre">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+        <div>
+          <h2>Alertas de Comercial · Proyección Preventiva de Transporte y Rutas</h2>
+          <div class="sub">Cotizaciones en trámite para calcular cubicaje de furgón, tiempo de ruta y asegurar capacidad antes de confirmar el pedido</div>
+        </div>
+        <span class="ghostbtn" style="pointer-events:none" id="badge-proy-pendientes">3 cotizaciones</span>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table id="tabla-proyecciones">
+            <thead>
+              <tr>
+                <th>Cotización</th>
+                <th>Cliente y Destino</th>
+                <th>Modelo / Pares</th>
+                <th>Ruta y Tiempo Est.</th>
+                <th>Unidad Proyectada</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Cotización">
+                  <b>CO-2026-011</b>
+                  <div class="tiny">Emitida en Comercial</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Calzado del Oriente</b>
+                  <div class="tiny">Bucaramanga · Destino</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1044
+                  <div class="tiny">55 pares cotizados</div>
+                </td>
+                <td data-l="Ruta">
+                  <b>RUT-BGA</b>
+                  <div class="tiny">6.0 hrs · Peajes: $42.000</div>
+                </td>
+                <td data-l="Unidad">
+                  <span class="tiny" style="color:var(--tinta-3)">Sin asignar</span>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">Por calcular</span>
+                </td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--oliva btn-proyectar" data-id="CO-2026-011" data-cliente="Calzado del Oriente" data-destino="Bucaramanga" data-corredor="RUT-BGA" data-modelo="REF-1044" data-pares="55">Calcular y proyectar</button>
+                    <a class="btn btn--sm btn--ghost" href="../../07-comercial/mockup/02-ventas.html">Ver en Comercial</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Cotización">
+                  <b>CO-2026-010</b>
+                  <div class="tiny">Emitida en Comercial</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Almacén Sur</b>
+                  <div class="tiny">Bucaramanga · Destino</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1042
+                  <div class="tiny">40 pares cotizados</div>
+                </td>
+                <td data-l="Ruta">
+                  <b>RUT-BGA</b>
+                  <div class="tiny">6.0 hrs · Vía Pamplona</div>
+                </td>
+                <td data-l="Unidad">
+                  <b>ABC-987</b>
+                  <div class="tiny">16.0% ocupación (Furgón)</div>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Ruta Proyectada</span>
+                </td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--ghost btn-proyectar" data-id="CO-2026-010" data-cliente="Almacén Sur" data-destino="Bucaramanga" data-corredor="RUT-BGA" data-modelo="REF-1042" data-pares="40" data-veh="ABC-987">Revisar cálculo</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Cotización">
+                  <b>CO-2026-009</b>
+                  <div class="tiny">Emitida en Comercial</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Calzado Norte</b>
+                  <div class="tiny">Bogotá · Destino</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1042
+                  <div class="tiny">60 pares cotizados</div>
+                </td>
+                <td data-l="Ruta">
+                  <b>RUT-BOG</b>
+                  <div class="tiny">14.0 hrs · Troncal Oriental</div>
+                </td>
+                <td data-l="Unidad">
+                  <b>XYZ-123</b>
+                  <div class="tiny">15.0% ocupación (NPR)</div>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Ruta Proyectada</span>
+                </td>
+                <td data-l="Acciones">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--ghost btn-proyectar" data-id="CO-2026-009" data-cliente="Calzado Norte" data-destino="Bogotá" data-corredor="RUT-BOG" data-modelo="REF-1042" data-pares="60" data-veh="XYZ-123">Revisar cálculo</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Al calcular la proyección, el sistema reserva virtualmente el espacio de furgón y calcula el tiempo de entrega prometido al cliente.</p>
+      </div>
+    </section>
+
+    <!-- Panel 3: MONITOREO DE PEDIDOS EN FABRICACIÓN (ENLACE PRODUCCIÓN → DESPACHO) -->
+    <section class="panel vista-seccion" id="panel-produccion" hidden>
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        <div>
+          <h2>Monitoreo de Pedidos en Producción (Enlace Planta → Despacho)</h2>
+          <div class="sub">Trazabilidad en tiempo real de las etapas de fabricación para preparar muelles y embalajes antes del cargue</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table id="tabla-pedidos-produccion">
+            <thead>
+              <tr>
+                <th>Orden / Pedido</th>
+                <th>Cliente y Destino</th>
+                <th>Modelo / Pares</th>
+                <th>Etapa en Planta</th>
+                <th>Progreso</th>
+                <th>Estado Logístico</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Orden">
+                  <b>OP-2026-054</b>
+                  <div class="tiny">Pedido: PD-2026-088</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Distribuidora Tamanaco</b>
+                  <div class="tiny">Bucaramanga · RUT-BGA</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1042
+                  <div class="tiny">48 pares</div>
+                </td>
+                <td data-l="Etapa">
+                  <span class="pill pill--warn">3. Montaje</span>
+                  <div class="tiny" style="color:var(--tinta-3)">Horma y suela</div>
+                </td>
+                <td data-l="Progreso">
+                  <div style="font-weight:700;color:var(--cobre-600)">75%</div>
+                  <div class="tiny">Próx: Embalaje</div>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">En Fabricación</span>
+                  <div class="tiny">Muelle previsto para 2026-09-24</div>
+                </td>
+                <td data-l="Acción">
+                  <div class="acts">
+                    <a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/05-etapas.html" title="Ver detalle de etapas en Producción">Ver en Planta</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Orden">
+                  <b>OP-2026-055</b>
+                  <div class="tiny">Pedido: PD-2026-089</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Calzado El Dorado</b>
+                  <div class="tiny">Bogotá · RUT-BOG</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1043
+                  <div class="tiny">26 pares</div>
+                </td>
+                <td data-l="Etapa">
+                  <span class="pill pill--warn">2. Guarnición</span>
+                  <div class="tiny" style="color:var(--tinta-3)">Costura y pespunte</div>
+                </td>
+                <td data-l="Progreso">
+                  <div style="font-weight:700;color:var(--cobre-600)">50%</div>
+                  <div class="tiny">Próx: Montaje</div>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">En Fabricación</span>
+                  <div class="tiny">Entrega 2026-09-25</div>
+                </td>
+                <td data-l="Acción">
+                  <div class="acts">
+                    <a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/05-etapas.html">Ver en Planta</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Orden">
+                  <b>OP-2026-056</b>
+                  <div class="tiny">Pedido: PD-2026-091</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Calzado Norte</b>
+                  <div class="tiny">Bogotá · RUT-BOG</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1042
+                  <div class="tiny">60 pares</div>
+                </td>
+                <td data-l="Etapa">
+                  <span class="pill pill--warn">1. Corte</span>
+                  <div class="tiny" style="color:var(--tinta-3)">Corte de piel</div>
+                </td>
+                <td data-l="Progreso">
+                  <div style="font-weight:700;color:var(--cobre-600)">25%</div>
+                  <div class="tiny">Próx: Guarnición</div>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">En Fabricación</span>
+                  <div class="tiny">Entrega 2026-09-26</div>
+                </td>
+                <td data-l="Acción">
+                  <div class="acts">
+                    <a class="btn btn--sm btn--ghost" href="../../05-produccion/mockup/05-etapas.html">Ver en Planta</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Orden">
+                  <b>OP-2026-057</b>
+                  <div class="tiny">Pedido: PD-2026-094</div>
+                </td>
+                <td data-l="Cliente">
+                  <b>Calzado Bucaramanga</b>
+                  <div class="tiny">Bucaramanga · RUT-BGA</div>
+                </td>
+                <td data-l="Modelo">
+                  REF-1042
+                  <div class="tiny">40 pares</div>
+                </td>
+                <td data-l="Etapa">
+                  <span class="pill pill--ok">4. Embalaje</span>
+                  <div class="tiny" style="color:var(--ok)">Cajas individuales terminadas</div>
+                </td>
+                <td data-l="Progreso">
+                  <div style="font-weight:700;color:var(--ok)">100%</div>
+                  <div class="tiny">Listo en muelle</div>
+                </td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Embalado · Listo</span>
+                  <div class="tiny" style="color:var(--ok)">Listo para cargar</div>
+                </td>
+                <td data-l="Acción">
+                  <div class="acts">
+                    <button type="button" class="btn btn--sm btn--oliva btn-cargar-despacho" data-pedido="PD-2026-094" data-cliente="Calzado Bucaramanga" data-pares="40" data-ref="REF-1042 · Bota Andina" data-destino="Bucaramanga" data-ruta="RUT-BGA">Pasar a Despacho</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tabla-pie">Sincronización con Producción: cuando una orden finaliza Embalaje, pasa de inmediato a Despacho y Comercial actualiza al cliente.</p>
+      </div>
+    </section>
+
+    <!-- ── MODAL 1: REGISTRAR ENTREGA CON RECEPTOR OBLIGATORIO (RN-LOG-04) ── -->
+    <div class="modal-backdrop" id="modal-entrega">
+      <div class="modal-box">
+        <div class="modal-box__head">
+          <h3>Confirmar Entrega en Destino</h3>
+          <button type="button" class="modal-box__close" id="btn-cerrar-modal-entrega">&times;</button>
+        </div>
+        <div class="modal-box__body">
+          <p class="tiny">Para pasar el despacho a <b>Entregado</b> es obligatorio registrar el nombre de la persona que recibe la mercancía en el cliente (Regla RN-LOG-04).</p>
+          
+          <div class="field">
+            <label>Despacho y Cliente</label>
+            <div class="control">
+              <input id="md-ent-info" type="text" readonly style="background:var(--papel-2);font-weight:600;">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="md-ent-nombre">Nombre y Apellido de quien recibe <b style="color:var(--crit)">*</b></label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <input id="md-ent-nombre" type="text" placeholder="Ej. Carlos Mendoza (Jefe de Almacén)">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="md-ent-doc">Cédula / Documento de Identidad (Opcional)</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line></svg>
+              <input id="md-ent-doc" type="text" placeholder="Ej. 1.090.445.890">
+            </div>
+          </div>
+
+          <div class="aviso aviso--ok" style="margin-top:0">
+            <p class="tiny">Al confirmar, el sistema emitirá de inmediato una <b>Alerta a Comercial</b> con la guía para radicación y cobro de la factura.</p>
+          </div>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cancelar-modal-entrega">Cancelar</button>
+          <button type="button" class="btn btn--oliva" id="btn-confirmar-entrega">Confirmar Entrega y Avisar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODAL 2: REGISTRAR NOVEDAD / DEVOLUCIÓN (RN-LOG-05) ── -->
+    <div class="modal-backdrop" id="modal-devolucion">
+      <div class="modal-box">
+        <div class="modal-box__head" style="background:var(--crit,#C5221F)">
+          <h3>Reportar Novedad / Devolución</h3>
+          <button type="button" class="modal-box__close" id="btn-cerrar-modal-dev">&times;</button>
+        </div>
+        <div class="modal-box__body">
+          <p class="tiny">Se registrará la devolución del calzado y se notificará de inmediato a Comercial para la emisión de la Nota Crédito correspondiente.</p>
+          
+          <div class="field">
+            <label>Despacho afectado</label>
+            <div class="control">
+              <input id="md-dev-info" type="text" readonly style="background:var(--papel-2);font-weight:600;">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="md-dev-motivo">Causa del Rechazo / Novedad <b style="color:var(--crit)">*</b></label>
+            <div class="control">
+              <select id="md-dev-motivo">
+                <option value="Avería de empaque en transporte">Avería o aplastamiento de cajas en transporte</option>
+                <option value="Curva de tallas no coincide con factura">Curva de tallas no coincide con factura comercial</option>
+                <option value="Cliente cerrado / fuera de horario">Cliente ausente / muelle cerrado</option>
+                <option value="Rechazo por defecto de calzado">Rechazo por defecto de terminación de calzado</option>
+                <option value="Cancelación de compra por el cliente">Cancelación de pedido por el cliente</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="md-dev-obs">Detalles Adicionales</label>
+            <div class="control">
+              <input id="md-dev-obs" type="text" placeholder="Ej. El cliente solo recibió 10 pares, devuelve 38 por caja rota">
+            </div>
+          </div>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cancelar-modal-dev">Cancelar</button>
+          <button type="button" class="btn btn--crit" id="btn-confirmar-devolucion">Registrar Devolución</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODAL 3: CALCULAR Y PROYECTAR TRANSPORTE Y RUTA (PREVENTA COMERCIAL) ── -->
+    <div class="modal-backdrop" id="modal-proyeccion">
+      <div class="modal-box">
+        <div class="modal-box__head" style="background:var(--cobre-600,#9C4121)">
+          <h3 id="mp-titulo">Calcular y Proyectar Transporte y Ruta</h3>
+          <button type="button" class="modal-box__close" id="btn-cerrar-modal-proy">&times;</button>
+        </div>
+        <div class="modal-box__body">
+          <p class="tiny">Esta herramienta permite a Logística y Despacho anticiparse a la venta comercial, simulando la ocupación de flota y el tiempo de viaje según la cotización emitida.</p>
+
+          <div style="background:var(--papel-2);border:1px solid var(--linea);padding:10px 14px;border-radius:var(--r-m)">
+            <b id="mp-cotizacion" style="font-size:15px;color:var(--vino-800)">CO-2026-011</b>
+            <div class="tiny" id="mp-info" style="color:var(--tinta-2)">Calzado del Oriente · REF-1044 · 55 pares · Destino: Bucaramanga</div>
+          </div>
+
+          <div class="field">
+            <label for="mp-corredor">Corredor Geográfico / Ruta Proyectada</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+              <select id="mp-corredor">
+                <option value="RUT-BGA" data-horas="6.0" data-peajes="42000">RUT-BGA · Cúcuta - Bucaramanga (6.0 hrs · $42.000 peajes)</option>
+                <option value="RUT-BOG" data-horas="14.0" data-peajes="98000">RUT-BOG · Cúcuta - Bogotá (14.0 hrs · $98.000 peajes)</option>
+                <option value="RUT-CUC" data-horas="1.5" data-peajes="0">RUT-CUC · Corredor Metropolitano Cúcuta (1.5 hrs · Local)</option>
+                <option value="RUT-PAM" data-horas="2.5" data-peajes="18000">RUT-PAM · Cúcuta - Pamplona (2.5 hrs · $18.000 peajes)</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="mp-vehiculo">Vehículo Asignable para la Proyección</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+              <select id="mp-vehiculo">
+                <option value="DEF-455" data-cap="120" data-tipo="Camioneta Furgón">DEF-455 · Camioneta Furgón (Capacidad: 120 pares)</option>
+                <option value="ABC-987" data-cap="250" data-tipo="Furgón Ligero">ABC-987 · Furgón Ligero (Capacidad: 250 pares)</option>
+                <option value="XYZ-123" data-cap="400" data-tipo="Camión NPR">XYZ-123 · Camión NPR (Capacidad: 400 pares)</option>
+                <option value="GHI-302" data-cap="400" data-tipo="Camión NPR">GHI-302 · Camión NPR (Capacidad: 400 pares)</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+          </div>
+
+          <!-- Monitor interactivo de cubicaje de proyección -->
+          <div class="cap-monitor" style="margin-top:4px">
+            <div class="cap-monitor__cab">
+              <span>Cubicaje y Capacidad Proyectada:</span>
+              <span class="cap-monitor__pct" id="mp-cap-pct">45.8% ocupado</span>
+            </div>
+            <div class="cap-monitor__barra">
+              <div class="cap-monitor__prog" id="mp-cap-prog" style="width: 45.8%; background: var(--oliva-600)"></div>
+            </div>
+            <div class="cap-monitor__msg" id="mp-cap-msg" style="color:var(--oliva-600)">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+              <span id="mp-cap-txt">55 pares proyectados ocupan 45.8% de DEF-455 (120 pares). Capacidad holgada para consolidar con otras cotizaciones.</span>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;background:var(--crema);padding:10px 14px;border-radius:var(--r-m);font-size:12.5px">
+            <div>Tiempo estimado: <b id="mp-tiempo">6.0 hrs</b></div>
+            <div>Costo flete est.: <b id="mp-costo">$1.850 / par</b></div>
+            <div>Ventana entrega: <b id="mp-ventana">+2 días</b></div>
+          </div>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cancelar-modal-proy">Cancelar</button>
+          <button type="button" class="btn btn--cobre" id="btn-guardar-proyeccion">Confirmar y Guardar Proyección</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODAL: ALERTA DE ENTRADA DE COTIZACIÓN DESDE COMERCIAL (CIERRE MANUAL) ── -->
+    <div class="modal-backdrop" id="modal-alerta-llegada-cotizacion">
+      <div class="modal-box" style="max-width:530px">
+        <div class="modal-box__head" style="background:var(--cobre-600,#9C4121)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <h3 style="margin:0;font-size:16px;color:#fff">Alerta de Comercial: Cotización en Espera de Proyección</h3>
+          </div>
+          <button type="button" class="modal-box__close" id="btn-x-alerta-llegada" title="Cerrar ventana">&times;</button>
+        </div>
+        <div class="modal-box__body">
+          <div class="aviso aviso--warn" style="margin:0">
+            <p style="margin:0"><b>Nueva cotización registrada en Comercial:</b> Se requiere proyectar a futuro el transporte, furgón asignable y tiempo de ruta antes del cierre de venta.</p>
+          </div>
+
+          <div style="background:var(--papel-2,#F8F6F0);border:1px solid var(--linea,#E5E0D8);padding:14px;border-radius:var(--r-m,8px);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--linea,#E5E0D8);padding-bottom:8px">
+              <span class="tiny" style="color:var(--tinta-3)">Cotización:</span>
+              <b id="al-llegada-id" style="font-size:15px;color:var(--vino-800)">CO-2026-011</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="tiny" style="color:var(--tinta-3)">Cliente y Destino:</span>
+              <b id="al-llegada-cli">Calzado del Oriente · Bucaramanga</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="tiny" style="color:var(--tinta-3)">Volumen / Pares:</span>
+              <span id="al-llegada-mod" style="font-weight:600">REF-1044 · 55 pares</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="tiny" style="color:var(--tinta-3)">Corredor Sugerido:</span>
+              <span class="chip chip--cobre" id="al-llegada-ruta">RUT-BGA · Bucaramanga (6.0 hrs)</span>
+            </div>
+          </div>
+
+          <p class="tiny" style="color:var(--tinta-2);line-height:1.45;margin:0">
+            <b>Atención requerida:</b> Debe cerrar manualmente esta ventana o presionar el botón inferior para abrir la calculadora de cubicaje de furgón y reservar el cupo de ruta.
+          </p>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cerrar-alerta-llegada">Revisar más tarde</button>
+          <button type="button" class="btn btn--cobre" id="btn-abrir-proyeccion-desde-alerta">Calcular y Proyectar Ruta Ahora</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODAL 4: RÓTULO / ETIQUETA OFICIAL DE EMBALAJE Y DESPACHO ── -->
+    <div class="modal-backdrop" id="modal-etiqueta">
+      <div class="modal-box" style="max-width:620px">
+        <div class="modal-box__head" style="background:var(--vino-800,#5B141B)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+            <h3 style="margin:0;font-size:16px;color:#fff">Rótulo Oficial de Embalaje y Despacho</h3>
+          </div>
+          <button type="button" class="modal-box__close" id="btn-cerrar-modal-etiqueta" title="Cerrar">&times;</button>
+        </div>
+        <div class="modal-box__body" style="padding:16px;background:var(--papel-2,#F8F6F0)">
+          <!-- Contenedor del Rótulo Imprimible -->
+          <div class="etiqueta-envio" id="hoja-etiqueta-envio">
+            <div class="etiqueta-envio__head">
+              <div>
+                <div class="etiqueta-envio__logo">SICAF LOGÍSTICA</div>
+                <div class="etiqueta-envio__sub">Fábrica de Calzado S.A.S. · NIT 900.542.118-2<br>Zona Industrial Muelle Norte · Cúcuta, N.S.</div>
+              </div>
+              <div style="text-align:right">
+                <div class="etiqueta-envio__tipo" id="lbl-tipo-envio">REMESA DE CALZADO</div>
+                <div style="font-size:11px;font-weight:700;margin-top:3px;color:var(--vino-800)" id="lbl-tag-prioridad">DESPACHO ESTÁNDAR</div>
+              </div>
+            </div>
+
+            <div class="etiqueta-envio__grid">
+              <div class="etiqueta-envio__bloque">
+                <h4>1. Remitente</h4>
+                <p>
+                  <b>Fábrica Central SICAF</b><br>
+                  Muelle 1 · Despachos Cúcuta<br>
+                  Tel: (607) 583-9900 · Ext. 104
+                </p>
+              </div>
+              <div class="etiqueta-envio__bloque" style="background:#FFF8EE;padding:6px 10px;border-radius:6px;border:1px solid #FFE0B2">
+                <h4>2. Destinatario Final</h4>
+                <p>
+                  <b id="lbl-destinatario">Calzado Bucaramanga S.A.S.</b><br>
+                  <span id="lbl-direccion">Calle 35 # 18-42, Centro</span><br>
+                  <b id="lbl-ciudad" style="color:var(--cobre-800,#8A3708)">Bucaramanga, Santander</b>
+                </p>
+              </div>
+            </div>
+
+            <!-- Detalle técnico de producto y embalaje -->
+            <div class="etiqueta-envio__detalle">
+              <div class="etiqueta-envio__detalle-head">
+                <span id="lbl-ref-modelo">REF-1042 · Bota Andina Cuero</span>
+                <span id="lbl-total-pares" style="color:var(--vino-800)">40 Pares (4 Cajas)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#555;margin-bottom:6px">
+                <span>Lote Fabricación: <b id="lbl-lote-cod" style="color:#111">LOT-2026-B14</b></span>
+                <span>Precinto Seguridad: <b id="lbl-precinto-cod" style="color:#111">#PRC-8841</b></span>
+                <span>Fecha Embalaje: <b id="lbl-fecha-emb" style="color:#111">2026-09-25</b></span>
+              </div>
+
+              <!-- Curva de tallas del pedido -->
+              <table class="curva-tallas-tbl">
+                <thead>
+                  <tr>
+                    <th>Talla</th>
+                    <th>36</th>
+                    <th>37</th>
+                    <th>38</th>
+                    <th>39</th>
+                    <th>40</th>
+                    <th>41</th>
+                    <th>42</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="lbl-curva-body">
+                  <tr>
+                    <td><b>Pares</b></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>6</td>
+                    <td>10</td>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>4</td>
+                    <td><b>40</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Información de Transporte y Guía -->
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#EEE8E0;padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:12px">
+              <div>
+                <span style="color:#666">Modalidad & Unidad:</span><br>
+                <b id="lbl-transporte-txt">Flota Propia · DEF-455 (Hernán Ruiz)</b>
+              </div>
+              <div style="text-align:right">
+                <span style="color:#666">Guía / Remesa:</span><br>
+                <b id="lbl-guia-txt" style="font-size:14px;color:var(--vino-900)">GR-77443</b>
+              </div>
+            </div>
+
+            <!-- Código de Barras / QR SVG -->
+            <div class="etiqueta-envio__barcode">
+              <svg class="barcode-svg" viewBox="0 0 240 50">
+                <rect x="10" y="5" width="3" height="40" fill="#000"></rect>
+                <rect x="16" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="22" y="5" width="6" height="40" fill="#000"></rect>
+                <rect x="32" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="38" y="5" width="4" height="40" fill="#000"></rect>
+                <rect x="46" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="52" y="5" width="5" height="40" fill="#000"></rect>
+                <rect x="62" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="68" y="5" width="3" height="40" fill="#000"></rect>
+                <rect x="75" y="5" width="6" height="40" fill="#000"></rect>
+                <rect x="85" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="91" y="5" width="4" height="40" fill="#000"></rect>
+                <rect x="99" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="105" y="5" width="5" height="40" fill="#000"></rect>
+                <rect x="114" y="5" width="3" height="40" fill="#000"></rect>
+                <rect x="121" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="127" y="5" width="6" height="40" fill="#000"></rect>
+                <rect x="137" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="143" y="5" width="4" height="40" fill="#000"></rect>
+                <rect x="151" y="5" width="3" height="40" fill="#000"></rect>
+                <rect x="158" y="5" width="5" height="40" fill="#000"></rect>
+                <rect x="167" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="173" y="5" width="4" height="40" fill="#000"></rect>
+                <rect x="181" y="5" width="6" height="40" fill="#000"></rect>
+                <rect x="191" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="197" y="5" width="4" height="40" fill="#000"></rect>
+                <rect x="205" y="5" width="2" height="40" fill="#000"></rect>
+                <rect x="211" y="5" width="5" height="40" fill="#000"></rect>
+                <rect x="220" y="5" width="3" height="40" fill="#000"></rect>
+                <rect x="227" y="5" width="3" height="40" fill="#000"></rect>
+              </svg>
+              <span class="barcode-txt" id="lbl-barcode-cod">(01)7709991204(21)PD-088-GR77443</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cerrar-rotulo">Cerrar</button>
+          <button type="button" class="btn btn--vino" id="btn-imprimir-rotulo">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Imprimir Rótulo (Térmica / Carta)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
-    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <!-- Lo que hace responder este mockup (interactividad 100% cliente sin backend) -->
     <script src="prototipo.js"></script>
   </body>
 </html>

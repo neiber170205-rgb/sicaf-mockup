@@ -42,9 +42,11 @@ de su carpeta `NN-modulo/mockup/`, tal cual: las mismas pantallas, su `estilos.c
   cada `NN-modulo/mockup/` (las pantallas de su menú, las que se abren desde ellas o desde su
   `prototipo.js`, como "Crear cotización", y lo que todas cargan) y `comun/` dentro
   de `modulos/`, con el mismo árbol de carpetas, y escribe `modulos/modulos.js`: las pantallas de
-  cada módulo (para el menú lateral) y las filas de sus tablas (para el buscador de arriba).
-  Cuando un compañero cambie su mockup, se vuelve a correr y se hace commit. Con `--revisar` solo
-  dice si falta juntar algo.
+  cada módulo (para el menú lateral), las filas de sus tablas (para el buscador de arriba) y lo
+  que lee del navegador (ver "Lo que un módulo le pasa a otro").
+  Los módulos son los del menú de `comun/marco.js` más los que `js/app.js` tenga en su lista
+  aunque los esconda del menú (hoy, el Dashboard General). Cuando un compañero cambie su mockup,
+  se vuelve a correr y se hace commit. Con `--revisar` solo dice si falta juntar algo.
 - **Cómo se muestran.** Cada módulo va en un marco (`<iframe name="sicaf-general">`) que se crea la
   primera vez que se abre y queda vivo: al volver al módulo, lo que el usuario cambió sigue igual.
   El marco ocupa **toda la ventana**, por debajo del menú lateral y de la barra de arriba, para que
@@ -62,6 +64,14 @@ de su carpeta `NN-modulo/mockup/`, tal cual: las mismas pantallas, su `estilos.c
 - **El buscador de arriba** encuentra las filas de las tablas de los mockups (como están en sus
   pantallas) y las órdenes de Producción. Al elegir una fila, se abre su pantalla y la fila queda
   resaltada un momento.
+- **Lo que un módulo le pasa a otro.** Algunos módulos se avisan cosas guardándolas en el
+  navegador (`localStorage`): Producción › Etapas avisa a Comercial › Pedidos y a Logística ›
+  Despachos cómo va cada pedido en planta, Inventario le pasa a Compras sus solicitudes y
+  Comercial a Logística sus cotizaciones. Cada módulo lo lee al abrir una pantalla. Como aquí los
+  marcos quedan vivos, el módulo que lee un dato que otro cambió se vuelve a cargar al volver a
+  él, en la pantalla en que iba (`modulos.js` dice qué lee cada uno).
+- **El Dashboard General** ya no está en el menú (la primera opción es **Inicio**, la pantalla de
+  Admin), pero sigue copiado: el buscador encuentra sus filas y lo abre.
 - Con doble clic en `index.html` también funciona, pero cada cambio de pantalla dentro de un módulo
   recarga su marco (el navegador no deja leer los archivos de al lado), así que lo hecho en una
   pantalla se pierde al pasar a otra, igual que en el mockup de la carpeta. Con Live Server, XAMPP

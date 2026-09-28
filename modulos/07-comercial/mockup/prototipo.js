@@ -156,6 +156,7 @@
       var p = pagina();
       p.scrollTop = 0;   // en pantalla ancha quien se desplaza es .page
       if (p.parentNode) p.parentNode.scrollTop = 0;
+      sincronizarEtapasPedidosComercial();
     }
 
     if (guardadas[archivo]) {
@@ -340,28 +341,64 @@
   }
 
   function generarCotizacion() {
-    var cl = uno("#f-v-cl"), ref = uno("#f-v-ref"), cant = uno("#f-v-cant"), pre = uno("#f-v-precio");
-    var pares = numero(cant.value), precio = numero(pre.value);
-    if (!pares)  { cant.focus(); return aviso("Escriba cuántos pares cotiza.", "crit"); }
-    if (!precio) { pre.focus();  return aviso("Escriba el precio por par.", "crit"); }
+    var cl = uno("#f-v-cl"), ref = uno("#f-v-ref"), cant = uno("#f-v-cant"), pre = uno("#f-v-precio"), ciu = uno("#f-v-ciu");
+    var pares = numero(cant ? cant.value : 0), precio = numero(pre ? pre.value : 0);
+    if (!pares)  { if (cant) cant.focus(); return aviso("Escriba cuántos pares cotiza.", "crit"); }
+    if (!precio) { if (pre) pre.focus();  return aviso("Escriba el precio por par.", "crit"); }
 
     var panel = panelPorTitulo("Cotizaciones Enviadas");
     if (!panel) return aviso("Cotización generada.", "ok");
 
     var codigo = siguienteCodigo(panel, "Cotización");
     var fila = nuevaFila(panel, "Cotización");
+    var nomCliente = cl ? cl.options[cl.selectedIndex].text.split("·").pop().trim() : "Cliente";
+    var destInfo = ciu ? ciu.value : "Bucaramanga · RUT-BGA";
+
     ponerCelda(fila, "Cotización", "<b>" + codigo + '</b><div class="tiny">Vence en 15 días</div>');
-    ponerCelda(fila, "Cliente", cl.options[cl.selectedIndex].text.split("·").pop().trim());
-    ponerCelda(fila, "Modelo", ref.value + '<div class="tiny">' + miles(pares) + " pares</div>");
+    ponerCelda(fila, "Cliente y Destino", "<b>" + nomCliente + '</b><div class="tiny">' + destInfo + "</div>");
+    ponerCelda(fila, "Modelo", (ref ? ref.value : "Calzado") + '<div class="tiny">' + miles(pares) + " pares</div>");
     ponerCelda(fila, "Valor", pesos(pares * precio));
-    ponerCelda(fila, "Estado", '<span class="pill pill--warn">Enviada</span>');
+    ponerCelda(fila, "Estado", '<span class="pill pill--warn">Enviada</span><div class="tiny" style="color:var(--cobre-600);margin-top:3px">🚚 Alerta: Proyectar ruta</div>');
     var acts = uno(".acts", fila);
     if (acts) acts.innerHTML = '<button class="btn btn--sm btn--oliva">Convertir en pedido</button>' +
+                               '<a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html">Ver en Despacho</a>' +
                                '<button class="btn btn--sm btn--ghost">Eliminar</button>';
     recontar(panel, "cotizaciones");
     sumarAlMenu("02-ventas.html", 1);
-    aviso("Cotización " + codigo + " generada por " + pesos(pares * precio) +
-          " · no compromete existencia todavía.", "ok");
+
+    /* Enlace automático con Logística y Despacho: guardar alerta para proyección preventiva */
+    var alertItem = {
+      id: codigo,
+      cliente: nomCliente,
+      destino: destInfo.split("·")[0].trim(),
+      corredor: destInfo.indexOf("RUT-") >= 0 ? destInfo.match(/RUT-[A-Z]+/)[0] : "RUT-BGA",
+      modelo: ref ? ref.value.split("·")[0].trim() : "REF-1042",
+      pares: pares,
+      valor: pares * precio,
+      fecha: hoy(),
+      estado: "Por calcular"
+    };
+
+    try {
+      var alertas = JSON.parse(localStorage.getItem("sicaf_cotizaciones_preventivas") || "[]");
+      alertas.unshift(alertItem);
+      localStorage.setItem("sicaf_cotizaciones_preventivas", JSON.stringify(alertas));
+      /* Señal para que Logística abra automáticamente su ventana de alerta */
+      localStorage.setItem("sicaf_alerta_nueva_cotizacion", JSON.stringify(alertItem));
+    } catch (err) {}
+
+    /* Disparar ventana modal de alerta que requiere cierre manual */
+    var modalSalida = uno("#modal-alerta-cotizacion-salida");
+    if (modalSalida) {
+      if (uno("#al-salida-id")) uno("#al-salida-id").textContent = codigo;
+      if (uno("#al-salida-cli")) uno("#al-salida-cli").textContent = nomCliente + " · " + destInfo.split("·")[0].trim();
+      var modNom = ref ? ref.value.split("·")[0].trim() : "REF-1042";
+      if (uno("#al-salida-mod")) uno("#al-salida-mod").textContent = modNom + " · " + miles(pares) + " pares cotizados";
+      if (uno("#al-salida-ruta")) uno("#al-salida-ruta").textContent = destInfo;
+      modalSalida.classList.add("is-open");
+    }
+
+    aviso("Cotización " + codigo + " generada (" + miles(pares) + " pares) · 🚚 Alerta enviada a Logística y Despacho para calcular transporte y proyectar ruta.", "ok");
   }
 
   function eliminarFila(b) {
@@ -505,12 +542,39 @@
       return aviso(ped + " confirmado · Inventario reserva los pares en bodega.", "ok");
     }
 
+    if (b.id === "btn-cerrar-alerta-salida" || b.id === "btn-x-alerta-salida") {
+      e.preventDefault();
+      var mSalida = uno("#modal-alerta-cotizacion-salida");
+      if (mSalida) mSalida.classList.remove("is-open");
+      return;
+    }
+
+    if (texto === "Actualizar cliente" || b.classList.contains("btn-estado-cliente")) {
+      e.preventDefault();
+      return abrirModalSeguimiento(b);
+    }
+
+    if (b.id === "btn-cerrar-modal-seguimiento" || b.id === "btn-cerrar-modal-seguimiento-2") {
+      e.preventDefault();
+      return cerrarModalSeguimiento();
+    }
+
+    if (b.id === "btn-avanzar-etapa") {
+      e.preventDefault();
+      return avanzarEtapaModal();
+    }
+
+    if (b.id === "btn-enviar-aviso-cliente") {
+      e.preventDefault();
+      return notificarClienteModal();
+    }
+
     if (texto === "Enviar a Logística") {
       e.preventDefault();
       var fl = b.closest("tr");
       var ped2 = (fl.querySelector("b") || {}).textContent || "El pedido";
       var est4 = celda(fl, "Estado");
-      if (est4) est4.innerHTML = '<span class="pill pill--off">Despachado</span>';
+      if (est4) est4.innerHTML = '<span class="pill pill--off">Despachado</span><div class="tiny">En transporte</div>';
       fl.classList.add("es-nueva");
       b.disabled = true;
       sumarAlMenu("05-pedidos.html", -1);
@@ -564,6 +628,171 @@
                    ": disponible cuando el módulo esté programado.", "warn");
     }
   });
+
+  /* ---------------------------------------------------------------- 8b. Seguimiento de etapas y aviso al cliente */
+  var pedidoEnModal = null;
+  var filaPedidoEnModal = null;
+  var pasoActualModal = 3;
+  var PASOS_NOMBRES = ["", "Corte", "Guarnición", "Montaje", "Embalaje", "Despacho", "Entregado"];
+
+  function abrirModalSeguimiento(b) {
+    filaPedidoEnModal = b.closest("tr");
+    var pedCod = b.getAttribute("data-pedido") || "PD-2026-088";
+    var pasoGuardado = null;
+    var etapaGuardada = null;
+
+    try {
+      var etapasMap = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
+      if (etapasMap[pedCod]) {
+        if (etapasMap[pedCod].paso) {
+          pasoGuardado = etapasMap[pedCod].paso;
+        } else if (etapasMap[pedCod].pct === 100 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Embalaje") >= 0)) {
+          pasoGuardado = 4;
+        } else if (etapasMap[pedCod].pct === 75 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Montaje") >= 0)) {
+          pasoGuardado = 3;
+        } else if (etapasMap[pedCod].pct === 50 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Guarnición") >= 0)) {
+          pasoGuardado = 2;
+        } else if (etapasMap[pedCod].pct === 25 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Corte") >= 0)) {
+          pasoGuardado = 1;
+        }
+        etapaGuardada = etapasMap[pedCod].etapa;
+      }
+    } catch(e) {}
+
+    pedidoEnModal = {
+      pedido: pedCod,
+      cliente: b.getAttribute("data-cliente") || "Distribuidora Tamanaco",
+      modelo: b.getAttribute("data-modelo") || "REF-1042 · Bota Andina",
+      pares: b.getAttribute("data-pares") || "48",
+      etapa: etapaGuardada || b.getAttribute("data-etapa") || "Montaje",
+      paso: pasoGuardado || parseInt(b.getAttribute("data-paso") || "3", 10),
+      fecha: b.getAttribute("data-fecha") || "2026-09-24"
+    };
+    pasoActualModal = pedidoEnModal.paso;
+    actualizarVistaModalSeguimiento();
+    var modal = uno("#modal-cliente-seguimiento");
+    if (modal) modal.classList.add("is-open");
+  }
+
+  function cerrarModalSeguimiento() {
+    var modal = uno("#modal-cliente-seguimiento");
+    if (modal) modal.classList.remove("is-open");
+    filaPedidoEnModal = null;
+  }
+
+  function actualizarVistaModalSeguimiento() {
+    if (!pedidoEnModal) return;
+    var elPed = uno("#mc-pedido"), elDet = uno("#mc-detalles");
+    var elMsg = uno("#mc-mensaje-cliente"), elBadge = uno("#mc-badge-estado");
+    if (elPed) elPed.textContent = pedidoEnModal.pedido;
+    if (elDet) elDet.innerHTML = "Cliente: <b>" + pedidoEnModal.cliente + "</b> · " + pedidoEnModal.modelo + " · " + pedidoEnModal.pares + " pares · Compromiso: " + pedidoEnModal.fecha;
+
+    var nombrePaso = PASOS_NOMBRES[pasoActualModal] || "Fabricación";
+    if (elBadge) {
+      elBadge.textContent = pasoActualModal >= 5 ? "En Transporte" : (pasoActualModal === 4 ? "Embalado" : "En Fabricación");
+    }
+
+    /* Actualizar Stepper */
+    todos(".etapa-step", uno("#mc-stepper")).forEach(function (st) {
+      var n = parseInt(st.getAttribute("data-etapa"), 10);
+      st.classList.remove("is-done", "is-active");
+      if (n < pasoActualModal) st.classList.add("is-done");
+      else if (n === pasoActualModal) st.classList.add("is-active");
+    });
+
+    /* Actualizar Mensaje al cliente */
+    if (elMsg) {
+      var prox = PASOS_NOMBRES[pasoActualModal + 1] ? "Próxima fase: " + PASOS_NOMBRES[pasoActualModal + 1].toUpperCase() + ". " : "Listo para entrega final. ";
+      elMsg.innerHTML = '"Hola, ' + pedidoEnModal.cliente + '. Le confirmamos que su pedido ' + pedidoEnModal.pedido + ' (' + pedidoEnModal.pares + ' pares de ' + pedidoEnModal.modelo + ') se encuentra actualmente en la etapa de <b>' + nombrePaso.toUpperCase() + '</b> en planta. ' + prox + 'Logística tiene proyectada su ruta para el ' + pedidoEnModal.fecha + '."';
+    }
+  }
+
+  function avanzarEtapaModal() {
+    if (!pedidoEnModal) return;
+    if (pasoActualModal < 5) {
+      pasoActualModal++;
+      var nuevoNombre = PASOS_NOMBRES[pasoActualModal];
+      actualizarVistaModalSeguimiento();
+
+      /* Actualizar fila de la tabla */
+      if (filaPedidoEnModal) {
+        var tdEst = celda(filaPedidoEnModal, "Estado");
+        if (tdEst) {
+          if (pasoActualModal === 4) {
+            tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--oliva-700);margin-top:3px"><b>Planta: Embalaje finalizado (4/4)</b></div>';
+          } else if (pasoActualModal === 5) {
+            tdEst.innerHTML = '<span class="pill pill--off">Despachado</span><div class="tiny" style="color:var(--tinta-2);margin-top:3px">En transporte / Ruta</div>';
+          } else {
+            tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: ' + nuevoNombre + ' (' + pasoActualModal + '/4)</b></div>';
+          }
+        }
+        var btn = uno(".btn-estado-cliente", filaPedidoEnModal);
+        if (btn) {
+          btn.setAttribute("data-paso", String(pasoActualModal));
+          btn.setAttribute("data-etapa", nuevoNombre);
+        }
+        filaPedidoEnModal.classList.add("es-nueva");
+      }
+
+      /* Guardar estado en localStorage para sincronizar con Producción y Despacho */
+      try {
+        var etapas = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
+        etapas[pedidoEnModal.pedido] = {
+          paso: pasoActualModal,
+          etapa: nuevoNombre,
+          cliente: pedidoEnModal.cliente,
+          fecha: hoy()
+        };
+        localStorage.setItem("sicaf_etapas_pedidos", JSON.stringify(etapas));
+      } catch (err) {}
+
+      aviso("Avance registrado: " + pedidoEnModal.pedido + " pasó a etapa de " + nuevoNombre.toUpperCase() + " · Sincronizado con Producción y Despacho.", "ok");
+    } else {
+      aviso("El pedido ya completó todas las etapas de fabricación y despacho.", "ok");
+    }
+  }
+
+  function notificarClienteModal() {
+    if (!pedidoEnModal) return;
+    var nombrePaso = PASOS_NOMBRES[pasoActualModal] || "Fabricación";
+    aviso("📲 Notificación enviada al cliente " + pedidoEnModal.cliente + " (Estado: " + nombrePaso + ") · Enviada por mensajería automática.", "ok");
+  }
+
+  /* Cerrar modal al hacer clic en el fondo */
+  document.addEventListener("click", function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains("modal-backdrop")) {
+      cerrarModalSeguimiento();
+    }
+  });
+
+  function sincronizarEtapasPedidosComercial() {
+    try {
+      var etapasMap = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
+      todos("tr").forEach(function (tr) {
+        var btn = uno(".btn-estado-cliente", tr);
+        if (!btn) return;
+        var pedId = btn.getAttribute("data-pedido");
+        if (etapasMap[pedId]) {
+          var info = etapasMap[pedId];
+          var pasoNum = info.paso || (info.pct === 100 ? 4 : (info.pct === 75 ? 3 : (info.pct === 50 ? 2 : 1)));
+          var nombrePaso = PASOS_NOMBRES[pasoNum] || info.etapa;
+          btn.setAttribute("data-paso", String(pasoNum));
+          btn.setAttribute("data-etapa", nombrePaso);
+
+          var tdEst = celda(tr, "Estado");
+          if (tdEst) {
+            if (pasoNum >= 5) {
+              tdEst.innerHTML = '<span class="pill pill--off">Despachado</span><div class="tiny" style="color:var(--tinta-2);margin-top:3px">En transporte / Ruta</div>';
+            } else if (pasoNum === 4) {
+              tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--oliva-700);margin-top:3px"><b>Planta: Embalaje finalizado (4/4)</b></div>';
+            } else {
+              tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: ' + nombrePaso + ' (' + pasoNum + '/4)</b></div>';
+            }
+          }
+        }
+      });
+    } catch (err) {}
+  }
 
   /* ---------------------------------------------------------------- 9. Cotizaciones: la lista
 
@@ -1078,6 +1307,7 @@
     lupa: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/>',
     alerta: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
     visto: '<path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/><path d="m9 11 3 3L22 4"/>',
+    usuario: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
     lapiz: '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>' +
            '<path d="m15 5 4 4"/>',
     papelera: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>' +
@@ -2520,9 +2750,6 @@
   var NOMBRE_FAC = { porcobrar: "Por cobrar", vencida: "Vencida", pagada: "Pagada" };
   var TONO_FAC = { porcobrar: "warn", vencida: "crit", pagada: "ok" };
 
-  /* Quien entró al sistema en Facturación. Sin inicio de sesión no se puede saber solo */
-  var FACTURADOR = { nombre: "Laura Méndez", codigo: "FAC-01" };
-
   /* Los métodos de pago de contado; el crédito depende del cliente */
   var PAGOS = [
     { valor: "Efectivo", ayuda: "Paga ahora, en caja" },
@@ -2677,11 +2904,17 @@
     fac = { cot: null, pago: "", q: "", iq: "", fecha: dia };
     uno("#fac-fecha").textContent = fechaLarga(dia);
     uno("#fac-dia").textContent = DIAS[dia.getDay()] + " · la pone el sistema";
-    uno("#fac-quien").textContent = FACTURADOR.nombre;
-    uno("#fac-q").value = "";
+    // Quien entró al sistema: el mismo vendedor de Cotizaciones
+    uno("#fac-vend-ini").textContent = iniciales(VENDEDOR.nombre);
+    uno("#fac-vendedor").textContent = VENDEDOR.nombre;
+    uno("#fac-vend-sub").textContent = VENDEDOR.codigo + " · zona " + VENDEDOR.zona;
+    verResultados(uno("#fac-res"), false);
     uno("#fac-iq").value = "";
     pintarFactura();
   }
+
+  /* Lo que se ve en el buscador del encabezado cuando ya hay una elegida */
+  function etiquetaCot(q) { return q ? q.numero + " · " + q.cliente.nombre : ""; }
 
   function pintarFactura() {
     var r = estadoFactura(), q = r.q, c = r.c;
@@ -2698,18 +2931,17 @@
       s.classList.toggle("now", i + 1 === paso);
     });
 
-    // Los datos de arriba
-    var num = uno("#fac-num");
-    num.textContent = "Se asigna al facturar";
-    uno("#fac-cot").textContent = q ? q.numero : "Sin elegir";
-    uno("#fac-cot").classList.toggle("cot-dato--vacio", !q);
-    uno("#fac-cot-sub").textContent = q ? "de " + q.vendedor + " · " + plazoTexto(q.vence) : "Elíjala a la izquierda";
+    // El encabezado: la cotización elegida en su buscador
+    var campo = uno("#fac-q");
+    if (document.activeElement !== campo) campo.value = etiquetaCot(q);
+    uno('[data-fac="quitar-cot"]').hidden = !q;
+    uno("#fac-cot-sub").textContent = q ? "De " + q.vendedor + " · " + plazoTexto(q.vence) + " · " + cuantas(r.t.pares, "par", "pares")
+                                        : "Búsquela por número, cliente o NIT, o despliegue la lista";
 
-    // Columna 1: el cliente y las cotizaciones por facturar
-    uno("#fac-cot-ayuda").textContent = q ? "La que se va a facturar" : "Seleccione la cotización que va a facturar";
-    uno("#fac-cli").innerHTML = q ? clienteFacturaHtml(c, r) : "";
-    uno("#fac-cli").hidden = !q;
-    pintarOpciones();
+    // Columna 1: el cliente de la cotización
+    uno("#fac-cli").innerHTML = q ? clienteFacturaHtml(c, r)
+      : '<div class="cot-vacio">' + icono("usuario", 30) + "<b>Todavía no hay cliente</b>" +
+        "<p>Seleccione arriba la cotización que va a facturar y aquí sale su cliente, con todo lo que va en la factura.</p></div>";
 
     // Columna 2: los productos
     var refs = q ? refsEnCotizacion(q) : [];
@@ -2723,13 +2955,13 @@
     });
     uno("#fac-lineas").innerHTML = !q
       ? '<div class="cot-vacio">' + icono("zapato", 30) + "<b>Todavía no hay productos</b>" +
-        "<p>Seleccione una cotización por facturar para traer su cliente, sus productos y sus totales.</p></div>"
+        "<p>Seleccione arriba una cotización por facturar para traer su cliente, sus productos y sus totales.</p></div>"
       : vistos.length ? vistos.map(function (ref) { return itemCotizacionHtml(ref, q, true); }).join("")
       : '<p class="cot-vacio">Ningún producto de la factura coincide con la búsqueda.</p>';
     uno("#fac-obs").textContent = q ? (q.obs || "Sin observaciones.") : "—";
     uno("#fac-obs").classList.toggle("is-vacio", !q || !q.obs);
 
-    // Columna 3: totales, total en letras, pago, avisos y Facturar
+    // Columna 3: totales, total en letras, avisos, pago y Facturar
     var t = r.t || { bruto: 0, descuento: 0, iva: 0, total: 0, pares: 0, porIva: {}, sinIva: 0 };
     uno("#fac-tot").innerHTML = totalesHtml(t);
     uno("#fac-letras").innerHTML = "<b>Son:</b> " + enLetras(t.total);
@@ -2738,38 +2970,49 @@
     uno("#fac-avisos").innerHTML = avisosFacturaHtml(r);
     var facturar = uno('[data-fac="facturar"]');
     facturar.disabled = !listo;
-    uno("#fac-msg").textContent = !q ? "Seleccione la cotización que va a facturar."
+    uno("#fac-msg").textContent = !q ? "Seleccione arriba la cotización que va a facturar."
       : bloqueada ? "No se puede facturar hasta que " + c.nombre + " pague sus facturas vencidas."
       : !fac.pago ? "Escoja el método de pago."
       : "Todo listo: al facturar, la factura toma su número y la cotización queda facturada.";
   }
 
   function plazoTexto(vence) {
-    var d = diasHasta(vence);
-    return d > 1 ? "vence en " + d + " días" : d === 1 ? "vence mañana" : d === 0 ? "vence hoy" : "ya venció";
+    return diasHasta(vence) < 0 ? "ya venció" : "vence " + cuandoVence(vence);
   }
 
-  /* El cliente, con todo lo que va en la factura */
+  /* "en 4 días", "mañana", "hoy"; si ya pasó, "venció ayer" o "venció hace 3 días" */
+  function cuandoVence(vence) {
+    var d = diasHasta(vence);
+    return d > 1 ? "en " + d + " días" : d === 1 ? "mañana" : d === 0 ? "hoy"
+      : d === -1 ? "venció ayer" : "venció hace " + -d + " días";
+  }
+
+  /* "hoy", "ayer" o "hace 10 días" */
+  function cuandoSeHizo(fecha) {
+    var d = -diasHasta(fecha);
+    return d < 1 ? "hoy" : d === 1 ? "ayer" : "hace " + d + " días";
+  }
+
+  /* El cliente, con todo lo que va en la factura: la foto (sus iniciales)
+     centrada, el nombre, su identificación y debajo lo demás */
   function clienteFacturaHtml(c, r) {
     var e = estadoCliente(c), n = r.vencidas.length;
     var estados = (n ? '<span class="pill pill--crit">' + cuantas(n, "factura vencida", "facturas vencidas") + "</span>" : "") +
                   (!n || e.tono !== "ok" ? '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>" : "");
     return '<div class="fac-cli">' +
-      '<span class="avatar" aria-hidden="true">' + iniciales(c.nombre) + "</span>" +
-      '<div class="fac-cli__x">' +
-        "<b>" + c.nombre + "</b>" +
-        "<span><b>NIT:</b> " + c.nit + "</span>" +
-        "<span><b>Dir:</b> " + c.direccion + " · " + c.barrio + " · " + c.ciudad + "</span>" +
-        "<span><b>Correo:</b> " + c.correo.replace("@", "@<wbr>") + "</span>" +
-        "<span><b>Tel:</b> " + c.telefono + " · " + c.contacto + "</span>" +
-        '<span class="fac-cli__credito">' + c.pago + (r.tieneCredito ? " · disponible " + pesos(r.libre) : "") + "</span>" +
-        '<span class="cot-ficha__estados">' + estados + "</span>" +
-      "</div>" +
-      '<button class="fac-cli__quitar" type="button" data-fac="quitar-cot" aria-label="Quitar la cotización elegida" title="Quitar la cotización elegida">' +
-        icono("cerrar", 16) + "</button></div>";
+      '<span class="avatar fac-cli__foto" aria-hidden="true">' + iniciales(c.nombre) + "</span>" +
+      '<b class="fac-cli__nombre">' + c.nombre + "</b>" +
+      '<span class="fac-cli__id"><span>NIT</span> ' + c.nit + "</span>" +
+      '<span class="cot-ficha__estados">' + estados + "</span>" +
+      '<div class="fac-cli__datos">' +
+        seccion("Contacto", kv("Persona", c.contacto) + kv("Teléfono", c.telefono) + kv("Correo", c.correo.replace("@", "@<wbr>"))) +
+        seccion("Entrega", kv("Dirección", c.direccion) + kv("Barrio", c.barrio) + kv("Ciudad", c.ciudad)) +
+        seccion("Crédito", kv("Forma de pago", c.pago) +
+                           (r.tieneCredito ? kv("Cupo", pesos(c.cupo)) + kv("Debe hoy", pesos(c.saldo)) + kv("Disponible", pesos(r.libre)) : "")) +
+      "</div></div>";
   }
 
-  /* Las cotizaciones por facturar, como tarjetas para elegir */
+  /* Las cotizaciones por facturar, en la lista del buscador del encabezado */
   function pintarOpciones() {
     var q = sinTildes(fac.q.trim()), pegado = q.replace(/[.\-]/g, "");
     var todas = porFacturar();
@@ -2778,20 +3021,45 @@
       var todo = sinTildes(x.numero + " " + x.cliente.nombre + " " + x.cliente.nit + " " + x.vendedor);
       return todo.indexOf(q) >= 0 || (pegado && todo.replace(/[.\-]/g, "").indexOf(pegado) >= 0);
     });
-    uno("#fac-lista").innerHTML = !todas.length
-      ? '<p class="cot-vacio">No hay cotizaciones por facturar. Cuando Ventas envíe una, aparece aquí.</p>'
-      : !vistas_.length ? '<p class="cot-vacio">Ninguna cotización por facturar coincide con la búsqueda.</p>'
-      : vistas_.map(function (x) {
-          var t = totales(x), n = x.cliente.vencidas.length, on = x.numero === fac.cot;
-          return '<button type="button" class="fac-op' + (on ? " is-on" : "") + (n ? " is-mal" : "") + '" role="option" aria-selected="' + on + '"' +
-            ' data-fac-cot="' + x.numero + '">' +
-            '<span class="fac-op__cab"><b>' + x.numero + '</b><b class="fac-op__total">' + pesos(t.total) + "</b></span>" +
-            '<span class="fac-op__cli">' + x.cliente.nombre + " · " + cuantas(t.pares, "par", "pares") + "</span>" +
-            '<span class="fac-op__pie">' + nombreCorto(x.vendedor) + " · " + plazoTexto(x.vence) + "</span>" +
-            (n ? '<span class="fac-op__mal">' + icono("alerta", 14) + cuantas(n, "factura vencida", "facturas vencidas") +
-                 ": no se puede facturar</span>" : "") +
-            "</button>";
-        }).join("");
+    var caja = uno("#fac-res");
+    caja.innerHTML = !todas.length
+      ? '<p class="cot-res__vacio">No hay cotizaciones por facturar. Cuando Ventas envíe una, aparece aquí.</p>'
+      : !vistas_.length ? '<p class="cot-res__vacio">Ninguna cotización por facturar tiene ese número, cliente o NIT.</p>'
+      : '<div class="fac-op fac-op--cab" aria-hidden="true"><span>Cotización</span><span>Cliente</span>' +
+          "<span>Hecha</span><span>Vence</span><span>Total</span></div>" +
+        vistas_.map(opcionCotizacion).join("");
+    verResultados(caja, true);
+  }
+
+  /* Una cotización de la lista, por columnas: cada una con su dato y, debajo, el detalle.
+     En la lista angosta las columnas se acomodan en renglones y cada fecha dice cuál es */
+  function opcionCotizacion(x, i) {
+    var t = totales(x), n = x.cliente.vencidas.length, on = x.numero === fac.cot, d = diasHasta(x.vence);
+    var tono = d < 0 ? " is-crit" : d <= 2 ? " is-warn" : "";
+    return '<button type="button" class="cot-res__i fac-op' + (i === 0 ? " is-on" : "") + (n ? " is-mal" : "") +
+        (on ? " is-elegida" : "") + '" role="option" aria-selected="' + on + '" data-fac-cot="' + x.numero + '">' +
+      '<span class="fac-op__num"><b>' + x.numero + (on ? icono("visto", 14) : "") + "</b>" +
+        "<small>de " + nombreCorto(x.vendedor) + "</small></span>" +
+      '<span class="fac-op__cli"><b title="' + x.cliente.nombre + '">' + x.cliente.nombre + "</b>" +
+        "<small>NIT " + x.cliente.nit + "</small></span>" +
+      '<span class="fac-op__f fac-op__hecha"><span><span class="fac-op__l">Hecha </span>' + fechaCorta(x.fecha) + "</span>" +
+        "<small>" + cuandoSeHizo(x.fecha) + "</small></span>" +
+      '<span class="fac-op__f fac-op__vence"><span><span class="fac-op__l">Vence </span>' + fechaCorta(x.vence) + "</span>" +
+        '<small class="fac-op__plazo' + tono + '">' + cuandoVence(x.vence) + "</small></span>" +
+      '<span class="fac-op__tot"><b>' + pesos(t.total) + "</b><small>" + cuantas(t.pares, "par", "pares") + "</small></span>" +
+      (n ? '<small class="fac-op__mal">' + icono("alerta", 13) + cuantas(n, "factura vencida", "facturas vencidas") +
+           ": no se puede facturar hasta que pague</small>" : "") +
+      "</button>";
+  }
+
+  /* Cierra la lista y deja en el buscador la elegida */
+  function cerrarOpciones() {
+    var caja = uno("#fac-res");
+    if (!caja || caja.hidden) return;
+    verResultados(caja, false);
+    fac.q = "";
+    uno("#fac-q").value = etiquetaCot(fac.cot ? cotizacionDe(fac.cot) : null);
+    uno("#fac-q").placeholder = AYUDA_FAC_Q;
   }
 
   /* El método de pago: los de contado siempre; el crédito si el cliente lo tiene y le alcanza el cupo */
@@ -2843,6 +3111,10 @@
       fac.iq = "";
       uno("#fac-iq").value = "";
     }
+    verResultados(uno("#fac-res"), false);
+    fac.q = "";
+    uno("#fac-q").value = etiquetaCot(cotizacionDe(numero));
+    uno("#fac-q").placeholder = AYUDA_FAC_Q;
     pintarFactura();
   }
 
@@ -2882,14 +3154,19 @@
     if (!e.target.closest || !fac || !uno("#fac-form")) return;
     var op = e.target.closest("[data-fac-cot]");
     if (op) return elegirCotizacion(op.getAttribute("data-fac-cot"));
+    if (e.target.id === "fac-q") return pintarOpciones();
+    if (!e.target.closest(".fac-dato-cot")) cerrarOpciones();
     var b = e.target.closest("[data-fac]");
     if (!b) return;
     var que = b.getAttribute("data-fac");
     if (que === "quitar-cot") {
       fac.cot = null;
       fac.pago = "";
+      fac.q = "";
+      uno("#fac-q").value = "";
       pintarFactura();
       uno("#fac-q").focus();
+      pintarOpciones();
     }
     if (que === "facturar") facturar();
     if (que === "cancelar") {
@@ -2915,9 +3192,39 @@
     if (t.id === "fac-iq") { fac.iq = t.value; pintarFactura(); uno("#fac-iq").focus(); }
   });
 
+  /* Al entrar al buscador se busca de cero: la elegida queda a la vista como
+     texto de ayuda y vuelve al cerrar la lista sin escoger otra */
+  var AYUDA_FAC_Q = "Buscar por número, cliente o NIT...";
+  document.addEventListener("focusin", function (e) {
+    if (!fac || e.target.id !== "fac-q" || !fac.cot) return;
+    e.target.placeholder = etiquetaCot(cotizacionDe(fac.cot));
+    e.target.value = "";
+    fac.q = "";
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (!fac || t.id !== "fac-q") return;
+    var caja = uno("#fac-res");
+    if (e.key === "Escape" && !caja.hidden) { e.preventDefault(); return cerrarOpciones(); }
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "Enter") return;
+    e.preventDefault();
+    if (caja.hidden) return pintarOpciones();
+    var items = todos(".cot-res__i", caja);
+    var i = items.indexOf(uno(".cot-res__i.is-on", caja));
+    if (e.key === "Enter") {
+      if (items[i < 0 ? 0 : i]) items[i < 0 ? 0 : i].click();
+      return;
+    }
+    i = e.key === "ArrowDown" ? Math.min(items.length - 1, i + 1) : Math.max(0, i - 1);
+    items.forEach(function (x, j) { x.classList.toggle("is-on", j === i); });
+    if (items[i]) items[i].scrollIntoView({ block: "nearest" });
+  });
+
   /* ---------------------------------------------------------------- 13. Arranque */
 
   marcarMenu();
   history.replaceState({ pantalla: actual }, "", actual);
   alEntrar();
+  sincronizarEtapasPedidosComercial();
 })();

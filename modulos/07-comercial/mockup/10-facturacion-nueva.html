@@ -28,7 +28,7 @@
 
     <!-- OJO: este HTML trae una factura de EJEMPLO a medio hacer (CO-2026-013 elegida y
          el pago a crédito), para que se vea cómo queda cada parte. prototipo.js la vacía
-         al abrir la pantalla: se elige la cotización → se escoge el pago → Facturar.
+         al abrir la pantalla: se elige la cotización arriba → se escoge el pago → Facturar.
 
          Título: volver a la lista, el estado de la factura y en qué paso va -->
     <header class="cot-cab">
@@ -47,69 +47,80 @@
       </div>
     </header>
 
-    <!-- Lo que quien factura no escribe: lo pone el sistema -->
-    <section class="panel cot-datos" id="fac-form" aria-label="Datos de la factura">
-      <div class="cot-dato">
-        <span class="cot-dato__l">Nº de factura</span>
-        <b id="fac-num" class="cot-dato--vacio">Se asigna al facturar</b>
-        <span class="tiny">El siguiente del consecutivo</span>
+    <!-- El encabezado: aquí se elige la cotización por facturar (se busca por número,
+         cliente o NIT). La fecha y el vendedor los pone el sistema. El número de la
+         factura NO va aquí: se asigna al facturar. -->
+    <section class="panel cot-datos fac-datos" id="fac-form" aria-label="Datos de la factura">
+      <div class="cot-dato fac-dato-cot">
+        <label class="cot-dato__l" for="fac-q">Cotización por facturar</label>
+        <div class="cot-busca">
+          <div class="control">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input id="fac-q" type="search" autocomplete="off" value="CO-2026-013 · Almacén Sur" placeholder="Buscar por número, cliente o NIT..." role="combobox" aria-expanded="false" aria-controls="fac-res" aria-describedby="fac-cot-sub">
+            <button class="fac-q__x" type="button" data-fac="quitar-cot" aria-label="Quitar la cotización elegida" title="Quitar la cotización elegida">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
+            </button>
+          </div>
+          <!-- Las cotizaciones por facturar, la que vence primero arriba. Las de un cliente
+               con facturas vencidas lo dicen: se pueden ver, no facturar -->
+          <div class="cot-res" id="fac-res" role="listbox" aria-label="Cotizaciones por facturar" hidden></div>
+        </div>
+        <span class="tiny" id="fac-cot-sub">De Andrés Quintero · vence en 4 días · 40 pares</span>
       </div>
       <div class="cot-dato">
         <span class="cot-dato__l">Fecha</span>
-        <b id="fac-fecha">23-septiembre-2026</b>
-        <span class="tiny" id="fac-dia">miércoles · la pone el sistema</span>
-      </div>
-      <div class="cot-dato">
-        <span class="cot-dato__l">Cotización</span>
-        <b id="fac-cot">CO-2026-013</b>
-        <span class="tiny" id="fac-cot-sub">de Andrés Quintero · vence en 6 días</span>
+        <b id="fac-fecha">25-septiembre-2026</b>
+        <span class="tiny" id="fac-dia">viernes · la pone el sistema</span>
       </div>
       <div class="cot-dato cot-dato--vend">
-        <span class="avatar avatar--sm" aria-hidden="true">LM</span>
+        <span class="avatar avatar--sm" aria-hidden="true" id="fac-vend-ini">VR</span>
         <div>
-          <span class="cot-dato__l">Factura</span>
-          <b id="fac-quien">Laura Méndez</b>
-          <span class="tiny">FAC-01 · Facturación</span>
+          <span class="cot-dato__l">Vendedor</span>
+          <b id="fac-vendedor">Valentina Rojas</b>
+          <span class="tiny" id="fac-vend-sub">VEN-03 · zona Cúcuta</span>
         </div>
       </div>
     </section>
 
-    <!-- Las tres columnas, como en una caja registradora: a la izquierda el cliente y
-         las cotizaciones por facturar; en el centro los productos de la elegida; a la
-         derecha los totales, el total en letras, el método de pago y Facturar.
+    <!-- Las tres columnas, como en una caja registradora: a la izquierda el cliente de la
+         cotización elegida; en el centro sus productos; a la derecha los totales, el
+         total en letras, el método de pago y Facturar.
          En pantallas anchas la pantalla no se desplaza: cada columna lo hace sola. -->
     <div class="fac" id="fac">
-      <section class="panel fac__col" aria-labelledby="fac-cot-t">
+      <section class="panel fac__col" aria-labelledby="fac-cli-t">
         <div class="cot-barra">
-          <h3 class="cot-barra__t" id="fac-cot-t">
-            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
-            Cotización
+          <h3 class="cot-barra__t" id="fac-cli-t">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <path d="M16 3.128a4 4 0 0 1 0 7.744"></path> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <circle cx="9" cy="7" r="4"></circle></svg>
+            Cliente
           </h3>
-          <span class="cot-barra__ayuda" id="fac-cot-ayuda">La que se va a facturar</span>
         </div>
-        <!-- El cliente de la cotización elegida: todo lo que va en la factura -->
+        <!-- El cliente de la cotización elegida, con todo lo que va en la factura: la foto,
+             el nombre, su identificación y debajo lo demás -->
         <div class="fac__cli" id="fac-cli">
           <div class="fac-cli">
-            <span class="avatar" aria-hidden="true">AS</span>
-            <div class="fac-cli__x"><b>Almacén Sur</b><span><b>NIT:</b> 901.778.043-5</span><span><b>Dir:</b> Cra. 21 # 45-08 · La Concordia · Bucaramanga</span><span><b>Correo:</b> compras@<wbr>almacensur.com.co</span><span><b>Tel:</b> 318 221 7765 · Paola Rueda · administradora</span><span class="fac-cli__credito">Crédito 30 días · disponible $4.520.000</span><span class="cot-ficha__estados"><span class="pill pill--ok">Al día</span></span></div>
-            <button class="fac-cli__quitar" type="button" data-fac="quitar-cot" aria-label="Quitar la cotización elegida" title="Quitar la cotización elegida"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+            <span class="avatar fac-cli__foto" aria-hidden="true">AS</span><b class="fac-cli__nombre">Almacén Sur</b><span class="fac-cli__id"><span>NIT</span> 901.778.043-5</span><span class="cot-ficha__estados"><span class="pill pill--ok">Al día</span></span>
+            <div class="fac-cli__datos">
+              <section class="cot-ficha__s">
+                <h4>Contacto</h4>
+                <div class="kv"><span>Persona</span><b>Paola Rueda · administradora</b></div>
+                <div class="kv"><span>Teléfono</span><b>318 221 7765</b></div>
+                <div class="kv"><span>Correo</span><b>compras@<wbr>almacensur.com.co</b></div>
+              </section>
+              <section class="cot-ficha__s">
+                <h4>Entrega</h4>
+                <div class="kv"><span>Dirección</span><b>Cra. 21 # 45-08</b></div>
+                <div class="kv"><span>Barrio</span><b>La Concordia</b></div>
+                <div class="kv"><span>Ciudad</span><b>Bucaramanga</b></div>
+              </section>
+              <section class="cot-ficha__s">
+                <h4>Crédito</h4>
+                <div class="kv"><span>Forma de pago</span><b>Crédito 30 días</b></div>
+                <div class="kv"><span>Cupo</span><b>$7.000.000</b></div>
+                <div class="kv"><span>Debe hoy</span><b>$2.480.000</b></div>
+                <div class="kv"><span>Disponible</span><b>$4.520.000</b></div>
+              </section>
+            </div>
           </div>
-        </div>
-        <div class="fac__busca">
-          <div class="control">
-            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input id="fac-q" type="search" autocomplete="off" placeholder="Buscar número, cliente o NIT..." aria-label="Buscar cotización por facturar por número, cliente o NIT">
-          </div>
-        </div>
-        <!-- Las cotizaciones por facturar, la que vence primero arriba. Las de un
-             cliente con facturas vencidas lo dicen: se pueden ver, no facturar -->
-        <div class="fac__lista" id="fac-lista" role="listbox" aria-label="Cotizaciones por facturar">
-          <button type="button" class="fac-op is-mal" role="option" aria-selected="false" data-fac-cot="CO-2026-011"><span class="fac-op__cab"><b>CO-2026-011</b><b class="fac-op__total">$2.894.080</b></span><span class="fac-op__cli">Comercial Los Andes · 40 pares</span><span class="fac-op__pie">Marcela D. · vence mañana</span><span class="fac-op__mal"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>2 facturas vencidas: no se puede facturar</span></button>
-          <button type="button" class="fac-op is-mal" role="option" aria-selected="false" data-fac-cot="CO-2026-012"><span class="fac-op__cab"><b>CO-2026-012</b><b class="fac-op__total">$2.853.025</b></span><span class="fac-op__cli">Distribuidora Tamanaco · 35 pares</span><span class="fac-op__pie">Valentina R. · vence en 3 días</span><span class="fac-op__mal"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>1 factura vencida: no se puede facturar</span></button>
-          <button type="button" class="fac-op is-on" role="option" aria-selected="true" data-fac-cot="CO-2026-013"><span class="fac-op__cab"><b>CO-2026-013</b><b class="fac-op__total">$2.470.000</b></span><span class="fac-op__cli">Almacén Sur · 40 pares</span><span class="fac-op__pie">Andrés Q. · vence en 6 días</span></button>
-          <button type="button" class="fac-op is-mal" role="option" aria-selected="false" data-fac-cot="CO-2026-014"><span class="fac-op__cab"><b>CO-2026-014</b><b class="fac-op__total">$913.920</b></span><span class="fac-op__cli">Comercializadora Pamplona · 12 pares</span><span class="fac-op__pie">Valentina R. · vence en 7 días</span><span class="fac-op__mal"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>3 facturas vencidas: no se puede facturar</span></button>
-          <button type="button" class="fac-op" role="option" aria-selected="false" data-fac-cot="CO-2026-016"><span class="fac-op__cab"><b>CO-2026-016</b><b class="fac-op__total">$3.467.750</b></span><span class="fac-op__cli">Calzado del Oriente · 55 pares</span><span class="fac-op__pie">Valentina R. · vence en 13 días</span></button>
-          <button type="button" class="fac-op" role="option" aria-selected="false" data-fac-cot="CO-2026-017"><span class="fac-op__cab"><b>CO-2026-017</b><b class="fac-op__total">$3.472.896</b></span><span class="fac-op__cli">Calzado Norte · 48 pares</span><span class="fac-op__pie">Marcela D. · vence en 14 días</span></button>
         </div>
       </section>
 

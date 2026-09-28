@@ -226,6 +226,10 @@ const OPS=[
  ['OP-2026-045','REF-1045',150,'2026-10-12','en proceso',0, 0,0,''],
  ['OP-2026-046','REF-1044',200,'2026-10-14','en proceso',0, 0,0,''],
  ['OP-2026-047','REF-1043',120,'2026-10-15','en proceso',0, 0,0,''],
+ ['OP-2026-057','REF-1042', 40,'2026-09-23','en proceso',3, 0,0,'PD-2026-094'],
+ ['OP-2026-054','REF-1042', 48,'2026-09-24','en proceso',2, 0,0,'PD-2026-088'],
+ ['OP-2026-055','REF-1043', 26,'2026-09-25','en proceso',1, 0,0,'PD-2026-089'],
+ ['OP-2026-056','REF-1042', 60,'2026-09-26','en proceso',0, 0,0,'PD-2026-091'],
  ['OP-2026-032','REF-1043', 90,'2026-09-25','en espera',  0, 0,0,''],
  ['OP-2026-048','REF-1046',180,'2026-10-17','en espera',  0, 0,0,''],
  ['OP-2026-049','REF-1044',150,'2026-10-19','en espera',  0, 0,0,''],
@@ -249,7 +253,81 @@ function armarOP(f){
  });
  return {id,ref,cant,compromiso,estado,etapa:Math.min(etapa,3),etapas,liberada,pedido};
 }
-S.op=OPS.map(armarOP); S.seqOP=51;
+S.op=OPS.map(armarOP); S.seqOP=57;
+
+/* Pedidos de clientes en planta: el enlace con Comercial y con Logística y Despacho
+   (panel de Etapas). Cada avance queda guardado en el navegador (localStorage,
+   'sicaf_etapas_pedidos'): Comercial > Pedidos y Logística > Despachos lo leen al abrir su
+   pantalla, y lo que Comercial registre ahí también se ve aquí.
+   [orden, pedido, cliente, destino, modelo, pares, etapa (1 Corte · 2 Guarnición · 3 Montaje ·
+    4 Embalaje terminado), lo que significa para el cliente y para el despacho] */
+const PEDIDOS_PLANTA=[
+ ['OP-2026-054','PD-2026-088','Distribuidora Tamanaco','Bucaramanga · Corredor RUT-BGA','REF-1042 · Bota Andina',48,3,
+  '<b>Cliente:</b> Informado de montaje.<br><b>Despacho:</b> Furgón DEF-455 proyectado.'],
+ ['OP-2026-055','PD-2026-089','Calzado El Dorado','Bogotá · Corredor RUT-BOG','REF-1043 · Mocasín Cúcuta',26,2,
+  '<b>Cliente:</b> Corte verificado.<br><b>Despacho:</b> Programado ruta Bogotá.'],
+ ['OP-2026-056','PD-2026-091','Calzado Norte','Bogotá · Corredor RUT-BOG','REF-1042 · Bota Andina',60,1,
+  '<b>Cliente:</b> Piel troquelada.<br><b>Despacho:</b> Cubicaje proyectado (XYZ-123).'],
+ ['OP-2026-057','PD-2026-094','Calzado Bucaramanga','Bucaramanga · Corredor RUT-BGA','REF-1042 · Bota Andina',40,4,
+  '<b>Listo para Despacho</b><br>Muelle asignado · Notificado a Comercial']
+];
+S.pedMov={};      /* pedidos que se avanzaron en esta sesión (la fila queda resaltada) */
+S.pedAlerta={};   /* pedidos cuya alerta de cargue ya se envió a Despacho */
+
+/* Lo guardado de cada pedido y en qué etapa va. Comercial guarda "paso" (1 a 6: después
+   de Embalaje vienen Despacho y Entregado) y Producción "pct" (25, 50, 75 o 100). */
+const LLAVE_ETAPAS='sicaf_etapas_pedidos';
+function etapasGuardadas(){try{return JSON.parse(localStorage.getItem(LLAVE_ETAPAS)||'{}')||{}}catch(e){return {}}}
+function guardarEtapa(ped,dato){
+ try{const m=etapasGuardadas();m[ped]=dato;localStorage.setItem(LLAVE_ETAPAS,JSON.stringify(m));}catch(e){}
+ avisarCambio(LLAVE_ETAPAS);
+}
+function pasoPedido(p){
+ const g=etapasGuardadas()[p[1]];
+ if(!g)return {paso:p[6],como:'ini'};
+ const paso=g.paso?Math.min(g.paso,4):g.pct===100?4:g.pct===75?3:g.pct===50?2:1;
+ return {paso,como:S.pedMov[p[1]]||paso<4?'mov':'guardado'};
+}
+/* Lo que dice la fila en cada etapa: como viene (ini), después de avanzarla (mov) o
+   guardada de antes con el embalaje terminado (guardado) — los mismos textos del mockup */
+const ETQ_PED={
+ ini:{1:['1. Corte (Piel y Forro)','Troqueladora hidráulica'],2:['2. Guarnición (Costura)','En máquina plana'],
+      3:['3. Montaje (Horma y Suela)','En banco de armado'],4:['4. Embalaje Terminado','Cajas individuales listas']},
+ mov:{1:['1. Corte (Piel y Forro)','Troqueladora hidráulica'],2:['2. Guarnición','Costura y pespunte'],
+      3:['3. Montaje','Horma y suela'],4:['4. Terminado y Embalaje','Cajas individuales listas']},
+ guardado:{4:['4. Embalaje Terminado','Cajas individuales listas en muelle']}
+};
+const SIG_PED={ini:{1:'Pasar a Guarnición',2:'Pasar a Montaje',3:'Completar a Embalaje'},
+               mov:{1:'Pasar a Guarnición',2:'Pasar a Montaje',3:'Pasar a Terminado y Embalaje'}};
+const PROX_PED={1:'Guarnición',2:'Montaje',3:'Embalaje'};
+function panelPedidosPlanta(edit){
+ const filas=PEDIDOS_PLANTA.map(p=>{
+  const [op,ped,cli,dest,mod,pares,,imp]=p, {paso,como}=pasoPedido(p), listo=paso===4;
+  const [et,sub]=(ETQ_PED[como][paso]||ETQ_PED.mov[paso]), ok=listo?' style="color:var(--ok)"':'';
+  const irPed='data-act="ir-pant" data-mod="comercial" data-pant="05-pedidos.html" data-fila="'+ped+'"';
+  const acc=listo
+   ?(S.pedAlerta[ped]?'<button type="button" class="btn btn--sm btn--ghost" disabled>Alerta enviada</button>'
+     :edit?'<button type="button" class="btn btn--sm btn--vino" data-act="p-ped-despacho" data-ped="'+ped+'">Notificar a Despacho</button>':'')
+    +'<button type="button" class="btn btn--sm btn--ghost" data-act="ir-pant" data-mod="logistica" data-pant="02-despachos.html" title="Ver en Despacho">Ver Despachos</button>'
+   :(edit?'<button type="button" class="btn btn--sm btn--oliva" data-act="p-ped-avanzar" data-ped="'+ped+'">'+SIG_PED[como==='ini'?'ini':'mov'][paso]+'</button>':'')
+    +'<button type="button" class="btn btn--sm btn--ghost" '+irPed+' title="Ver pedido en Comercial">Ver Pedido</button>';
+  return '<tr'+(S.pedMov[ped]?' class="es-nueva"':'')+'>'
+   +'<td data-l="Orden"><b>'+op+'</b><div class="tiny">Pedido: <a href="#" '+irPed+'>'+ped+'</a></div></td>'
+   +'<td data-l="Cliente"><b>'+esc(cli)+'</b><div class="tiny">'+esc(dest)+'</div></td>'
+   +'<td data-l="Modelo">'+esc(mod)+'<div class="tiny">'+pares+' pares programados</div></td>'
+   +'<td data-l="Etapa"><span class="pill pill--'+(listo?'ok':'warn')+'">'+et+'</span><div class="tiny"'+ok+'>'+sub+'</div></td>'
+   +'<td data-l="Progreso"><div class="bar bar--'+(listo?'ok':'warn')+'" style="height:7px;margin-bottom:4px"><i style="width:'+paso*25+'%"></i></div>'
+   +'<div class="tiny"'+ok+'><b>'+paso*25+'%</b> · '+(listo?'Listo en muelle':'Próx: '+PROX_PED[paso])+'</div></td>'
+   +'<td data-l="Impacto"><div class="tiny" style="color:'+(p[6]===4?'var(--ok)':'var(--tinta-2)')+'">'+imp+'</div></td>'
+   +'<td data-l="Acción"><div class="acts">'+acc+'</div></td></tr>';
+ });
+ return panel('vino','truck','Monitoreo y Avance de Pedidos de Clientes (Enlace Comercial y Despacho)',
+  'Actualiza en tiempo real al cliente (Comercial) y alista muelle y transporte (Logística y Despacho) según cada etapa',
+  '<div class="panel__body panel__body--flush pedidos-planta">'
+  +tabla([['Orden / Pedido'],['Cliente y Destino'],['Modelo y Cantidad'],['Etapa Actual en Planta'],['Progreso'],['Impacto Comercial / Despacho'],['Acción']],filas)
+  +'<p class="tabla-pie">Integración intermodular: cada avance en planta actualiza la vista de pedidos en Comercial para informar al cliente y avisa a Despacho para el alistamiento de vehículos y guías de transporte.</p></div>',
+  '<span class="ghostbtn" style="pointer-events:none">'+PEDIDOS_PLANTA.length+' pedidos en seguimiento</span>');
+}
 
 /* Merma de planta. [código, fecha, orden, modelo, unidades, causa, etapa] */
 const MERMAS=[
@@ -1612,6 +1690,7 @@ V.produccion=()=>{
   cuerpo = panel('vino','gear','Etapas en Planta','Paso 5 y 6: ejecución secuencial y control de cantidades',
     '<div class="panel__body"><div class="pasos">'+cols+'</div>'
     +'<p class="tiny" style="margin-top:12px">La regla de control es <b>recibido = procesado + merma</b>: el sistema bloquea cualquier cifra que supere las unidades recibidas en la etapa.</p></div>')
+   + panelPedidosPlanta(edit)
    + panel('oliva','clip','Ejecución Etapa por Etapa','Cada orden con sus cuatro etapas, su cantidad y su rendimiento',
      '<div class="panel__body panel__body--flush">'+tablaEt+'</div>');
  }
@@ -1886,6 +1965,27 @@ A['p-bom-sol']=el=>{
  toast('ok','Solicitud enviada a Compras',sol.id+' · '+i.nom+' · '+n0(sol.cant)+' '+i.un+'.');
  render();
 };
+/* Pedido de un cliente: pasa a la etapa siguiente o, con el embalaje terminado, avisa a Despacho */
+A['p-ped-avanzar']=el=>{
+ if(!exigir(puedeEscribir('produccion'),'Solo Producción registra el avance de un pedido en planta.'))return;
+ const p=PEDIDOS_PLANTA.find(x=>x[1]===el.dataset.ped); if(!p)return;
+ const {paso}=pasoPedido(p); if(paso>=4)return;
+ const nuevo=paso+1, pct=nuevo*25, etapa=ETQ_PED.mov[nuevo][0].slice(3);
+ guardarEtapa(p[1],{op:p[0],pedido:p[1],cliente:p[2],etapa,pct,fecha:ahora(),msg:'El pedido avanzó a '+etapa+' en planta de calzado.'});
+ S.pedMov[p[1]]=true;
+ log('Avance de pedido en planta',p[0]+' · '+p[1]+' pasó a '+etapa);
+ render();
+ toast('ok','Avance registrado',p[0]+' ('+p[2]+') avanzó a '+etapa+' ('+pct+' %). Comercial quedó informado para avisarle al cliente, y Despacho, avisado.');
+};
+A['p-ped-despacho']=el=>{
+ if(!exigir(puedeEscribir('produccion'),'Solo Producción avisa a Despacho.'))return;
+ const p=PEDIDOS_PLANTA.find(x=>x[1]===el.dataset.ped); if(!p)return;
+ guardarEtapa(p[1],{op:p[0],pedido:p[1],cliente:p[2],etapa:'Embalaje Terminado',pct:100,fecha:ahora(),listoDespacho:true,pares:String(p[5])});
+ S.pedAlerta[p[1]]=true;
+ log('Alerta de cargue a Despacho',p[1]+' · '+p[5]+' pares · '+p[2]);
+ render();
+ toast('ok','Alerta enviada a Despacho','Pedido '+p[1]+' ('+p[5]+' pares · '+p[2]+') listo en muelle para emitir su guía.');
+};
 A['p-etapa']=el=>{
  const op=S.op.find(o=>o.id===el.dataset.id),e=op.etapas[op.etapa];
  modal('Etapa '+e.n+' — '+op.id,
@@ -2153,10 +2253,33 @@ function marcoDe(mod,pant){
  }
  return MARCOS[mod];
 }
-/* Si el módulo abierto tiene mockup, se ve su marco en lugar de #app */
+/* Lo que un módulo guarda en el navegador (localStorage) y otro lee al abrir su pantalla:
+   Producción le avisa a Comercial y a Logística el avance de un pedido, Inventario le pasa
+   a Compras sus solicitudes, Comercial a Logística sus cotizaciones... Abierto solo, cada
+   módulo se vuelve a cargar al entrar y lo ve. Aquí los marcos quedan vivos, así que el que
+   lee un dato que otro cambió (modulos.js dice qué lee cada uno) se vuelve a cargar al volver
+   a él, en la pantalla en que iba. */
+const VIEJO={};    /* id del módulo -> su marco tiene datos viejos */
+function avisarCambio(llave,desde){
+ Object.keys(MARCOS).forEach(k=>{if(k!==desde&&(MOCK[k].lee||[]).includes(llave))VIEJO[k]=true;});
+}
+/* Lo que cambia un marco llega aquí como evento "storage" (el que lo cambió no lo recibe) */
+window.addEventListener('storage',e=>{
+ if(!e.key)return;
+ const desde=Object.keys(MOCK).find(k=>(e.url||'').includes('/'+MOCK[k].carpeta+'/'));
+ avisarCambio(e.key,desde);
+});
+/* Si el módulo abierto tiene mockup, se ve su marco en lugar de #app. Uno con datos viejos
+   se vuelve a cargar solo al entrar a él (no mientras se trabaja en él). */
+let MARCO_VISTO=null;
 function mostrarMarcos(){
- const mk=!!MOCK[S.vista];
+ const mk=!!MOCK[S.vista], entra=S.vista!==MARCO_VISTO;
+ MARCO_VISTO=mk?S.vista:null;
  $('#app').hidden=mk; $('#marcos').hidden=!mk;
+ if(mk&&entra&&VIEJO[S.vista]&&MARCOS[S.vista]){
+  VIEJO[S.vista]=false; LISTO[S.vista]=false;
+  MARCOS[S.vista].src=rutaMockup(S.vista,S.pant[S.vista]||MOCK[S.vista].primera);
+ }
  if(mk)marcoDe(S.vista);
  Object.keys(MARCOS).forEach(k=>{MARCOS[k].hidden=k!==S.vista;});
  acomodarMarcos();

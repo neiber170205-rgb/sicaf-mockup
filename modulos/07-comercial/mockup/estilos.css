@@ -2706,30 +2706,26 @@ select.dt__in {
 .fac__col { display: flex; flex-direction: column; min-width: 0; }
 .fac__col > .cot-barra { flex: 0 0 auto; }
 
-/* ---- Columna 1: el cliente y las cotizaciones por facturar ---- */
+/* ---- El encabezado: la cotización se elige aquí, en su buscador ---- */
 
-.fac__cli { flex: 0 0 auto; border-bottom: 1px solid var(--linea); background: var(--papel); }
-
-.fac-cli {
+/* La lista de resultados sale del encabezado y pasa por encima de las columnas */
+.fac-datos {
   position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 40px 12px 14px;
+  z-index: 25;
+  overflow: visible;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 
-.fac-cli .avatar { width: 44px; height: 44px; font-size: 16px; }
-.fac-cli__x { min-width: 0; display: flex; flex-direction: column; gap: 1px; font-size: 12.5px; color: var(--tinta-2); }
-.fac-cli__x > b { font-size: 14.5px; color: var(--vino-800); margin-bottom: 2px; }
-.fac-cli__x span b { color: var(--tinta); font-weight: 600; }
-.fac-cli__credito { margin-top: 3px; font-weight: 600; color: var(--tinta); }
-.fac-cli .cot-ficha__estados { margin-top: 5px; }
-.fac-cli .pill { padding: 2px 9px; font-size: 11px; }
+.fac-dato-cot .cot-busca { margin: 3px 0 2px; }
+.fac-dato-cot .control input { height: 38px; padding-right: 38px; font-weight: 600; color: var(--vino-800); }
+.fac-dato-cot .control input::placeholder { font-weight: 400; }
+.fac-dato-cot .control input::-webkit-search-cancel-button { display: none; }
+.fac-dato-cot .control > .ico { top: 10px; }
 
-.fac-cli__quitar {
+.fac-q__x {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 5px;
+  right: 5px;
   display: grid;
   place-items: center;
   width: 28px;
@@ -2738,36 +2734,139 @@ select.dt__in {
   color: var(--tinta-2);
 }
 
-.fac-cli__quitar:hover { background: var(--crit-bg); color: var(--crit); }
+.fac-q__x:hover { background: var(--crit-bg); color: var(--crit); }
 
-.fac__busca { flex: 0 0 auto; padding: 10px 12px 6px; }
-.fac__busca .control input { height: 38px; }
-.fac__busca .control > .ico { top: 10px; }
-
-.fac__lista { display: flex; flex-direction: column; gap: 8px; padding: 6px 12px 12px; }
-
-/* Una cotización por facturar: número y total, cliente, vendedor y vigencia */
-.fac-op {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: 100%;
-  padding: 10px 12px;
-  text-align: left;
-  background: var(--papel);
-  border: 1px solid var(--linea-2);
-  border-radius: var(--r-m);
-  transition: border-color .15s, background .15s;
+/* La lista del buscador, por columnas como una tabla: cotización, cliente, cuándo se
+   hizo, cuándo vence y el total; cada columna con su dato y debajo el detalle */
+#fac-res {
+  container-type: inline-size;
+  max-height: 390px;
+  padding-top: 0;
+  gap: 0;
+  scroll-padding-top: 42px;            /* el encabezado fijo no tapa la que se marca con las flechas */
 }
 
-.fac-op:hover { border-color: var(--cobre-400); }
-.fac-op.is-on { border-color: var(--cobre-500); background: var(--cobre-100); box-shadow: inset 3px 0 0 var(--cobre-600); }
-.fac-op:focus-visible { outline: 2px solid var(--cobre-500); outline-offset: 2px; }
-.fac-op__cab { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; color: var(--vino-800); }
-.fac-op__total { font-variant-numeric: tabular-nums; color: var(--tinta); }
-.fac-op__cli { font-size: 12.5px; color: var(--tinta); }
-.fac-op__pie { font-size: 12px; color: var(--tinta-2); }
-.fac-op__mal { display: flex; align-items: center; gap: 5px; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--crit); }
+/* Con las columnas del encabezado a la derecha, la lista sale más ancha que el buscador */
+@media (min-width: 1181px) {
+  #fac-res { right: auto; width: max(100%, 700px); }
+}
+
+.fac-op {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) 88px 100px 100px;
+  grid-template-areas: "num cli hecha vence tot" "mal mal mal mal mal";
+  gap: 0 14px;
+  align-items: start;
+  padding: 9px 12px;
+}
+
+.cot-res__i.fac-op + .cot-res__i.fac-op { border-top: 1px solid var(--linea-2); }
+
+.fac-op--cab {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -6px 4px;
+  padding: 12px 18px 7px;
+  background: var(--papel);
+  border-bottom: 1px solid var(--linea);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--tinta-2);
+}
+
+.fac-op--cab span:last-child { text-align: right; }
+
+.fac-op > span { display: flex; flex-direction: column; min-width: 0; }
+.fac-op b { font-size: 13.5px; font-weight: 600; color: var(--tinta); }
+.fac-op small { font-size: 11.5px; color: var(--tinta-2); }
+
+.fac-op__num { grid-area: num; }
+.fac-op__num b { display: flex; align-items: center; gap: 4px; color: var(--vino-800); white-space: nowrap; }
+.fac-op__num .ico { flex: 0 0 auto; color: var(--ok); }
+
+.fac-op__cli { grid-area: cli; }
+.fac-op__cli b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.fac-op__f { font-size: 12.5px; color: var(--tinta); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fac-op__hecha { grid-area: hecha; }
+.fac-op__vence { grid-area: vence; }
+.fac-op__vence small { white-space: normal; }
+.fac-op__plazo.is-warn { font-weight: 600; color: var(--warn); }
+.fac-op__plazo.is-crit { font-weight: 600; color: var(--crit); }
+
+.fac-op__tot { grid-area: tot; align-items: flex-end; text-align: right; }
+.fac-op__tot b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* En las columnas el encabezado dice qué fecha es; en la lista angosta lo dice cada una */
+.fac-op__l {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* La elegida va marcada; la que tiene facturas vencidas lo dice en rojo: se ve, no se factura */
+.cot-res__i.fac-op.is-elegida { box-shadow: inset 3px 0 0 var(--cobre-500); }
+.fac-op__mal { grid-area: mal; display: flex; align-items: center; gap: 4px; margin-top: 5px; font-weight: 600; color: var(--crit) !important; }
+
+/* Si la lista queda angosta (el celular), cada cotización va en renglones:
+   número y total, el cliente, y las dos fechas con su nombre */
+@container (max-width: 599px) {
+  .fac-op {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: "num tot" "cli cli" "hecha vence" "mal mal";
+    gap: 8px 12px;
+  }
+  .fac-op--cab { display: none; }
+  .fac-op__l { position: static; width: auto; height: auto; overflow: visible; clip: auto; color: var(--tinta-2); }
+  .fac-op__vence { align-items: flex-end; text-align: right; }
+  .fac-op__mal { margin-top: 0; }
+}
+
+@media (max-width: 1180px) {
+  .fac-datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fac-datos .fac-dato-cot { grid-column: 1 / -1; }
+  .fac-datos .cot-dato:nth-child(2) { border-left: 0; }
+  .fac-datos .cot-dato:nth-child(n+2) { border-top: 1px solid var(--linea-2); }
+  .fac-datos .cot-dato:nth-child(3) { border-left: 1px solid var(--linea-2); }
+}
+
+@media (max-width: 560px) {
+  .fac-datos { grid-template-columns: minmax(0, 1fr); }
+  .fac-datos .cot-dato:nth-child(3) { border-left: 0; }
+}
+
+/* ---- Columna 1: el cliente, ordenado: la foto centrada, el nombre, su
+   identificación y debajo lo demás, por secciones ---- */
+
+.fac__cli { background: var(--papel); }
+
+.fac-cli {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 16px 14px;
+  text-align: center;
+}
+
+.fac-cli__foto { width: 76px; height: 76px; margin-bottom: 10px; font-size: 26px; }
+.fac-cli__nombre { font-size: 16px; line-height: 1.3; color: var(--vino-800); }
+.fac-cli__id { margin-top: 3px; font-size: 13px; color: var(--tinta-2); font-variant-numeric: tabular-nums; }
+.fac-cli__id span { margin-right: 3px; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--cobre-700); }
+.fac-cli .cot-ficha__estados { justify-content: center; margin-top: 8px; }
+.fac-cli .pill { padding: 3px 10px; font-size: 11px; }
+
+.fac-cli__datos { align-self: stretch; margin-top: 14px; text-align: left; border-top: 1px solid var(--linea-2); }
+.fac-cli__datos .cot-ficha__s { padding: 11px 0 4px; border-left: 0; }
+.fac-cli__datos .cot-ficha__s + .cot-ficha__s { border-top: 1px dashed var(--linea); }
+.fac-cli__datos .kv { gap: 10px; padding: 4px 0; font-size: 13px; border-bottom: 0; }
+.fac-cli__datos .kv > span { flex: 0 0 auto; color: var(--tinta-2); }
+.fac-cli__datos .kv > b { min-width: 0; font-weight: 600; text-align: right; overflow-wrap: break-word; }
 
 /* ---- Columna 2: los productos ---- */
 
@@ -2883,7 +2982,7 @@ select.dt__in {
   .page:has(> .fac) { gap: 12px; }
   .page > .fac { flex: 1 1 auto; min-height: 380px; }
   .fac__col { min-height: 0; }
-  .fac__lista,
+  .fac__cli,
   .fac__lineas,
   .fac__res-cuerpo { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 }
@@ -2892,5 +2991,177 @@ select.dt__in {
 @media (max-width: 1180px) {
   .fac { grid-template-columns: minmax(0, 1fr); }
   .fac__iq { max-width: none; }
+
+/* ── Modal Interactivo de Seguimiento y Actualización al Cliente ────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 24, 20, 0.58);
+  backdrop-filter: blur(3px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-box {
+  background: var(--papel, #FFFFFF);
+  border: 1px solid var(--linea, #E5E0D8);
+  border-radius: var(--r-l, 12px);
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(12px) scale(.98);
+  transition: transform .25s ease;
+}
+.modal-backdrop.is-open .modal-box {
+  transform: translateY(0) scale(1);
+}
+.modal-box__head {
+  padding: 14px 18px;
+  background: var(--vino-600, #6B1D2F);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-box__head h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+.modal-box__close {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,.8);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.modal-box__close:hover {
+  color: #FFFFFF;
+}
+.modal-box__body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-box__foot {
+  padding: 12px 18px;
+  background: var(--papel-2, #F8F6F0);
+  border-top: 1px solid var(--linea, #E5E0D8);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Stepper de etapas del pedido */
+.etapas-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 10px 0 15px;
+  padding: 0 10px;
+}
+.etapas-stepper::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 30px;
+  right: 30px;
+  height: 3px;
+  background: var(--linea, #E5E0D8);
+  z-index: 1;
+}
+.etapa-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  text-align: center;
+}
+.etapa-step__dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--papel, #FFF);
+  border: 2px solid var(--linea, #CCC);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tinta-3);
+  transition: all .2s ease;
+}
+.etapa-step.is-done .etapa-step__dot {
+  background: var(--ok, #2E7D32);
+  border-color: var(--ok, #2E7D32);
+  color: #FFFFFF;
+}
+.etapa-step.is-active .etapa-step__dot {
+  background: var(--vino-600, #6B1D2F);
+  border-color: var(--vino-600, #6B1D2F);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(107, 29, 47, 0.2);
+}
+.etapa-step__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tinta-2);
+  max-width: 72px;
+  line-height: 1.2;
+}
+.etapa-step.is-active .etapa-step__label {
+  color: var(--vino-800);
+  font-weight: 700;
+}
+
+/* Vista previa de comunicación al cliente */
+.notif-cliente-box {
+  background: #F4F8F4;
+  border: 1px solid #C8E6C9;
+  border-radius: var(--r-m, 8px);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.notif-cliente-box__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2E7D32;
+}
+.notif-cliente-box__msg {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--tinta-1, #222);
+  background: #FFFFFF;
+  padding: 10px 12px;
+  border-radius: var(--r-s, 6px);
+  border: 1px solid #E0E0E0;
+  font-family: var(--letra-texto, sans-serif);
 }
 

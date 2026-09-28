@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Logística y Despacho · Flota</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="08-logistica" data-titulo="Logística y Despacho · Flota">
+
+    <section class="hero">
+      <div>
+        <h1>Logística y Despacho</h1>
+        <p>Rutas, recepción de proveedores, logística inversa y flota.</p>
+      </div>
+    </section>
+    <div class="kpis kpis--5">
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-ruta">4</div>
+          <div class="kpi__l">Vehículos en ruta</div>
+        </div>
+      </article>
+      <article class="kpi kpi--rosa">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-pares">182</div>
+          <div class="kpi__l">Pares en tránsito</div>
+        </div>
+      </article>
+      <article class="kpi kpi--oliva">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-prov">2</div>
+          <div class="kpi__l">Proveedores en camino</div>
+        </div>
+      </article>
+      <article class="kpi kpi--cobre">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
+        <div>
+          <div class="kpi__n" id="k-alertas">3</div>
+          <div class="kpi__l">Alertas abiertas</div>
+        </div>
+      </article>
+      <article class="kpi kpi--arena">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
+        <div>
+          <div class="kpi__n" id="k-recol">5</div>
+          <div class="kpi__l">Recolecciones</div>
+        </div>
+      </article>
+    </div>
+
+    <nav class="subnav" aria-label="Secciones de Logística">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="camion" data-ct="5" href="02-despachos.html">Despachos</a>
+      <a class="subnav__i" data-ico="caja" data-ct="3" href="03-recepcion.html">Recepción</a>
+      <a class="subnav__i" data-ico="ruta" data-ct="5" href="04-log-inversa.html">Log. inversa</a>
+      <a class="subnav__i is-on" data-ico="camion" data-ct="4" href="05-flota.html">Flota</a>
+      <a class="subnav__i" data-ico="barras" href="06-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="engranaje" href="07-config.html">Config.</a>
+    </nav>
+
+    <!-- Selector de Espacio de Trabajo (Anti-Cabina de Avión) -->
+    <nav class="workspace-nav" aria-label="Gestión de Flota y Conductores">
+      <button type="button" class="ws-tab is-active" data-vista="panel-parque-automotor">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+        <span>1. Parque Automotor y Salidas</span>
+        <span class="ws-badge" id="tab-count-vehiculos">6 unidades</span>
+      </button>
+      <button type="button" class="ws-tab" data-vista="panel-directorio-conductores">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>2. Directorio de Conductores y Personal</span>
+        <span class="ws-badge ws-badge--oliva" id="tab-count-conductores">5 empleados</span>
+      </button>
+      <button type="button" class="ws-tab" data-vista="panel-registro-flota">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span>3. Registrar Vehículo o Conductor</span>
+      </button>
+      <button type="button" class="ws-tab" data-vista="todas" style="margin-left:auto;font-size:12px">
+        <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>
+        <span>Ver todas</span>
+      </button>
+    </nav>
+
+    <!-- ── VISTA 1: PARQUE AUTOMOTOR Y PROGRAMACIÓN (Vista Principal) ── -->
+    <div class="vista-seccion" id="panel-parque-automotor">
+      <!-- Panel 1: FORMULARIO DE ASIGNACIÓN Y PROGRAMACIÓN DE FLOTA (Proceso Paso 2 y 4) -->
+      <section class="panel">
+        <header class="panel__head panel__head--vino">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+          <div>
+            <h2>Asignación y Programación de Flota</h2>
+            <div class="sub">Paso 2: Capacidad y asignación · Validación de taller · Paso 4: Salida a ruta</div>
+          </div>
+        </header>
+        <div class="panel__body">
+          <div class="form-grid">
+            <!-- 1. Vehículo -->
+            <div class="field">
+              <label for="fl-prog-veh">1. Vehículo de la Flota (Validación de Estado)</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+                <select id="fl-prog-veh">
+                  <option value="DEF-455" data-chofer="Hernán Ruiz" data-cap="120" data-tipo="Camioneta" data-estado="Disponible">DEF-455 · Camioneta · Cap: 120 pares · Disponible</option>
+                  <option value="XYZ-123" data-chofer="Jorge Peña" data-cap="400" data-tipo="Camión NPR" data-estado="En ruta">XYZ-123 · Camión NPR · Cap: 400 pares · En ruta (Bogotá)</option>
+                  <option value="ABC-987" data-chofer="Luisa Mora" data-cap="250" data-tipo="Furgón" data-estado="En ruta">ABC-987 · Furgón · Cap: 250 pares · En ruta (Cúcuta)</option>
+                  <option value="GHI-302" data-chofer="Marta Villamizar" data-cap="400" data-tipo="Camión NPR" data-estado="En ruta">GHI-302 · Camión NPR · Cap: 400 pares · En ruta (Bucaramanga)</option>
+                  <option value="MNO-214" data-chofer="Sin asignar" data-cap="120" data-tipo="Camioneta" data-estado="En taller">MNO-214 · Camioneta · En taller (Bloqueado para salida)</option>
+                </select>
+                <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+              </div>
+            </div>
+
+            <!-- 2. Conductor Registrado (Directorio de Personal) -->
+            <div class="field">
+              <label for="fl-prog-chofer">2. Conductor Registrado (Personal de Logística)</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <select id="fl-prog-chofer">
+                  <option value="Hernán Ruiz" data-cc="1.090.441.203" data-lic="C2 (Vence 2028)" data-tel="312 455-8821">Hernán Ruiz · CC 1.090.441.203 · Lic. C2</option>
+                  <option value="Jorge Peña" data-cc="88.234.910" data-lic="C3 (Vence 2027)" data-tel="315 889-1200">Jorge Peña · CC 88.234.910 · Lic. C3</option>
+                  <option value="Luisa Mora" data-cc="1.090.312.445" data-lic="C2 (Vence 2029)" data-tel="318 201-9944">Luisa Mora · CC 1.090.312.445 · Lic. C2</option>
+                  <option value="Marta Villamizar" data-cc="60.334.120" data-lic="C3 (Vence 2027)" data-tel="311 774-3209">Marta Villamizar · CC 60.334.120 · Lic. C3</option>
+                  <option value="Carlos Beltrán" data-cc="1.093.882.114" data-lic="C2 (Vence 2028)" data-tel="314 552-3011">Carlos Beltrán · CC 1.093.882.114 · Lic. C2 (Relevo)</option>
+                </select>
+                <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg></span>
+              </div>
+            </div>
+
+            <!-- 3. Corredor de Ruta -->
+            <div class="field">
+              <label for="fl-prog-ruta">3. Corredor de Ruta Destino</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+                <select id="fl-prog-ruta">
+                  <option value="Bucaramanga">Corredor Bucaramanga (Vía Pamplona - Berlín)</option>
+                  <option value="Bogotá">Corredor Nacional Bogotá (Vía Tunja)</option>
+                  <option value="Cúcuta">Corredor Metropolitano Cúcuta - Los Patios</option>
+                  <option value="Pamplona">Corredor Comercial Pamplona</option>
+                </select>
+                <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+              </div>
+            </div>
+
+            <!-- 4. Pares a Cargar -->
+            <div class="field">
+              <label for="fl-prog-pares">4. Pares de Calzado a Cargar</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+                <input id="fl-prog-pares" type="number" min="1" max="400" value="80" placeholder="Pares estibados">
+              </div>
+            </div>
+
+            <!-- 5. Odómetro de Salida -->
+            <div class="field">
+              <label for="fl-prog-km">5. Kilometraje Odómetro Inicial (km)</label>
+              <div class="control">
+                <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <input id="fl-prog-km" type="number" value="142500" placeholder="Km actual del tablero">
+              </div>
+            </div>
+          </div>
+
+          <!-- Monitor en tiempo real para Flota -->
+          <div class="cap-monitor">
+            <div class="cap-monitor__cab">
+              <span>Ocupación de la Unidad (RN-LOG-02):</span>
+              <span class="cap-monitor__pct" id="fl-cap-pct">66.7% ocupado</span>
+            </div>
+            <div class="cap-monitor__barra">
+              <div class="cap-monitor__prog" id="fl-cap-prog" style="width: 66.7%;"></div>
+            </div>
+            <div class="cap-monitor__msg" id="fl-cap-msg">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+              <span>Vehículo DEF-455 con 80 pares asignados de 120 de capacidad. Apto para salida.</span>
+            </div>
+          </div>
+
+          <!-- Barra de acciones simétrica -->
+          <div class="form-actions">
+            <div class="form-actions__info">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span>Validación preventiva de taller mecánico y sobrecupos para prevenir siniestros viales.</span>
+            </div>
+            <div class="form-actions__btns">
+              <button type="button" class="btn btn--vino" id="btn-asignar-flota">
+                <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+                <span>Programar y Despachar a Ruta</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 2: CONTROL Y MONITOREO DE FLOTA ACTIVA -->
+      <section class="panel">
+        <header class="panel__head panel__head--oliva">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+          <div>
+            <h2>Control y Monitoreo de Flota Activa</h2>
+            <div class="sub">Vehículos, conductores registrados y ocupación de carga</div>
+          </div>
+        </header>
+        <div class="panel__body panel__body--flush">
+          <div class="tabla-tools">
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+              <input type="search" id="fl-busca" placeholder="Buscar vehículo, conductor o ruta…">
+            </div>
+            <div class="control control--corto">
+              <select id="fl-filtro" aria-label="Filtrar la tabla">
+                <option>Todos los estados</option>
+                <option>Disponible</option>
+                <option>En ruta</option>
+                <option>En taller</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+            <span class="tabla-tools__n">4 vehículos en ruta</span>
+          </div>
+          <div class="scroll-x">
+            <table id="tabla-vehiculos">
+              <thead>
+                <tr>
+                  <th>Vehículo</th>
+                  <th>Conductor Registrado</th>
+                  <th>Estado</th>
+                  <th>Ruta</th>
+                  <th>Ocupación</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Vehículo">
+                    <b>XYZ-123</b>
+                    <div class="tiny">Camión NPR</div>
+                  </td>
+                  <td data-l="Conductor">
+                    <b>Jorge Peña</b>
+                    <div class="tiny">CC 88.234.910 · Lic. C3</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td data-l="Ruta">Bogotá</td>
+                  <td style="min-width:120px" data-l="Ocupación">
+                    <div class="bar "><i style="width:15.5%"></i></div>
+                    <div class="tiny">62 / 400 pares</div>
+                  </td>
+                  <td>
+                    <div class="acts">
+                      <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-l="Vehículo">
+                    <b>ABC-987</b>
+                    <div class="tiny">Furgón</div>
+                  </td>
+                  <td data-l="Conductor">
+                    <b>Luisa Mora</b>
+                    <div class="tiny">CC 1.090.312.445 · Lic. C2</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td data-l="Ruta">Cúcuta</td>
+                  <td style="min-width:120px" data-l="Ocupación">
+                    <div class="bar "><i style="width:19.2%"></i></div>
+                    <div class="tiny">48 / 250 pares</div>
+                  </td>
+                  <td>
+                    <div class="acts">
+                      <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-l="Vehículo">
+                    <b>GHI-302</b>
+                    <div class="tiny">Camión NPR</div>
+                  </td>
+                  <td data-l="Conductor">
+                    <b>Marta Villamizar</b>
+                    <div class="tiny">CC 60.334.120 · Lic. C3</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td data-l="Ruta">Bucaramanga</td>
+                  <td style="min-width:120px" data-l="Ocupación">
+                    <div class="bar "><i style="width:10.0%"></i></div>
+                    <div class="tiny">40 / 400 pares</div>
+                  </td>
+                  <td>
+                    <div class="acts">
+                      <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-l="Vehículo">
+                    <b>JKL-778</b>
+                    <div class="tiny">Furgón</div>
+                  </td>
+                  <td data-l="Conductor">
+                    <b>Álvaro Contreras</b>
+                    <div class="tiny">CC 13.884.210 · Lic. C2</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td data-l="Ruta">Pamplona</td>
+                  <td style="min-width:120px" data-l="Ocupación">
+                    <div class="bar "><i style="width:12.8%"></i></div>
+                    <div class="tiny">32 / 250 pares</div>
+                  </td>
+                  <td>
+                    <div class="acts">
+                      <button class="btn btn--sm btn--ghost">Cerrar ruta</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-l="Vehículo">
+                    <b>DEF-455</b>
+                    <div class="tiny">Camioneta</div>
+                  </td>
+                  <td data-l="Conductor">
+                    <b>Hernán Ruiz</b>
+                    <div class="tiny">CC 1.090.441.203 · Lic. C2</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--ok">Disponible</span></td>
+                  <td data-l="Ruta">—</td>
+                  <td style="min-width:120px" data-l="Ocupación">
+                    <div class="bar "><i style="width:0.0%"></i></div>
+                    <div class="tiny">0 / 120 pares</div>
+                  </td>
+                  <td>
+                    <div class="acts">
+                      <button class="btn btn--sm btn--ghost">Asignar ruta</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-l="Vehículo">
+                    <b>MNO-214</b>
+                    <div class="tiny">Camioneta</div>
+                  </td>
+                  <td data-l="Conductor">
+                    <b>Sonia Carvajal</b>
+                    <div class="tiny">CC 1.091.223.400 · Taller</div>
+                  </td>
+                  <td data-l="Estado"><span class="pill pill--crit">En taller</span></td>
+                  <td data-l="Ruta">—</td>
+                  <td style="min-width:120px" data-l="Ocupación">
+                    <div class="bar "><i style="width:0.0%"></i></div>
+                    <div class="tiny">0 / 120 pares</div>
+                  </td>
+                  <td>
+                    <div class="acts">
+                      <button class="btn btn--sm btn--ghost">Dar de alta</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tabla-pie">Mostrando 6 de 6 vehículos · un vehículo con mantenimiento vencido no sale a ruta</p>
+          <div class="nota">
+            <span class="dot">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+            </span>
+            <p><b>Nota:</b> La ocupación se calcula sobre la capacidad del vehículo; al cerrar la ruta queda disponible para el siguiente despacho.</p>
+            <span class="firma">Calzado que<br>impulsa tus metas</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ── VISTA 2: DIRECTORIO DE CONDUCTORES Y PERSONAL DE LOGÍSTICA ── -->
+    <div class="vista-seccion" id="panel-directorio-conductores" hidden>
+      <section class="panel">
+        <header class="panel__head panel__head--oliva">
+          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <div>
+            <h2>Directorio de Conductores y Personal de Logística</h2>
+            <div class="sub">Registro de empleados operativos · Validación de licencias C2/C3 y contacto directo</div>
+          </div>
+        </header>
+        <div class="panel__body panel__body--flush">
+          <div class="tabla-tools">
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+              <input type="search" id="drv-busca" placeholder="Buscar conductor por nombre, cédula o teléfono…">
+            </div>
+            <div class="control control--corto">
+              <select id="drv-filtro" aria-label="Filtrar conductores">
+                <option value="">Todos los estados</option>
+                <option value="Disponible">Disponible</option>
+                <option value="En ruta">En ruta</option>
+                <option value="Relevo">Relevo / Descanso</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+            <span class="tabla-tools__n" id="drv-conteo">5 conductores registrados</span>
+          </div>
+
+          <div class="scroll-x">
+            <table id="tabla-conductores">
+              <thead>
+                <tr>
+                  <th>Empleado / Conductor</th>
+                  <th>Cédula de Ciudadanía</th>
+                  <th>Licencia de Conducción</th>
+                  <th>Celular / Contacto</th>
+                  <th>Vehículo Asignado</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-l="Empleado">
+                    <div class="driver-card">
+                      <div class="driver-card__avatar">HR</div>
+                      <div class="driver-card__info">
+                        <b>Hernán Ruiz</b>
+                        <span>Conductor Principal · 3 años</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-l="Cédula"><b>CC 1.090.441.203</b><div class="tiny">Cúcuta</div></td>
+                  <td data-l="Licencia">
+                    <span class="chip chip--oliva">Cat. C2 Vigente</span>
+                    <div class="tiny">Vence: Nov 2028</div>
+                  </td>
+                  <td data-l="Contacto"><b>312 455-8821</b><div class="tiny">Flota local</div></td>
+                  <td data-l="Vehículo"><b>DEF-455</b><div class="tiny">Camioneta Furgón</div></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Disponible</span></td>
+                  <td>
+                    <div class="acts">
+                      <button type="button" class="btn btn--sm btn--ghost btn-ver-chofer" data-nombre="Hernán Ruiz">Ficha</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td data-l="Empleado">
+                    <div class="driver-card">
+                      <div class="driver-card__avatar">JP</div>
+                      <div class="driver-card__info">
+                        <b>Jorge Peña</b>
+                        <span>Conductor Pesado · 5 años</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-l="Cédula"><b>CC 88.234.910</b><div class="tiny">Pamplona</div></td>
+                  <td data-l="Licencia">
+                    <span class="chip chip--oliva">Cat. C3 Vigente</span>
+                    <div class="tiny">Vence: May 2027</div>
+                  </td>
+                  <td data-l="Contacto"><b>315 889-1200</b><div class="tiny">Nacional Bogotá</div></td>
+                  <td data-l="Vehículo"><b>XYZ-123</b><div class="tiny">Camión NPR</div></td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td>
+                    <div class="acts">
+                      <button type="button" class="btn btn--sm btn--ghost btn-ver-chofer" data-nombre="Jorge Peña">Ficha</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td data-l="Empleado">
+                    <div class="driver-card">
+                      <div class="driver-card__avatar">LM</div>
+                      <div class="driver-card__info">
+                        <b>Luisa Mora</b>
+                        <span>Conductora Urbana · 2 años</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-l="Cédula"><b>CC 1.090.312.445</b><div class="tiny">Los Patios</div></td>
+                  <td data-l="Licencia">
+                    <span class="chip chip--oliva">Cat. C2 Vigente</span>
+                    <div class="tiny">Vence: Sep 2029</div>
+                  </td>
+                  <td data-l="Contacto"><b>318 201-9944</b><div class="tiny">Metropolitano</div></td>
+                  <td data-l="Vehículo"><b>ABC-987</b><div class="tiny">Furgón Ligero</div></td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td>
+                    <div class="acts">
+                      <button type="button" class="btn btn--sm btn--ghost btn-ver-chofer" data-nombre="Luisa Mora">Ficha</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td data-l="Empleado">
+                    <div class="driver-card">
+                      <div class="driver-card__avatar">MV</div>
+                      <div class="driver-card__info">
+                        <b>Marta Villamizar</b>
+                        <span>Conductora Pesada · 4 años</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-l="Cédula"><b>CC 60.334.120</b><div class="tiny">Bucaramanga</div></td>
+                  <td data-l="Licencia">
+                    <span class="chip chip--oliva">Cat. C3 Vigente</span>
+                    <div class="tiny">Vence: Ago 2027</div>
+                  </td>
+                  <td data-l="Contacto"><b>311 774-3209</b><div class="tiny">Ruta Santanderes</div></td>
+                  <td data-l="Vehículo"><b>GHI-302</b><div class="tiny">Camión NPR</div></td>
+                  <td data-l="Estado"><span class="pill pill--warn">En ruta</span></td>
+                  <td>
+                    <div class="acts">
+                      <button type="button" class="btn btn--sm btn--ghost btn-ver-chofer" data-nombre="Marta Villamizar">Ficha</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td data-l="Empleado">
+                    <div class="driver-card">
+                      <div class="driver-card__avatar">CB</div>
+                      <div class="driver-card__info">
+                        <b>Carlos Beltrán</b>
+                        <span>Conductor de Relevo</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-l="Cédula"><b>CC 1.093.882.114</b><div class="tiny">Cúcuta</div></td>
+                  <td data-l="Licencia">
+                    <span class="chip chip--oliva">Cat. C2 Vigente</span>
+                    <div class="tiny">Vence: Ene 2028</div>
+                  </td>
+                  <td data-l="Contacto"><b>314 552-3011</b><div class="tiny">Muelle / Reserva</div></td>
+                  <td data-l="Vehículo"><b>Disponible</b><div class="tiny">Relevo general</div></td>
+                  <td data-l="Estado"><span class="pill pill--ok">Disponible</span></td>
+                  <td>
+                    <div class="acts">
+                      <button type="button" class="btn btn--sm btn--ghost btn-ver-chofer" data-nombre="Carlos Beltrán">Ficha</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tabla-pie">Personal activo con parafiscales y ARL de transporte al día · 5 conductores</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ── VISTA 3: REGISTRO DE VEHÍCULOS Y CONDUCTORES ── -->
+    <div class="vista-seccion" id="panel-registro-flota" hidden>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px">
+        <!-- Tarjeta A: Registrar Nuevo Vehículo -->
+        <section class="panel">
+          <header class="panel__head panel__head--vino">
+            <svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+            <div>
+              <h3>Registrar Vehículo en Flota</h3>
+              <div class="sub">Alta de camión, furgón o camioneta con capacidad en pares</div>
+            </div>
+          </header>
+          <div class="panel__body">
+            <div class="field">
+              <label for="reg-v-placa">Placa del Vehículo <b style="color:var(--crit)">*</b></label>
+              <div class="control">
+                <input id="reg-v-placa" type="text" placeholder="Ej. KOP-882" style="text-transform:uppercase">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="reg-v-tipo">Tipo de Carrocería</label>
+              <div class="control">
+                <select id="reg-v-tipo">
+                  <option value="Camioneta Furgón">Camioneta Furgón (Capacidad estándar: 120 pares)</option>
+                  <option value="Furgón Ligero">Furgón Ligero (Capacidad estándar: 250 pares)</option>
+                  <option value="Camión NPR">Camión NPR (Capacidad pesada: 400 pares)</option>
+                </select>
+                <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="reg-v-cap">Capacidad Máxima de Carga (Pares de Calzado) <b style="color:var(--crit)">*</b></label>
+              <div class="control">
+                <input id="reg-v-cap" type="number" min="10" max="1000" value="250" placeholder="Pares máximos">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="reg-v-km">Odómetro Inicial (Kilómetros)</label>
+              <div class="control">
+                <input id="reg-v-km" type="number" value="85000" placeholder="Km del tablero">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn--vino" id="btn-guardar-nuevo-vehiculo">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Guardar Vehículo</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tarjeta B: Registrar Nuevo Conductor / Empleado -->
+        <section class="panel">
+          <header class="panel__head panel__head--cobre">
+            <svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <div>
+              <h3>Registrar Conductor / Empleado</h3>
+              <div class="sub">Vinculación de personal con licencia y ficha laboral</div>
+            </div>
+          </header>
+          <div class="panel__body">
+            <div class="field">
+              <label for="reg-d-nombre">Nombre y Apellidos <b style="color:var(--crit)">*</b></label>
+              <div class="control">
+                <input id="reg-d-nombre" type="text" placeholder="Ej. Rodrigo Mendoza">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="reg-d-cc">Cédula de Ciudadanía <b style="color:var(--crit)">*</b></label>
+              <div class="control">
+                <input id="reg-d-cc" type="text" placeholder="Ej. 1.090.876.543">
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field">
+                <label for="reg-d-lic">Categoría Licencia</label>
+                <div class="control">
+                  <select id="reg-d-lic">
+                    <option value="C2">C2 (Camioneta / Furgón)</option>
+                    <option value="C3">C3 (Camión Pesado NPR)</option>
+                    <option value="C1">C1 (Urbano Liviano)</option>
+                  </select>
+                  <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m6 9 6 6 6-6"></path></svg></span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="reg-d-vence">Vigencia Licencia</label>
+                <div class="control">
+                  <input id="reg-d-vence" type="date" value="2028-12-31">
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="reg-d-tel">Teléfono Celular de Contacto <b style="color:var(--crit)">*</b></label>
+              <div class="control">
+                <input id="reg-d-tel" type="tel" placeholder="Ej. 320 891-4455">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn--cobre" id="btn-guardar-nuevo-conductor">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Registrar Conductor</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>

@@ -54,9 +54,6 @@
         </div>
       </article>
     </div>
-        <span class="kpi__d up">↑ 18%</span>
-      </article>
-    </div>
     <details class="avisos">
       <summary class="avisos__cab">
         <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
@@ -154,11 +151,24 @@
               <input id="f-v-precio" type="number" min="0" value="55000">
             </div>
           </div>
+          <div class="field">
+            <label for="f-v-ciu">Destino y Corredor de Entrega</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+              <select id="f-v-ciu">
+                <option value="Bucaramanga · RUT-BGA">Bucaramanga (Corredor RUT-BGA · 6.0 hrs)</option>
+                <option value="Bogotá · RUT-BOG">Bogotá (Corredor RUT-BOG · 14.0 hrs)</option>
+                <option value="Cúcuta · RUT-CUC">Cúcuta (Corredor Metropolitano · 1.5 hrs)</option>
+                <option value="Pamplona · RUT-PAM">Pamplona (Corredor RUT-PAM · 2.5 hrs)</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+          </div>
         <button class="btn">
           <svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
           Generar cotización
         </button>
-        <p class="tiny">La cotización no compromete existencia: la reserva se hace cuando el pedido se confirma.</p>
+        <p class="tiny"><b>Enlace comercial-despacho:</b> Al generar la cotización, se emite una <b>alerta automática a Logística y Despacho</b> con la cantidad, modelo y destino para proyectar la disponibilidad de transporte, cubicaje de furgón y ruta a futuro.</p>
       </div>
     </section>
     <section class="panel">
@@ -166,7 +176,7 @@
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
         <div>
           <h2>Cotizaciones Enviadas</h2>
-          <div class="sub">Lo que está en manos del cliente</div>
+          <div class="sub">Lo que está en manos del cliente · Alertas sincronizadas con Logística</div>
         </div>
         <span class="ghostbtn" style="pointer-events:none">2 abiertas</span>
       </header>
@@ -192,7 +202,7 @@
             <thead>
               <tr>
                 <th>Cotización</th>
-                <th>Cliente</th>
+                <th>Cliente y Destino</th>
                 <th>Modelo</th>
                 <th class="num">Valor</th>
                 <th>Estado</th>
@@ -205,16 +215,23 @@
                   <b>CO-2026-011</b>
                   <div class="tiny">Vence en 15 días</div>
                 </td>
-                <td data-l="Cliente">Calzado del Oriente</td>
+                <td data-l="Cliente">
+                  <b>Calzado del Oriente</b>
+                  <div class="tiny">Bucaramanga · RUT-BGA</div>
+                </td>
                 <td data-l="Modelo">
                   REF-1044
                   <div class="tiny">55 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$3.520.000</td>
-                <td data-l="Estado"><span class="pill pill--warn">Enviada</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">Enviada</span>
+                  <div class="tiny" style="color:var(--cobre-600);margin-top:3px">🚚 Alerta: Proyectar ruta</div>
+                </td>
                 <td>
                   <div class="acts">
                     <button class="btn btn--sm btn--oliva">Convertir en pedido</button>
+                    <a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html" title="Ver proyección de ruta en Logística">Ver en Despacho</a>
                   </div>
                 </td>
               </tr>
@@ -223,16 +240,23 @@
                   <b>CO-2026-010</b>
                   <div class="tiny">Vence en 12 días</div>
                 </td>
-                <td data-l="Cliente">Almacén Sur</td>
+                <td data-l="Cliente">
+                  <b>Almacén Sur</b>
+                  <div class="tiny">Bucaramanga · RUT-BGA</div>
+                </td>
                 <td data-l="Modelo">
                   REF-1042
                   <div class="tiny">40 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$2.720.000</td>
-                <td data-l="Estado"><span class="pill pill--warn">Enviada</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">Enviada</span>
+                  <div class="tiny" style="color:var(--ok);margin-top:3px">✓ Ruta proyectada (6h)</div>
+                </td>
                 <td>
                   <div class="acts">
                     <button class="btn btn--sm btn--oliva">Convertir en pedido</button>
+                    <a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html">Ver en Despacho</a>
                   </div>
                 </td>
               </tr>
@@ -241,16 +265,23 @@
                   <b>CO-2026-009</b>
                   <div class="tiny">Vence en 9 días</div>
                 </td>
-                <td data-l="Cliente">Calzado Norte</td>
+                <td data-l="Cliente">
+                  <b>Calzado Norte</b>
+                  <div class="tiny">Bogotá · RUT-BOG</div>
+                </td>
                 <td data-l="Modelo">
                   REF-1042
                   <div class="tiny">60 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$3.300.000</td>
-                <td data-l="Estado"><span class="pill pill--warn">Enviada</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--warn">Enviada</span>
+                  <div class="tiny" style="color:var(--ok);margin-top:3px">✓ Ruta proyectada (14h)</div>
+                </td>
                 <td>
                   <div class="acts">
                     <button class="btn btn--sm btn--oliva">Convertir en pedido</button>
+                    <a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html">Ver en Despacho</a>
                   </div>
                 </td>
               </tr>
@@ -259,16 +290,23 @@
                   <b>CO-2026-008</b>
                   <div class="tiny">Vence en 6 días</div>
                 </td>
-                <td data-l="Cliente">Comercial Los Andes</td>
+                <td data-l="Cliente">
+                  <b>Comercial Los Andes</b>
+                  <div class="tiny">Bucaramanga · RUT-BGA</div>
+                </td>
                 <td data-l="Modelo">
                   REF-1044
                   <div class="tiny">72 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$5.220.000</td>
-                <td data-l="Estado"><span class="pill pill--ok">Aceptada</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Aceptada</span>
+                  <div class="tiny" style="color:var(--ok);margin-top:3px">✓ Proyección lista</div>
+                </td>
                 <td>
                   <div class="acts">
                     <button class="btn btn--sm btn--oliva">Convertir en pedido</button>
+                    <a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html">Ver en Despacho</a>
                   </div>
                 </td>
               </tr>
@@ -277,16 +315,23 @@
                   <b>CO-2026-007</b>
                   <div class="tiny">Vence en 3 días</div>
                 </td>
-                <td data-l="Cliente">Distribuidora Tamanaco</td>
+                <td data-l="Cliente">
+                  <b>Distribuidora Tamanaco</b>
+                  <div class="tiny">Cúcuta · RUT-CUC</div>
+                </td>
                 <td data-l="Modelo">
                   REF-1043
                   <div class="tiny">35 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$2.275.000</td>
-                <td data-l="Estado"><span class="pill pill--ok">Aceptada</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Aceptada</span>
+                  <div class="tiny" style="color:var(--ok);margin-top:3px">✓ Proyección lista</div>
+                </td>
                 <td>
                   <div class="acts">
                     <button class="btn btn--sm btn--oliva">Convertir en pedido</button>
+                    <a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html">Ver en Despacho</a>
                   </div>
                 </td>
               </tr>
@@ -321,6 +366,51 @@
         <p class="tabla-pie">Mostrando 6 de 6 cotizaciones · al convertir una se crea el pedido y se pide existencia a Inventario</p>
       </div>
     </section>
+
+    <!-- ── MODAL: ALERTA DE SALIDA DE COTIZACIÓN HACIA LOGÍSTICA (CIERRE MANUAL) ── -->
+    <div class="modal-backdrop" id="modal-alerta-cotizacion-salida">
+      <div class="modal-box" style="max-width:520px">
+        <div class="modal-box__head" style="background:var(--vino-700,#5A1016)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <h3 style="margin:0;font-size:16px;color:#fff">Alerta Preventiva Emitida a Logística y Despacho</h3>
+          </div>
+          <button type="button" class="modal-box__close" id="btn-x-alerta-salida" title="Cerrar ventana">&times;</button>
+        </div>
+        <div class="modal-box__body">
+          <div class="aviso aviso--warn" style="margin:0">
+            <p style="margin:0"><b>Cotización emitida exitosamente:</b> se ha transferido automáticamente la información de preventa al módulo de Logística y Despacho para el cálculo y proyección anticipada de transporte, cubicaje de vehículo y ruta de entrega.</p>
+          </div>
+
+          <div style="background:var(--papel-2,#F8F6F0);border:1px solid var(--linea,#E5E0D8);padding:14px;border-radius:var(--r-m,8px);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--linea,#E5E0D8);padding-bottom:8px">
+              <span class="tiny" style="color:var(--tinta-3)">Consecutivo Emitido:</span>
+              <b id="al-salida-id" style="font-size:15px;color:var(--vino-800)">CO-2026-012</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="tiny" style="color:var(--tinta-3)">Cliente y Destino:</span>
+              <b id="al-salida-cli">Cliente General · Bucaramanga</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="tiny" style="color:var(--tinta-3)">Modelo y Volumen:</span>
+              <span id="al-salida-mod" style="font-weight:600">REF-1042 · 50 pares cotizados</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="tiny" style="color:var(--tinta-3)">Corredor de Ruta:</span>
+              <span class="chip chip--oliva" id="al-salida-ruta">RUT-BGA · Cúcuta - Bucaramanga</span>
+            </div>
+          </div>
+
+          <p class="tiny" style="color:var(--tinta-2);line-height:1.45;margin:0">
+            <b>Nota de control:</b> Esta ventana de alerta permanecerá abierta hasta que sea cerrada manualmente para garantizar la confirmación de la transferencia intermodular antes de continuar.
+          </p>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cerrar-alerta-salida">Cerrar ventana</button>
+          <a class="btn btn--cobre" id="btn-ir-despacho-alerta" href="../../08-logistica/mockup/02-despachos.html">Ir a Despacho a Proyectar Ruta</a>
+        </div>
+      </div>
+    </div>
 
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>

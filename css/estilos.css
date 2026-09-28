@@ -1346,6 +1346,20 @@ select.dt__in{min-width:140px;max-width:210px;cursor:pointer}
    módulos no se estira para llenar la ventana */
 @media (max-width:900px){ .marcos{flex:none;height:0} .side{position:relative} .app{align-content:start} }
 
+/* ============ PRODUCCIÓN · ETAPAS: LOS PEDIDOS DE CLIENTES EN PLANTA ============
+   La fila de un pedido que se avanzó queda resaltada (como en 05-produccion/mockup) */
+tr.es-nueva>td{background:var(--oliva-100,#F0FDF4)}
+/* La tabla va con las medidas de comun/estilos.css, como en el mockup de Producción */
+.pedidos-planta.panel__body{padding:0}
+.pedidos-planta>.scroll-x{padding:4px 6px 0}
+.pedidos-planta thead th{color:var(--tinta-2);font-size:11.5px;font-weight:600;letter-spacing:.1em;padding:12px 12px 10px}
+.pedidos-planta tbody td{padding:11px 12px;font-size:13.5px}
+.pedidos-planta tbody td b{white-space:normal}
+.pedidos-planta tbody td .tiny{display:block;margin-top:3px;white-space:normal;font-size:11.5px}
+.pedidos-planta .pill{white-space:nowrap;font-size:11.5px;padding:5px 10px}
+.pedidos-planta a{color:var(--cobre-700)}
+.pedidos-planta .tabla-pie{margin:0}
+
 /* ============ PRODUCCIÓN · ÓRDENES: LA TABLA ES LA PANTALLA ============
    Las mismas reglas de 05-produccion/mockup/estilos.css (03-ordenes.html). Allá los
    filtros, la nota y la ventana se abren sin JavaScript; aquí lo hace js/app.js. */

@@ -195,10 +195,14 @@
                   <div class="tiny">60 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$3.300.000</td>
-                <td data-l="Estado"><span class="pill pill--ok">Confirmado</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Confirmado</span>
+                  <div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: Corte (Paso 1/4)</b></div>
+                </td>
                 <td>
                   <div class="acts">
-                    <button class="btn btn--sm btn--oliva">Enviar a Logística</button>
+                    <button type="button" class="btn btn--sm btn--oliva">Enviar a Logística</button>
+                    <button type="button" class="btn btn--sm btn--ghost btn-estado-cliente" data-pedido="PD-2026-091" data-cliente="Calzado Norte" data-modelo="REF-1042 · Bota Andina" data-pares="60" data-etapa="Corte" data-paso="1" data-fecha="2026-09-26">Actualizar cliente</button>
                   </div>
                 </td>
               </tr>
@@ -231,10 +235,14 @@
                   <div class="tiny">26 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$1.690.000</td>
-                <td data-l="Estado"><span class="pill pill--ok">Confirmado</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Confirmado</span>
+                  <div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: Guarnición (Paso 2/4)</b></div>
+                </td>
                 <td>
                   <div class="acts">
-                    <button class="btn btn--sm btn--oliva">Enviar a Logística</button>
+                    <button type="button" class="btn btn--sm btn--oliva">Enviar a Logística</button>
+                    <button type="button" class="btn btn--sm btn--ghost btn-estado-cliente" data-pedido="PD-2026-089" data-cliente="Calzado El Dorado" data-modelo="REF-1043 · Mocasín Cúcuta" data-pares="26" data-etapa="Guarnición" data-paso="2" data-fecha="2026-09-25">Actualizar cliente</button>
                   </div>
                 </td>
               </tr>
@@ -249,10 +257,14 @@
                   <div class="tiny">48 pares</div>
                 </td>
                 <td class="num" data-l="Valor">$4.150.000</td>
-                <td data-l="Estado"><span class="pill pill--ok">Confirmado</span></td>
+                <td data-l="Estado">
+                  <span class="pill pill--ok">Confirmado</span>
+                  <div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: Montaje (Paso 3/4)</b></div>
+                </td>
                 <td>
                   <div class="acts">
-                    <button class="btn btn--sm btn--oliva">Enviar a Logística</button>
+                    <button type="button" class="btn btn--sm btn--oliva">Enviar a Logística</button>
+                    <button type="button" class="btn btn--sm btn--ghost btn-estado-cliente" data-pedido="PD-2026-088" data-cliente="Distribuidora Tamanaco" data-modelo="REF-1042 · Bota Andina" data-pares="48" data-etapa="Montaje" data-paso="3" data-fecha="2026-09-24">Actualizar cliente</button>
                   </div>
                 </td>
               </tr>
@@ -338,13 +350,87 @@
                 <td data-l="Se revisa"><b>El modelo está aprobado</b></td>
                 <td data-l="Quién responde">Diseño, con la versión vigente</td>
                 <td class="tiny" data-l="Si no se cumple">No se puede vender un modelo en diseño</td>
-              </tr>
             </tbody>
           </table>
         </div>
         <p class="tabla-pie">La pantalla avisa, pero quien decide es el PHP: la regla vive en el servidor.</p>
       </div>
     </section>
+
+    <!-- ── MODAL: SEGUIMIENTO DE ETAPAS DE PRODUCCIÓN Y NOTIFICACIÓN AL CLIENTE ── -->
+    <div class="modal-backdrop" id="modal-cliente-seguimiento">
+      <div class="modal-box">
+        <div class="modal-box__head">
+          <h3 id="mc-titulo">Seguimiento del Pedido y Notificación al Cliente</h3>
+          <button type="button" class="modal-box__close" id="btn-cerrar-modal-seguimiento">&times;</button>
+        </div>
+        <div class="modal-box__body">
+          <div style="background:var(--papel-2);border:1px solid var(--linea);padding:10px 14px;border-radius:var(--r-m)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+              <b id="mc-pedido" style="font-size:15px;color:var(--vino-800)">PD-2026-088</b>
+              <span class="pill pill--ok" id="mc-badge-estado">En Fabricación</span>
+            </div>
+            <div class="tiny" id="mc-detalles" style="color:var(--tinta-2)">Cliente: <b>Distribuidora Tamanaco</b> · REF-1042 · 48 pares · Compromiso: 2026-09-24</div>
+          </div>
+
+          <!-- Stepper de etapas -->
+          <div>
+            <label style="font-size:12px;font-weight:700;color:var(--tinta-2);text-transform:uppercase;letter-spacing:.5px">Etapas de Fabricación y Entrega:</label>
+            <div class="etapas-stepper" id="mc-stepper">
+              <div class="etapa-step is-done" data-etapa="1">
+                <span class="etapa-step__dot">1</span>
+                <span class="etapa-step__label">Corte</span>
+              </div>
+              <div class="etapa-step is-done" data-etapa="2">
+                <span class="etapa-step__dot">2</span>
+                <span class="etapa-step__label">Guarnición</span>
+              </div>
+              <div class="etapa-step is-active" data-etapa="3">
+                <span class="etapa-step__dot">3</span>
+                <span class="etapa-step__label">Montaje</span>
+              </div>
+              <div class="etapa-step" data-etapa="4">
+                <span class="etapa-step__dot">4</span>
+                <span class="etapa-step__label">Embalaje</span>
+              </div>
+              <div class="etapa-step" data-etapa="5">
+                <span class="etapa-step__dot">5</span>
+                <span class="etapa-step__label">Despacho</span>
+              </div>
+              <div class="etapa-step" data-etapa="6">
+                <span class="etapa-step__dot">6</span>
+                <span class="etapa-step__label">Entregado</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cuadro de vista previa de notificación que se envía al cliente -->
+          <div class="notif-cliente-box">
+            <div class="notif-cliente-box__head">
+              <span>🔔 Mensaje en tiempo real para el cliente (WhatsApp / Email):</span>
+              <span class="tiny" style="color:var(--tinta-3)" id="mc-hora">Ahora</span>
+            </div>
+            <div class="notif-cliente-box__msg" id="mc-mensaje-cliente">
+              "Hola, Distribuidora Tamanaco. Su pedido PD-2026-088 (48 pares de REF-1042) se encuentra actualmente en la etapa de <b>MONTAJE</b> en planta. Logística y Despacho ya tiene proyectada su ruta para entrega oportuna."
+            </div>
+            <span class="tiny" style="color:var(--tinta-3)">Al cambiar la etapa en Producción o enviar notificación, el cliente recibe el estado actualizado inmediatamente.</span>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center;background:#FFF9E6;border:1px solid #FFE082;padding:10px 12px;border-radius:var(--r-m)">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#B45309;flex-shrink:0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span class="tiny" style="color:#78350F"><b>Conexión con Despacho y Producción:</b> Cada avance de etapa en planta sincroniza el tablero comercial del cliente y avisa a Logística para alistar muelle y transporte de furgón.</span>
+          </div>
+        </div>
+        <div class="modal-box__foot">
+          <button type="button" class="btn btn--ghost" id="btn-cerrar-modal-seguimiento-2">Cerrar</button>
+          <button type="button" class="btn btn--cobre" id="btn-avanzar-etapa">Avanzar etapa en planta</button>
+          <button type="button" class="btn btn--oliva" id="btn-enviar-aviso-cliente">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+            Enviar actualización al cliente
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
