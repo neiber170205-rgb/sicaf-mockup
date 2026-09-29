@@ -2,8 +2,8 @@
    07-comercial/mockup/prototipo.js
 
    Hace que el mockup de Comercial RESPONDA: registrar y editar clientes,
-   generar cotizaciones, convertirlas en pedido, confirmar, mandar a
-   Logística, facturar, eliminar y filtrar, sin recargar la página.
+   generar cotizaciones, confirmar pedidos, mandar a Logística, facturar y
+   filtrar, sin recargar la página.
 
    Mismo motor que el de 04-inventario, con lo propio de este módulo.
    Las cotizaciones tienen su parte: la lista (tarjetas, filtros, orden y
@@ -44,7 +44,6 @@
     return m[1] + n;
   }
   function pagina() { return uno(".page"); }
-  function panelDe(nodo) { return nodo.closest(".panel"); }
   function tablaDe(panel) { return uno("table", panel); }
   /* La celda de una fila, buscada por el rótulo que ya trae el mockup */
   function celda(fila, etiqueta) { return uno('[data-l="' + etiqueta + '"]', fila); }
@@ -332,96 +331,11 @@
     return n;
   }
 
-  /* ---------------------------------------------------------------- 7. Los formularios de Comercial */
-
-  function generarCotizacion() {
-    var cl = uno("#f-v-cl"), ref = uno("#f-v-ref"), cant = uno("#f-v-cant"), pre = uno("#f-v-precio"), ciu = uno("#f-v-ciu");
-    var pares = numero(cant ? cant.value : 0), precio = numero(pre ? pre.value : 0);
-    if (!pares)  { if (cant) cant.focus(); return aviso("Escriba cuántos pares cotiza.", "crit"); }
-    if (!precio) { if (pre) pre.focus();  return aviso("Escriba el precio por par.", "crit"); }
-
-    var panel = panelPorTitulo("Cotizaciones Enviadas");
-    if (!panel) return aviso("Cotización generada.", "ok");
-
-    var codigo = siguienteCodigo(panel, "Cotización");
-    var fila = nuevaFila(panel, "Cotización");
-    var nomCliente = cl ? cl.options[cl.selectedIndex].text.split("·").pop().trim() : "Cliente";
-    var destInfo = ciu ? ciu.value : "Bucaramanga · RUT-BGA";
-
-    ponerCelda(fila, "Cotización", "<b>" + codigo + '</b><div class="tiny">Vence en 15 días</div>');
-    ponerCelda(fila, "Cliente y Destino", "<b>" + nomCliente + '</b><div class="tiny">' + destInfo + "</div>");
-    ponerCelda(fila, "Modelo", (ref ? ref.value : "Calzado") + '<div class="tiny">' + miles(pares) + " pares</div>");
-    ponerCelda(fila, "Valor", pesos(pares * precio));
-    ponerCelda(fila, "Estado", '<span class="pill pill--warn">Enviada</span><div class="tiny" style="color:var(--cobre-600);margin-top:3px">🚚 Alerta: Proyectar ruta</div>');
-    var acts = uno(".acts", fila);
-    if (acts) acts.innerHTML = '<button class="btn btn--sm btn--oliva">Convertir en pedido</button>' +
-                               '<a class="btn btn--sm btn--ghost" href="../../08-logistica/mockup/02-despachos.html">Ver en Despacho</a>' +
-                               '<button class="btn btn--sm btn--ghost">Eliminar</button>';
-    recontar(panel, "cotizaciones");
-    sumarAlMenu("02-ventas.html", 1);
-
-    /* Enlace automático con Logística y Despacho: guardar alerta para proyección preventiva */
-    var alertItem = {
-      id: codigo,
-      cliente: nomCliente,
-      destino: destInfo.split("·")[0].trim(),
-      corredor: destInfo.indexOf("RUT-") >= 0 ? destInfo.match(/RUT-[A-Z]+/)[0] : "RUT-BGA",
-      modelo: ref ? ref.value.split("·")[0].trim() : "REF-1042",
-      pares: pares,
-      valor: pares * precio,
-      fecha: hoy(),
-      estado: "Por calcular"
-    };
-
-    try {
-      var alertas = JSON.parse(localStorage.getItem("sicaf_cotizaciones_preventivas") || "[]");
-      alertas.unshift(alertItem);
-      localStorage.setItem("sicaf_cotizaciones_preventivas", JSON.stringify(alertas));
-      /* Señal para que Logística abra automáticamente su ventana de alerta */
-      localStorage.setItem("sicaf_alerta_nueva_cotizacion", JSON.stringify(alertItem));
-    } catch (err) {}
-
-    /* Disparar ventana modal de alerta que requiere cierre manual */
-    var modalSalida = uno("#modal-alerta-cotizacion-salida");
-    if (modalSalida) {
-      if (uno("#al-salida-id")) uno("#al-salida-id").textContent = codigo;
-      if (uno("#al-salida-cli")) uno("#al-salida-cli").textContent = nomCliente + " · " + destInfo.split("·")[0].trim();
-      var modNom = ref ? ref.value.split("·")[0].trim() : "REF-1042";
-      if (uno("#al-salida-mod")) uno("#al-salida-mod").textContent = modNom + " · " + miles(pares) + " pares cotizados";
-      if (uno("#al-salida-ruta")) uno("#al-salida-ruta").textContent = destInfo;
-      modalSalida.classList.add("is-open");
-    }
-
-    aviso("Cotización " + codigo + " generada (" + miles(pares) + " pares) · 🚚 Alerta enviada a Logística y Despacho para calcular transporte y proyectar ruta.", "ok");
-  }
-
-  function eliminarFila(b) {
-    var fila = b.closest("tr");
-    if (!fila) return;
-    if (!fila.classList.contains("va-a-borrarse")) {
-      fila.classList.add("va-a-borrarse");
-      b.textContent = "¿Seguro?";
-      b.className = "btn btn--sm btn--cobre";
-      clearTimeout(fila._t);
-      fila._t = setTimeout(function () {
-        fila.classList.remove("va-a-borrarse");
-        b.textContent = "Eliminar";
-        b.className = "btn btn--sm btn--ghost";
-      }, 4000);
-      return aviso("Pulse otra vez para eliminar. Se deshace solo en 4 segundos.", "warn");
-    }
-    var que = (fila.querySelector("b") || {}).textContent || "La fila";
-    var panel = panelDe(fila);
-    fila.parentNode.removeChild(fila);
-    if (panel) recontar(panel, "filas");
-    aviso(que + " eliminado.", "crit");
-  }
-
   /* ---------------------------------------------------------------- 8. Un solo oyente para los botones */
 
   /* Las tres acciones rápidas del tablero de Inicio */
   var RAPIDAS = {
-    "venta":   { a: "02-ventas.html",   dice: "Arme la cotización: cliente, referencia y cantidad." },
+    "cotizacion": { a: "09-cotizacion-nueva.html", dice: "Arme la cotización: cliente, productos y totales." },
     "cliente": { a: "04-cliente-nuevo.html", dice: "Registre el cliente: identificación, contacto, entrega y crédito." },
     "pedido":  { a: "05-pedidos.html",  dice: "Los pedidos salen de una cotización aceptada." }
   };
@@ -460,8 +374,6 @@
     if (lleva && ES_PANTALLA.test(lleva)) { e.preventDefault(); return ir(lleva, true); }
 
     if (texto === "Generar reporte")     { e.preventDefault(); return generarReporte(); }
-    if (texto === "Generar cotización")  { e.preventDefault(); return generarCotizacion(); }
-    if (texto === "Eliminar" || texto === "¿Seguro?") { e.preventDefault(); return eliminarFila(b); }
 
     if (texto === "Marcar atendida") {
       e.preventDefault();
@@ -471,20 +383,6 @@
         { className: "pill pill--ok", textContent: "Atendida" }));
       contarPendientes(-1);
       return aviso("Pendiente marcado como atendido.", "ok");
-    }
-
-    if (texto === "Convertir en pedido") {
-      e.preventDefault();
-      var fv = b.closest("tr");
-      var cot = (fv.querySelector("b") || {}).textContent || "La cotización";
-      var est2 = celda(fv, "Estado");
-      if (est2) est2.innerHTML = '<span class="pill pill--ok">Convertida</span>';
-      fv.classList.add("es-nueva");
-      todos("button", fv).forEach(function (x) { x.disabled = true; });
-      sumarAlMenu("02-ventas.html", -1);
-      sumarAlMenu("05-pedidos.html", 1);
-      aviso(cot + " se convirtió en pedido · confírmelo para reservar los pares.", "ok");
-      return setTimeout(function () { ir("05-pedidos.html", true); }, 800);
     }
 
     if (texto === "Confirmar") {
@@ -497,13 +395,6 @@
       b.textContent = "Enviar a Logística";
       b.className = "btn btn--sm btn--oliva";
       return aviso(ped + " confirmado · Inventario reserva los pares en bodega.", "ok");
-    }
-
-    if (b.id === "btn-cerrar-alerta-salida" || b.id === "btn-x-alerta-salida") {
-      e.preventDefault();
-      var mSalida = uno("#modal-alerta-cotizacion-salida");
-      if (mSalida) mSalida.classList.remove("is-open");
-      return;
     }
 
     if (texto === "Actualizar cliente" || b.classList.contains("btn-estado-cliente")) {
@@ -556,17 +447,6 @@
       fd.classList.add("es-nueva");
       b.disabled = true;
       return aviso("Logística programa la recolección · lo que vuelve pasa por Control de Calidad.", "warn");
-    }
-
-    if (texto === "Renovar") {
-      e.preventDefault();
-      var fx = b.closest("tr");
-      var ex = celda(fx, "Estado");
-      if (ex) ex.innerHTML = '<span class="pill pill--warn">Enviada</span>';
-      fx.classList.add("es-nueva");
-      b.textContent = "Convertir en pedido";
-      b.className = "btn btn--sm btn--oliva";
-      return aviso("Cotización renovada por 15 días más.", "ok");
     }
 
     if (texto === "Ver en Logística") {
@@ -1203,7 +1083,7 @@
                "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
   var DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
-  /* Salen de Config. (08-config.html) */
+  /* Las reglas de la cotización */
   var VIGENCIA = 15;        // días que vale una cotización
   var DESCUENTO_MAX = 8;    // % de descuento que se da sin autorización
   var CUPO_AVISO = 85;      // % del cupo en el que se avisa "cupo casi lleno"

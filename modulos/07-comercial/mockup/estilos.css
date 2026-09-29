@@ -14,20 +14,6 @@
   top: 11px;
 }
 
-/* ---- Nota / avisos ---- */
-
-.nota .firma {
-  margin-left: auto;
-  font-family: var(--letra-texto);
-  font-size: 17px;
-  color: var(--vino-600);
-  line-height: 1.25;
-  text-align: center;
-  white-space: nowrap;
-  font-style: italic;
-  font-weight: 500;
-}
-
 /* ---- Notificaciones entre módulos ---- */
 
 .notis {
@@ -147,14 +133,6 @@
 /* =====================================================================
    ESCALA COMPACTA + NAVEGACIÓN INTERNA POR MÓDULO
    ===================================================================== */
-
-/* ---- Ajustes finos de adaptabilidad ---- */
-
-@media (max-width:560px) {
-  .nota .firma {
-    display: none;
-  }
-}
 
 /* =====================================================================
    PENDIENTES Y NOTIFICACIONES — bloque desplegable de la pantalla de Inicio
@@ -540,12 +518,6 @@ tr.es-nueva > td {
 
 .pend__i.es-atendida {
   opacity: .55;
-}
-
-/* La fila que se va a borrar pide confirmación antes */
-
-tr.va-a-borrarse > td {
-  background: var(--crit-bg);
 }
 
 @media (max-width:560px) {
