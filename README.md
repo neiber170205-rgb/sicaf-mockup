@@ -14,9 +14,15 @@ usuarios— con datos de demostración que cambian al pulsar.
 | Usuario | Contraseña | Qué ve |
 |---|---|---|
 | `admin@sicaf.com` | `admin2026` | Todo el sistema |
-| `maria@sicaf.com` | `sicaf2026` | Dashboard e Inventario |
-| `luis@sicaf.com` | `sicaf2026` | Dashboard y Control de Calidad |
-| `erick@sicaf.com` | `sicaf2026` | Dashboard y Logística y Despacho |
+| `camila@sicaf.com` | `sicaf2026` | Solo Diseño |
+| `andres@sicaf.com` | `sicaf2026` | Solo Compras |
+| `maria@sicaf.com` | `sicaf2026` | Solo Inventario |
+| `marta@sicaf.com` | `sicaf2026` | Solo Producción |
+| `luis@sicaf.com` | `sicaf2026` | Solo Control de Calidad |
+| `valentina@sicaf.com` | `sicaf2026` | Solo Comercial (la vendedora) |
+| `erick@sicaf.com` | `sicaf2026` | Solo Logística y Despacho |
+
+Cada usuario ve en el menú lateral únicamente su módulo; los demás no aparecen.
 
 > Son claves de mentira, escritas dentro del prototipo para que cualquiera pueda entrar a mirarlo.
 > El sistema real no las usa ni se parece: allí las contraseñas van cifradas y en la base de datos.

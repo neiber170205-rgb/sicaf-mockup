@@ -100,9 +100,17 @@ const S={
  usuarios:[
   {id:1,nombre:'Erick Cuevas',correo:'erick@sicaf.com',area:'logistica',rol:'supervisor',estado:'Activo',alta:'2026-09-11'},
   {id:2,nombre:'María Rodríguez',correo:'maria@sicaf.com',area:'inventario',rol:'gerente',estado:'Activo',alta:'2026-09-11'},
-  {id:3,nombre:'Luis Fernando',correo:'luis@sicaf.com',area:'calidad',rol:'operario',estado:'Activo',alta:'2026-09-12'}
+  {id:3,nombre:'Luis Fernando',correo:'luis@sicaf.com',area:'calidad',rol:'operario',estado:'Activo',alta:'2026-09-12'},
+  {id:4,nombre:'Valentina Rojas',correo:'valentina@sicaf.com',area:'comercial',rol:'operario',estado:'Activo',alta:'2026-09-12'},
+  {id:5,nombre:'Camila Duarte',correo:'camila@sicaf.com',area:'diseno',rol:'supervisor',estado:'Activo',alta:'2026-09-12'},
+  {id:6,nombre:'Andrés Suárez',correo:'andres@sicaf.com',area:'compras',rol:'supervisor',estado:'Activo',alta:'2026-09-12'},
+  {id:7,nombre:'Marta Villamizar',correo:'marta@sicaf.com',area:'produccion',rol:'supervisor',estado:'Activo',alta:'2026-09-12'}
  ],
  bitacora:[
+  {f:'2026-09-12 09:26',u:'Admin Principal',a:'Creación de acceso',d:'Marta Villamizar · Producción · Supervisor'},
+  {f:'2026-09-12 09:22',u:'Admin Principal',a:'Creación de acceso',d:'Andrés Suárez · Compras · Supervisor'},
+  {f:'2026-09-12 09:18',u:'Admin Principal',a:'Creación de acceso',d:'Camila Duarte · Diseño · Supervisor'},
+  {f:'2026-09-12 09:10',u:'Admin Principal',a:'Creación de acceso',d:'Valentina Rojas · Comercial · Operario'},
   {f:'2026-09-12 08:41',u:'Admin Principal',a:'Creación de acceso',d:'Luis Fernando · Control de Calidad · Operario'},
   {f:'2026-09-11 16:05',u:'Admin Principal',a:'Creación de acceso',d:'María Rodríguez · Inventario · Gerente'},
   {f:'2026-09-11 15:58',u:'Admin Principal',a:'Creación de acceso',d:'Erick Cuevas · Logística y Despacho · Supervisor'}
@@ -473,14 +481,15 @@ function autenticar(correo,pass){
    PERMISOS — validados antes de ejecutar cualquier operación
    ===================================================================== */
 /* Regla: solo el administrador tiene acceso transversal.
-   Cualquier otro usuario ve su Dashboard y ÚNICAMENTE el módulo de su área;
-   el de Logística no ve Inventario, el de Inventario no ve Producción, etc. */
+   Cualquier otro usuario ve ÚNICAMENTE el módulo de su área, y el menú no le
+   muestra los demás; el de Logística no ve Inventario, el de Inventario no ve Producción, etc. */
 function puedeVer(mod){const u=S.user;
   if(u.rol==='admin')return true;
   if(mod==='usuarios')return false;               // solo el administrador
-  if(mod==='dashboard')return true;               // panel propio, filtrado a su área
   return u.area===mod;
 }
+/* La pantalla con la que abre: Inicio para el administrador, su módulo para los demás */
+const inicioDe=u=>u.rol==='admin'?'usuarios':u.area;
 function puedeEscribir(mod){const u=S.user;
   if(u.rol==='admin')return true;
   if(mod==='usuarios'||mod==='dashboard')return false;
@@ -1925,7 +1934,7 @@ A['entrar']=()=>{
   return;
  }
  S.user=r.u; S.intentos=0; S.q='';
- S.vista=r.u.rol==='admin'?'usuarios':puedeVer(r.u.area)?r.u.area:'dashboard';
+ S.vista=inicioDe(r.u);
  log('Inicio de sesión',r.u.nombre+' · '+(r.u.rol==='admin'?'administrador':r.u.rol+' de '+modName(r.u.area)));
  render();
  toast('ok','Bienvenido, '+r.u.nombre.split(' ')[0],r.u.rol==='admin'?'Acceso administrador: los nueve módulos habilitados.':'Rol '+r.u.rol+'. Solo tiene habilitado el módulo de '+modName(r.u.area)+'.');
@@ -1948,7 +1957,7 @@ A['sesion-det']=()=>{
   '<div style="display:flex;gap:14px;align-items:center"><span class="avatar">'+esc(u.nombre[0])+'</span>'
   +'<div><b style="font-size:18px">'+esc(u.nombre)+'</b><div class="tiny">'+esc(u.correo)+'</div></div></div>'
   +'<div class="kv" style="margin-top:16px"><span>Nivel de permisos</span><b>'+(u.rol==='admin'?'Administrador':u.rol[0].toUpperCase()+u.rol.slice(1))+'</b></div>'
-  +'<div class="kv"><span>Módulos habilitados</span><b>'+(u.rol==='admin'?'Los nueve módulos':'Dashboard · '+modName(u.area))+'</b></div>'
+  +'<div class="kv"><span>Módulos habilitados</span><b>'+(u.rol==='admin'?'Los nueve módulos':modName(u.area))+'</b></div>'
   +'<div class="aviso aviso--warn" style="margin-top:16px">'+ico('lock',20)+'<div><b>Control de acceso en el servidor</b><p>'+(u.rol==='admin'?'Como administrador ve los nueve módulos. ':'Los departamentos ajenos al suyo no se muestran ni pueden ejecutarse. ')+'El permiso se verifica antes de cada operación, no basta con ocultar el botón.</p></div></div>',
   'Cerrar sesión',()=>{cerrarModal();A['salir']();});
 };
@@ -2338,14 +2347,15 @@ function rotularTablas(){
   });
  });
 }
-/* El menú lateral: los nueve módulos. De Producción cuelgan sus procesos; del
-   módulo abierto, las pantallas de su mockup (igual que en comun/marco.js). */
+/* El menú lateral: los módulos que el usuario puede ver (el administrador, todos;
+   los demás, solo el suyo). De Producción cuelgan sus procesos; del módulo
+   abierto, las pantallas de su mockup (igual que en comun/marco.js). */
 const TINTE={dashboard:'#FFFFFF',diseno:'var(--cobre-400)',compras:'#F2E3DE',inventario:'var(--cobre-400)',produccion:'#F2E3DE',calidad:'#5CBB7B',comercial:'var(--cobre-400)',logistica:'var(--cobre-400)',usuarios:'#FFFFFF'};
 function pintarMenu(){
- $('#nav').innerHTML=MODS.filter(m=>m.id!=='dashboard').map(m=>{
-  const ver=puedeVer(m.id), cur=S.vista===m.id;
-  const item='<button class="nav__item'+(cur?' is-current':m.id==='usuarios'?' is-home':'')+'" data-act="ir" data-mod="'+m.id+'"'+(ver?'':' disabled')+' style="'+(ver?'':'opacity:.35;')+'" title="'+esc(m.n)+'" aria-current="'+(cur?'page':'false')+'">'
-   +'<span style="color:'+(cur?'#fff':TINTE[m.id])+';display:flex">'+ico(m.ic,22)+'</span><span>'+m.n+'</span>'+(ver?'':'<span class="nav__lock">'+ico('lock',16)+'</span>')+'</button>';
+ $('#nav').innerHTML=MODS.filter(m=>m.id!=='dashboard'&&puedeVer(m.id)).map(m=>{
+  const cur=S.vista===m.id;
+  const item='<button class="nav__item'+(cur?' is-current':m.id==='usuarios'?' is-home':'')+'" data-act="ir" data-mod="'+m.id+'" title="'+esc(m.n)+'" aria-current="'+(cur?'page':'false')+'">'
+   +'<span style="color:'+(cur?'#fff':TINTE[m.id])+';display:flex">'+ico(m.ic,22)+'</span><span>'+m.n+'</span></button>';
   if(m.id!=='produccion'){
    if(!cur||!MOCK[m.id])return item;
    const abierto=S.menuMod[m.id]!==false, cts=S.cts[m.id]||{}, on=S.pant[m.id]||MOCK[m.id].primera;
@@ -2363,7 +2373,6 @@ function pintarMenu(){
     +'</div></div>';
   }
   /* Producción se divide en procesos: cuelgan del módulo en un sub-menú desplegable */
-  if(!ver)return item;
   const tab=secc('produccion','panel');   /* la pantalla con la que abre el módulo */
   return '<div class="nav__grupo'+(S.menuProd?' is-open':'')+(cur?' is-activo':'')+'">'
    +'<div class="nav__fila'+(cur?' is-current':'')+'">'+item
@@ -2382,7 +2391,7 @@ function pintarMenu(){
 function render(){
  if(!S.user){renderLogin();return}
  $('#login').hidden=true; $('#login').innerHTML=''; $('#app-shell').hidden=false;
- if(!puedeVer(S.vista))S.vista='dashboard';
+ if(!puedeVer(S.vista))S.vista=inicioDe(S.user);
  /* Menú lateral plegado: la clase la lee el CSS para encoger la columna */
  document.body.classList.toggle('side-min',S.sideMin);
  const bp=$('#btnPlegar');

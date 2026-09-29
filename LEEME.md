@@ -92,12 +92,14 @@ El inicio de sesión abre con el usuario administrador ya escrito; basta con pul
 admin@sicaf.com  ·  admin2026      → acceso total (los 9 módulos)
 ```
 
-Los demás encargados entran escribiendo su propio correo y la clave `sicaf2026`,
-y solo ven su módulo:
+Hay un encargado por módulo. Entran escribiendo su propio correo y la clave `sicaf2026`,
+y el menú lateral solo les muestra su módulo (los demás no aparecen):
 
 ```
-erick@sicaf.com  → Logística     maria@sicaf.com → Inventario
-luis@sicaf.com   → Calidad
+camila@sicaf.com → Diseño        andres@sicaf.com    → Compras
+maria@sicaf.com  → Inventario    marta@sicaf.com     → Producción
+luis@sicaf.com   → Calidad       valentina@sicaf.com → Comercial
+erick@sicaf.com  → Logística
 ```
 
 Se puede escribir solo la parte antes de la `@` (por ejemplo `admin`).
