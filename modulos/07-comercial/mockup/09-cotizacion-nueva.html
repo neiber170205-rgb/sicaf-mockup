@@ -18,7 +18,7 @@
       <a class="subnav__i is-on" data-ico="etiqueta" data-ct="6" href="09-cotizacion.html">Cotizaciones</a>
       <a class="subnav__i" data-ico="factura" data-ct="6" href="10-facturacion.html">Facturación</a>
       <a class="subnav__i" data-ico="usuarios" data-ct="8" href="04-clientes.html">Clientes</a>
-      <a class="subnav__i" data-ico="zapato" data-ct="5" href="03-productos.html">Productos</a>
+      <a class="subnav__i" data-ico="zapato" href="03-existencias.html">Existencias</a>
       <a class="subnav__i" data-ico="portapapeles" data-ct="6" href="05-pedidos.html">Pedidos</a>
       <a class="subnav__i" data-ico="camion" data-ct="3" href="06-entregas.html">Entregas</a>
       <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
@@ -247,7 +247,7 @@
               <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
               <div>
                 <b>1 talla pide más pares de los que tiene asignados</b>
-                <p>Salen en rojo en la lista. Se cotiza igual: Inventario reserva lo que haya y el resto se le pide a Producción.</p>
+                <p>Salen en rojo en la lista. Se cotiza igual: al validar el pedido se aparta lo que haya y el resto lo fabrica Producción.</p>
               </div>
             </div>
           </div>
@@ -370,7 +370,7 @@
                           <label class="cot-talla cot-talla--ok"><span class="cot-talla__n">Talla 39</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="" data-ref="REF-1042" data-color="Negro" data-talla="39" aria-label="Pares de talla 39, Negro"><span class="cot-talla__hay">hay 6</span></label>
                           <label class="cot-talla cot-talla--poco"><span class="cot-talla__n">Talla 40</span><input class="cot-cant" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="" data-ref="REF-1042" data-color="Negro" data-talla="40" aria-label="Pares de talla 40, Negro"><span class="cot-talla__hay">hay 2</span></label>
                         </div>
-                        <div class="vit__leyenda"><span class="is-ok">alcanza</span><span class="is-poco">quedan pocos</span><span class="is-cero">no hay</span><span class="is-mal" title="Se cotiza igual: se reserva lo que haya y el resto se le pide a Producción">pide más de lo que hay</span></div>
+                        <div class="vit__leyenda"><span class="is-ok">alcanza</span><span class="is-poco">quedan pocos</span><span class="is-cero">no hay</span><span class="is-mal" title="Se cotiza igual: al validar el pedido se aparta lo que haya y el resto lo fabrica Producción">pide más de lo que hay</span></div>
                         <div class="vit__atajos">
                           <span>Poner</span><input class="dt__in" id="cot-vit-n" type="number" min="1" step="1" value="2" aria-label="Pares para cada talla"><span>en cada talla</span>
                           <button type="button" class="btn btn--sm btn--ghost" data-vit-llenar="">Llenar</button>

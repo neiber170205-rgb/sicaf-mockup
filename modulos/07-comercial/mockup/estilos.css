@@ -2970,180 +2970,6 @@ select.dt__in {
   .fac__iq { max-width: none; }
 }
 
-/* ── Modal Interactivo de Seguimiento y Actualización al Cliente ────── */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(30, 24, 20, 0.58);
-  backdrop-filter: blur(3px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease;
-}
-.modal-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-.modal-box {
-  background: var(--papel, #FFFFFF);
-  border: 1px solid var(--linea, #E5E0D8);
-  border-radius: var(--r-l, 12px);
-  width: 100%;
-  max-width: 580px;
-  box-shadow: 0 16px 36px rgba(0,0,0,.22);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transform: translateY(12px) scale(.98);
-  transition: transform .25s ease;
-}
-.modal-backdrop.is-open .modal-box {
-  transform: translateY(0) scale(1);
-}
-.modal-box__head {
-  padding: 14px 18px;
-  background: var(--vino-600, #6B1D2F);
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.modal-box__head h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: #FFFFFF;
-}
-.modal-box__close {
-  background: transparent;
-  border: none;
-  color: rgba(255,255,255,.8);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0 4px;
-}
-.modal-box__close:hover {
-  color: #FFFFFF;
-}
-.modal-box__body {
-  padding: 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.modal-box__foot {
-  padding: 12px 18px;
-  background: var(--papel-2, #F8F6F0);
-  border-top: 1px solid var(--linea, #E5E0D8);
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-/* Stepper de etapas del pedido */
-.etapas-stepper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  margin: 10px 0 15px;
-  padding: 0 10px;
-}
-.etapas-stepper::before {
-  content: "";
-  position: absolute;
-  top: 16px;
-  left: 30px;
-  right: 30px;
-  height: 3px;
-  background: var(--linea, #E5E0D8);
-  z-index: 1;
-}
-.etapa-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-  text-align: center;
-}
-.etapa-step__dot {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--papel, #FFF);
-  border: 2px solid var(--linea, #CCC);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--tinta-3);
-  transition: all .2s ease;
-}
-.etapa-step.is-done .etapa-step__dot {
-  background: var(--ok, #2E7D32);
-  border-color: var(--ok, #2E7D32);
-  color: #FFFFFF;
-}
-.etapa-step.is-active .etapa-step__dot {
-  background: var(--vino-600, #6B1D2F);
-  border-color: var(--vino-600, #6B1D2F);
-  color: #FFFFFF;
-  box-shadow: 0 0 0 4px rgba(107, 29, 47, 0.2);
-}
-.etapa-step__label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--tinta-2);
-  max-width: 72px;
-  line-height: 1.2;
-}
-.etapa-step.is-active .etapa-step__label {
-  color: var(--vino-800);
-  font-weight: 700;
-}
-
-/* Vista previa de comunicación al cliente */
-.notif-cliente-box {
-  background: #F4F8F4;
-  border: 1px solid #C8E6C9;
-  border-radius: var(--r-m, 8px);
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.notif-cliente-box__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 700;
-  color: #2E7D32;
-}
-.notif-cliente-box__msg {
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--tinta-1, #222);
-  background: #FFFFFF;
-  padding: 10px 12px;
-  border-radius: var(--r-s, 6px);
-  border: 1px solid #E0E0E0;
-  font-family: var(--letra-texto, sans-serif);
-}
-
-
 /* =====================================================================
    CLIENTES: 04-clientes.html (la lista, como Facturación) y
    04-cliente-nuevo.html (el formulario para registrar o cambiar uno)
@@ -3463,4 +3289,508 @@ select.dt__in {
   .cli-fila--doc > :first-child { grid-column: 1 / -1; }
   .cli-credito { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cli-tabs__i { font-size: 12.5px; flex-wrap: wrap; }
+}
+
+/* =====================================================================
+   EXISTENCIAS (03-existencias.html)
+   Arriba, el producto y la bodega, con el encabezado de Nueva factura. Abajo,
+   tres columnas con la rejilla de Nueva factura: el catálogo como una tienda |
+   el modelo en esa bodega, con la rejilla color × talla | las otras bodegas y
+   los pedidos que esperan. Cada columna es una tarjeta con su barra clara.
+   ===================================================================== */
+
+/* El pedido En despacho: azul, el color que explica y no avisa de nada */
+.pill--info { background: var(--info-bg); color: var(--info); }
+
+/* Las columnas de los lados se llevan una parte del ancho (con un mínimo) y la del
+   centro, el resto: así en 1280 px la rejilla no queda apretada */
+.exi {
+  display: grid;
+  grid-template-columns: minmax(240px, 23%) minmax(0, 1fr) minmax(260px, 25%);
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* ---- El encabezado: producto (el más ancho), bodega y la hora del saldo ---- */
+
+.exi-datos { grid-template-columns: minmax(0, 1.4fr) minmax(230px, .7fr); }
+.exi-bod-sel { margin: 3px 0 2px; }
+.exi-bod-sel select { height: 38px; font-weight: 600; color: var(--vino-800); }
+.exi-saldo__f { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.exi-saldo__f b { min-width: 0; }
+/* El buscador dentro del catálogo: queda fijo arriba y la lista se desplaza debajo */
+.exi-busca { flex: 0 0 auto; margin: 0; padding: 10px 12px 0; background: var(--crema); }
+.exi-busca input { height: 38px; }
+.exi-busca input::-webkit-search-cancel-button { display: none; }
+.exi-busca > .ico { top: 20px; left: 26px; }
+
+/* Los íconos de acción, cada uno con su color: leer (verde), cotizar (cobre),
+   los pedidos que esperan (ámbar, como "En producción") y ver otra bodega (azul) */
+.cot-ico--leer { --tono: var(--ok); }
+.cot-ico--cotizar { --tono: var(--cobre-700); }
+.cot-ico--pedidos { --tono: var(--warn); }
+.cot-ico--ver { --tono: var(--info); }
+.cot-ico:disabled { opacity: .42; cursor: not-allowed; }
+.cot-ico:disabled:hover { background: color-mix(in srgb, var(--tono) 8%, var(--papel)); }
+
+/* ---- Las columnas ---- */
+
+.exi-solo { margin-left: auto; font-size: 12.5px; }
+.exi-mod__t { flex: 1 1 0; min-width: 0; }
+.exi-mod__t > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.exi-acc { flex: 0 0 auto; margin-left: auto; }
+.exi__lista { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--crema); }
+.exi__modelo { display: flex; flex-direction: column; gap: 12px; padding: 14px; background: var(--crema); }
+.exi__modelo > .aviso { margin: 0; }
+
+/* La nota fija al pie de "En otras bodegas" */
+.exi__pie {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--linea);
+  background: var(--papel);
+  font-family: var(--letra-texto);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--tinta-2);
+}
+
+.exi__pie .ico { flex: 0 0 auto; margin-top: 1px; color: var(--info); }
+
+/* ---- Columna 1: el catálogo. Una tarjeta por modelo, con su dibujo ---- */
+
+.exi-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px 8px 8px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+  text-align: left;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+
+.exi-card .cot-foto { width: 68px; height: 48px; }
+button.exi-card:hover { transform: translateY(-1px); border-color: var(--cobre-400); box-shadow: 0 12px 24px -18px rgba(58, 42, 34, .6); }
+.exi-card.is-on { border-color: var(--vino-600); box-shadow: 0 0 0 2px var(--vino-tint); }
+.exi-card.is-bloqueado { opacity: .62; cursor: not-allowed; }
+.exi-card__x { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.exi-card__x > b { font-size: 14px; line-height: 1.25; color: var(--vino-800); }
+.exi-card__ref { font-size: 12px; color: var(--tinta-2); }
+
+/* Lo que hay: con su punto, verde si hay aquí, azul si solo en otra bodega */
+.exi-card__hay { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--tinta-2); }
+.exi-card__hay::before { content: ""; flex: 0 0 auto; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.exi-card__hay--ok { color: var(--ok); }
+.exi-card__hay--otra { color: var(--info); }
+.exi-card.is-bloqueado .exi-card__hay { font-style: italic; font-weight: 500; }
+.exi-card.is-bloqueado .exi-card__hay::before { display: none; }
+
+/* ---- Columna 2: el modelo en la bodega ---- */
+
+.exi-ficha {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+}
+
+.cot-foto--exi { width: 170px; aspect-ratio: 16 / 10; }
+.exi-ficha__x { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.exi-ficha__x h4 { font-size: 18px; letter-spacing: -.02em; color: var(--vino-800); }
+.exi-ficha__d { font-size: 12.5px; color: var(--tinta-2); }
+.exi-ficha .cot-colores { margin-top: 6px; gap: 6px; }
+.exi-ficha .cot-color { padding: 3px 11px 3px 3px; }
+.exi-ficha .cot-color i { width: 20px; height: 20px; }
+
+/* Las tres cifras: en bodega, apartado y libre */
+.exi-cifras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+
+.exi-cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--tinta-3);
+  border-radius: var(--r-m);
+  background: var(--papel);
+}
+
+.exi-cifra span { font-size: 11.5px; font-weight: 600; line-height: 1.3; color: var(--tinta-2); }
+.exi-cifra b { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--vino-800); font-variant-numeric: tabular-nums; }
+.exi-cifra small { font-size: 11.5px; color: var(--tinta-2); }
+.exi-cifra--warn { border-left-color: var(--warn); cursor: help; }
+.exi-cifra--ok { border-left-color: var(--ok); }
+.exi-cifra--ok b { color: var(--ok); }
+
+/* La rejilla color × talla: una fila por color, una columna por talla. Cada fila es
+   "display: contents" para que sus celdas entren en la rejilla de la tabla */
+.exi-rej {
+  display: grid;
+  grid-template-columns: minmax(96px, 1.4fr) repeat(var(--tallas), minmax(0, 1fr));
+  gap: 6px;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+}
+
+.exi-rej__f { display: contents; }
+.exi-rej__cab { padding: 2px 0; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-align: center; color: var(--tinta-2); }
+.exi-rej__cab.exi-rej__color { text-align: left; text-transform: uppercase; letter-spacing: .08em; font-size: 10.5px; }
+.exi-rej__color { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 7px; min-width: 0; }
+.exi-rej__color i { grid-row: span 2; width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
+.exi-rej__color b { font-size: 13px; color: var(--tinta); }
+.exi-rej__color small { font-size: 11px; color: var(--tinta-2); }
+.exi-rej__f.is-on .exi-rej__color b { color: var(--vino-700); }
+
+/* Cada celda: el número libre, con el borde y el color de nivel() como las tallas de la cotización */
+.exi-celda {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  height: 40px;
+  border: 1.5px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: help;
+}
+
+.exi-celda--ok { border-color: color-mix(in srgb, var(--ok) 40%, transparent); background: var(--ok-bg); color: var(--ok); }
+.exi-celda--poco { border-color: color-mix(in srgb, var(--warn) 40%, transparent); background: var(--warn-bg); color: var(--warn); }
+.exi-celda--cero { background: var(--arena); color: var(--tinta-3); }
+.exi-rej__f.is-on .exi-celda { box-shadow: 0 0 0 2px var(--vino-tint); }
+
+/* El punto azul: aquí no hay, pero en otra bodega sí */
+.exi-otra {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--info);
+  box-shadow: 0 0 0 2px var(--papel);
+}
+
+.exi-leyenda { flex-wrap: wrap; gap: 6px 14px; }
+.vit__leyenda .is-otra { color: var(--info); }
+
+/* ---- Columna 3: en otras bodegas ---- */
+
+.exi-total { font-size: 13px; color: var(--tinta-2); }
+.exi-total b { font-size: 20px; letter-spacing: -.02em; color: var(--vino-800); font-variant-numeric: tabular-nums; }
+.exi-otras__ayuda { font-family: var(--letra-texto); font-size: 13px; color: var(--tinta-2); }
+
+.exi-bod {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 12px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-l);
+  background: var(--papel);
+}
+
+.exi-bod__cab { display: flex; align-items: center; gap: 10px; }
+.exi-bod__cab > div { flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; }
+.exi-bod__cab b { font-size: 13px; line-height: 1.3; color: var(--vino-800); }
+.exi-bod__cab small { font-size: 11.5px; color: var(--tinta-2); }
+.exi-bod__n { margin-top: 2px; font-size: 12.5px; font-weight: 700; color: var(--ok); }
+.exi-bod__n.is-cero { color: var(--tinta-2); }
+.exi-bod__nada { font-family: var(--letra-texto); font-size: 12.5px; color: var(--tinta-2); }
+.exi-bod .cot-item__color > span:first-of-type { min-width: 38px; }
+
+/* Sin modelo elegido: lo libre de cada modelo en esa bodega */
+.exi-bod__modelos { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.exi-bod__modelos li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 5px 0; border-top: 1px dashed var(--linea); font-size: 13px; }
+.exi-bod__modelos button { display: flex; flex-direction: column; min-width: 0; color: var(--vino-700); font-weight: 600; text-align: left; }
+.exi-bod__modelos button:hover { color: var(--cobre-700); text-decoration: underline; }
+.exi-bod__modelos .tiny { font-weight: 400; }
+.exi-bod__modelos b { font-variant-numeric: tabular-nums; }
+
+/* Los pedidos que esperan el modelo: un clic abre el pedido en Pedidos */
+.exi-esperan { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.exi-esperan .cot-det__t { margin-bottom: 2px; }
+
+.exi-esp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1px 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--warn);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  text-align: left;
+  font-size: 12.5px;
+  color: var(--tinta-2);
+}
+
+.exi-esp b { color: var(--vino-800); }
+.exi-esp span { font-weight: 600; color: var(--warn); white-space: nowrap; }
+.exi-esp small { grid-column: 1 / -1; font-size: 11.5px; color: var(--tinta-2); }
+.exi-esp:hover { border-color: var(--cobre-400); border-left-color: var(--warn); background: var(--cobre-100); }
+
+/* Computador (ancho y con alto suficiente): la pantalla no se desplaza; cada
+   columna lo hace sola y la nota del pie siempre está a la vista */
+@media (min-width: 1181px) and (min-height: 600px) {
+  .page:has(> .exi) { gap: 12px; }
+  .page > .exi { flex: 1 1 auto; min-height: 360px; }
+  .exi__lista,
+  .exi__modelo { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+}
+
+/* Pantallas bajitas: la foto un poco más pequeña, para que la rejilla se vea entera */
+@media (min-width: 1181px) and (max-height: 800px) {
+  .cot-foto--exi { width: 128px; }
+  .exi__modelo { gap: 10px; padding: 12px; }
+  .exi-cifra { padding: 6px 10px; }
+  .exi-cifra b { font-size: 19px; }
+  .exi-celda { height: 34px; }
+}
+
+/* Tableta y celular: una columna debajo de la otra, y se recorre la pantalla */
+@media (max-width: 1180px) {
+  .exi { grid-template-columns: minmax(0, 1fr); }
+  .exi-datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .exi-datos { grid-template-columns: minmax(0, 1fr); }
+  .exi-ficha { flex-direction: column; align-items: stretch; }
+  .cot-foto--exi { width: 100%; max-width: 300px; align-self: center; }
+  .exi-cifras { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .exi-cifra { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+  .exi-cifra b { font-size: 18px; }
+  .exi-rej { grid-template-columns: minmax(64px, 1.1fr) repeat(var(--tallas), minmax(0, 1fr)); gap: 4px; padding: 8px; }
+  .exi-rej__color small { display: none; }
+  .exi-rej__color i { grid-row: auto; }
+  .exi-celda { height: 34px; font-size: 14px; }
+  .exi-solo { margin-left: 0; }
+}
+
+/* =====================================================================
+   PEDIDOS (05-pedidos.html)
+   La lista, como la de Facturación: el título con su nota, cuatro tarjetas y la
+   tabla. Un clic en un pedido abre su detalle a la derecha. La ventana "Validar
+   existencias" va a casi todo el alto, como la de elegir productos.
+   ===================================================================== */
+
+/* ---- El encabezado: la nota y, a la derecha, el saldo y "Nuevo pedido" ---- */
+
+.ped-futuro { display: block; margin-top: 3px; }
+
+/* Angosto, para dejarle el ancho a la nota: el botón, cuántas facturas esperan y el saldo */
+.ped-acc { flex: 0 0 auto; display: flex; flex-direction: column; align-items: stretch; gap: 5px; }
+.ped-nuevo { gap: 7px; white-space: nowrap; }
+.ped-nuevo__n { font-size: 12px; font-weight: 600; text-align: center; color: var(--vino-700); }
+.ped-saldo { display: flex; align-items: center; gap: 8px; font-size: 12px; white-space: nowrap; color: var(--tinta-2); }
+.ped-saldo b { color: var(--vino-800); }
+
+@media (max-width: 1100px) {
+  .ped-acc { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+}
+
+/* ---- La tabla ---- */
+
+/* La ficha "1 sin validar": filtra los Registrados, como una tarjeta */
+.ped-sinval {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+  border-radius: 999px;
+  background: var(--warn-bg);
+  color: var(--warn);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ped-sinval:hover { border-color: var(--warn); }
+.ped-sinval.is-on { background: var(--warn); color: #fff; }
+
+/* Dos renglones por celda: el dato y, debajo, su .tiny. El cliente y el modelo se
+   recortan con "…" (el nombre completo sale en el detalle) antes que partir la fila */
+.panel--tabla #dt-ped tbody td { padding-left: 8px; padding-right: 8px; }
+.panel--tabla #dt-ped thead th > .dt__orden { padding-left: 8px; padding-right: 8px; }
+#dt-ped tbody td > .tiny { margin-top: 1px; }
+#dt-ped tbody td > b { font-weight: 600; }
+/* La línea de debajo del estado puede partirse ("Esperando orden de Producción") */
+#dt-ped tbody .ped-estado .tiny { min-width: 150px; white-space: normal; }
+
+@media (min-width: 761px) {
+  #dt-ped .ped-thprod { min-width: 110px; }
+  #dt-ped tbody .ped-prod { max-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  #dt-ped .dt__cli > span,
+  #dt-ped .ped-prod > span { display: block; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* Lo apartado: la barra de comun/ y "24 de 84" al lado */
+.ped-bar { display: inline-flex; align-items: center; gap: 8px; }
+.ped-bar .bar { width: 44px; height: 7px; }
+.ped-bar b { font-size: 12.5px; font-variant-numeric: tabular-nums; }
+
+/* Cuatro totales: el título cabe en el mismo renglón */
+@media (min-width: 761px) and (max-width: 1439px) {
+  .panel--tabla.ped-tabla .dt__res-t { flex: 0 0 auto; }
+  .panel--tabla.ped-tabla .dt__res-t em { display: block; margin-left: 0; }
+}
+
+/* En menos de 1440 px las tarjetas se aprietan un poco: así la tabla gana alto */
+@media (min-width: 1181px) and (max-width: 1439px) {
+  .page:has(> .ped-tabla) .kpi { padding: 10px 12px; gap: 10px; }
+  .page:has(> .ped-tabla) .kpi__tile { width: 40px; height: 40px; }
+  .page:has(> .ped-tabla) .kpi__tile .ico { width: 24px; height: 24px; }
+  .page:has(> .ped-tabla) .kpi__n { font-size: 22px; }
+}
+
+/* Computador (ancho y con alto suficiente): la pantalla no se desplaza. La tabla
+   ocupa el alto que queda y se desplaza por dentro; los totales y las páginas
+   quedan siempre a la vista */
+@media (min-width: 1181px) and (min-height: 600px) {
+  .page:has(> .ped-tabla) { gap: 12px; }
+  .page > .ped-tabla { flex: 1 1 auto; min-height: 260px; display: flex; flex-direction: column; }
+  .ped-tabla > .panel__body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  .ped-tabla .dt { flex: 1 1 auto; min-height: 0; }
+  .panel--tabla.ped-tabla .dt__scroll { flex: 1 1 auto; min-height: 0; max-height: none; }
+}
+
+/* ---- El detalle ---- */
+
+/* El pedido En despacho: azul, el color que explica y no avisa de nada */
+.cot-det__estado--info { --tono: var(--info); }
+
+/* Los íconos de la cabecera, sobre la franja de color: cada uno con su color */
+.ped-det__acc { margin-left: auto; display: flex; gap: 6px; }
+.ped-det__acc .cot-ico { margin-left: 0; opacity: 1; color: var(--tono); }
+.ped-det .modal__head .cot-x { margin-left: 4px; }
+.cot-ico--validar { --tono: var(--ok); }
+.cot-ico--exi { --tono: var(--cobre-700); }
+.cot-ico--factura { --tono: var(--vino-700); }
+.cot-ico--copiar { --tono: var(--info); }
+
+/* El recorrido tiene siete pasos: los nombres, un poco más pequeños */
+.ped-rec .cot-rec__p b { font-size: 11.5px; line-height: 1.25; }
+.ped-rec .cot-rec__p small { font-size: 11px; }
+.ped-rec .cot-rec__p small.ped-rec__etapa { color: var(--warn); font-weight: 600; }
+
+/* En el celular los siete pasos no caben a lo ancho: van uno debajo del otro, con la
+   raya que los une a la izquierda */
+@media (max-width: 560px) {
+  .ped-rec { flex-direction: column; gap: 10px; }
+  .ped-rec .cot-rec__p { display: grid; grid-template-columns: 26px auto minmax(0, 1fr); align-items: center; gap: 0 10px; text-align: left; }
+  .ped-rec .cot-rec__p::before { top: auto; bottom: 50%; right: auto; left: 12px; width: 2px; height: calc(100% + 10px); }
+  .ped-rec .cot-rec__n { margin-bottom: 0; }
+  .ped-rec .cot-rec__p small.ped-rec__etapa { grid-column: 2 / -1; }
+}
+
+/* "No hizo falta": tenía todo en bodega y no pasó por Producción */
+.cot-rec__p.is-salto::before { background: var(--ok); }
+.cot-rec__p.is-salto .cot-rec__n { border-style: dashed; border-color: var(--tinta-3); color: var(--tinta-3); }
+.cot-rec__p.is-salto b { color: var(--tinta-3); }
+
+.ped-det__avisos:empty { display: none; }
+.ped-det__avisos .aviso { margin: 0; }
+
+/* El pie, siempre a la vista: pares, apartados, lo que falta y el valor */
+.ped-det__pie {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--linea);
+  background: var(--papel);
+  font-size: 12.5px;
+  color: var(--tinta-2);
+}
+
+.ped-det__pie b { font-size: 15px; color: var(--tinta); font-variant-numeric: tabular-nums; }
+.ped-det__pie .is-mal b { color: var(--crit); }
+.ped-det__valor { margin-left: auto; }
+.ped-det__valor b { font-size: 17px; color: var(--vino-700); }
+
+/* Las tallas que ya tienen sus pares (apartados, o en la bodega elegida): en verde */
+.vit__chips span.is-bien { border-color: color-mix(in srgb, var(--ok) 40%, transparent); background: var(--ok-bg); color: var(--ok); }
+.vit__chips span.is-bien b { color: var(--ok); }
+.vit__chips span[title] { cursor: help; }
+
+/* ---- La ventana "Validar existencias" ---- */
+
+.ped-modal { width: min(1120px, 100%); }
+.ped-val { gap: 12px; }
+
+/* Arriba, la bodega de despacho y qué quiere decir cada color */
+.ped-val__datos { flex: 0 0 auto; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 18px; padding-right: 16px; overflow: visible; }
+.ped-val__datos .cot-dato { flex: 1 1 520px; border-left: 0; }
+.ped-val__bod { margin: 3px 0 2px; }
+.ped-val__bod select { height: 38px; font-weight: 600; color: var(--vino-800); }
+.ped-val__ayuda { flex: 1 1 300px; padding: 8px 0; font-size: 12.5px; line-height: 1.45; color: var(--tinta-2); }
+
+/* Las tallas a la izquierda (se desplazan) y el resumen a la derecha, siempre a la vista */
+.ped-val__cuerpo {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 14px;
+}
+
+.ped-val__col { display: flex; flex-direction: column; min-height: 0; }
+.ped-val__solo { margin-left: auto; }
+.ped-val__lista,
+.ped-val__res {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--crema);
+}
+
+.ped-val__lista { gap: 8px; }
+.ped-val__res .aviso { margin: 0; }
+.ped-cifras { gap: 8px; }
+.ped-cifras .exi-cifra { padding: 8px 10px; }
+.exi-cifra--crit { border-left-color: var(--crit); }
+.exi-cifra--crit b { color: var(--crit); }
+.ped-usar { align-self: flex-start; gap: 7px; }
+.ped-val__msg { flex: 1 1 260px; margin: 0; font-size: 13px; line-height: 1.4; color: var(--tinta-2); }
+
+/* Tableta y celular: el resumen pasa debajo y toda la ventana se desplaza junta */
+@media (max-width: 900px) {
+  .ped-modal .modal__body { overflow-y: auto; }
+  .ped-val__cuerpo { display: flex; flex-direction: column; flex: 0 0 auto; }
+  .ped-val__lista, .ped-val__res { flex: 0 0 auto; overflow: visible; }
+}
+
+/* Celular: el pie de la ventana en un renglón (Cerrar y el botón principal), para dejarle
+   el alto a las tallas. Lo que dice el mensaje del pie ya lo dice el resumen */
+@media (max-width: 560px) {
+  .ped-modal .modal__body { padding: 12px 12px 14px; }
+  .ped-modal .modal__foot { flex-direction: row; flex-wrap: nowrap; gap: 8px; padding: 10px 12px; }
+  .ped-modal .modal__foot .btn { width: auto; padding: 0 12px; }
+  .ped-modal .modal__foot [data-val="enviar"] { flex: 1 1 auto; font-size: 13px; }
+  .ped-val__msg { display: none; }
 }

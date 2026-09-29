@@ -2,7 +2,7 @@
    07-comercial/mockup/prototipo.js
 
    Hace que el mockup de Comercial RESPONDA: registrar y editar clientes,
-   generar cotizaciones, confirmar pedidos, mandar a Logística, facturar y
+   generar cotizaciones, facturar, consultar existencias, validar pedidos y
    filtrar, sin recargar la página.
 
    Mismo motor que el de 04-inventario, con lo propio de este módulo.
@@ -10,6 +10,10 @@
    páginas) en la sección 9, la nueva cotización (cliente, productos y
    totales) en la 10 y el detalle que se abre desde la lista en la 11.
    Facturación va en la 12 y Clientes (lista, ficha y formulario) en la 13.
+   La 14 tiene los datos que comparten Existencias, Pedidos e Inicio: las
+   bodegas, los pares que hay en cada una, los pedidos y lo que cada uno tiene
+   apartado. La 15 es la pantalla de Existencias y la 16 la de Pedidos (la
+   lista, el detalle y la ventana "Validar existencias").
    Los datos viven en la pantalla: con F5 vuelve todo a como estaba.
    ===================================================================== */
 (function () {
@@ -164,7 +168,6 @@
       var p = pagina();
       p.scrollTop = 0;   // en pantalla ancha quien se desplaza es .page
       if (p.parentNode) p.parentNode.scrollTop = 0;
-      sincronizarEtapasPedidosComercial();
     }
 
     if (guardadas[archivo]) {
@@ -255,17 +258,12 @@
 
   /* ---------------------------------------------------------------- 6. Contadores del menú */
 
-  function sumarAlMenu(archivo, delta) {
-    var a = todos(".nav__si").filter(function (x) { return x.getAttribute("href") === archivo; })[0];
-    if (!a) return;
-    var ct = uno(".ct", a);
-    if (!ct) {
-      ct = document.createElement("span");
-      ct.className = "ct";
-      ct.textContent = "0";
-      a.appendChild(ct);
-    }
-    ct.textContent = Math.max(0, numero(ct.textContent) + delta);
+  /* El número de la pestaña en el menú lateral */
+  function ponerEnMenu(archivo, n) {
+    todos(".nav__si").forEach(function (a) {
+      var ct = a.getAttribute("href") === archivo ? uno(".ct", a) : null;
+      if (ct) ct.textContent = n;
+    });
   }
 
   /* ---------------------------------------------------------------- 7. Registrar movimientos */
@@ -337,7 +335,7 @@
   var RAPIDAS = {
     "cotizacion": { a: "09-cotizacion-nueva.html", dice: "Arme la cotización: cliente, productos y totales." },
     "cliente": { a: "04-cliente-nuevo.html", dice: "Registre el cliente: identificación, contacto, entrega y crédito." },
-    "pedido":  { a: "05-pedidos.html",  dice: "Los pedidos salen de una cotización aceptada." }
+    "pedido":  { a: "05-pedidos.html",  dice: "Cada pedido sale de una factura: regístrelo con «Nuevo pedido»." }
   };
 
   function generarReporte() {
@@ -385,60 +383,6 @@
       return aviso("Pendiente marcado como atendido.", "ok");
     }
 
-    if (texto === "Confirmar") {
-      e.preventDefault();
-      var fp = b.closest("tr");
-      var ped = (fp.querySelector("b") || {}).textContent || "El pedido";
-      var est3 = celda(fp, "Estado");
-      if (est3) est3.innerHTML = '<span class="pill pill--ok">Confirmado</span>';
-      fp.classList.add("es-nueva");
-      b.textContent = "Enviar a Logística";
-      b.className = "btn btn--sm btn--oliva";
-      return aviso(ped + " confirmado · Inventario reserva los pares en bodega.", "ok");
-    }
-
-    if (texto === "Actualizar cliente" || b.classList.contains("btn-estado-cliente")) {
-      e.preventDefault();
-      return abrirModalSeguimiento(b);
-    }
-
-    if (b.id === "btn-cerrar-modal-seguimiento" || b.id === "btn-cerrar-modal-seguimiento-2") {
-      e.preventDefault();
-      return cerrarModalSeguimiento();
-    }
-
-    if (b.id === "btn-avanzar-etapa") {
-      e.preventDefault();
-      return avanzarEtapaModal();
-    }
-
-    if (b.id === "btn-enviar-aviso-cliente") {
-      e.preventDefault();
-      return notificarClienteModal();
-    }
-
-    if (texto === "Enviar a Logística") {
-      e.preventDefault();
-      var fl = b.closest("tr");
-      var ped2 = (fl.querySelector("b") || {}).textContent || "El pedido";
-      var est4 = celda(fl, "Estado");
-      if (est4) est4.innerHTML = '<span class="pill pill--off">Despachado</span><div class="tiny">En transporte</div>';
-      fl.classList.add("es-nueva");
-      b.disabled = true;
-      sumarAlMenu("05-pedidos.html", -1);
-      sumarAlMenu("06-entregas.html", 1);
-      return aviso(ped2 + " pasa a Logística · ellos generan la orden de despacho.", "ok");
-    }
-
-    if (texto === "Pedir a Producción") {
-      e.preventDefault();
-      var fr = b.closest("tr");
-      var refr = (fr.querySelector("b") || {}).textContent || "La referencia";
-      b.disabled = true;
-      fr.classList.add("es-nueva");
-      return aviso("Se le pidió a Producción abrir una orden para " + refr + ".", "warn");
-    }
-
     if (texto === "Avisar a Logística") {
       e.preventDefault();
       var fd = b.closest("tr");
@@ -454,182 +398,12 @@
       return aviso("La devolución la gestiona Logística y Despacho · Comercial solo la consulta.", "warn");
     }
 
-    if (texto === "Ver guía" || texto === "Ver soporte" || texto === "Ver entrega") {
-      e.preventDefault();
-      return ir("06-entregas.html", true);
-    }
-
     if (b.classList.contains("iconbtn") && !b.hasAttribute("data-accion")) {
       e.preventDefault();
       return aviso((b.getAttribute("aria-label") || "Acción") +
                    ": disponible cuando el módulo esté programado.", "warn");
     }
   });
-
-  /* ---------------------------------------------------------------- 8b. Seguimiento de etapas y aviso al cliente */
-  var pedidoEnModal = null;
-  var filaPedidoEnModal = null;
-  var pasoActualModal = 3;
-  var PASOS_NOMBRES = ["", "Corte", "Guarnición", "Montaje", "Embalaje", "Despacho", "Entregado"];
-
-  function abrirModalSeguimiento(b) {
-    filaPedidoEnModal = b.closest("tr");
-    var pedCod = b.getAttribute("data-pedido") || "PD-2026-088";
-    var pasoGuardado = null;
-    var etapaGuardada = null;
-
-    try {
-      var etapasMap = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
-      if (etapasMap[pedCod]) {
-        if (etapasMap[pedCod].paso) {
-          pasoGuardado = etapasMap[pedCod].paso;
-        } else if (etapasMap[pedCod].pct === 100 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Embalaje") >= 0)) {
-          pasoGuardado = 4;
-        } else if (etapasMap[pedCod].pct === 75 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Montaje") >= 0)) {
-          pasoGuardado = 3;
-        } else if (etapasMap[pedCod].pct === 50 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Guarnición") >= 0)) {
-          pasoGuardado = 2;
-        } else if (etapasMap[pedCod].pct === 25 || (etapasMap[pedCod].etapa && etapasMap[pedCod].etapa.indexOf("Corte") >= 0)) {
-          pasoGuardado = 1;
-        }
-        etapaGuardada = etapasMap[pedCod].etapa;
-      }
-    } catch(e) {}
-
-    pedidoEnModal = {
-      pedido: pedCod,
-      cliente: b.getAttribute("data-cliente") || "Distribuidora Tamanaco",
-      modelo: b.getAttribute("data-modelo") || "REF-1042 · Bota Andina",
-      pares: b.getAttribute("data-pares") || "48",
-      etapa: etapaGuardada || b.getAttribute("data-etapa") || "Montaje",
-      paso: pasoGuardado || parseInt(b.getAttribute("data-paso") || "3", 10),
-      fecha: b.getAttribute("data-fecha") || "2026-09-24"
-    };
-    pasoActualModal = pedidoEnModal.paso;
-    actualizarVistaModalSeguimiento();
-    var modal = uno("#modal-cliente-seguimiento");
-    if (modal) modal.classList.add("is-open");
-  }
-
-  function cerrarModalSeguimiento() {
-    var modal = uno("#modal-cliente-seguimiento");
-    if (modal) modal.classList.remove("is-open");
-    filaPedidoEnModal = null;
-  }
-
-  function actualizarVistaModalSeguimiento() {
-    if (!pedidoEnModal) return;
-    var elPed = uno("#mc-pedido"), elDet = uno("#mc-detalles");
-    var elMsg = uno("#mc-mensaje-cliente"), elBadge = uno("#mc-badge-estado");
-    if (elPed) elPed.textContent = pedidoEnModal.pedido;
-    if (elDet) elDet.innerHTML = "Cliente: <b>" + pedidoEnModal.cliente + "</b> · " + pedidoEnModal.modelo + " · " + pedidoEnModal.pares + " pares · Compromiso: " + pedidoEnModal.fecha;
-
-    var nombrePaso = PASOS_NOMBRES[pasoActualModal] || "Fabricación";
-    if (elBadge) {
-      elBadge.textContent = pasoActualModal >= 5 ? "En Transporte" : (pasoActualModal === 4 ? "Embalado" : "En Fabricación");
-    }
-
-    /* Actualizar Stepper */
-    todos(".etapa-step", uno("#mc-stepper")).forEach(function (st) {
-      var n = parseInt(st.getAttribute("data-etapa"), 10);
-      st.classList.remove("is-done", "is-active");
-      if (n < pasoActualModal) st.classList.add("is-done");
-      else if (n === pasoActualModal) st.classList.add("is-active");
-    });
-
-    /* Actualizar Mensaje al cliente */
-    if (elMsg) {
-      var prox = PASOS_NOMBRES[pasoActualModal + 1] ? "Próxima fase: " + PASOS_NOMBRES[pasoActualModal + 1].toUpperCase() + ". " : "Listo para entrega final. ";
-      elMsg.innerHTML = '"Hola, ' + pedidoEnModal.cliente + '. Le confirmamos que su pedido ' + pedidoEnModal.pedido + ' (' + pedidoEnModal.pares + ' pares de ' + pedidoEnModal.modelo + ') se encuentra actualmente en la etapa de <b>' + nombrePaso.toUpperCase() + '</b> en planta. ' + prox + 'Logística tiene proyectada su ruta para el ' + pedidoEnModal.fecha + '."';
-    }
-  }
-
-  function avanzarEtapaModal() {
-    if (!pedidoEnModal) return;
-    if (pasoActualModal < 5) {
-      pasoActualModal++;
-      var nuevoNombre = PASOS_NOMBRES[pasoActualModal];
-      actualizarVistaModalSeguimiento();
-
-      /* Actualizar fila de la tabla */
-      if (filaPedidoEnModal) {
-        var tdEst = celda(filaPedidoEnModal, "Estado");
-        if (tdEst) {
-          if (pasoActualModal === 4) {
-            tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--oliva-700);margin-top:3px"><b>Planta: Embalaje finalizado (4/4)</b></div>';
-          } else if (pasoActualModal === 5) {
-            tdEst.innerHTML = '<span class="pill pill--off">Despachado</span><div class="tiny" style="color:var(--tinta-2);margin-top:3px">En transporte / Ruta</div>';
-          } else {
-            tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: ' + nuevoNombre + ' (' + pasoActualModal + '/4)</b></div>';
-          }
-        }
-        var btn = uno(".btn-estado-cliente", filaPedidoEnModal);
-        if (btn) {
-          btn.setAttribute("data-paso", String(pasoActualModal));
-          btn.setAttribute("data-etapa", nuevoNombre);
-        }
-        filaPedidoEnModal.classList.add("es-nueva");
-      }
-
-      /* Guardar estado en localStorage para sincronizar con Producción y Despacho */
-      try {
-        var etapas = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
-        etapas[pedidoEnModal.pedido] = {
-          paso: pasoActualModal,
-          etapa: nuevoNombre,
-          cliente: pedidoEnModal.cliente,
-          fecha: hoy()
-        };
-        localStorage.setItem("sicaf_etapas_pedidos", JSON.stringify(etapas));
-      } catch (err) {}
-
-      aviso("Avance registrado: " + pedidoEnModal.pedido + " pasó a etapa de " + nuevoNombre.toUpperCase() + " · Sincronizado con Producción y Despacho.", "ok");
-    } else {
-      aviso("El pedido ya completó todas las etapas de fabricación y despacho.", "ok");
-    }
-  }
-
-  function notificarClienteModal() {
-    if (!pedidoEnModal) return;
-    var nombrePaso = PASOS_NOMBRES[pasoActualModal] || "Fabricación";
-    aviso("📲 Notificación enviada al cliente " + pedidoEnModal.cliente + " (Estado: " + nombrePaso + ") · Enviada por mensajería automática.", "ok");
-  }
-
-  /* Cerrar modal al hacer clic en el fondo */
-  document.addEventListener("click", function (e) {
-    if (e.target && e.target.classList && e.target.classList.contains("modal-backdrop")) {
-      cerrarModalSeguimiento();
-    }
-  });
-
-  function sincronizarEtapasPedidosComercial() {
-    try {
-      var etapasMap = JSON.parse(localStorage.getItem("sicaf_etapas_pedidos") || "{}");
-      todos("tr").forEach(function (tr) {
-        var btn = uno(".btn-estado-cliente", tr);
-        if (!btn) return;
-        var pedId = btn.getAttribute("data-pedido");
-        if (etapasMap[pedId]) {
-          var info = etapasMap[pedId];
-          var pasoNum = info.paso || (info.pct === 100 ? 4 : (info.pct === 75 ? 3 : (info.pct === 50 ? 2 : 1)));
-          var nombrePaso = PASOS_NOMBRES[pasoNum] || info.etapa;
-          btn.setAttribute("data-paso", String(pasoNum));
-          btn.setAttribute("data-etapa", nombrePaso);
-
-          var tdEst = celda(tr, "Estado");
-          if (tdEst) {
-            if (pasoNum >= 5) {
-              tdEst.innerHTML = '<span class="pill pill--off">Despachado</span><div class="tiny" style="color:var(--tinta-2);margin-top:3px">En transporte / Ruta</div>';
-            } else if (pasoNum === 4) {
-              tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--oliva-700);margin-top:3px"><b>Planta: Embalaje finalizado (4/4)</b></div>';
-            } else {
-              tdEst.innerHTML = '<span class="pill pill--ok">Confirmado</span><div class="tiny" style="color:var(--vino-700);margin-top:3px"><b>Planta: ' + nombrePaso + ' (' + pasoNum + '/4)</b></div>';
-            }
-          }
-        }
-      });
-    } catch (err) {}
-  }
 
   /* ---------------------------------------------------------------- 9. Cotizaciones: la lista
 
@@ -749,7 +523,7 @@
     if (k === "fecha") return tr.getAttribute("data-fecha");
     if (k === "vence") return tr.getAttribute("data-vence") || "9999-12-31";   // sin fecha (una factura pagada) va al final
     if (k === "estado") return conf.estados.indexOf(tr.getAttribute("data-estado"));
-    if (k === "codigo") return cola(textoDe(tr, conf.codigo));
+    if (k === "codigo") return cola(conf.codigoDe ? conf.codigoDe(tr) : textoDe(tr, conf.codigo));
     if (conf.claves[k]) return conf.claves[k](tr);
     return sinTildes(textoDe(tr, conf.columnas[k] || k));
   }
@@ -796,6 +570,7 @@
       var t = uno('[data-tot="' + e + '"]', dt);
       if (t) t.textContent = pesos(suma(e));
     });
+    if (conf.totales) conf.totales(vistas_, dt);   // lo que la tabla suma además (Pedidos: pares y faltantes)
     var filtrada = vistas_.length !== filas.length, los = conf.masculino ? "los" : "las";
     pieza(dt, "de").textContent = !filtrada ? "de " + los + " " + filas.length + " " + conf.plural
       : vistas_.length === 1 ? (conf.masculino ? "del único" : "de la única") + " que cumple el filtro"
@@ -830,6 +605,7 @@
   }
 
   function textoFiltro(k, v, conf) {
+    if (conf.textos && conf.textos[k]) return conf.textos[k](v);
     if (k === "estado") return conf.nombres[v] || v;
     if (k === "valorMin" || k === "valorMax") return pesos(numero(v));
     if (k === "desde" || k === "hasta") return fechaCorta(new Date(v + "T00:00"));
@@ -855,7 +631,7 @@
       var v = vista.f[campo.getAttribute("data-f")] || "";
       if (campo.value !== v) campo.value = v;
     });
-    todos(".kpi--btn[data-grupo]").forEach(function (b) {
+    todos("[data-grupo]").forEach(function (b) {   // las tarjetas y, en Pedidos, la ficha "sin validar"
       var on = vista.f.estado === b.getAttribute("data-grupo");
       b.classList.toggle("is-on", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
@@ -867,14 +643,6 @@
     if (!k) return;
     uno(".kpi__n", k).textContent = miles(n);
     uno(".kpi__s", k).textContent = detalle;
-  }
-
-  /* El número de la pestaña en el menú lateral */
-  function ponerEnMenu(archivo, n) {
-    todos(".nav__si").forEach(function (a) {
-      var ct = a.getAttribute("href") === archivo ? uno(".ct", a) : null;
-      if (ct) ct.textContent = n;
-    });
   }
 
   /* Al abrir una tabla: si es la primera vez, todo como viene en el HTML; si
@@ -909,6 +677,18 @@
     pintarLista(dt);
   }
 
+  /* Una tabla que se abre desde otra pantalla con sus filtros ya puestos ("Ver la
+     factura" en Pedidos, "Ver los pedidos que esperan este modelo" en Existencias):
+     sin búsqueda, en la primera página y con solo esos filtros */
+  function ponerFiltros(id, filtros) {
+    var dt = uno("#" + id), vista = vistaDe(id);
+    vista.f = filtros;
+    vista.q = "";
+    vista.pag = 1;
+    pieza(dt, "q").value = "";
+    pintarLista(dt);
+  }
+
   document.addEventListener("input", function (e) {
     var t = e.target, dt = tablaDeEvento(t);
     if (!dt) return;
@@ -939,7 +719,7 @@
     // La caja de filtros se cierra al pulsar fuera de ella
     todos("details.fil[open]").forEach(function (d) { if (!d.contains(e.target)) d.open = false; });
 
-    var kpi = e.target.closest(".kpi--btn[data-grupo]");
+    var kpi = e.target.closest("[data-grupo]");
     if (kpi) {                                   // un clic pone el filtro y otro lo quita
       var suya = tablaVisible();
       if (!suya) return;
@@ -1213,7 +993,31 @@
               '<path d="M10 11v6"/><path d="M14 11v6"/>',
     zapato: '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>' +
             '<path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>' +
-            '<path d="M16 17h4"/><path d="M4 13h4"/>'
+            '<path d="M16 17h4"/><path d="M4 13h4"/>',
+    // Los de Existencias y Pedidos
+    factura: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/>' +
+             '<path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+    etiqueta: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/>' +
+              '<circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
+    portapapeles: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>' +
+                  '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>' +
+                  '<path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+    ojo: '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>' +
+         '<circle cx="12" cy="12" r="3"/>',
+    ubicacion: '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>' +
+               '<circle cx="12" cy="10" r="3"/>',
+    cuadricula: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/>' +
+                '<rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+    info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+    // "recargar" no está en comun/iconos.svg: es rotate-cw, del mismo juego de íconos (Lucide)
+    recargar: '<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>',
+    // Los botones de la ventana "Validar existencias": a Logística (camión) o a Producción (engranaje)
+    camion: '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/>' +
+            '<path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>' +
+            '<circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>',
+    engranaje: '<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 ' +
+               '2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 ' +
+               '2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>'
   };
   function icono(nombre, tam) {
     return '<svg class="ico" width="' + tam + '" height="' + tam + '" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
@@ -1378,6 +1182,10 @@
     if (cliACotizar) {
       elegirCliente(cliACotizar);
       cliACotizar = null;
+    }
+    if (refACotizar) {   // "Cotizar este modelo" (Existencias): la vitrina se abre en ese modelo
+      vit.ref = refACotizar;
+      refACotizar = null;
     }
   }
 
@@ -1598,7 +1406,7 @@
     }
     if (t.faltan) {
       h += avisoHtml("warn", cuantas(t.faltan, "talla pide", "tallas piden") + " más pares de los que tiene asignados",
-                     "Salen en rojo en la lista. Se cotiza igual: Inventario reserva lo que haya y el resto se le pide a Producción.");
+                     "Salen en rojo en la lista. Se cotiza igual: al validar el pedido se aparta lo que haya y el resto lo fabrica Producción.");
     }
     // El descuento va por modelo: el aviso dice cuáles modelos se pasan
     var altos = refsEnCotizacion().filter(function (ref) { return descDe(ref) > DESCUENTO_MAX; })
@@ -2063,8 +1871,8 @@
           '<div class="cot-tallas" style="grid-template-columns: repeat(' + p.tallas.length + ', minmax(0, 1fr))">' +
             p.tallas.map(function (t, j) { return tallaHtml(p, vit.color, t, j); }).join("") + "</div>" +
           '<div class="vit__leyenda"><span class="is-ok">alcanza</span><span class="is-poco">quedan pocos</span>' +
-            '<span class="is-cero">no hay</span><span class="is-mal" title="Se cotiza igual: se reserva lo que haya' +
-            ' y el resto se le pide a Producción">pide más de lo que hay</span></div>' +
+            '<span class="is-cero">no hay</span><span class="is-mal" title="Se cotiza igual: al validar el pedido se aparta' +
+            ' lo que haya y el resto lo fabrica Producción">pide más de lo que hay</span></div>' +
           '<div class="vit__atajos"><span>Poner</span><input class="dt__in" id="cot-vit-n" type="number" min="1" step="1" value="2"' +
             ' aria-label="Pares para cada talla"><span>en cada talla</span>' +
             '<button type="button" class="btn btn--sm btn--ghost" data-vit-llenar>Llenar</button>' +
@@ -2404,14 +2212,21 @@
     if (uno("#dt-cot")) iniciarTabla("dt-cot");
     if (uno("#cot-form")) iniciarNueva();
     if (uno("#dt-fac")) iniciarTabla("dt-fac");
+    if (uno("#dt-fac") && facFiltro) {   // "Ver la factura" (Pedidos): la lista filtrada por esa factura
+      ponerFiltros("dt-fac", { codigo: facFiltro });
+      facFiltro = null;
+    }
     if (uno("#fac-form")) iniciarFactura();
     if (uno("#dt-cli")) iniciarTabla("dt-cli");
     if (uno("#cli-form")) iniciarCliente();
+    if (uno("#exi")) iniciarExistencias();
+    if (uno("#dt-ped")) iniciarPedidos();
     ponerEnMenu(CLI_LISTA, activos().length);   // los clientes a los que se les vende
     // Las cotizaciones por facturar: lo que espera Facturación, en las dos pestañas
     var n = porFacturar().length;
     ponerEnMenu(LISTA, n);
     ponerEnMenu(FACTURAS, n);
+    ponerEnMenu(PED_LISTA, porAtender());
   }
 
   /* ---------------------------------------------------------------- 11. El detalle de una cotización
@@ -2430,7 +2245,9 @@
      que se envió a Facturación y en que se facturó. Las de
      ejemplo traen un solo modelo y sus tallas se reparten con la curva de lo
      asignado (curvaDe); las que se crean en "Nueva cotización" guardan aquí sus
-     renglones de verdad (guardarCotizacion). */
+     renglones de verdad (guardarCotizacion). CO-2026-005, 007 y 010 también
+     traen sus renglones (renglonesDe): son los de sus pedidos, que esperan el
+     color que no hay en bodega. Los pares y el valor son los mismos de su factura. */
   var HISTORIAL = {
     "CO-2026-001": { fecha: "2026-08-03", cli: "CL-003", vend: "Andrés Quintero", pares: 60, estado: "facturada", factura: "FV-2026-0112",
                      ref: "REF-1042", desc: 5, pasos: { porfacturar: 0, facturada: 3 }, obs: "Entrega en Bogotá en 10 días hábiles." },
@@ -2442,17 +2259,21 @@
     "CO-2026-004": { fecha: "2026-08-14", cli: "CL-005", vend: "Valentina Rojas", pares: 72, estado: "facturada", factura: "FV-2026-0127",
                      ref: "REF-1044", desc: 8, pasos: { porfacturar: 0, facturada: 3 }, obs: "Descuento del 8 % por volumen." },
     "CO-2026-005": { fecha: "2026-08-19", cli: "CL-002", vend: "Andrés Quintero", pares: 48, estado: "facturada", factura: "FV-2026-0131",
-                     ref: "REF-1042", desc: 3, pasos: { porfacturar: 0, facturada: 4 }, obs: "" },
+                     lineas: renglonesDe("REF-1042", 3, { "Negro": [4, 8, 12, 12, 8, 4] }), descuentos: { "REF-1042": 3 },
+                     pasos: { porfacturar: 0, facturada: 4 }, obs: "" },
     "CO-2026-006": { fecha: "2026-08-24", cli: "CL-006", vend: "Marcela Duarte", pares: 30, estado: "vencida", factura: "",
                      ref: "REF-1043", desc: 0, pasos: {}, obs: "Precio sostenido hasta la fecha de vigencia." },
     "CO-2026-007": { fecha: "2026-08-27", cli: "CL-001", vend: "Valentina Rojas", pares: 26, estado: "facturada", factura: "FV-2026-0139",
-                     ref: "REF-1042", desc: 0, pasos: { porfacturar: 0, facturada: 3 }, obs: "" },
+                     lineas: renglonesDe("REF-1042", 0, { "Negro": [2, 4, 6, 6, 5, 3] }), descuentos: { "REF-1042": 0 },
+                     pasos: { porfacturar: 0, facturada: 3 }, obs: "" },
     "CO-2026-008": { fecha: "2026-09-01", cli: "CL-008", vend: "Andrés Quintero", pares: 36, estado: "facturada", factura: "FV-2026-0144",
                      ref: "REF-1044", desc: 5, pasos: { porfacturar: 0, facturada: 2 }, obs: "Pago de contado. Incluye el marcado de la plantilla." },
     "CO-2026-009": { fecha: "2026-09-03", cli: "CL-004", vend: "Marcela Duarte", pares: 20, estado: "vencida", factura: "",
                      ref: "REF-1043", desc: 0, pasos: {}, obs: "" },
     "CO-2026-010": { fecha: "2026-09-07", cli: "CL-003", vend: "Valentina Rojas", pares: 84, estado: "facturada", factura: "FV-2026-0152",
-                     ref: "REF-1042", desc: 8, pasos: { porfacturar: 0, facturada: 4 }, obs: "Descuento del 8 % por volumen. Entrega en dos despachos." },
+                     lineas: renglonesDe("REF-1042", 8, { "Negro": [6, 10, 14, 14, 10, 6], "Café": [2, 3, 4, 3, 2, 0], "Miel": [0, 2, 3, 3, 1, 1] }),
+                     descuentos: { "REF-1042": 8 },
+                     pasos: { porfacturar: 0, facturada: 4 }, obs: "Descuento del 8 % por volumen. Entrega en dos despachos." },
     "CO-2026-011": { fecha: "2026-09-09", cli: "CL-005", vend: "Marcela Duarte", pares: 40, estado: "porfacturar", factura: "",
                      ref: "REF-1043", desc: 5, pasos: { porfacturar: 0 }, obs: "Entrega en 8 días hábiles después de facturada." },
     "CO-2026-012": { fecha: "2026-09-11", cli: "CL-002", vend: "Valentina Rojas", pares: 35, estado: "porfacturar", factura: "",
@@ -2472,6 +2293,19 @@
   };
 
   var detalleDesde = null;   // la fila que abrió el detalle, para devolverle el foco
+
+  /* Los renglones de una cotización a partir de los pares de cada color, con la
+     forma de PRODUCTOS.colores: { "Negro": [4, 8, 12, 12, 8, 4] } da un renglón
+     por cada talla que tiene pares, con el descuento del modelo */
+  function renglonesDe(ref, desc, porColor) {
+    var p = productoPor(ref), lineas = [];
+    Object.keys(porColor).forEach(function (color) {
+      porColor[color].forEach(function (pares, i) {
+        if (pares > 0) lineas.push({ ref: ref, color: color, talla: p.tallas[i], cant: pares, desc: desc });
+      });
+    });
+    return lineas;
+  }
 
   /* Reparte los pares de una cotización de ejemplo como viene lo asignado: más
      pares en las tallas y en los colores que más hay. Con menos de 30 pares va
@@ -3969,11 +3803,1321 @@
     uno('[data-cl-tab="' + otra + '"]').focus();
   });
 
-  /* ---------------------------------------------------------------- 14. Arranque */
+  /* ---------------------------------------------------------------- 14. Pedidos y existencias: los datos
+
+     Lo que comparten Existencias, Pedidos e Inicio. Las reglas están en el README
+     del módulo (RN-COM-10 a RN-COM-19).
+     - BODEGAS_PT: las bodegas de producto terminado de Inventario.
+     - EXISTENCIAS: los pares que Inventario tiene en cada bodega, por modelo y
+       color: un número por talla, en el orden de PRODUCTOS.tallas (la misma forma
+       de PRODUCTOS.colores). En el sistema de verdad llegan de la API de
+       Inventario (04-inventario/api/saldo-terminado.php): Comercial no los guarda.
+     - PEDIDOS: uno por cada factura que salió de una cotización. Cada renglón
+       (modelo, color y talla) dice cuántos pares pide y cuántos tiene apartados.
+       Lo apartado lo lleva Comercial: Inventario no tiene reservas.
+     - Libre para vender = en bodega − apartado (RN-COM-12).
+     - ENTRADAS_EJEMPLO: lo que Inventario recibe; lo aplica "Volver a leer el saldo".
+     Comercial publica sus pedidos en CLAVE_PEDIDOS para Producción y Logística. */
+
+  var BODEGAS_PT = [
+    { codigo: "BOD-02", nombre: "Producto terminado", zona: "Bloque B · zona de despachos" },
+    // La segunda bodega de producto terminado todavía no existe en Inventario: su código hay que acordarlo
+    { codigo: "BOD-05", nombre: "Almacén de ventas", zona: "Bloque B · mostrador", ejemplo: true }
+  ];
+
+  /* BOD-02 cuadra con el saldo de Inventario: 78 pares de REF-1042 y 44 de REF-1043.
+     De REF-1042 Negro no hay: es lo que Producción está haciendo. De REF-1044 tampoco:
+     su lote (LT-2026-031) todavía no entra. BOD-05 tiene de REF-1042 la misma curva
+     de CO-2026-015 */
+  var EXISTENCIAS = {
+    "BOD-02": {
+      "REF-1042": { "Café": [4, 8, 12, 10, 6, 0], "Miel": [0, 6, 10, 12, 6, 4] },
+      "REF-1043": { "Café": [3, 5, 6, 4, 2, 0], "Miel": [2, 3, 4, 3, 2, 0], "Negro": [0, 2, 3, 3, 2, 0] }
+    },
+    "BOD-05": {
+      "REF-1042": { "Negro": [3, 6, 9, 8, 5, 2], "Café": [1, 4, 5, 4, 2, 0], "Miel": [0, 2, 4, 3, 1, 1] },
+      "REF-1043": { "Café": [1, 2, 2, 2, 1, 0], "Negro": [0, 1, 1, 1, 1, 0] }
+    }
+  };
+
+  /* Los pedidos de ejemplo, numerados en el orden de su factura. "fecha" es el día en
+     que se registró (el de su factura) y "entrega", la fecha que se le prometió al
+     cliente. Sus renglones son los de su cotización (lineasDePedido); "apartado" dice
+     los pares que ya tiene apartados en su bodega, con la forma de EXISTENCIAS.
+     Los "...El" son el día de cada paso del recorrido: se validaron sus existencias, se
+     fue a Producción (solo si le faltaba algo), quedó listo, salió y se entregó.
+     La factura FV-2026-0158 (CO-2026-015) todavía no tiene pedido: se registra en Pedidos. */
+  var PEDIDOS = [
+    // Estos tenían todo en bodega: no pasaron por Producción
+    { codigo: "PD-2026-085", factura: "FV-2026-0112", cot: "CO-2026-001", fecha: "2026-08-06", entrega: "2026-08-19",
+      bodega: "BOD-02", estado: "entregado",
+      validadoEl: "2026-08-06", listoEl: "2026-08-06", despachoEl: "2026-08-14", entregadoEl: "2026-08-19" },
+    { codigo: "PD-2026-086", factura: "FV-2026-0118", cot: "CO-2026-002", fecha: "2026-08-08", entrega: "2026-08-20",
+      bodega: "BOD-02", estado: "entregado",
+      validadoEl: "2026-08-08", listoEl: "2026-08-08", despachoEl: "2026-08-18", entregadoEl: "2026-08-20" },
+    { codigo: "PD-2026-087", factura: "FV-2026-0127", cot: "CO-2026-004", fecha: "2026-08-17", entrega: "2026-10-01",
+      bodega: "BOD-02", estado: "despacho", despacho: "DS-2026-052",
+      validadoEl: "2026-08-17", produccionEl: "2026-08-17", listoEl: "2026-09-24", despachoEl: "2026-09-26" },
+    // A estos les falta REF-1042 Negro o REF-1044, que en BOD-02 no hay: Producción los está haciendo
+    { codigo: "PD-2026-088", factura: "FV-2026-0131", cot: "CO-2026-005", fecha: "2026-08-23", entrega: "2026-10-01",
+      bodega: "BOD-02", estado: "en_produccion", validadoEl: "2026-08-23", produccionEl: "2026-08-23" },
+    { codigo: "PD-2026-089", factura: "FV-2026-0139", cot: "CO-2026-007", fecha: "2026-08-30", entrega: "2026-10-06",
+      bodega: "BOD-02", estado: "en_produccion", validadoEl: "2026-08-30", produccionEl: "2026-08-30" },
+    { codigo: "PD-2026-090", factura: "FV-2026-0144", cot: "CO-2026-008", fecha: "2026-09-03", entrega: "2026-10-08",
+      bodega: "BOD-02", estado: "en_produccion", validadoEl: "2026-09-03", produccionEl: "2026-09-03" },
+    // El Café y el Miel sí estaban: quedaron apartados (24 pares). Faltan los 60 Negro
+    { codigo: "PD-2026-091", factura: "FV-2026-0152", cot: "CO-2026-010", fecha: "2026-09-11", entrega: "2026-10-14",
+      bodega: "BOD-02", estado: "en_produccion", validadoEl: "2026-09-11", produccionEl: "2026-09-11",
+      apartado: { "REF-1042": { "Café": [2, 3, 4, 3, 2, 0], "Miel": [0, 2, 3, 3, 1, 1] } } }
+  ];
+  var ultimaPed = 94;   // el consecutivo más alto: PD-2026-092 a 094 ya los usan de ejemplo Logística y Producción
+
+  var PED_LISTA = "05-pedidos.html";
+  var pedFiltro = null;   // Pedidos se abre filtrado por un modelo y un estado: { ref, estado } (desde Existencias)
+  var pedAbrir = null;    // el pedido cuyo detalle se abre al entrar a Pedidos
+
+  /* Los pares de una talla en una tabla con la forma de EXISTENCIAS["BOD-02"]:
+     tabla[ref][color] = pares por talla, en el orden de PRODUCTOS.tallas */
+  function paresEn(tabla, ref, color, talla) {
+    var fila = tabla && tabla[ref] && tabla[ref][color];
+    return fila ? fila[productoPor(ref).tallas.indexOf(talla)] || 0 : 0;
+  }
+
+  /* Los renglones de un pedido: los de su cotización, cada uno con lo que tiene
+     apartado. El que ya salió de la bodega (En despacho o Entregado) salió completo */
+  function lineasDePedido(p) {
+    var salio = p.estado === "despacho" || p.estado === "entregado";
+    return cotizacionDe(p.cot).lineas.map(function (l) {
+      return { ref: l.ref, color: l.color, talla: l.talla, cant: l.cant,
+               apartado: salio ? l.cant : paresEn(p.apartado, l.ref, l.color, l.talla) };
+    });
+  }
+  PEDIDOS.forEach(function (p) { p.lineas = lineasDePedido(p); });
+
+  function enBodega(b, ref, color, talla) { return paresEn(EXISTENCIAS[b], ref, color, talla); }
+
+  /* Los pedidos que apartan pares: los En producción y los Listos para despacho (RN-COM-12) */
+  function aparta(p) { return p.estado === "en_produccion" || p.estado === "listo"; }
+
+  /* Lo apartado para pedidos en una bodega, de un modelo, color y talla */
+  function apartadoEn(b, ref, color, talla) {
+    var s = 0;
+    PEDIDOS.forEach(function (p) {
+      if (p.bodega !== b || !aparta(p)) return;
+      p.lineas.forEach(function (l) {
+        if (l.ref === ref && l.color === color && l.talla === talla) s += l.apartado;
+      });
+    });
+    return s;
+  }
+
+  /* Libre para vender = en bodega − apartado, nunca menos de 0 */
+  function libreEn(b, ref, color, talla) {
+    return Math.max(0, enBodega(b, ref, color, talla) - apartadoEn(b, ref, color, talla));
+  }
+
+  /* Lo que un pedido tiene apartado y lo que le falta, de un modelo o de todo el pedido */
+  function apartadoDe(p, ref) {
+    return p.lineas.reduce(function (s, l) { return s + (!ref || l.ref === ref ? l.apartado : 0); }, 0);
+  }
+  function faltanDe(p, ref) {
+    return p.lineas.reduce(function (s, l) { return s + (!ref || l.ref === ref ? l.cant - l.apartado : 0); }, 0);
+  }
+  function clienteDePedido(p) { return clientePor(HISTORIAL[p.cot].cli); }
+  /* De la factura más vieja a la más nueva */
+  function porFactura(a, b) { return cola(a.factura) - cola(b.factura); }
+  function pedidoPor(codigo) { return PEDIDOS.filter(function (p) { return p.codigo === codigo; })[0]; }
+  /* Los que se registraron y todavía no se validan */
+  function sinValidar() { return PEDIDOS.filter(function (p) { return p.estado === "registrado"; }); }
+
+  /* Las facturas que salieron de una cotización y todavía no tienen pedido (RN-COM-10),
+     de la más vieja a la más nueva. Las de antes del sistema no traen productos: no cuentan */
+  function facturasSinPedido() {
+    return Object.keys(HISTORIAL).map(function (n) { return HISTORIAL[n].factura; })
+      .filter(function (f) { return f && !PEDIDOS.some(function (p) { return p.factura === f; }); })
+      .sort(function (a, b) { return cola(a) - cola(b); });
+  }
+
+  /* Lo que le pide acción a Comercial en Pedidos (su número en el menú): las facturas
+     sin pedido y los pedidos que todavía no se validan */
+  function porAtender() { return facturasSinPedido().length + sinValidar().length; }
+
+  /* "2026-08-19" → la fecha, a las 00:00 de aquí; null si no hay */
+  function fechaDe(iso) { return iso ? new Date(iso + "T00:00") : null; }
+  /* El día de hoy como "2026-09-29", en la hora de aquí (hoy() lo da en la hora universal) */
+  function diaDeHoy() { return fechaIso(new Date()); }
+
+  /* ---- Volver a validar los pedidos (RN-COM-15 y RN-COM-16) ----
+     Se llama al cargar y cada vez que cambian las existencias:
+     1. si Inventario reporta menos pares de los apartados, se le quitan al pedido
+        más nuevo que los tenga; si estaba Listo para despacho, vuelve a En producción;
+     2. lo libre se reparte entre los pedidos En producción, del de la factura más
+        vieja al de la más nueva. Lo que ya está apartado no se le quita a nadie;
+     3. el pedido que queda completo pasa solo a Listo para despacho.
+     Devuelve lo que cambió, para decirlo en un aviso. Al cargar no cambia nada. */
+  function revalidar() {
+    var cambios = { listos: [], recibieron: [], vuelven: [] };
+    quitarLoQueNoEsta(cambios);
+    repartirLoLibre(cambios);
+    publicarPedidos();
+    return cambios;
+  }
+
+  function quitarLoQueNoEsta(cambios) {
+    PEDIDOS.filter(aparta).sort(porFactura).reverse().forEach(function (p) {
+      p.lineas.forEach(function (l) {
+        var sobra = apartadoEn(p.bodega, l.ref, l.color, l.talla) - enBodega(p.bodega, l.ref, l.color, l.talla);
+        if (sobra <= 0 || !l.apartado) return;
+        l.apartado -= Math.min(sobra, l.apartado);
+        if (p.estado === "listo") {
+          p.estado = "en_produccion";
+          p.novedad = "perdio";   // en Inicio sale un aviso urgente
+          cambios.vuelven.push(p);
+        }
+      });
+    });
+  }
+
+  function repartirLoLibre(cambios) {
+    PEDIDOS.filter(function (p) { return p.estado === "en_produccion"; }).sort(porFactura).forEach(function (p) {
+      var recibe = 0;
+      p.lineas.forEach(function (l) {
+        var toma = Math.min(l.cant - l.apartado, libreEn(p.bodega, l.ref, l.color, l.talla));
+        if (toma > 0) {
+          l.apartado += toma;
+          recibe += toma;
+        }
+      });
+      if (!faltanDe(p)) {
+        p.estado = "listo";
+        p.novedad = "listo";   // en Inicio sale el aviso de que quedó listo
+        p.listoEl = diaDeHoy();
+        cambios.listos.push(p);
+      } else if (recibe) {
+        cambios.recibieron.push({ pedido: p, pares: recibe });
+      }
+    });
+  }
+
+  /* ---- Lo que Comercial publica ----
+     Para Producción, lo que les falta a los pedidos En producción; para Logística,
+     los Listos para despacho. Usa los nombres que Logística ya lee (PedidoFacturado).
+     En el sistema de verdad son sus APIs: 07-comercial/api/pedidos-por-fabricar.php
+     y pedidos-listos.php. Comercial no la vuelve a leer: con F5 todo empieza de nuevo */
+  var CLAVE_PEDIDOS = "sicaf_pedidos_comercial";
+
+  function publicarPedidos() {
+    try {
+      localStorage.setItem(CLAVE_PEDIDOS, JSON.stringify({ actualizado: new Date().toISOString(),
+                                                           pedidos: PEDIDOS.map(pedidoParaPublicar) }));
+    } catch (e) {
+      // sin almacenamiento (una ventana privada, por ejemplo) el mockup sigue igual
+    }
+  }
+
+  function pedidoParaPublicar(p) {
+    var q = cotizacionDe(p.cot), c = q.cliente, t = totales(q);
+    return {
+      pedidoCodigo: p.codigo, facturaNumero: p.factura, cotizacion: p.cot,
+      fechaFacturacion: fechaIso(sumarDias(q.fecha, q.pasos.facturada || 0)),
+      cliente: c.nombre, nit: c.nit, destinoNodo: c.ciudad, direccion: c.direccion,
+      entrega: p.entrega, bodega: p.bodega, estado: p.estado,
+      cantidadPares: t.pares, totalFacturado: t.total, referencia: p.lineas[0].ref,
+      lineas: p.lineas.map(function (l) {
+        return { ref: l.ref, color: l.color, talla: l.talla, cant: l.cant, apartado: l.apartado };
+      }),
+      faltan: p.estado !== "en_produccion" ? [] : p.lineas.filter(function (l) { return l.cant > l.apartado; })
+        .map(function (l) { return { ref: l.ref, color: l.color, talla: l.talla, pares: l.cant - l.apartado }; })
+    };
+  }
+
+  /* ---- Lo que Inventario recibe (o da de baja) en producto terminado ----
+     Uno por clic en "Volver a leer el saldo". Son los lotes de
+     04-inventario/mockup/04-terminado.html. Una entrada trae sus pares por color y
+     talla ("colores") o solo el total ("pares"), que se reparte como lo asignado
+     (curvaDe). Una baja deja en 0 esa talla de esa bodega. */
+  var ENTRADAS_EJEMPLO = [
+    { lote: "LT-2026-031", bodega: "BOD-02", ref: "REF-1044", pares: 120 },
+    { lote: "LT-2026-033", bodega: "BOD-02", ref: "REF-1042", colores: { "Negro": [6, 10, 14, 14, 10, 6] } },
+    { baja: "daño", bodega: "BOD-02", ref: "REF-1044", color: "Negro", talla: 36 }
+  ];
+  var entradasLeidas = 0;   // cuántas de ENTRADAS_EJEMPLO ya entraron
+  var saldoLeido = new Date();   // cuándo se leyó el saldo de Inventario (lo dicen Existencias y Pedidos)
+  function horaDe(d) { return dos(d.getHours()) + ":" + dos(d.getMinutes()); }
+
+  /* Suma (o resta, con n negativo) pares a una talla de una bodega */
+  function sumarEnBodega(b, ref, color, talla, n) {
+    if (!EXISTENCIAS[b]) EXISTENCIAS[b] = {};
+    if (!EXISTENCIAS[b][ref]) EXISTENCIAS[b][ref] = {};
+    if (!EXISTENCIAS[b][ref][color]) EXISTENCIAS[b][ref][color] = productoPor(ref).tallas.map(function () { return 0; });
+    var fila = EXISTENCIAS[b][ref][color], i = productoPor(ref).tallas.indexOf(talla);
+    fila[i] = Math.max(0, fila[i] + n);
+  }
+
+  /* Aplica la siguiente entrada y vuelve a validar los pedidos. Devuelve la entrada,
+     los pares que movió y lo que cambió en los pedidos; null si ya no hay más */
+  function aplicarEntrada() {
+    saldoLeido = new Date();
+    var e = ENTRADAS_EJEMPLO[entradasLeidas];
+    if (!e) return null;
+    entradasLeidas++;
+    var pares = 0;
+    if (e.baja) {
+      pares = enBodega(e.bodega, e.ref, e.color, e.talla);
+      sumarEnBodega(e.bodega, e.ref, e.color, e.talla, -pares);
+    } else {
+      var renglones = e.colores ? renglonesDe(e.ref, 0, e.colores) : curvaDe(productoPor(e.ref), e.pares, 0);
+      renglones.forEach(function (l) {
+        sumarEnBodega(e.bodega, l.ref, l.color, l.talla, l.cant);
+        pares += l.cant;
+      });
+    }
+    return { entrada: e, pares: pares, cambios: revalidar() };
+  }
+
+  /* El aviso de lo que pasó al leer el saldo: qué recibió (o dio de baja) Inventario y
+     qué pedidos cambiaron. Si un pedido Listo perdió pares, el aviso sale en rojo */
+  function avisoEntrada(r) {
+    if (!r) return aviso("Inventario no tiene entradas nuevas: el saldo ya estaba al día.", "ok");
+    var e = r.entrada, nombre = productoPor(e.ref).nombre, c = r.cambios;
+    var texto = e.baja
+      ? "Inventario dio de baja por " + e.baja + " " + cuantas(r.pares, "par", "pares") + " de " + nombre + " " + e.color +
+        " talla " + e.talla + " en " + e.bodega + "."
+      : "Inventario recibió " + e.lote + ": " + cuantas(r.pares, "par", "pares") + " de " + nombre + " en " + e.bodega + ".";
+    c.listos.forEach(function (p) { texto += " " + p.codigo + " quedó listo para despacho."; });
+    c.recibieron.forEach(function (x) {
+      texto += " " + x.pedido.codigo + " recibió " + cuantas(x.pares, "par", "pares") + " y sigue en producción: faltan " +
+               faltanDe(x.pedido) + ".";
+    });
+    c.vuelven.forEach(function (p) { texto += " " + p.codigo + " perdió pares apartados y volvió a En producción: revise con Inventario."; });
+    aviso(texto, c.vuelven.length ? "crit" : "ok");
+  }
+
+  /* ---------------------------------------------------------------- 15. Existencias
+
+     03-existencias.html responde "¿cuántos pares de este modelo, color y talla hay
+     libres en esta bodega y, si aquí no hay, dónde sí?". Solo consulta: no crea
+     productos ni le pide nada a Producción (RN-COM-17).
+     Arriba se eligen el producto y la bodega. Abajo, en tres columnas: el catálogo
+     como una tienda | el modelo en esa bodega, con la rejilla color × talla de lo
+     libre | en qué otras bodegas hay y qué pedidos esperan ese modelo.
+     Lo elegido vive en "exi" y todo se vuelve a dibujar desde él. No usa "cot" ni
+     las funciones de la vitrina de la cotización, que la necesitan. */
+
+  var TODAS = "todas";      // el valor de "Todas las bodegas"
+  var exi = null;           // lo elegido: { ref, bodega, color, q, solo }
+  var refACotizar = null;   // el modelo en el que se abre la vitrina de la próxima cotización ("Cotizar este modelo")
+  var exiAbrir = null;      // el modelo y la bodega con que se abre Existencias: { ref, bodega } (desde un pedido)
+
+  function iniciarExistencias() {
+    if (!exi) exi = { ref: null, bodega: BODEGAS_PT[0].codigo, color: null, q: "", solo: false };
+    if (exiAbrir) {   // "Ver existencias del modelo" (Pedidos): ese modelo en la bodega del pedido
+      exi.ref = exiAbrir.ref;
+      exi.bodega = exiAbrir.bodega;
+      exi.color = null;
+      exiAbrir = null;
+    }
+    uno("#exi-solo").checked = exi.solo;
+    uno("#exi-q").value = exi.q;
+    pintarExistencias();
+  }
+
+  /* ---- Lo que se suma de un modelo ---- */
+
+  /* Las bodegas que se miran: la elegida, o todas */
+  function bodegasDe(codigo) {
+    return codigo === TODAS ? BODEGAS_PT.map(function (b) { return b.codigo; }) : [codigo];
+  }
+
+  /* Suma lo que dice "cuanto" (la función enBodega, apartadoEn o libreEn) de un modelo,
+     en una bodega o en todas: de todos sus colores y tallas, de un color, o de un color y una talla */
+  function sumar(cuanto, p, codigo, color, talla) {
+    var s = 0;
+    bodegasDe(codigo).forEach(function (b) {
+      colores(p).forEach(function (c) {
+        if (color && c !== color) return;
+        p.tallas.forEach(function (t) {
+          if (!talla || t === talla) s += cuanto(b, p.ref, c, t);
+        });
+      });
+    });
+    return s;
+  }
+
+  /* Las otras bodegas donde el modelo (o ese color, o ese color y esa talla) tiene pares libres */
+  function otrasConPares(p, codigo, color, talla) {
+    return BODEGAS_PT.filter(function (b) { return b.codigo !== codigo; })
+      .map(function (b) { return { codigo: b.codigo, libres: sumar(libreEn, p, b.codigo, color, talla) }; })
+      .filter(function (x) { return x.libres > 0; });
+  }
+
+  function bodegaPor(codigo) { return BODEGAS_PT.filter(function (b) { return b.codigo === codigo; })[0]; }
+  /* "BOD-05 · Almacén de ventas (de ejemplo)" */
+  function nombreBodega(b) { return b.codigo + " · " + b.nombre + (b.ejemplo ? " (de ejemplo)" : ""); }
+  /* La bodega elegida dentro de una frase: "BOD-02" o "todas las bodegas" */
+  function enQueBodega() { return exi.bodega === TODAS ? "todas las bodegas" : exi.bodega; }
+  /* Lo que dice el buscador cuando ya hay un modelo elegido */
+  function etiquetaModelo(p) { return p ? p.nombre + " · " + p.ref : ""; }
+
+  /* El color del dibujo: el que se tocó o, si no, el primero que tiene pares libres aquí */
+  function colorDeFoto(p) {
+    if (exi.color && p.ref === exi.ref) return exi.color;
+    return colores(p).filter(function (c) { return sumar(libreEn, p, exi.bodega, c) > 0; })[0] || colores(p)[0];
+  }
+  /* Por qué un modelo no se vende */
+  function motivoExi(p) { return p.bloqueo === "descontinuado" ? "Descontinuado" : "No se vende: en diseño"; }
+
+  /* Todo lo que depende de lo elegido */
+  function pintarExistencias() {
+    var p = exi.ref ? productoPor(exi.ref) : null;
+    pintarBodegas(p);
+    uno("#exi-hora").textContent = horaDe(saldoLeido);
+    pintarCatalogoExi();
+    pintarModeloExi(p);
+    pintarOtrasBodegas(p);
+  }
+
+  /* El select de la bodega: con un modelo elegido, cada opción dice cuántos libres tiene */
+  function pintarBodegas(p) {
+    function libres(codigo) { return p ? " — " + cuantas(sumar(libreEn, p, codigo), "libre", "libres") : ""; }
+    uno("#exi-bod").innerHTML = opcion(TODAS, "Todas las bodegas" + libres(TODAS), exi.bodega) +
+      BODEGAS_PT.map(function (b) { return opcion(b.codigo, esc(nombreBodega(b)) + libres(b.codigo), exi.bodega); }).join("");
+    var b = bodegaPor(exi.bodega);
+    uno("#exi-bod-sub").textContent = b ? b.zona : "Se suman las " + BODEGAS_PT.length + " bodegas de producto terminado";
+  }
+
+  /* ---- Columna 1: el catálogo, como una tienda ---- */
+
+  /* El buscador ES el catálogo: lo escrito (sin tildes, "ref1043" sirve) filtra las tarjetas */
+  function pintarCatalogoExi() {
+    var lista = buscarEn(PRODUCTOS, exi.q, function (p) { return p.nombre + " " + p.ref; })
+      .filter(function (p) { return !exi.solo || (!p.bloqueo && sumar(libreEn, p, exi.bodega) > 0); });
+    var vacio = exi.q.trim() ? "Ningún producto coincide con «" + esc(exi.q.trim()) + "»" + (exi.solo ? " entre los que tienen pares" : "") + "."
+      : "Ningún modelo tiene pares libres en " + enQueBodega() + '. Quite "Solo los que tienen pares" para verlos todos.';
+    uno("#exi-cat").innerHTML = lista.length ? lista.map(tarjetaExistencia).join("") : '<p class="cot-vacio">' + vacio + "</p>";
+  }
+
+  /* Una tarjeta: el dibujo, el nombre, la referencia y cuánto hay. La del modelo que no
+     se vende sale apagada y dice por qué */
+  function tarjetaExistencia(p) {
+    if (p.bloqueo) {
+      return '<div class="exi-card is-bloqueado" aria-disabled="true" title="' + esc(mayuscula(p.bloqueo)) + '">' + foto(p, "", "sm") +
+        '<span class="exi-card__x"><b>' + esc(p.nombre) + '</b><span class="exi-card__ref">' + p.ref + "</span>" +
+        '<span class="exi-card__hay">' + motivoExi(p) + "</span></span></div>";
+    }
+    var on = p.ref === exi.ref;
+    return '<button type="button" class="exi-card' + (on ? " is-on" : "") + '" data-exi-ref="' + p.ref + '" aria-pressed="' + on + '">' +
+      foto(p, colorDeFoto(p), "sm") +
+      '<span class="exi-card__x"><b>' + esc(p.nombre) + '</b><span class="exi-card__ref">' + p.ref + " · " + esc(p.coleccion) + "</span>" +
+        lineaExistencia(p) + "</span></button>";
+  }
+
+  /* Lo que dice cada tarjeta de lo que hay: "54 libres aquí · 60 en BOD-05",
+     "Aquí no hay · 60 en BOD-05" (con su punto) o "Sin existencias en ninguna bodega" */
+  function lineaExistencia(p) {
+    var aqui = sumar(libreEn, p, exi.bodega), otras = otrasConPares(p, exi.bodega);
+    var enOtras = otras.map(function (x) { return miles(x.libres) + " en " + x.codigo; }).join(" · ");
+    var tono = "cero", texto = "Sin existencias en ninguna bodega";
+    if (aqui && exi.bodega === TODAS) {
+      tono = "ok";
+      texto = cuantas(aqui, "libre", "libres") + " en " + cuantas(otras.length, "bodega", "bodegas");
+    } else if (aqui) {
+      tono = "ok";
+      texto = cuantas(aqui, "libre", "libres") + " aquí" + (enOtras ? " · " + enOtras : "");
+    } else if (enOtras) {
+      tono = "otra";
+      texto = "Aquí no hay · " + enOtras;
+    }
+    return '<span class="exi-card__hay exi-card__hay--' + tono + '">' + texto + "</span>";
+  }
+
+  /* ---- Columna 2: el modelo en la bodega elegida ---- */
+
+  function pintarModeloExi(p) {
+    uno("#exi-mod-t").innerHTML = icono("cuadricula", 18) + "<span>" + (p ? esc(p.nombre) + " en " + enQueBodega() : "Existencias del modelo") + "</span>";
+    uno("#exi-acc").hidden = !p;
+    if (!p) {
+      uno("#exi-mod").innerHTML = '<div class="cot-vacio">' + icono("zapato", 30) + "<b>Seleccione un producto para ver sus existencias.</b>" +
+        "<p>Búsquelo arriba por nombre o referencia, o tóquelo en el catálogo de la izquierda.</p></div>";
+      return;
+    }
+    var esperan = pedidosQueEsperan(p).length, ped = uno('[data-exi="pedidos"]');
+    ped.disabled = !esperan;
+    ped.setAttribute("data-tip", esperan ? "Ver los pedidos que esperan este modelo" : "Ningún pedido espera este modelo");
+    ped.setAttribute("aria-label", ped.getAttribute("data-tip"));
+    uno("#exi-mod").innerHTML = fichaExiHtml(p) + cifrasHtml(p) + avisoOtraHtml(p) + rejillaHtml(p) + leyendaExiHtml();
+  }
+
+  /* La foto grande y las muestras de color: tocar un color solo cambia el dibujo */
+  function fichaExiHtml(p) {
+    var color = colorDeFoto(p);
+    return '<div class="exi-ficha">' + foto(p, color, "exi") +
+      '<div class="exi-ficha__x"><span class="vit__ref">' + p.ref + " · " + esc(p.coleccion) + "</span>" +
+        "<h4>" + esc(p.nombre) + "</h4>" +
+        '<span class="exi-ficha__d">' + mayuscula(tallasDe(p)) + " · " + cuantas(colores(p).length, "color", "colores") + "</span>" +
+        '<div class="cot-colores" role="radiogroup" aria-label="Color del dibujo">' + colores(p).map(function (c) {
+          var on = c === color;
+          return '<button type="button" class="cot-color' + (on ? " is-on" : "") + '" role="radio" aria-checked="' + on + '"' +
+            ' data-exi-color="' + esc(c) + '" title="Ver el dibujo en ' + esc(c) + '"><i style="background:' + piel(c) + '"></i>' +
+            "<span>" + esc(c) + "</span></button>";
+        }).join("") + "</div></div></div>";
+  }
+
+  /* Las tres cifras: lo que hay, lo apartado para pedidos (el tooltip dice de quién) y lo libre */
+  function cifrasHtml(p) {
+    var quien = quienAparta(p);
+    return '<div class="exi-cifras">' +
+      cifraHtml("En bodega", sumar(enBodega, p, exi.bodega), "lo que reporta Inventario", "") +
+      cifraHtml("Apartado para pedidos", sumar(apartadoEn, p, exi.bodega),
+                quien.length ? "en " + cuantas(quien.length, "pedido", "pedidos") : "ningún pedido",
+                quien.map(function (x) { return x.codigo + ": " + x.pares; }).join(" · "), "warn") +
+      cifraHtml("Libre para vender", sumar(libreEn, p, exi.bodega), "en bodega − apartado", "", "ok") + "</div>";
+  }
+
+  function cifraHtml(nombre, n, ayuda, titulo, tono) {
+    return '<div class="exi-cifra' + (tono ? " exi-cifra--" + tono : "") + '"' + (titulo ? ' title="' + esc(titulo) + '"' : "") + ">" +
+      "<span>" + nombre + "</span><b>" + miles(n) + "</b><small>" + ayuda + "</small></div>";
+  }
+
+  /* Los pedidos que tienen apartados pares del modelo en la bodega elegida, con cuántos */
+  function quienAparta(p) {
+    return PEDIDOS.filter(function (x) { return aparta(x) && bodegasDe(exi.bodega).indexOf(x.bodega) >= 0; })
+      .map(function (x) { return { codigo: x.codigo, pares: apartadoDe(x, p.ref) }; })
+      .filter(function (x) { return x.pares > 0; });
+  }
+
+  /* Si en la bodega elegida no hay un color (o unas tallas) que en otra sí, lo dice arriba de la rejilla */
+  function avisoOtraHtml(p) {
+    if (exi.bodega === TODAS) return "";
+    return colores(p).map(function (c) {
+      var tallas = p.tallas.filter(function (t) {
+        return !libreEn(exi.bodega, p.ref, c, t) && otrasConPares(p, exi.bodega, c, t).length > 0;
+      });
+      if (!tallas.length) return "";
+      var todo = !sumar(libreEn, p, exi.bodega, c);   // no hay nada de ese color, o solo faltan unas tallas
+      var otras = BODEGAS_PT.filter(function (b) { return b.codigo !== exi.bodega; }).map(function (b) {
+        var n = tallas.reduce(function (s, t) { return s + libreEn(b.codigo, p.ref, c, t); }, 0);
+        return n ? "en " + b.codigo + " hay " + cuantas(n, "par libre", "pares libres") : "";
+      }).filter(Boolean);
+      return avisoHtml("warn", "En " + exi.bodega + " no hay " + esc(p.nombre) + " " + esc(c) +
+          (todo ? "" : " en " + (tallas.length === 1 ? "talla " : "tallas ") + enLista(tallas.map(String))),
+        mayuscula(enLista(otras)) + (todo ? "" : tallas.length === 1 ? " de esa talla" : " de esas tallas") +
+          ". Para traerlos, Inventario hace el traslado.");
+    }).join("");
+  }
+
+  /* La rejilla: una fila por color y una columna por talla. Cada celda dice los pares
+     LIBRES con el punto de nivel(): verde si alcanza, ámbar si quedan pocos, gris si no
+     hay. Si aquí no hay pero en otra bodega sí, lleva además un punto azul */
+  function rejillaHtml(p) {
+    var color = colorDeFoto(p);
+    return '<div class="exi-rej" role="table" aria-label="Pares libres por color y talla" style="--tallas: ' + p.tallas.length + '">' +
+      '<div class="exi-rej__f" role="row"><span class="exi-rej__cab exi-rej__color" role="columnheader">Color</span>' +
+        p.tallas.map(function (t) { return '<span class="exi-rej__cab" role="columnheader">' + t + "</span>"; }).join("") + "</div>" +
+      colores(p).map(function (c) {
+        return '<div class="exi-rej__f' + (c === color ? " is-on" : "") + '" role="row">' +
+          '<span class="exi-rej__color" role="rowheader"><i style="background:' + piel(c) + '"></i><b>' + esc(c) + "</b>" +
+            "<small>" + cuantas(sumar(libreEn, p, exi.bodega, c), "libre", "libres") + "</small></span>" +
+          p.tallas.map(function (t) { return celdaHtml(p, c, t); }).join("") + "</div>";
+      }).join("") + "</div>";
+  }
+
+  function celdaHtml(p, color, talla) {
+    var hay = sumar(libreEn, p, exi.bodega, color, talla);
+    var otras = hay ? [] : otrasConPares(p, exi.bodega, color, talla);
+    return '<span class="exi-celda exi-celda--' + nivel(hay) + '" role="cell" data-color="' + esc(color) + '" data-talla="' + talla +
+      '" title="' + esc(tituloCelda(p, color, talla, hay, otras)) + '">' + hay +
+      (otras.length ? '<i class="exi-otra" aria-hidden="true"></i>' : "") + "</span>";
+  }
+
+  /* El tooltip de una celda: de dónde sale el número o, si aquí no hay, dónde sí */
+  function tituloCelda(p, color, talla, hay, otras) {
+    if (otras.length) return "Aquí no hay; " + enLista(otras.map(function (x) { return "en " + x.codigo + " hay " + x.libres; }));
+    if (exi.bodega === TODAS) {
+      return BODEGAS_PT.map(function (b) { return b.codigo + ": " + libreEn(b.codigo, p.ref, color, talla); }).join(" · ");
+    }
+    return "En bodega " + enBodega(exi.bodega, p.ref, color, talla) + " · apartado " + apartadoEn(exi.bodega, p.ref, color, talla) +
+           " · libre " + hay;
+  }
+
+  function leyendaExiHtml() {
+    return '<div class="vit__leyenda exi-leyenda"><span class="is-ok">Alcanza (6 o más)</span><span class="is-poco">Quedan pocos</span>' +
+      '<span class="is-cero">No hay</span>' + (exi.bodega === TODAS ? "" : '<span class="is-otra">Aquí no hay; en otra bodega sí</span>') + "</div>";
+  }
+
+  /* ---- Columna 3: en otras bodegas (siempre a la vista) ---- */
+
+  function pintarOtrasBodegas(p) {
+    uno("#exi-otras-t").innerHTML = icono("ubicacion", 18) + (exi.bodega === TODAS ? "Por bodega" : "En otras bodegas");
+    var bodegas = BODEGAS_PT.filter(function (b) { return exi.bodega === TODAS || b.codigo !== exi.bodega; });
+    if (!p) {
+      uno("#exi-otras").innerHTML = '<p class="exi-otras__ayuda">Seleccione un producto para ver en qué otras bodegas hay. ' +
+        "Por ahora, lo libre de cada una:</p>" + bodegas.map(bodegaSinModeloHtml).join("");
+      return;
+    }
+    var total = sumar(libreEn, p, TODAS), con = otrasConPares(p, TODAS).length;
+    uno("#exi-otras").innerHTML =
+      '<p class="exi-total">' + (total ? "<b>" + miles(total) + "</b> " + (total === 1 ? "par libre" : "pares libres") + " de " +
+        esc(p.nombre) + " en " + cuantas(con, "bodega", "bodegas") : "No hay pares libres de " + esc(p.nombre) + " en ninguna bodega") + "</p>" +
+      bodegas.map(function (b) { return bodegaConModeloHtml(p, b); }).join("") + esperanHtml(p);
+  }
+
+  /* El título de una bodega: su nombre, dónde queda, cuántos libres tiene y el ojo para verla */
+  function cabBodegaHtml(b, n) {
+    var ver = b.codigo === exi.bodega ? "" :
+      '<button type="button" class="cot-ico cot-ico--ver" data-exi-bod="' + b.codigo + '" data-tip="Ver esta bodega"' +
+      ' aria-label="Ver ' + esc(nombreBodega(b)) + '">' + icono("ojo", 16) + "</button>";
+    return '<header class="exi-bod__cab"><div><b>' + esc(nombreBodega(b)) + "</b><small>" + esc(b.zona) + "</small>" +
+      '<span class="exi-bod__n' + (n ? "" : " is-cero") + '">' + cuantas(n, "libre", "libres") + "</span></div>" + ver + "</header>";
+  }
+
+  /* Una bodega con el modelo elegido: por color, las tallas que tienen pares libres */
+  function bodegaConModeloHtml(p, b) {
+    var filas = colores(p).filter(function (c) { return sumar(libreEn, p, b.codigo, c) > 0; }).map(function (c) {
+      return '<div class="cot-item__color"><i style="background:' + piel(c) + '"></i><span>' + esc(c) + "</span>" +
+        '<span class="vit__chips">' + p.tallas.filter(function (t) { return libreEn(b.codigo, p.ref, c, t) > 0; }).map(function (t) {
+          return "<span>" + t + "<b>×" + libreEn(b.codigo, p.ref, c, t) + "</b></span>";
+        }).join("") + "</span></div>";
+    }).join("");
+    return '<section class="exi-bod" data-bodega="' + b.codigo + '">' + cabBodegaHtml(b, sumar(libreEn, p, b.codigo)) +
+      (filas || '<p class="exi-bod__nada">No tiene pares libres de este modelo.</p>') + "</section>";
+  }
+
+  /* Sin modelo elegido: lo libre de cada bodega, modelo por modelo */
+  function bodegaSinModeloHtml(b) {
+    var modelos = PRODUCTOS.filter(function (p) { return !p.bloqueo && sumar(libreEn, p, b.codigo) > 0; });
+    var n = modelos.reduce(function (s, p) { return s + sumar(libreEn, p, b.codigo); }, 0);
+    return '<section class="exi-bod" data-bodega="' + b.codigo + '">' + cabBodegaHtml(b, n) +
+      (modelos.length ? '<ul class="exi-bod__modelos">' + modelos.map(function (p) {
+        return '<li><button type="button" data-exi-ref="' + p.ref + '" title="Ver ' + esc(p.nombre) + '">' + esc(p.nombre) +
+               '<span class="tiny">' + p.ref + "</span></button><b>" + miles(sumar(libreEn, p, b.codigo)) + "</b></li>";
+      }).join("") + "</ul>" : '<p class="exi-bod__nada">No tiene pares libres.</p>') + "</section>";
+  }
+
+  /* Los pedidos En producción a los que les falta este modelo, del de la factura más
+     vieja al de la más nueva: en ese orden reciben lo que entre (RN-COM-15) */
+  function pedidosQueEsperan(p) {
+    return PEDIDOS.filter(function (x) { return x.estado === "en_produccion" && faltanDe(x, p.ref) > 0; }).sort(porFactura);
+  }
+
+  function esperanHtml(p) {
+    var l = pedidosQueEsperan(p);
+    return '<section class="exi-esperan"><h4 class="cot-det__t">Pedidos que esperan este modelo</h4>' +
+      (l.length ? l.map(function (x) {
+        return '<button type="button" class="exi-esp" data-exi-ped="' + x.codigo + '" title="Ver el pedido ' + x.codigo + ' en Pedidos">' +
+          "<b>" + x.codigo + "</b><span>faltan " + miles(faltanDe(x, p.ref)) + "</span>" +
+          "<small>Entrega " + fechaCorta(new Date(x.entrega + "T00:00")) + " · " + esc(clienteDePedido(x).nombre) + "</small></button>";
+      }).join("") : '<p class="exi-bod__nada">Ningún pedido espera este modelo.</p>') + "</section>";
+  }
+
+  /* ---- Lo que se hace en la pantalla ---- */
+
+  /* Elegir un modelo: un clic en su tarjeta del catálogo */
+  function elegirProductoExi(ref) {
+    exi.ref = ref;
+    exi.color = null;
+    pintarExistencias();
+    var tarjeta = uno('#exi-cat [data-exi-ref="' + ref + '"]');
+    if (tarjeta) tarjeta.scrollIntoView({ block: "nearest" });
+  }
+
+  /* "Ver esta bodega": la elige en el encabezado */
+  function verBodega(codigo) {
+    exi.bodega = codigo;
+    pintarExistencias();
+    uno("#exi-bod").focus();
+  }
+
+  /* "Volver a leer el saldo": en el prototipo, Inventario recibe el siguiente lote de
+     ENTRADAS_EJEMPLO y los pedidos se vuelven a validar. En el sistema de verdad es
+     volver a pedirle el saldo a la API de Inventario */
+  function leerSaldo() {
+    avisoEntrada(aplicarEntrada());
+    pintarExistencias();
+  }
+
+  /* "Cotizar este modelo": abre una cotización nueva y, al elegir los productos, la
+     vitrina se abre en este modelo. Si hay una a medias, primero se termina esa */
+  function cotizarModelo(p) {
+    if (guardadas[NUEVA] && cot && cot.estado !== "nueva") {
+      aviso("Termine primero la cotización " + cot.numero + ", que quedó a medias.", "warn");
+      return ir(NUEVA, true);
+    }
+    refACotizar = p.ref;
+    delete guardadas[NUEVA];
+    aviso("Seleccione el cliente y pulse Cotizar: la lista de productos se abre en " + p.nombre + ".", "ok");
+    ir(NUEVA, true);
+  }
+
+  /* "Ver los pedidos que esperan este modelo": Pedidos se abre filtrado por el modelo y En producción */
+  function verPedidosDelModelo(p) {
+    pedFiltro = { ref: p.ref, estado: "en_produccion" };
+    ir(PED_LISTA, true);
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!exi || !e.target.closest || !uno("#exi")) return;
+    var b, p = exi.ref ? productoPor(exi.ref) : null;
+    if ((b = e.target.closest("[data-exi-ref]"))) return elegirProductoExi(b.getAttribute("data-exi-ref"));
+    if ((b = e.target.closest("[data-exi-color]"))) {
+      exi.color = b.getAttribute("data-exi-color");
+      pintarExistencias();
+      return uno('[data-exi-color="' + exi.color + '"]').focus();
+    }
+    if ((b = e.target.closest("[data-exi-bod]"))) return verBodega(b.getAttribute("data-exi-bod"));
+    if ((b = e.target.closest("[data-exi-ped]"))) {
+      pedAbrir = b.getAttribute("data-exi-ped");
+      return ir(PED_LISTA, true);
+    }
+    var accion = e.target.closest("[data-exi]"), que = accion ? accion.getAttribute("data-exi") : "";
+    if (que === "leer") leerSaldo();
+    if (que === "cotizar" && p) cotizarModelo(p);
+    if (que === "pedidos" && p) verPedidosDelModelo(p);
+  });
+
+  document.addEventListener("change", function (e) {
+    if (!exi || !uno("#exi")) return;
+    var t = e.target;
+    if (t.id === "exi-bod") { exi.bodega = t.value; pintarExistencias(); }
+    if (t.id === "exi-solo") { exi.solo = t.checked; pintarCatalogoExi(); }
+  });
+
+  /* Escribir en el buscador filtra el catálogo */
+  document.addEventListener("input", function (e) {
+    if (!exi || e.target.id !== "exi-q") return;
+    exi.q = e.target.value;
+    pintarCatalogoExi();
+  });
+
+  /* Enter elige el primer modelo que queda; Esc borra la búsqueda */
+  document.addEventListener("keydown", function (e) {
+    if (!exi || e.target.id !== "exi-q") return;
+    if (e.key === "Escape" && exi.q) { e.preventDefault(); e.target.value = exi.q = ""; return pintarCatalogoExi(); }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    var primera = uno("#exi-cat button[data-exi-ref]");
+    if (primera) elegirProductoExi(primera.getAttribute("data-exi-ref"));
+  });
+
+  /* ---------------------------------------------------------------- 16. Pedidos
+
+     05-pedidos.html es la lista de pedidos, con la misma tabla de datos de
+     Cotizaciones, Facturación y Clientes: las tarjetas filtran y un clic en un
+     pedido abre su detalle a la derecha. Las filas se pintan desde PEDIDOS cada vez
+     que se entra, porque un pedido también cambia en Existencias y en Nuevo pedido.
+     La ventana "Validar existencias" decide a dónde va un pedido Registrado: si en la
+     bodega está todo, a Logística (Listo para despacho); si falta algo, se aparta lo
+     que hay y Producción fabrica el resto (En producción).
+     Comercial no mueve etapas de planta ni despachos (RN-COM-17): el avance lo
+     publica Producción y aquí solo se lee. */
+
+  var ESTADOS_PED = ["registrado", "en_produccion", "listo", "despacho", "entregado"];
+  var NOMBRE_PED = { registrado: "Registrado", en_produccion: "En producción", listo: "Listo para despacho",
+                     despacho: "En despacho", entregado: "Entregado" };
+  var TONO_PED = { registrado: "off", en_produccion: "warn", listo: "ok", despacho: "info", entregado: "off" };
+
+  var EXI_PANTALLA = "03-existencias.html";
+  var validarAlEntrar = null;   // el pedido cuya ventana "Validar existencias" se abre al entrar (lo pone Nuevo pedido)
+  var pedCambiados = [];        // los que se acaban de validar o de cambiar: su fila sale resaltada
+  var facFiltro = null;         // la factura con que se abre Facturación ("Ver la factura")
+  var val = null;               // la ventana "Validar existencias" abierta: { pedido, bodega, soloFalta, firma }
+
+  /* ---- El avance de planta: lo publica Producción ----
+     Producción escribe el avance de cada pedido en "sicaf_etapas_pedidos":
+     { "PD-2026-088": { op, etapa, pct, ... } }. Comercial solo lo lee: no escribe
+     ahí. Si no hay nada publicado, usa lo que muestra 05-produccion/mockup/05-etapas.html */
+  var CLAVE_ETAPAS = "sicaf_etapas_pedidos";
+  var AVANCE_EJEMPLO = {
+    "PD-2026-088": { op: "OP-2026-054", etapa: "Montaje", pct: 75 },
+    "PD-2026-089": { op: "OP-2026-055", etapa: "Guarnición", pct: 50 },
+    "PD-2026-091": { op: "OP-2026-056", etapa: "Corte", pct: 25 }
+  };
+
+  /* El avance de un pedido, o null si todavía no tiene orden de Producción. Una entrada
+     sin "pct" es de las viejas que escribía Comercial: no se tiene en cuenta */
+  function avanceDe(p) {
+    var publicado = {};
+    try {
+      publicado = JSON.parse(localStorage.getItem(CLAVE_ETAPAS) || "{}") || {};
+    } catch (e) {
+      publicado = {};   // sin almacenamiento, o con algo que no se puede leer: queda el de ejemplo
+    }
+    var a = publicado[p.codigo];
+    if (a && a.op && typeof a.pct === "number") return a;
+    return AVANCE_EJEMPLO[p.codigo] || null;
+  }
+  /* "Montaje 75 %" y "OP-2026-054 · Montaje 75 %" */
+  function etapaDe(a) { return a ? a.etapa + " " + a.pct + " %" : "sin orden todavía"; }
+  function textoAvance(a) { return a ? a.op + " · " + etapaDe(a) : "Esperando orden de Producción"; }
+
+  /* ---- La lista ---- */
+
+  TABLAS["dt-ped"] = {
+    codigo: "Pedido", una: "pedido", plural: "pedidos", unaOVarias: "pedido(s)", masculino: true,
+    codigoDe: function (tr) { return tr.getAttribute("data-ped"); },
+    orden: ["estado", 1],   // por estado, en el orden en que los vive un pedido; si empatan, el más nuevo arriba
+    estados: ESTADOS_PED, nombres: NOMBRE_PED,
+    nombreFiltro: {
+      codigo: "Pedido", factura: "Factura", cliente: "Cliente", modelo: "Modelo", bodega: "Bodega", estado: "Estado",
+      entregaDesde: "Entrega desde", entregaHasta: "Entrega hasta", valorMin: "Valor desde", valorMax: "Valor hasta"
+    },
+    filtros: {
+      codigo: contiene("Pedido"),
+      factura: contiene("Factura"),
+      cliente: contiene("Cliente"),
+      modelo: function (tr, v) { return tr.getAttribute("data-refs").split(" ").indexOf(v) >= 0; },
+      bodega: function (tr, v) { return tr.getAttribute("data-bodega") === v; },
+      entregaDesde: function (tr, v) { return tr.getAttribute("data-entrega") >= v; },
+      entregaHasta: function (tr, v) { return tr.getAttribute("data-entrega") <= v; }
+    },
+    // Cómo se lee cada filtro en su ficha: el modelo por su nombre y las fechas cortas
+    textos: {
+      modelo: function (v) { return productoPor(v) ? productoPor(v).nombre : v; },
+      entregaDesde: function (v) { return fechaCorta(fechaDe(v)); },
+      entregaHasta: function (v) { return fechaCorta(fechaDe(v)); }
+    },
+    claves: {
+      entrega: function (tr) { return tr.getAttribute("data-entrega"); },
+      faltan: function (tr) { return numero(tr.getAttribute("data-faltan")); }
+    },
+    mayorPrimero: ["faltan"],
+    columnas: { factura: "Factura", cliente: "Cliente", productos: "Productos" },
+    buscar: function (tr) { return tr.textContent + " " + celda(tr, "Cliente").title + " " + tr.getAttribute("data-refs"); },
+    contar: contarPedidos,
+    totales: totalesPedidos,
+    alEntrar: entrarAPedidos
+  };
+
+  /* Las tarjetas cuentan TODOS los pedidos, no solo los filtrados */
+  function contarPedidos(filas) {
+    function de(estado) { return filas.filter(function (tr) { return tr.getAttribute("data-estado") === estado; }); }
+    function suma(lista, dato) { return lista.reduce(function (s, tr) { return s + numero(tr.getAttribute("data-" + dato)); }, 0); }
+    var enProduccion = de("en_produccion"), listos = de("listo").length, registrados = de("registrado").length;
+    ponerKpi("todas", filas.length, miles(suma(filas, "pares")) + " pares · " + pesos(suma(filas, "valor")));
+    ponerKpi("en_produccion", enProduccion.length, "faltan " + cuantas(suma(enProduccion, "faltan"), "par", "pares"));
+    ponerKpi("listo", listos, listos === 1 ? "espera a Logística" : "esperan a Logística");
+    ponerKpi("despacho", de("despacho").length, cuantas(de("entregado").length, "entregado", "entregados"));
+    // La ficha "1 sin validar" de la barra: solo si hay alguno Registrado
+    var ficha = uno("#dt-ped-sinval");
+    ficha.hidden = !registrados;
+    uno("b", ficha).textContent = registrados;
+    ponerEnMenu(PED_LISTA, porAtender());
+  }
+
+  /* Los totales de lo que deja ver el filtro: pedidos, pares y lo que falta (el valor lo pone pintarLista) */
+  function totalesPedidos(filas, dt) {
+    function suma(dato) { return filas.reduce(function (s, tr) { return s + numero(tr.getAttribute("data-" + dato)); }, 0); }
+    uno('[data-tot="pedidos"]', dt).textContent = miles(filas.length);
+    uno('[data-tot="pares"]', dt).textContent = miles(suma("pares"));
+    uno('[data-tot="faltan"]', dt).textContent = miles(suma("faltan"));
+  }
+
+  /* Lo que le falta a un pedido. El Registrado todavía no se validó: no se cuenta */
+  function faltanPedido(p) { return p.estado === "registrado" ? 0 : faltanDe(p); }
+  function atrasado(p) { return p.estado !== "entregado" && diasHasta(fechaDe(p.entrega)) < 0; }
+
+  /* La fila de un pedido. La primera celda es un botón: así se abre su detalle con el teclado */
+  function filaPedido(p) {
+    var q = cotizacionDe(p.cot), c = q.cliente, t = totales(q), refs = refsEnCotizacion(p);
+    var clases = [pedCambiados.indexOf(p.codigo) >= 0 ? "es-nueva" : "", atrasado(p) ? "dt__tarde" : ""].filter(Boolean).join(" ");
+    return "<tr" + (clases ? ' class="' + clases + '"' : "") + ' data-ped="' + p.codigo + '" data-estado="' + p.estado +
+      '" data-fecha="' + p.fecha + '" data-entrega="' + p.entrega + '" data-valor="' + t.total + '" data-pares="' + t.pares +
+      '" data-faltan="' + faltanPedido(p) + '" data-refs="' + refs.join(" ") + '" data-bodega="' + p.bodega + '">' +
+      '<td data-l="Pedido"><button class="dt__ver" type="button" title="Ver el detalle de ' + p.codigo + '">' + p.codigo + "</button>" +
+        '<span class="tiny">' + fechaCorta(fechaDe(p.fecha)) + "</span></td>" +
+      '<td data-l="Factura"><b>' + p.factura + '</b><span class="tiny">' + p.cot + "</span></td>" +
+      '<td class="dt__cli" data-l="Cliente" title="' + esc(c.nombre + " · " + idDe(c)) + '"><span>' + esc(c.nombre) + "</span>" +
+        '<span class="tiny">' + esc(c.ciudad) + "</span></td>" +
+      '<td class="ped-prod" data-l="Productos" title="' + esc(nombresDe(refs)) + '"><span>' + esc(productoPor(refs[0]).nombre) + "</span>" +
+        '<span class="tiny">' + cuantas(t.pares, "par", "pares") +
+        (refs.length > 1 ? " · +" + cuantas(refs.length - 1, "modelo", "modelos") : "") + "</span></td>" +
+      '<td data-l="En bodega">' + enBodegaHtml(p) + "</td>" +
+      '<td class="dt__fec" data-l="Entrega">' + fechaCorta(fechaDe(p.entrega)) + '<span class="tiny">' + cuandoEntrega(p) + "</span></td>" +
+      '<td class="ped-estado" data-l="Estado"><span class="pill pill--' + TONO_PED[p.estado] + '">' + NOMBRE_PED[p.estado] + "</span>" +
+        '<span class="tiny">' + esc(lineaEstado(p)) + "</span></td>" +
+      '<td class="num" data-l="Valor">' + pesos(t.total) + "</td></tr>";
+  }
+
+  /* Los modelos de un pedido por su nombre: "Bota Andina y Mocasín Cúcuta" */
+  function nombresDe(refs) { return enLista(refs.map(function (ref) { return productoPor(ref).nombre; })); }
+
+  /* Lo que tiene apartado en su bodega: la barra con "24 de 84", o "Completo" */
+  function enBodegaHtml(p) {
+    if (p.estado === "registrado") return '<span class="dt__sinf">Sin validar</span><span class="tiny">' + p.bodega + "</span>";
+    if (p.estado === "despacho" || p.estado === "entregado") {
+      return '<span class="dt__sinf">Ya salió</span><span class="tiny">de ' + p.bodega + "</span>";
+    }
+    var hay = apartadoDe(p), pares = hay + faltanDe(p), completo = hay === pares;
+    return '<span class="ped-bar"><span class="bar' + (completo ? " bar--ok" : "") + '"><i style="width:' +
+      Math.round(100 * hay / pares) + '%"></i></span><b>' + (completo ? "Completo" : hay + " de " + pares) + "</b></span>" +
+      '<span class="tiny">' + (completo ? "Sale de " : "") + p.bodega + "</span>";
+  }
+
+  /* "en 9 días", "mañana", "hoy" o, si ya pasó, "atrasado 2 días". El entregado dice si llegó a tiempo */
+  function cuandoEntrega(p) {
+    if (p.estado === "entregado") {
+      var tarde = Math.round((fechaDe(p.entregadoEl) - fechaDe(p.entrega)) / 86400000);
+      return tarde > 0 ? cuantas(tarde, "día", "días") + " tarde" : "a tiempo";
+    }
+    var d = diasHasta(fechaDe(p.entrega));
+    if (d < 0) return '<span class="dt__flag dt__flag--solo">atrasado ' + cuantas(-d, "día", "días") + "</span>";
+    return d === 0 ? "hoy" : d === 1 ? "mañana" : "en " + d + " días";
+  }
+
+  /* La línea de debajo del estado: el avance de planta, a quién espera o cuándo se entregó */
+  function lineaEstado(p) {
+    if (p.estado === "registrado") return "sin validar";
+    if (p.estado === "en_produccion") return textoAvance(avanceDe(p));
+    if (p.estado === "listo") return "Esperando a Logística";
+    if (p.estado === "despacho") return p.despacho + " · en tránsito";
+    return "el " + fechaCorta(fechaDe(p.entregadoEl));
+  }
+
+  /* Cada vez que se entra, las filas salen de PEDIDOS. Si hay uno recién validado (o
+     recién registrado), la vista vuelve a empezar, sin filtros, para que se vea */
+  function entrarAPedidos(dt, cuerpo) {
+    todos("tr[data-estado]", cuerpo).forEach(function (tr) { cuerpo.removeChild(tr); });
+    cuerpo.insertAdjacentHTML("afterbegin", PEDIDOS.map(filaPedido).join(""));
+    var hubo = pedCambiados.length > 0 || !!validarAlEntrar;
+    pedCambiados = [];
+    return hubo;
+  }
+
+  function iniciarPedidos() {
+    iniciarTabla("dt-ped");
+    uno("#ped-hora").textContent = horaDe(saldoLeido);
+    var n = facturasSinPedido().length;
+    uno("#ped-sinpedido").textContent = n ? cuantas(n, "factura sin pedido", "facturas sin pedido") : "todas tienen pedido";
+    if (pedFiltro) {   // "Ver los pedidos que esperan este modelo" (Existencias)
+      ponerFiltros("dt-ped", { modelo: pedFiltro.ref, estado: pedFiltro.estado });
+      pedFiltro = null;
+    }
+    var abrir = pedAbrir && uno('#dt-ped tr[data-ped="' + pedAbrir + '"]');
+    pedAbrir = null;
+    if (abrir) abrirDetalle(abrir);   // un pedido que espera un modelo (Existencias)
+    if (validarAlEntrar) {            // recién registrado en Nuevo pedido: se validan sus existencias
+      var codigo = validarAlEntrar;
+      validarAlEntrar = null;
+      abrirValidar(codigo);
+    }
+  }
+
+  /* "Volver a leer el saldo": como en Existencias, Inventario recibe el siguiente lote
+     de ENTRADAS_EJEMPLO y los pedidos se vuelven a validar. Los que cambiaron se resaltan */
+  function leerSaldoPedidos() {
+    var r = aplicarEntrada();
+    avisoEntrada(r);
+    if (r) {
+      var c = r.cambios;
+      pedCambiados = c.listos.concat(c.vuelven).concat(c.recibieron.map(function (x) { return x.pedido; }))
+                             .map(function (p) { return p.codigo; });
+    }
+    iniciarPedidos();
+  }
+
+  /* ---- El detalle de un pedido (el panel de la derecha) ---- */
+
+  DETALLES["dt-ped"] = { panel: "ped-det", pintar: function (tr) { pintarDetallePedido(pedidoPor(tr.getAttribute("data-ped"))); } };
+
+  /* El recorrido: un paso por caja del diagrama, con su fecha */
+  var PASOS_PED = ["Facturado", "Pedido registrado", "Existencias validadas", "En producción", "Listo para despacho",
+                   "En despacho", "Entregado"];
+  var PASO_DE = { registrado: 1, en_produccion: 3, listo: 4, despacho: 5, entregado: 6 };   // en qué paso va cada estado
+
+  function pintarDetallePedido(p) {
+    var q = cotizacionDe(p.cot), c = q.cliente, t = totales(q), refs = refsEnCotizacion(p);
+    uno("#ped-det").setAttribute("data-ped", p.codigo);   // de quién es: los íconos de la cabecera lo leen de aquí
+    uno("#ped-det-t").textContent = "Pedido " + p.codigo;
+    uno("#ped-det-sub").textContent = c.nombre + " · " + cuantas(t.pares, "par", "pares") + " · " + pesos(t.total);
+    uno('#ped-det [data-pd="validar"]').hidden = p.estado !== "registrado";
+    var estado = uno("#ped-det-estado");
+    estado.className = "cot-det__estado cot-det__estado--" + tonoDetalle(p);
+    estado.innerHTML = '<div class="cot-det__estado-cab"><span class="pill pill--' + TONO_PED[p.estado] + '">' + NOMBRE_PED[p.estado] +
+      "</span><p>" + textoPedido(p) + "</p></div>" + recorridoPedidoHtml(p, q) + novedadHtml(p);
+    uno("#ped-det-ficha").innerHTML = datosPedidoHtml(p, q);
+    uno("#ped-det-avisos").innerHTML = vencidasPedidoHtml(p, c);
+    uno("#ped-det-prod-sub").textContent = cuantas(refs.length, "modelo", "modelos") + " · " + cuantas(t.pares, "par", "pares");
+    uno("#ped-det-lineas").innerHTML = refs.map(function (ref) { return itemPedidoHtml(p, ref, q); }).join("");
+    uno("#ped-det-pie").innerHTML = piePedidoHtml(p, t);
+  }
+
+  /* El borde del estado, del color de su píldora. El que perdió pares apartados, en rojo */
+  function tonoDetalle(p) {
+    if (p.estado === "en_produccion" && p.novedad === "perdio") return "crit";
+    return { registrado: "off", en_produccion: "warn", listo: "ok", despacho: "info", entregado: "ok" }[p.estado];
+  }
+
+  /* Qué pasa con el pedido y qué sigue, dicho con palabras */
+  function textoPedido(p) {
+    var hay = apartadoDe(p), falta = faltanDe(p), bodega = sinPartir(p.bodega);
+    var entrega = sinPartir(fechaLarga(fechaDe(p.entrega)));
+    if (p.estado === "registrado") {
+      return "<b>Se registró el " + sinPartir(fechaLarga(fechaDe(p.fecha))) + " y todavía no se validan sus existencias.</b> " +
+             "No aparta pares. Valídelas: si en la bodega está todo, va a Logística; si falta algo, Producción fabrica lo que falta.";
+    }
+    if (p.estado === "en_produccion") {
+      var a = avanceDe(p);
+      return "<b>" + (falta === 1 ? "Falta 1 par" : "Faltan " + miles(falta) + " pares") + " en " + bodega + ".</b> " +
+        (a ? "Producción los hace en " + sinPartir(esc(a.op)) + " (" + esc(a.etapa) + ")."
+           : "Todavía no tiene orden de Producción: lo que falta ya está publicado para que la hagan.") +
+        (hay ? " Los otros " + miles(hay) + " ya están apartados." : "") +
+        " Cuando Inventario los reciba, el pedido pasa solo a Listo para despacho.";
+    }
+    if (p.estado === "listo") {
+      return "<b>Está completo en " + bodega + ": sus " + cuantas(hay, "par está apartado", "pares están apartados") + ".</b> " +
+             "Logística ya lo ve para programar el despacho. La entrega es el " + entrega + ".";
+    }
+    if (p.estado === "despacho") {
+      return "<b>Salió de " + bodega + " con " + sinPartir(p.despacho) + " y va en tránsito.</b> Se entrega a más tardar el " +
+             entrega + ". El despacho lo lleva Logística; Comercial solo lo muestra.";
+    }
+    var tarde = Math.round((fechaDe(p.entregadoEl) - fechaDe(p.entrega)) / 86400000);
+    return "<b>Se entregó el " + sinPartir(fechaLarga(fechaDe(p.entregadoEl))) + (tarde > 0 ? ", " + cuantas(tarde, "día", "días") +
+           " después de lo prometido." : ", a tiempo.") + "</b> Aquí termina el recorrido. Una devolución se sigue en Entregas.";
+  }
+
+  /* "11-sep": la fecha sin el año, para que quepan los siete pasos */
+  function diaYMes(d) { return dos(d.getDate()) + "-" + MESES[d.getMonth()].slice(0, 3); }
+
+  /* El recorrido con la fecha de cada paso. "En producción" dice además la etapa que publica
+     Producción; si el pedido tenía todo en bodega, dice que no hizo falta */
+  function recorridoPedidoHtml(p, q) {
+    var ahora = PASO_DE[p.estado], fin = p.estado === "entregado";
+    var fechas = [sumarDias(q.fecha, q.pasos.facturada || 0), fechaDe(p.fecha), fechaDe(p.validadoEl), fechaDe(p.produccionEl),
+                  fechaDe(p.listoEl), fechaDe(p.despachoEl), fechaDe(p.entregadoEl)];
+    return '<ol class="cot-rec ped-rec" aria-label="Recorrido del pedido">' + PASOS_PED.map(function (nombre, i) {
+      var salto = i === 3 && i < ahora && !p.produccionEl;
+      var hecho = i < ahora || fin;
+      var clase = salto ? "is-salto" : hecho ? "is-hecho" + (fin && i === ahora ? " is-fin" : "") : i === ahora ? "is-ahora" : "";
+      var marca = salto ? "–" : hecho ? "✓" : i + 1;
+      var dato = salto ? "no hizo falta" : i > ahora ? "pendiente" : fechas[i] ? diaYMes(fechas[i]) : "—";
+      var etapa = i === 3 && i === ahora ? '<small class="ped-rec__etapa">' + esc(etapaDe(avanceDe(p))) + "</small>" : "";
+      return '<li class="cot-rec__p' + (clase ? " " + clase : "") + '"' + (i === ahora ? ' aria-current="step"' : "") + ">" +
+        '<span class="cot-rec__n" aria-hidden="true">' + marca + "</span><b>" + nombre + "</b><small>" + dato + "</small>" + etapa + "</li>";
+    }).join("") + "</ol>";
+  }
+
+  /* Lo que cambió solo (revalidar): quedó listo cuando entró lo que faltaba, o perdió pares apartados */
+  function novedadHtml(p) {
+    if (p.novedad === "perdio" && p.estado === "en_produccion") {
+      return avisoHtml("crit", "Perdió pares apartados", "Inventario reportó menos pares de los que tenía apartados (una baja o un " +
+                       "ajuste) y volvió a En producción. Revise con Inventario qué pasó.");
+    }
+    if (p.novedad === "listo" && p.estado === "listo") {
+      return avisoHtml("ok", "Quedó listo el " + fechaCorta(fechaDe(p.listoEl)), "Entraron a " + p.bodega + " los pares que le faltaban.");
+    }
+    return "";
+  }
+
+  /* El cliente y de dónde salió el pedido, en dos columnas */
+  function datosPedidoHtml(p, q) {
+    var c = q.cliente, b = bodegaPor(p.bodega);
+    return seccion("Cliente y entrega", '<b class="cot-det__cli">' + esc(c.nombre) + '</b><span class="tiny">' + esc(idDe(c)) + " · " +
+          esc(c.ciudad) + "</span>" + kv("Contacto", esc(contactoDe(c))) + kv("Teléfono", esc(c.telefono)) +
+          kv("Dirección", esc(c.direccion)) + (c.barrio ? kv("Barrio", esc(c.barrio)) : "")) +
+      seccion("Origen", kv("Factura", p.factura) + kv("Cotización", p.cot) + kv("Vendedor", esc(q.vendedor)) +
+          kv("Registrado", fechaLarga(fechaDe(p.fecha))) + kv("Entrega", fechaLarga(fechaDe(p.entrega))) +
+          kv("Bodega", esc(b ? nombreBodega(b) : p.bodega)) + (q.obs ? kvLargo("Observación", esc(q.obs)) : ""));
+  }
+
+  /* RN-COM-18: con facturas vencidas el pedido sigue (la factura ya está hecha), pero se le avisa a cartera */
+  function vencidasPedidoHtml(p, c) {
+    if (!c.vencidas.length || p.estado === "entregado") return "";
+    return avisoHtml("warn", esc(c.nombre) + " tiene " + enLista(c.vencidas.map(function (v) { return v.factura; })) +
+                     (c.vencidas.length === 1 ? " vencida" : " vencidas"), "El pedido sigue: la factura ya está hecha. Avise a cartera para que la cobre.");
+  }
+
+  /* Un modelo del pedido, como en el carrito: sus tallas por color. En rojo las que no
+     están completas ("38 ×14 · faltan 14"); el tooltip dice lo pedido y lo apartado */
+  function itemPedidoHtml(p, ref, q) {
+    var r = resumenDe(ref, q), prod = r.p, renglones = p.lineas.filter(function (l) { return l.ref === ref; });
+    var suyos = renglones.map(function (l) { return l.color; }).filter(function (x, i, l) { return l.indexOf(x) === i; });
+    return '<article class="cot-item">' + foto(prod, suyos[0], "sm") +
+      '<div class="cot-item__x"><div class="cot-item__cab"><div><b>' + esc(prod.nombre) + '</b><span class="tiny">' + ref + " · " +
+        cuantas(r.pares, "par", "pares") + " · " + estadoModelo(p, ref) + "</span></div>" +
+        '<div class="cot-item__der"><b class="cot-item__total">' + pesos(r.total) + "</b></div></div>" +
+      suyos.map(function (color) {
+        return '<div class="cot-item__color"><i style="background:' + piel(color) + '"></i><span>' + esc(color) + "</span>" +
+          '<span class="vit__chips">' + renglones.filter(function (l) { return l.color === color; })
+            .map(function (l) { return tallaPedidoHtml(p, l); }).join("") + "</span></div>";
+      }).join("") + "</div></article>";
+  }
+
+  function estadoModelo(p, ref) {
+    if (p.estado === "registrado") return "sin validar";
+    if (!aparta(p)) return "salió completo";
+    var falta = faltanDe(p, ref);
+    return falta ? miles(apartadoDe(p, ref)) + " apartados · faltan " + miles(falta) : "todo apartado";
+  }
+
+  /* Una talla del pedido. Verde si ya tiene sus pares apartados; roja si le falta */
+  function tallaPedidoHtml(p, l) {
+    var falta = l.cant - l.apartado, validado = aparta(p);
+    var titulo = !validado ? "Pedido " + l.cant + (p.estado === "registrado" ? " · sin validar" : " · salió de la bodega")
+                           : "Pedido " + l.cant + " · apartado " + l.apartado + (falta ? " · falta " + falta : "");
+    var clase = !validado ? "" : falta ? ' class="is-mal"' : ' class="is-bien"';
+    return "<span" + clase + ' title="' + titulo + '">' + l.talla + "<b>×" + l.cant + "</b>" + (validado && falta ? " · faltan " + falta : "") + "</span>";
+  }
+
+  /* El pie del detalle, siempre a la vista: pares, apartados, lo que falta y el valor */
+  function piePedidoHtml(p, t) {
+    var hay = apartadoDe(p), falta = faltanDe(p), medio;
+    if (p.estado === "registrado") medio = "<span>Apartados <b>0</b></span><span>Faltan <b>sin validar</b></span>";
+    else if (!aparta(p)) medio = "<span>Salieron de " + p.bodega + " <b>" + miles(hay) + "</b></span><span>Faltan <b>0</b></span>";
+    else medio = "<span>Apartados <b>" + miles(hay) + "</b></span><span" + (falta ? ' class="is-mal"' : "") + ">Faltan <b>" + miles(falta) + "</b></span>";
+    return "<span>Pares pedidos <b>" + miles(t.pares) + "</b></span>" + medio + '<span class="ped-det__valor">Valor <b>' + pesos(t.total) + "</b></span>";
+  }
+
+  /* "Copiar mensaje para el cliente": dónde va su pedido, sin emojis, para pegarlo en el correo o el chat */
+  function mensajeCliente(p) {
+    var q = cotizacionDe(p.cot), t = totales(q), entrega = fechaLarga(fechaDe(p.entrega));
+    return "Hola, " + contactoDe(q.cliente).split(" · ")[0] + ". Le escribimos de Comercial por su pedido " + p.codigo +
+           " (factura " + p.factura + "): " + cuantas(t.pares, "par", "pares") + " de " + nombresDe(refsEnCotizacion(p)) + ". " +
+           estadoParaCliente(p, entrega) + " Cualquier inquietud, con gusto le atendemos. " + VENDEDOR.nombre + ", Comercial.";
+  }
+
+  /* Dónde va el pedido, dicho para el cliente */
+  function estadoParaCliente(p, entrega) {
+    var hay = apartadoDe(p), falta = faltanDe(p);
+    if (p.estado === "registrado") return "Lo estamos alistando: apenas revisemos las existencias le confirmamos el despacho.";
+    if (p.estado === "en_produccion") {
+      return (hay ? "Ya tenemos apartados " + cuantas(hay, "par", "pares") + " y los otros " + miles(falta) + " se están fabricando."
+                  : "Sus pares se están fabricando.") + " La entrega sigue programada para el " + entrega + ".";
+    }
+    if (p.estado === "listo") return "Ya está completo y listo para despacho. La entrega está programada para el " + entrega + ".";
+    if (p.estado === "despacho") return "Ya salió de nuestra bodega con el despacho " + p.despacho + " y le llega a más tardar el " + entrega + ".";
+    return "Se le entregó el " + fechaLarga(fechaDe(p.entregadoEl)) + ". Gracias por su compra.";
+  }
+
+  function copiarMensaje(p) {
+    var texto = mensajeCliente(p), nombre = clienteDePedido(p).nombre;
+    function noSePudo() { aviso("El navegador no dejó copiar. El mensaje es: " + texto, "warn"); }
+    if (!navigator.clipboard) return noSePudo();
+    navigator.clipboard.writeText(texto).then(function () {
+      aviso("Mensaje copiado: péguelo en el correo o el chat de " + nombre + ".", "ok");
+    }, noSePudo);
+  }
+
+  /* Los íconos: "Volver a leer el saldo" (arriba) y los de la cabecera del detalle */
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-pd]") : null;
+    if (!b) return;
+    var que = b.getAttribute("data-pd");
+    if (que === "leer") return leerSaldoPedidos();
+    if (que === "nuevo") {   // la pantalla donde se elige la factura (05-pedido-nuevo.html) todavía se está haciendo
+      return aviso("Nuevo pedido está en construcción: ahí se elegirá la factura sin pedido y se validarán sus existencias.", "warn");
+    }
+    var p = pedidoPor(uno("#ped-det").getAttribute("data-ped"));
+    if (que === "copiar") return copiarMensaje(p);
+    cerrarDetalle();
+    if (que === "validar") return abrirValidar(p.codigo);
+    if (que === "existencias") {   // Existencias se abre en su primer modelo y en su bodega
+      exiAbrir = { ref: p.lineas[0].ref, bodega: p.bodega };
+      return ir(EXI_PANTALLA, true);
+    }
+    if (que === "factura") {       // Facturación se abre filtrada por su factura
+      facFiltro = p.factura;
+      return ir(FACTURAS, true);
+    }
+  });
+
+  /* ---- La ventana "Validar existencias" (RN-COM-13 y RN-COM-14) ----
+     Se abre sola después de registrar un pedido (Nuevo pedido) o con su ícono en el
+     detalle de un pedido Registrado. Arriba se elige la bodega de despacho; cada talla
+     sale en verde si en esa bodega alcanza y en rojo si falta. El botón principal
+     cambia solo: "Enviar a Logística" si está todo, o "Enviar a Producción · N pares"
+     si falta algo: se aparta lo que hay y Producción fabrica el resto.
+     Lo elegido vive en "val" y la ventana se vuelve a dibujar desde él. */
+
+  /* Lo que hay para el pedido en una bodega, renglón por renglón: lo que toma de lo libre
+     y lo que falta. La "firma" sirve para saber si algo cambió antes de guardar */
+  function validacion(p, bodega) {
+    var r = { bodega: bodega, pedidos: 0, hay: 0, faltan: 0, renglones: [] };
+    p.lineas.forEach(function (l) {
+      var toma = Math.min(l.cant, libreEn(bodega, l.ref, l.color, l.talla));
+      r.renglones.push({ l: l, toma: toma, falta: l.cant - toma });
+      r.pedidos += l.cant;
+      r.hay += toma;
+      r.faltan += l.cant - toma;
+    });
+    r.firma = bodega + ":" + r.renglones.map(function (x) { return x.toma; }).join(",");
+    return r;
+  }
+
+  function abrirValidar(codigo) {
+    var p = pedidoPor(codigo);
+    if (!p || p.estado !== "registrado") return;
+    val = { pedido: codigo, bodega: p.bodega, soloFalta: false, firma: "" };
+    pintarValidar();
+    uno("#ped-validar").hidden = false;
+    uno("#ped-validar .modal").focus();
+  }
+
+  /* Cerrar sin decidir: el pedido sigue Registrado y no aparta nada */
+  function cerrarValidar() {
+    var p = pedidoPor(val.pedido);
+    uno("#ped-validar").hidden = true;
+    val = null;
+    aviso(p.codigo + " sigue Registrado, sin validar: no aparta nada. Valídelo desde su detalle.", "warn");
+    var fila = uno('#dt-ped tr[data-ped="' + p.codigo + '"] .dt__ver');
+    if (fila) fila.focus();
+  }
+
+  function pintarValidar() {
+    var p = pedidoPor(val.pedido), r = validacion(p, val.bodega);
+    val.firma = r.firma;
+    uno("#ped-val-t").textContent = "Validar existencias · " + p.codigo;
+    uno("#ped-val-sub").textContent = clienteDePedido(p).nombre + " · " + cuantas(r.pedidos, "par", "pares") + " · entrega " +
+                                      fechaCorta(fechaDe(p.entrega));
+    uno("#ped-val-bod").innerHTML = BODEGAS_PT.map(function (b) {
+      var x = validacion(p, b.codigo);
+      return opcion(b.codigo, esc(nombreBodega(b)) + " — alcanza " + miles(x.hay) + " de " + miles(x.pedidos), val.bodega);
+    }).join("");
+    uno("#ped-val-zona").textContent = bodegaPor(val.bodega).zona;
+    uno("#ped-val-solo").checked = val.soloFalta;
+    uno("#ped-val-lineas").innerHTML = renglonesValidarHtml(p, r);
+    uno("#ped-val-res").innerHTML = resumenValidarHtml(p, r);
+    var enviar = uno('[data-val="enviar"]');
+    enviar.className = "btn " + (r.faltan ? "btn--cobre" : "btn--oliva");
+    enviar.innerHTML = r.faltan ? icono("engranaje", 18) + "Enviar a Producción · " + cuantas(r.faltan, "par", "pares")
+                                : icono("camion", 18) + "Enviar a Logística";
+    uno("#ped-val-msg").textContent = !r.faltan ? "Hay todo en " + r.bodega + ": se aparta completo y Logística lo ve de una vez."
+      : r.hay ? "Se apartan los " + miles(r.hay) + " que hay en " + r.bodega + " y Producción fabrica los " + miles(r.faltan) + " que faltan."
+      : "En " + r.bodega + " no hay nada de este pedido: Producción fabrica sus " + cuantas(r.faltan, "par", "pares") + ".";
+  }
+
+  /* Por modelo y color, una ficha por talla: verde si alcanza, roja si falta */
+  function renglonesValidarHtml(p, r) {
+    var html = refsEnCotizacion(p).map(function (ref) {
+      var prod = productoPor(ref), delModelo = r.renglones.filter(function (x) { return x.l.ref === ref; });
+      var vistos = delModelo.filter(function (x) { return !val.soloFalta || x.falta > 0; });
+      if (!vistos.length) return "";
+      var pide = delModelo.reduce(function (s, x) { return s + x.l.cant; }, 0);
+      var hay = delModelo.reduce(function (s, x) { return s + x.toma; }, 0);
+      var suyos = vistos.map(function (x) { return x.l.color; }).filter(function (c, i, l) { return l.indexOf(c) === i; });
+      return '<article class="cot-item">' + foto(prod, suyos[0], "sm") +
+        '<div class="cot-item__x"><div class="cot-item__cab"><div><b>' + esc(prod.nombre) + '</b><span class="tiny">' + ref +
+          " · hay " + miles(hay) + " de " + miles(pide) + " en " + r.bodega + "</span></div></div>" +
+        suyos.map(function (color) {
+          return '<div class="cot-item__color"><i style="background:' + piel(color) + '"></i><span>' + esc(color) + "</span>" +
+            '<span class="vit__chips">' + vistos.filter(function (x) { return x.l.color === color; })
+              .map(function (x) { return tallaValidarHtml(x, r.bodega); }).join("") + "</span></div>";
+        }).join("") + "</div></article>";
+    }).join("");
+    return html || '<div class="cot-vacio">' + icono("visto", 30) + "<b>No falta nada en " + r.bodega + ".</b>" +
+      "<p>Quite “Solo lo que falta” para ver todas las tallas del pedido.</p></div>";
+  }
+
+  /* Una talla: "38 ×8" en verde, o "37 ×9 · faltan 9" en rojo, con el tooltip de dónde sí hay */
+  function tallaValidarHtml(x, bodega) {
+    var l = x.l;
+    if (!x.falta) {
+      return '<span class="is-bien" title="En ' + bodega + " hay " + cuantas(libreEn(bodega, l.ref, l.color, l.talla), "libre", "libres") + '">' +
+             l.talla + "<b>×" + l.cant + "</b></span>";
+    }
+    var otras = BODEGAS_PT.filter(function (b) { return b.codigo !== bodega; })
+      .map(function (b) { return { codigo: b.codigo, n: libreEn(b.codigo, l.ref, l.color, l.talla) }; })
+      .filter(function (o) { return o.n > 0; })
+      .map(function (o) { return "en " + o.codigo + " hay " + cuantas(o.n, "libre", "libres"); });
+    var titulo = (x.toma ? "Aquí hay " + x.toma + " de " + l.cant + ". " : "") +
+                 (otras.length ? mayuscula(enLista(otras)) : "No hay en ninguna otra bodega: lo fabrica Producción");
+    return '<span class="is-mal" title="' + titulo + '">' + l.talla + "<b>×" + l.cant + "</b> · faltan " + x.falta + "</span>";
+  }
+
+  /* El resumen: pedidos, lo que hay y lo que falta, y qué hacer si falta algo */
+  function resumenValidarHtml(p, r) {
+    return '<div class="exi-cifras ped-cifras">' +
+      cifraHtml("Pedidos", r.pedidos, "pares del pedido", "") +
+      cifraHtml("Hay", r.hay, "en " + r.bodega, "", "ok") +
+      cifraHtml("Faltan", r.faltan, r.faltan ? "los fabrica Producción" : "no falta nada", "", r.faltan ? "crit" : "") + "</div>" +
+      avisoValidarHtml(p, r);
+  }
+
+  /* Si en esta bodega no está todo: usar otra que lo tenga, pedir un traslado o que lo haga Producción */
+  function avisoValidarHtml(p, r) {
+    if (!r.faltan) {
+      return avisoHtml("ok", "Hay todo en " + r.bodega, "Al enviarlo se apartan sus " + cuantas(r.pedidos, "par", "pares") +
+                       " y queda Listo para despacho: Logística lo ve de una vez.");
+    }
+    var otra = BODEGAS_PT.filter(function (b) { return b.codigo !== r.bodega && !validacion(p, b.codigo).faltan; })[0];
+    if (otra) {
+      return avisoHtml("ok", "En " + otra.codigo + " está todo el pedido", "Despáchelo desde allá: no hay que esperar a Producción.") +
+        '<button class="btn btn--sm ped-usar" type="button" data-val-bod="' + otra.codigo + '">' + icono("ubicacion", 16) +
+        "Usar " + otra.codigo + "</button>";
+    }
+    var sumando = p.lineas.every(function (l) {
+      return BODEGAS_PT.reduce(function (s, b) { return s + libreEn(b.codigo, l.ref, l.color, l.talla); }, 0) >= l.cant;
+    });
+    if (sumando) {
+      return avisoHtml("warn", "Sumando " + enLista(BODEGAS_PT.map(function (b) { return b.codigo; })) + " alcanza",
+        "Pídale a Inventario un traslado (todavía no se hace desde Comercial). Si lo envía ahora, Producción fabrica lo que falta aquí.");
+    }
+    return avisoHtml("warn", "Lo que falta no está en ninguna bodega", "Producción lo fabrica. Cuando Inventario lo reciba, " +
+                     "el pedido pasa solo a Listo para despacho.");
+  }
+
+  /* El botón principal. Antes de guardar vuelve a calcular: si mientras tanto cambiaron
+     las existencias, no guarda y lo dice. Si no, aparta lo que hay en la bodega elegida */
+  function confirmarValidacion() {
+    var p = pedidoPor(val.pedido), r = validacion(p, val.bodega);
+    if (r.firma !== val.firma) {
+      pintarValidar();
+      return aviso("Las existencias cambiaron: revise los renglones en rojo.", "crit");
+    }
+    p.bodega = r.bodega;
+    r.renglones.forEach(function (x) { x.l.apartado = x.toma; });
+    p.validadoEl = diaDeHoy();
+    if (r.faltan) {
+      p.estado = "en_produccion";
+      p.produccionEl = diaDeHoy();
+    } else {
+      p.estado = "listo";
+      p.listoEl = diaDeHoy();
+    }
+    publicarPedidos();   // Producción ve lo que falta; Logística, los listos
+    uno("#ped-validar").hidden = true;
+    val = null;
+    pedCambiados = [p.codigo];
+    iniciarPedidos();
+    aviso(!r.faltan ? p.codigo + " quedó Listo para despacho: se apartaron sus " + cuantas(r.pedidos, "par", "pares") + " en " +
+                      r.bodega + ". Logística ya lo ve."
+      : p.codigo + " pasó a En producción: " + (r.hay ? "se apartaron " + cuantas(r.hay, "par", "pares") + " en " + r.bodega +
+                   " y Producción fabrica los " + miles(r.faltan) + " que faltan." : "Producción fabrica sus " + cuantas(r.faltan, "par", "pares") + "."), "ok");
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!val || !e.target.closest) return;
+    if (e.target.id === "ped-validar") return cerrarValidar();   // el fondo oscuro de la ventana
+    var usar = e.target.closest("[data-val-bod]");
+    if (usar) {   // "Usar BOD-05"
+      val.bodega = usar.getAttribute("data-val-bod");
+      pintarValidar();
+      return uno("#ped-val-bod").focus();
+    }
+    var b = e.target.closest("[data-val]"), que = b ? b.getAttribute("data-val") : "";
+    if (que === "cerrar") cerrarValidar();
+    if (que === "enviar") confirmarValidacion();
+  });
+
+  document.addEventListener("change", function (e) {
+    if (!val) return;
+    if (e.target.id === "ped-val-bod") { val.bodega = e.target.value; pintarValidar(); }
+    if (e.target.id === "ped-val-solo") { val.soloFalta = e.target.checked; pintarValidar(); }
+  });
+
+  // Esc cierra la ventana: el pedido sigue Registrado
+  document.addEventListener("keydown", function (e) {
+    if (val && e.key === "Escape") {
+      e.preventDefault();
+      cerrarValidar();
+    }
+  });
+
+  /* ---------------------------------------------------------------- 17. Arranque */
 
   marcarMenu();
   // con F5, el historial todavía sabe qué cliente se estaba editando
   history.replaceState({ pantalla: actual, cliente: (history.state && history.state.cliente) || null }, "", actual);
+  revalidar();   // publica los pedidos para Producción y Logística (al cargar no cambia ningún estado)
   alEntrar();
-  sincronizarEtapasPedidosComercial();
 })();

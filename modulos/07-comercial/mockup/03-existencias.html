@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup · Comercial · Existencias</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body data-modulo="07-comercial" data-titulo="Comercial · Existencias">
+
+    <nav class="subnav" aria-label="Secciones de Comercial">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="etiqueta" data-ct="6" href="09-cotizacion.html">Cotizaciones</a>
+      <a class="subnav__i" data-ico="factura" data-ct="6" href="10-facturacion.html">Facturación</a>
+      <a class="subnav__i" data-ico="usuarios" data-ct="8" href="04-clientes.html">Clientes</a>
+      <a class="subnav__i is-on" data-ico="zapato" href="03-existencias.html">Existencias</a>
+      <a class="subnav__i" data-ico="portapapeles" data-ct="6" href="05-pedidos.html">Pedidos</a>
+      <a class="subnav__i" data-ico="camion" data-ct="3" href="06-entregas.html">Entregas</a>
+      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
+    </nav>
+
+    <!-- Existencias responde: ¿cuántos pares LIBRES hay de este modelo, color y talla en
+         esta bodega y, si aquí no hay, dónde sí? Libre = lo que hay en la bodega menos lo
+         apartado para pedidos. Solo consulta: el saldo lo lleva Inventario y lo apartado
+         sale de los pedidos de Comercial. No crea productos ni le pide nada a Producción.
+         OJO: lo de adentro de las columnas es de EJEMPLO (Bota Andina en BOD-02): prototipo.js
+         lo vuelve a dibujar desde sus datos al abrir la pantalla. -->
+    <header class="phead phead--fila">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path> <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path> <path d="M16 17h4"></path> <path d="M4 13h4"></path></svg>
+        Existencias por bodega
+      </h2>
+      <!-- La casilla guarda si la nota está quitada. Sin JavaScript: la ✕ es su
+           <label>, y el CSS esconde la nota cuando la casilla queda marcada. -->
+      <input class="nota__ck" type="checkbox" id="quitar-nota" aria-label="Quitar la nota de la pantalla">
+      <div class="nota nota--info nota--lado">
+        <span class="dot">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+        </span>
+        <p><b>Nota:</b> Busque el producto en el catálogo de la izquierda, tóquelo y elija la bodega para ver cuántos pares libres hay por color y talla. <b>Libre</b> = en bodega menos lo apartado para pedidos. Si en esa bodega no hay, le mostramos en qué otra sí. El saldo lo lleva Inventario; Comercial solo lo consulta.</p>
+        <label class="nota__x" for="quitar-nota" title="Quitar la nota">&times;</label>
+      </div>
+    </header>
+
+    <!-- Lo que define la consulta: la bodega. El producto se busca y se elige en el
+         catálogo de la izquierda. El saldo es el que Inventario reportó a esa hora. -->
+    <section class="panel cot-datos fac-datos exi-datos" id="exi" aria-label="Qué se consulta">
+      <div class="cot-dato">
+        <label class="cot-dato__l" for="exi-bod">Bodega</label>
+        <div class="control exi-bod-sel">
+          <select id="exi-bod">
+            <option value="todas">Todas las bodegas — 114 libres</option>
+            <option value="BOD-02" selected>BOD-02 · Producto terminado — 54 libres</option>
+            <option value="BOD-05">BOD-05 · Almacén de ventas (de ejemplo) — 60 libres</option>
+          </select>
+        </div>
+        <span class="tiny" id="exi-bod-sub">Bloque B · zona de despachos</span>
+      </div>
+      <div class="cot-dato exi-saldo">
+        <span class="cot-dato__l">Saldo de Inventario</span>
+        <span class="exi-saldo__f">
+          <b>Leído a las <span id="exi-hora">10:42</span></b>
+          <button type="button" class="cot-ico cot-ico--leer" data-exi="leer" data-tip="Volver a leer el saldo" aria-label="Volver a leer el saldo de Inventario">
+            <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path> <path d="M21 3v5h-5"></path></svg>
+          </button>
+        </span>
+        <span class="tiny">Lo reporta Inventario</span>
+      </div>
+    </section>
+
+    <!-- Tres columnas: el catálogo como una tienda | el modelo en la bodega elegida, con
+         la rejilla color × talla | en qué otras bodegas hay y qué pedidos lo esperan.
+         En pantallas anchas la pantalla no se desplaza: cada columna lo hace sola. -->
+    <div class="exi" id="exi-cuerpo">
+      <section class="panel fac__col" aria-labelledby="exi-cat-t">
+        <div class="cot-barra">
+          <h3 class="cot-barra__t" id="exi-cat-t">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path> <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path> <path d="M16 17h4"></path> <path d="M4 13h4"></path></svg>
+            Catálogo
+          </h3>
+          <label class="cot-solo exi-solo"><input type="checkbox" id="exi-solo"> Solo los que tienen pares</label>
+        </div>
+        <!-- El buscador ES el catálogo: filtra las tarjetas mientras se escribe -->
+        <div class="control exi-busca">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+          <input id="exi-q" type="search" autocomplete="off" placeholder="Buscar por nombre o referencia..." aria-label="Buscar en el catálogo por nombre o referencia" aria-controls="exi-cat">
+        </div>
+        <!-- Una tarjeta por modelo: el dibujo, la referencia y lo que hay. Un clic lo elige -->
+        <div class="exi__lista" id="exi-cat">
+          <button type="button" class="exi-card is-on" data-exi-ref="REF-1042" aria-pressed="true"><span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-cafe)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span><span class="exi-card__x"><b>Bota Andina</b><span class="exi-card__ref">REF-1042 · Otoño 2026</span><span class="exi-card__hay exi-card__hay--ok">54 libres aquí · 60 en BOD-05</span></span></button>
+          <button type="button" class="exi-card" data-exi-ref="REF-1043" aria-pressed="false"><span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-cafe)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M15 44c0-6 5-10 12-10h32c6 0 11 1.6 17 3.6l20 6.4c9 2.9 15 7.6 15 13.4V64H12V53c0-4 1-6.6 3-9z"></path><path class="brillo" d="M20 40c3-2 6-2.6 10-2.6h10c-4 1-8 3-10 6H18z"></path><path class="suela" d="M10 62h102c1.8 0 3 1.2 3 2.7s-1.2 2.7-3 2.7H13c-1.8 0-3-1.2-3-2.7z"></path><path class="costura" d="M58 36.5c14 0 28 4 38 10.5M56 41c13 .3 25 3.4 35 8.5"></path><path class="suela" d="M50 38.2h13v3.2H50z"></path></svg></span><span class="exi-card__x"><b>Mocasín Cúcuta</b><span class="exi-card__ref">REF-1043 · Otoño 2026</span><span class="exi-card__hay exi-card__hay--ok">44 libres aquí · 12 en BOD-05</span></span></button>
+          <button type="button" class="exi-card" data-exi-ref="REF-1044" aria-pressed="false"><span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-negro)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="68" rx="52" ry="3.4"></ellipse><path class="piel" d="M15 42c0-6 5-10 12-10h22c6 0 11 1.8 17 3.9l27 8.7c10 3.2 17 7.9 17 13.4V64H12V51c0-4 1-6.4 3-9z"></path><path class="brillo" d="M20 38c3-2 6-2.6 10-2.6h8c-4 1-7 3-9 6H18z"></path><path class="suela" d="M10 61h103a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3z"></path><path class="costura" d="M49 34c7 3.5 13 7.5 19 11.5M89 45c9 3 16 7.5 18 13.5"></path><path class="cordon" d="M53 35.5l9-2.6M56.5 39l9-2.6M60 42.5l9-2.6"></path></svg></span><span class="exi-card__x"><b>Zapato Colegial Reforzado</b><span class="exi-card__ref">REF-1044 · Otoño 2026</span><span class="exi-card__hay exi-card__hay--cero">Sin existencias en ninguna bodega</span></span></button>
+          <div class="exi-card is-bloqueado" aria-disabled="true" title="En diseño: todavía no se puede cotizar"><span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-gris)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="suela" d="M11 61h101a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3z"></path><path class="piel" d="M12 57h98c2.5 0 4 1.6 4 4H9c0-2.4 1.2-4 3-4z"></path><path class="tira" d="M30 58c3-13 14-19 26-16 7 1.7 13 6.8 16 16M80 58c3-8 12-11 21-7"></path></svg></span><span class="exi-card__x"><b>Sandalia Verano</b><span class="exi-card__ref">REF-1045</span><span class="exi-card__hay">No se vende: en diseño</span></span></div>
+          <div class="exi-card is-bloqueado" aria-disabled="true" title="La versión 2 espera la aprobación de Diseño"><span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-gris)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span><span class="exi-card__x"><b>Botín Casual Cuero</b><span class="exi-card__ref">REF-1046</span><span class="exi-card__hay">No se vende: en diseño</span></span></div>
+          <div class="exi-card is-bloqueado" aria-disabled="true" title="Descontinuado"><span class="cot-foto cot-foto--sm" style="--piel: var(--cuero-gris)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span><span class="exi-card__x"><b>Botín Clásico</b><span class="exi-card__ref">REF-0987</span><span class="exi-card__hay">Descontinuado</span></span></div>
+        </div>
+      </section>
+
+      <section class="panel fac__col" aria-labelledby="exi-mod-t">
+        <div class="cot-barra">
+          <h3 class="cot-barra__t exi-mod__t" id="exi-mod-t">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+            <span>Bota Andina en BOD-02</span>
+          </h3>
+          <!-- Las acciones del modelo, como íconos con su tooltip -->
+          <span class="cot-item__acc exi-acc" id="exi-acc">
+            <button type="button" class="cot-ico cot-ico--cotizar" data-exi="cotizar" data-tip="Cotizar este modelo" aria-label="Cotizar este modelo">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+            </button>
+            <button type="button" class="cot-ico cot-ico--pedidos" data-exi="pedidos" data-tip="Ver los pedidos que esperan este modelo" aria-label="Ver los pedidos que esperan este modelo">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+            </button>
+          </span>
+        </div>
+        <!-- Las tres cifras, la foto con sus colores y la rejilla color × talla de lo libre -->
+        <div class="exi__modelo" id="exi-mod">
+          <div class="exi-ficha">
+            <span class="cot-foto cot-foto--exi" style="--piel: var(--cuero-cafe)"><svg viewBox="0 0 120 72" aria-hidden="true"><ellipse class="sombra" cx="62" cy="67.6" rx="52" ry="3.4"></ellipse><path class="piel" d="M19 7h27a3 3 0 0 1 3 3v24c0 4 3 6.5 9 8.3l33 9.4c10 2.9 17 6.3 17 11.3v1H13V52c0-5 3-9 3-16V10a3 3 0 0 1 3-3z"></path><path class="brillo" d="M21 11h5v26c0 5-2 9-2 14h-4c0-6 1-9 1-14z"></path><path class="suela" d="M11 62h100c1.9 0 3.2 1.4 3.2 3.2s-1.3 3.2-3.2 3.2H14c-1.8 0-3-1.3-3-3z"></path><path class="suela" d="M12 56h19v7H12z"></path><path class="costura" d="M18 13.5h29M55 44.5c15 4.2 33 9 50 15.5"></path></svg></span>
+            <div class="exi-ficha__x">
+              <span class="vit__ref">REF-1042 · Otoño 2026</span>
+              <h4>Bota Andina</h4>
+              <span class="exi-ficha__d">Tallas 35 a 40 · 3 colores</span>
+              <div class="cot-colores" role="radiogroup" aria-label="Color del dibujo">
+                <button type="button" class="cot-color" role="radio" aria-checked="false" data-exi-color="Negro" title="Ver el dibujo en Negro"><i style="background:var(--cuero-negro)"></i><span>Negro</span></button>
+                <button type="button" class="cot-color is-on" role="radio" aria-checked="true" data-exi-color="Café" title="Ver el dibujo en Café"><i style="background:var(--cuero-cafe)"></i><span>Café</span></button>
+                <button type="button" class="cot-color" role="radio" aria-checked="false" data-exi-color="Miel" title="Ver el dibujo en Miel"><i style="background:var(--cuero-miel)"></i><span>Miel</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="exi-cifras">
+            <div class="exi-cifra"><span>En bodega</span><b>78</b><small>lo que reporta Inventario</small></div>
+            <div class="exi-cifra exi-cifra--warn" title="PD-2026-091: 24"><span>Apartado para pedidos</span><b>24</b><small>en 1 pedido</small></div>
+            <div class="exi-cifra exi-cifra--ok"><span>Libre para vender</span><b>54</b><small>en bodega − apartado</small></div>
+          </div>
+          <div class="aviso aviso--warn">
+            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+            <div>
+              <b>En BOD-02 no hay Bota Andina Negro</b>
+              <p>En BOD-05 hay 33 pares libres. Para traerlos, Inventario hace el traslado.</p>
+            </div>
+          </div>
+          <div class="exi-rej" role="table" aria-label="Pares libres por color y talla" style="--tallas: 6">
+            <div class="exi-rej__f" role="row">
+              <span class="exi-rej__cab exi-rej__color" role="columnheader">Color</span>
+              <span class="exi-rej__cab" role="columnheader">35</span>
+              <span class="exi-rej__cab" role="columnheader">36</span>
+              <span class="exi-rej__cab" role="columnheader">37</span>
+              <span class="exi-rej__cab" role="columnheader">38</span>
+              <span class="exi-rej__cab" role="columnheader">39</span>
+              <span class="exi-rej__cab" role="columnheader">40</span>
+            </div>
+            <div class="exi-rej__f" role="row">
+              <span class="exi-rej__color" role="rowheader"><i style="background:var(--cuero-negro)"></i><b>Negro</b><small>0 libres</small></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Negro" data-talla="35" title="Aquí no hay; en BOD-05 hay 3">0<i class="exi-otra" aria-hidden="true"></i></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Negro" data-talla="36" title="Aquí no hay; en BOD-05 hay 6">0<i class="exi-otra" aria-hidden="true"></i></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Negro" data-talla="37" title="Aquí no hay; en BOD-05 hay 9">0<i class="exi-otra" aria-hidden="true"></i></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Negro" data-talla="38" title="Aquí no hay; en BOD-05 hay 8">0<i class="exi-otra" aria-hidden="true"></i></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Negro" data-talla="39" title="Aquí no hay; en BOD-05 hay 5">0<i class="exi-otra" aria-hidden="true"></i></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Negro" data-talla="40" title="Aquí no hay; en BOD-05 hay 2">0<i class="exi-otra" aria-hidden="true"></i></span>
+            </div>
+            <div class="exi-rej__f is-on" role="row">
+              <span class="exi-rej__color" role="rowheader"><i style="background:var(--cuero-cafe)"></i><b>Café</b><small>26 libres</small></span>
+              <span class="exi-celda exi-celda--poco" role="cell" data-color="Café" data-talla="35" title="En bodega 4 · apartado 2 · libre 2">2</span>
+              <span class="exi-celda exi-celda--poco" role="cell" data-color="Café" data-talla="36" title="En bodega 8 · apartado 3 · libre 5">5</span>
+              <span class="exi-celda exi-celda--ok" role="cell" data-color="Café" data-talla="37" title="En bodega 12 · apartado 4 · libre 8">8</span>
+              <span class="exi-celda exi-celda--ok" role="cell" data-color="Café" data-talla="38" title="En bodega 10 · apartado 3 · libre 7">7</span>
+              <span class="exi-celda exi-celda--poco" role="cell" data-color="Café" data-talla="39" title="En bodega 6 · apartado 2 · libre 4">4</span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Café" data-talla="40" title="En bodega 0 · apartado 0 · libre 0">0</span>
+            </div>
+            <div class="exi-rej__f" role="row">
+              <span class="exi-rej__color" role="rowheader"><i style="background:var(--cuero-miel)"></i><b>Miel</b><small>28 libres</small></span>
+              <span class="exi-celda exi-celda--cero" role="cell" data-color="Miel" data-talla="35" title="En bodega 0 · apartado 0 · libre 0">0</span>
+              <span class="exi-celda exi-celda--poco" role="cell" data-color="Miel" data-talla="36" title="En bodega 6 · apartado 2 · libre 4">4</span>
+              <span class="exi-celda exi-celda--ok" role="cell" data-color="Miel" data-talla="37" title="En bodega 10 · apartado 3 · libre 7">7</span>
+              <span class="exi-celda exi-celda--ok" role="cell" data-color="Miel" data-talla="38" title="En bodega 12 · apartado 3 · libre 9">9</span>
+              <span class="exi-celda exi-celda--poco" role="cell" data-color="Miel" data-talla="39" title="En bodega 6 · apartado 1 · libre 5">5</span>
+              <span class="exi-celda exi-celda--poco" role="cell" data-color="Miel" data-talla="40" title="En bodega 4 · apartado 1 · libre 3">3</span>
+            </div>
+          </div>
+          <div class="vit__leyenda exi-leyenda"><span class="is-ok">Alcanza (6 o más)</span><span class="is-poco">Quedan pocos</span><span class="is-cero">No hay</span><span class="is-otra">Aquí no hay; en otra bodega sí</span></div>
+        </div>
+      </section>
+
+      <aside class="panel fac__col" aria-labelledby="exi-otras-t">
+        <div class="cot-barra">
+          <h3 class="cot-barra__t" id="exi-otras-t">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path> <circle cx="12" cy="10" r="3"></circle></svg>
+            En otras bodegas
+          </h3>
+        </div>
+        <!-- Cuánto hay del modelo en las demás bodegas y qué pedidos lo esperan -->
+        <div class="exi__lista" id="exi-otras">
+          <p class="exi-total"><b>114</b> pares libres de Bota Andina en 2 bodegas</p>
+          <section class="exi-bod" data-bodega="BOD-05">
+            <header class="exi-bod__cab">
+              <div><b>BOD-05 · Almacén de ventas (de ejemplo)</b><small>Bloque B · mostrador</small><span class="exi-bod__n">60 libres</span></div>
+              <button type="button" class="cot-ico cot-ico--ver" data-exi-bod="BOD-05" data-tip="Ver esta bodega" aria-label="Ver BOD-05 · Almacén de ventas (de ejemplo)"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+            </header>
+            <div class="cot-item__color"><i style="background:var(--cuero-negro)"></i><span>Negro</span><span class="vit__chips"><span>35<b>×3</b></span><span>36<b>×6</b></span><span>37<b>×9</b></span><span>38<b>×8</b></span><span>39<b>×5</b></span><span>40<b>×2</b></span></span></div>
+            <div class="cot-item__color"><i style="background:var(--cuero-cafe)"></i><span>Café</span><span class="vit__chips"><span>35<b>×1</b></span><span>36<b>×4</b></span><span>37<b>×5</b></span><span>38<b>×4</b></span><span>39<b>×2</b></span></span></div>
+            <div class="cot-item__color"><i style="background:var(--cuero-miel)"></i><span>Miel</span><span class="vit__chips"><span>36<b>×2</b></span><span>37<b>×4</b></span><span>38<b>×3</b></span><span>39<b>×1</b></span><span>40<b>×1</b></span></span></div>
+          </section>
+          <section class="exi-esperan">
+            <h4 class="cot-det__t">Pedidos que esperan este modelo</h4>
+            <button type="button" class="exi-esp" data-exi-ped="PD-2026-088" title="Ver el pedido PD-2026-088 en Pedidos"><b>PD-2026-088</b><span>faltan 48</span><small>Entrega 01-oct-2026 · Distribuidora Tamanaco</small></button>
+            <button type="button" class="exi-esp" data-exi-ped="PD-2026-089" title="Ver el pedido PD-2026-089 en Pedidos"><b>PD-2026-089</b><span>faltan 26</span><small>Entrega 06-oct-2026 · Calzado El Dorado</small></button>
+            <button type="button" class="exi-esp" data-exi-ped="PD-2026-091" title="Ver el pedido PD-2026-091 en Pedidos"><b>PD-2026-091</b><span>faltan 60</span><small>Entrega 14-oct-2026 · Calzado Norte</small></button>
+          </section>
+        </div>
+        <p class="exi__pie">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+          <span>Para mover pares de una bodega a otra, Inventario hace el traslado. Comercial no mueve existencias.</span>
+        </p>
+      </aside>
+    </div>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js"></script>
+  </body>
+</html>
