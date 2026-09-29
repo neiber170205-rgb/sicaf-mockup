@@ -7,19 +7,25 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css?v=20260927i" />
+    <link rel="stylesheet" href="estilos.css?v=20260929a" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Bodegas">
 
-    <header class="phead">
+    <header class="phead phead--fila">
       <h2 class="phead__t">
-        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/> <path d="M12 22V12"/> <polyline points="3.29 7 12 12 20.71 7"/> <path d="m7.5 4.27 9 5.15"/></svg>
-        Inventario
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        Bodegas
         <span class="phead__f">
           <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/> <path d="M12 11h4"/> <path d="M12 16h4"/> <path d="M8 11h.01"/> <path d="M8 16h.01"/></svg>
           2026-09-23
         </span>
       </h2>
+      <input class="nota__ck" type="checkbox" id="quitar-nota" aria-label="Quitar la nota de la pantalla">
+      <div class="nota nota--info nota--lado">
+        <span class="dot"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg></span>
+        <p><b>Nota:</b> Pulse una bodega para ver <b>todos sus datos</b> y lo que guarda. Con <b>Nueva bodega</b> se crea otra, y con <b>Registrar movimiento de inventario</b> se anotan varias entradas, salidas o traslados en un solo documento. Una salida nunca deja la bodega en negativo (RN-INV-01).</p>
+        <label class="nota__x" for="quitar-nota" title="Quitar la nota">&times;</label>
+      </div>
     </header>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
@@ -34,67 +40,100 @@
       <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
       <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
     </nav>
-    <section class="panel">
-      <header class="panel__head panel__head--vino">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
-        <div>
-          <h2>Entradas y Salidas por Bodega</h2>
-        </div>
-      </header>
-      <div class="panel__body">
-        <div class="bg-tarjetas" id="bg-tarjetas" role="group" aria-label="Bodegas"><p class="empty">Cargando las bodegas…</p></div>
-      </div>
-    </section>
 
-    <section class="panel" id="p-registrar">
-      <header class="panel__head panel__head--oliva">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/> <path d="m8 11 4 4 4-4"/> <path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/></svg>
-        <div>
-          <h2>Registrar un Movimiento</h2>
-        </div>
-      </header>
-      <div class="panel__body">
-        <div class="bg-tipo" role="radiogroup" aria-label="Qué pasa">
-          <label class="bg-tipo__i bg-tipo__i--ent"><input type="radio" name="bg-tipo" value="Entrada" checked><b>Entrada</b><span>Llega material a la bodega</span></label>
-          <label class="bg-tipo__i bg-tipo__i--sal"><input type="radio" name="bg-tipo" value="Salida"><b>Salida</b><span>Sale material de la bodega</span></label>
-          <label class="bg-tipo__i bg-tipo__i--tra"><input type="radio" name="bg-tipo" value="Traslado"><b>Traslado</b><span>Pasa de una bodega a otra</span></label>
-        </div>
-        <div class="bg-form">
-          <label class="sol-f"><span id="bg-bod-l">Bodega</span><select id="bg-bod"></select></label>
-          <label class="sol-f" id="bg-dest-c" hidden><span>Bodega que lo recibe</span><select id="bg-dest"></select></label>
-          <label class="sol-f bg-ancho"><span>Material</span><select id="bg-mat"></select></label>
-          <label class="sol-f"><span>Cantidad</span><span class="sol-cant"><input id="bg-cant" type="number" min="1" placeholder="0"><b id="bg-uni">un</b></span></label>
-          <label class="sol-f"><span>Documento</span><select id="bg-doc"></select></label>
-          <label class="sol-f"><span>Número del documento</span><input id="bg-num" maxlength="20" placeholder="Ej. OC-2026-015"></label>
-          <label class="sol-f"><span id="bg-quien-l">Quién lo entrega</span><select id="bg-quien">
-            <option>Jefe de bodega</option><option>Auxiliar de bodega</option><option>Luisa Mendoza (corte)</option>
-            <option>Édgar Pabón (guarnición)</option><option>Transportador del proveedor</option><option>Logística</option></select></label>
-          <label class="sol-f bg-ancho"><span>Observación</span><input id="bg-obs" maxlength="120" placeholder="Opcional. Ej. Llegó con la caja rota"></label>
-        </div>
-        <div class="calc" id="bg-calc" aria-live="polite">
-          <span class="calc__t"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/> <line x1="8" x2="16" y1="6" y2="6"/> <line x1="16" x2="16" y1="14" y2="18"/> <path d="M16 10h.01"/> <path d="M12 10h.01"/> <path d="M8 10h.01"/> <path d="M12 14h.01"/> <path d="M8 14h.01"/> <path d="M12 18h.01"/> <path d="M8 18h.01"/></svg> Así queda la bodega</span>
-          <div class="calc__f" id="bg-cuenta">Elija el material y la cantidad.</div>
-        </div>
-        <div class="bg-acc">
-          <button class="btn btn--oliva" id="bg-guardar" type="button"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/> <path d="m9 11 3 3L22 4"/></svg> Registrar movimiento</button>
-          <p class="tiny">Una salida o un traslado nunca dejan la bodega en negativo (RN-INV-01). Cada movimiento queda también en el Kárdex.</p>
-        </div>
-      </div>
-    </section>
+    <!-- Las tarjetas de color filtran la tabla: un clic pone el filtro y otro lo quita -->
+    <div class="kpis" id="bgv-kpis">
+      <button class="kpi kpi--arena kpi--btn" type="button" data-bk="" aria-pressed="false" title="Ver todas las bodegas">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+        <div><div class="kpi__n" id="kb-n">4</div><div class="kpi__l">Bodegas</div><div class="kpi__s" id="kb-ns">4 activas</div></div>
+      </button>
+      <button class="kpi kpi--rosa kpi--btn" type="button" data-bk="alerta" aria-pressed="false" title="Filtrar: bodegas con material bajo el mínimo">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/> <path d="M12 9v4"/> <path d="M12 17h.01"/></svg></span>
+        <div><div class="kpi__n" id="kb-b">2</div><div class="kpi__l">Bajo el mínimo</div><div class="kpi__s" id="kb-bs">en 2 bodegas</div></div>
+      </button>
+      <button class="kpi kpi--oliva kpi--btn" type="button" data-bk="activa" aria-pressed="false" title="Filtrar: bodegas activas">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/> <path d="M12 22V12"/> <polyline points="3.29 7 12 12 20.71 7"/> <path d="m7.5 4.27 9 5.15"/></svg></span>
+        <div><div class="kpi__n" id="kb-m">13</div><div class="kpi__l">Materiales guardados</div><div class="kpi__s" id="kb-ms">en las bodegas activas</div></div>
+      </button>
+      <button class="kpi kpi--cobre kpi--btn" type="button" data-bk="llena" aria-pressed="false" title="Filtrar: bodegas ocupadas en 70 % o más">
+        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/> <path d="M18 17V9"/> <path d="M13 17V5"/> <path d="M8 17v-3"/></svg></span>
+        <div><div class="kpi__n" id="kb-o">45 %</div><div class="kpi__l">Ocupación promedio</div><div class="kpi__s" id="kb-os">la más llena: BOD-01</div></div>
+      </button>
+    </div>
 
-    <section class="panel">
-      <header class="panel__head panel__head--cobre">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/> <path d="M12 22V12"/> <polyline points="3.29 7 12 12 20.71 7"/> <path d="m7.5 4.27 9 5.15"/></svg>
-        <div>
-          <h2 id="bg-hay-t">Lo que hay en la bodega</h2>
-        </div>
-      </header>
+    <section class="panel panel--tabla bgv">
       <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table class="tabla-simple">
-            <thead><tr><th>Material</th><th class="num" style="width:1%">Hay</th><th class="num" style="width:1%">Mínimo</th><th style="width:1%">Estado</th><th class="num" style="width:1%">Entró</th><th class="num" style="width:1%">Salió</th></tr></thead>
-            <tbody id="bg-hay"></tbody>
-          </table>
+        <div class="dt" id="dt-bodegas">
+          <div class="dt__bar">
+            <div class="dt__q">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg>
+              <input id="bgv-q" type="text" role="searchbox" autocomplete="off" placeholder="Buscar bodega, responsable o ubicación..." aria-label="Buscar en la tabla">
+            </div>
+            <details class="fil">
+              <summary class="fil__b" title="Filtrar la tabla por cualquier columna">
+                <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg>
+                Filtros
+                <span class="fil__n" id="bgv-nfil" hidden>0</span>
+              </summary>
+              <div class="fil__caja" role="group" aria-label="Filtros de la tabla">
+                <div class="fil__t">Una condición por columna</div>
+                <label class="fil__c"><span class="fil__l">Tipo</span><select class="dt__in" data-bf="tipo" id="bgv-f-tipo"><option value="">Todos</option></select></label>
+                <label class="fil__c"><span class="fil__l">Estado</span><select class="dt__in" data-bf="estado"><option value="">Todos</option><option>Activa</option><option>Inactiva</option></select></label>
+                <label class="fil__c"><span class="fil__l">Responsable</span><select class="dt__in" data-bf="resp" id="bgv-f-resp"><option value="">Todos</option></select></label>
+                <label class="fil__c"><span class="fil__l">Alertas</span><select class="dt__in" data-bf="alerta"><option value="">Todas</option><option value="si">Con material bajo el mínimo</option><option value="no">Al día</option></select></label>
+                <div class="fil__pie">
+                  <span class="tiny" id="bgv-fil-t">Sin filtros puestos</span>
+                  <button class="fil__x" type="button" data-bgv-quitar>Borrar todos</button>
+                </div>
+              </div>
+            </details>
+            <span class="fil__act" id="bgv-fichas" aria-label="Filtros puestos"></span>
+            <div class="dt__acts">
+              <button class="btn btn--sm" type="button" data-bgv="nueva" title="Crear una bodega nueva">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg>
+                Nueva bodega
+              </button>
+              <button class="btn btn--sm btn--oliva" type="button" data-bgv="mover" title="Registrar entradas, salidas o traslados">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/> <path d="m8 11 4 4 4-4"/> <path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/></svg>
+                Registrar movimiento de inventario
+              </button>
+              <button class="dt__b" type="button" aria-expanded="false" title="Mostrar u ocultar columnas">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/> <rect width="7" height="7" x="14" y="3" rx="1"/> <rect width="7" height="7" x="14" y="14" rx="1"/> <rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                <span>Columnas</span>
+              </button>
+              <button class="dt__b" type="button" title="Exportar a Excel lo que ve en pantalla">
+                <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/> <path d="m7 10 5 5 5-5"/></svg>
+                <span>Exportar Excel</span>
+              </button>
+            </div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th data-k="cod"><button class="dt__orden" type="button" title="Ordenar por Bodega"><span>Bodega</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="tipo"><button class="dt__orden" type="button" title="Ordenar por Tipo"><span>Tipo</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="ubic"><button class="dt__orden" type="button" title="Ordenar por Ubicación"><span>Ubicación</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="resp"><button class="dt__orden" type="button" title="Ordenar por Responsable"><span>Responsable</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="mat" class="num"><button class="dt__orden" type="button" title="Ordenar por Materiales"><span>Materiales</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="ocu"><button class="dt__orden" type="button" title="Ordenar por Ocupación"><span>Ocupación</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="alerta"><button class="dt__orden" type="button" title="Ordenar por Alertas"><span>Alertas</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="ult"><button class="dt__orden" type="button" title="Ordenar por Último movimiento"><span>Último movimiento</span><i class="dt__ind">⇅</i></button></th>
+                  <th data-k="estado"><button class="dt__orden" type="button" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button></th>
+                </tr>
+              </thead>
+              <tbody id="bgv-filas"></tbody>
+            </table>
+          </div>
+          <div class="dt__res" id="bgv-res"></div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite"></div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="bgv-tam">Filas por página
+                <select id="bgv-tam" class="dt__in"><option value="5">5</option><option value="10" selected>10</option><option value="25">25</option></select></label>
+              <nav class="dt__pager" aria-label="Paginación"></nav>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -118,7 +157,7 @@
           <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
             <span class="dt__filtros-t"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg> Filtros</span>
             <div class="dt__f"><label class="dt__f-l" for="pd-f-bod">Bodega</label>
-              <select id="pd-f-bod" class="dt__in"><option value="">Todas las bodegas</option><option>BOD-01</option><option>BOD-02</option><option>BOD-03</option><option>BOD-04</option></select></div>
+              <select id="pd-f-bod" class="dt__in"><option value="">Todas las bodegas</option></select></div>
             <div class="dt__f"><label class="dt__f-l" for="pd-f-est">Estado</label>
               <select id="pd-f-est" class="dt__in"><option value="">Todos</option><option>Registrado</option><option>Editado</option><option>Anulado</option></select></div>
           </div>
@@ -149,11 +188,12 @@
       </div>
     </section>
 
+
     <section class="panel">
       <header class="panel__head panel__head--vino">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/> <path d="M12 11h4"/> <path d="M12 16h4"/> <path d="M8 11h.01"/> <path d="M8 16h.01"/></svg>
         <div>
-          <h2>Registro de Entradas y Salidas</h2>
+          <h2>Registro de Movimientos</h2>
         </div>
       </header>
       <div class="panel__body panel__body--flush">
@@ -168,7 +208,7 @@
           <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
             <span class="dt__filtros-t"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg> Filtros</span>
             <div class="dt__f"><label class="dt__f-l" for="bg-f-bod">Bodega</label>
-              <select id="bg-f-bod" class="dt__in"><option value="">Todas las bodegas</option><option>BOD-01</option><option>BOD-02</option><option>BOD-03</option><option>BOD-04</option></select></div>
+              <select id="bg-f-bod" class="dt__in"><option value="">Todas las bodegas</option></select></div>
             <div class="dt__f"><label class="dt__f-l" for="bg-f-tipo">Tipo</label>
               <select id="bg-f-tipo" class="dt__in"><option value="">Todos</option><option value="Entrada">Entradas</option><option value="Salida">Salidas</option><option value="Traslado">Traslados</option></select></div>
           </div>
@@ -182,7 +222,8 @@
                 <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Cantidad"><span>Cantidad</span><i class="dt__ind">⇅</i></button></th>
                 <th class="num" style="width:1%"><button class="dt__orden" title="Ordenar por Queda"><span>Queda</span><i class="dt__ind">⇅</i></button></th>
                 <th><button class="dt__orden" title="Ordenar por Documento"><span>Documento</span><i class="dt__ind">⇅</i></button></th>
-                <th><button class="dt__orden" title="Ordenar por Quién"><span>Quién</span><i class="dt__ind">⇅</i></button></th>
+                <th><button class="dt__orden" title="Ordenar por Entregó / recibió"><span>Entregó / recibió</span><i class="dt__ind">⇅</i></button></th>
+                <th><button class="dt__orden" title="Ordenar por Registró"><span>Registró</span><i class="dt__ind">⇅</i></button></th>
               </tr></thead>
               <tbody id="bg-filas"></tbody>
             </table>
@@ -203,15 +244,16 @@
           <span class="dot">
             <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg>
           </span>
-          <p><b>Nota:</b> Cada bodega lleva su propio saldo. Un traslado es una salida de una bodega y una entrada en la otra, con el mismo número de movimiento.</p>
+          <p><b>Nota:</b> Cada bodega lleva su propio saldo. Un movimiento puede tener varias líneas; todas comparten el mismo número. Un traslado es una salida de una bodega y una entrada en la otra.</p>
           <span class="firma">Calzado que<br>impulsa tus metas</span>
         </div>
       </div>
     </section>
 
+
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js?v=20260927i"></script>
+    <script src="prototipo.js?v=20260929a"></script>
   </body>
 </html>

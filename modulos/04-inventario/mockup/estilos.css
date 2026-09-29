@@ -2661,3 +2661,329 @@ tr.pd-anulado > td:last-child { opacity: 1; }
 .bg-card--crit .bg-card__img { background: linear-gradient(180deg, var(--crit-bg), #FDF5F5); }
 .bg-card__img .pill { position: absolute; top: 8px; left: 8px; margin: 0; }
 .bg-card__cuerpo { display: flex; flex-direction: column; gap: 6px; padding: 12px 16px 14px; width: 100%; }
+
+
+/* =====================================================================
+   Bodegas (11): la misma estructura de la lista de Facturación de Comercial
+   (título con nota, cuatro tarjetas que filtran y la tabla con sus filtros)
+   ===================================================================== */
+
+.phead--fila {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.phead--fila .phead__t { flex: 0 0 auto; }
+
+.nota--lado {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 40px 8px 12px;      /* hueco a la derecha para la ✕ */
+  gap: 11px;
+}
+
+.nota--lado .dot { width: 28px; height: 28px; }
+.nota--lado .dot .ico { width: 16px; height: 16px; }
+.nota--lado p { font-size: 12.5px; line-height: 1.4; }
+
+/* La ✕ que quita la nota. Sin JavaScript: es el <label> de una casilla escondida,
+   y el CSS esconde la nota cuando la casilla queda marcada. */
+.nota__ck {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nota__ck:checked ~ .nota--lado { display: none; }
+
+.nota__x {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--info);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .13s, color .13s;
+}
+
+.nota__x:hover { background: var(--info); color: #fff; }
+
+.nota__ck:focus-visible ~ .nota--lado .nota__x {
+  outline: 2.5px solid var(--cobre-600);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1100px) {
+  .phead--fila { flex-direction: column; align-items: stretch; gap: 10px; }
+}
+
+/* ---- La tarjeta de indicador puede filtrar su tabla ---- */
+.kpi__s {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi--arena .kpi__s { color: var(--cobre-800); }
+.kpi--rosa .kpi__s { color: var(--vino-700); }
+.kpi--oliva .kpi__s { color: var(--oliva-800); }
+.kpi--cobre .kpi__s { color: var(--vino-800); }
+
+
+.fil { position: static; }
+
+.fil__b {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: var(--r-m);
+  border: 1px solid var(--linea);
+  background: var(--papel);
+  color: var(--tinta-2);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  list-style: none;
+  transition: background .13s, border-color .13s, color .13s;
+}
+
+.fil__b::-webkit-details-marker { display: none; }
+.fil__b:hover { background: var(--cobre-100); border-color: var(--cobre-400); color: var(--cobre-800); }
+.fil[open] .fil__b { background: var(--cobre-100); border-color: var(--cobre-500); color: var(--cobre-800); }
+
+/* Cuántos filtros están puestos ahora mismo */
+.fil__n {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--cobre-600);
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* La caja flota para no empujar la tabla, anclada a la barra */
+.fil__caja {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 7px);
+  left: 14px;
+  width: min(560px, calc(100% - 28px));
+  padding: 14px 16px 12px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  background: var(--papel);
+  box-shadow: 0 26px 48px -26px rgba(58, 42, 34, .6);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+}
+
+.fil__t {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cobre-700);
+}
+
+.fil__c { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fil__c--2 { grid-column: 1 / -1; }
+.fil__c select.dt__in { max-width: none; }
+
+.fil__l {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--tinta-2);
+}
+
+.fil__r { display: flex; align-items: center; gap: 7px; }
+.fil__r .dt__in { flex: 1; min-width: 0; }
+.fil__rs { color: var(--tinta-3); }
+
+.fil__pie {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--linea-2);
+}
+
+.fil__x {
+  margin-left: auto;
+  color: var(--vino-600);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fil__x:hover { text-decoration: underline; }
+
+/* Lo que está filtrando AHORA, cada ficha con su cruz */
+.fil__act { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.fil__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 4px 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--cobre-400);
+  background: var(--cobre-100);
+  color: var(--cobre-800);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+
+.fil__chip b { font-weight: 700; }
+
+.fil__chip button {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  color: var(--cobre-700);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.fil__chip button:hover { background: var(--cobre-400); color: #fff; }
+
+@media (max-width: 560px) {
+  .fil__caja { grid-template-columns: minmax(0, 1fr); }
+}
+
+
+.bgv { overflow: visible; }
+.bgv .dt__bar { position: relative; flex-wrap: wrap; }
+.bgv .dt__acts { margin-left: auto; flex-wrap: wrap; }
+.bgv .dt__acts .btn { gap: 7px; white-space: nowrap; }
+.bgv .dt tbody td { padding: 8px 10px; vertical-align: middle; }
+.bgv .dt tbody td .tiny { display: block; }
+.bgv-fila { cursor: pointer; transition: background .12s; }
+.bgv-fila:hover td, .bgv-fila:focus-visible td { background: var(--cobre-100, #FBE9DD); }
+.bgv-fila:focus-visible { outline: 2px solid var(--vino-600); outline-offset: -2px; }
+.bgv-fila--off td { opacity: .62; }
+.bgv-b { display: flex; align-items: center; gap: 10px; }
+.bgv-b b { display: block; white-space: nowrap; }
+.bgv-ic { flex: none; width: 44px; height: 34px; padding: 3px; border-radius: 8px; background: var(--arena); }
+.bgv-ocu { display: inline-block; width: 90px; height: 8px; border-radius: 99px; background: var(--linea-2); overflow: hidden; vertical-align: middle; }
+.bgv-ocu i { display: block; height: 100%; border-radius: 99px; background: var(--ok); }
+.bgv-ocu--warn i { background: var(--warn); }
+.bgv-ocu--crit i { background: var(--crit); }
+.phead--fila .guardado { flex: none; }
+
+/* La ficha de la bodega */
+.bgv-modal { width: min(900px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+.bgv-modal .modal__body { overflow: auto; }
+.bgv-cab { align-items: center; gap: 14px; }
+.bgv-cab > div { flex: 1; min-width: 0; }
+.bgv-cab__img { flex: none; width: 92px; height: 68px; padding: 6px; border-radius: 12px; background: var(--arena); }
+.bgv-cab__s { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--tinta-2); margin-top: 4px; }
+.bgv-cab__s .pill { margin: 0; }
+.bgv-datos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 14px; }
+.bgv-dato { display: flex; flex-direction: column; gap: 2px; padding: 9px 11px; border-radius: 10px; background: var(--arena); min-width: 0; }
+.bgv-dato span { font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-3); }
+.bgv-dato b { font-size: 13.5px; overflow-wrap: anywhere; }
+.bgv-dato--full { grid-column: 1 / -1; }
+.bgv-ocu-g { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 4px; font-size: 13px; }
+.bgv-ocu-g .bgv-ocu { width: 220px; height: 10px; }
+.bgv-ocu-g .pill { margin: 0 0 0 auto; }
+.bgv-movs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.bgv-movs li { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; background: var(--arena); }
+.bgv-movs li > span:nth-child(2) { display: flex; flex-direction: column; }
+.bgv-movs li > span:last-child { text-align: right; }
+.bgv-pie { flex-wrap: wrap; }
+.bgv-pie__sep { flex: 1; }
+@media (max-width: 760px) { .bgv-datos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Crear o editar una bodega */
+.bgf-top { display: flex; gap: 16px; align-items: flex-end; }
+.bgf-img { flex: none; width: 110px; height: 82px; padding: 8px; border-radius: 12px; background: var(--arena); }
+.bgf-top .bgf-grid { flex: 1; }
+.bgf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px 14px; align-items: end; }
+.bgf-ck { display: flex; align-items: center; gap: 8px; height: 42px; font-size: 13.5px; cursor: pointer; }
+.bgf-ck input { width: 18px; height: 18px; accent-color: var(--vino-600); }
+.bgf-err { margin: 12px 0 0; padding: 9px 12px; border-radius: 10px; background: var(--crit-bg); color: var(--crit); font-weight: 600; font-size: 13px; }
+
+/* Registrar movimiento de inventario: el documento con sus líneas */
+.mvi-modal { width: min(1320px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+.mvi-modal .modal__head > div { flex: 1; }
+.mvi-modal .modal__body { overflow: auto; }
+.mvi-tipo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.mvi-tipo__i { display: grid; grid-template-columns: auto 1fr; column-gap: 9px; padding: 10px 14px; border: 1px solid var(--linea); border-radius: var(--r-m); cursor: pointer; background: var(--papel); }
+.mvi-tipo__i input { grid-row: span 2; align-self: center; accent-color: var(--vino-600); }
+.mvi-tipo__i span { font-size: 12px; color: var(--tinta-2); }
+.mvi-tipo__i:has(input:checked) { border-width: 2px; }
+.mvi-tipo__i--ent:has(input:checked) { border-color: var(--ok); background: var(--ok-bg); }
+.mvi-tipo__i--sal:has(input:checked) { border-color: var(--cobre-500); background: #FDF1E7; }
+.mvi-tipo__i--tra:has(input:checked) { border-color: var(--vino-600); background: #F8E9EA; }
+.mvi-cab { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 14px; margin-bottom: 14px; }
+.mvi-cab__obs { grid-column: 1 / -1; }
+.mvi-tabla { overflow-x: auto; border: 1px solid var(--linea); border-radius: var(--r-m); }
+.mvi-tabla table { width: 100%; border-collapse: collapse; min-width: 1180px; }
+.mvi-tabla th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; background: var(--vino-700); padding: 9px 8px; white-space: nowrap; }
+.mvi-tabla th.num, .mvi-tabla td.num { text-align: right; }
+.mvi-tabla td { padding: 7px 6px; border-top: 1px solid var(--linea-2); vertical-align: middle; font-size: 13px; }
+.mvi-tabla tbody tr:nth-child(even) td { background: #FCF8F4; }
+.mvi-tabla select, .mvi-tabla input { width: 100%; min-width: 0; height: 36px; padding: 0 8px; border: 1px solid var(--linea); border-radius: 8px; background: #fff; font: inherit; font-size: 12.5px; color: var(--tinta); }
+.mvi-tabla td[data-l="Origen"], .mvi-tabla td[data-l="Destino"] { min-width: 150px; }
+.mvi-tabla .mvi-mat { min-width: 230px; }
+.mvi-tabla td[data-l="Entrega"], .mvi-tabla td[data-l="Recibe"] { min-width: 150px; }
+.mvi-tabla td[data-l="Observación"] { min-width: 120px; }
+.mvi-n { width: 28px; text-align: center; font-weight: 700; color: var(--tinta-3); }
+.mvi-cant { display: flex; align-items: center; gap: 6px; min-width: 110px; }
+.mvi-cant input { width: 84px; }
+.mvi-cant b { font-size: 11.5px; color: var(--tinta-2); }
+.mvi-tabla td .tiny { display: block; }
+.mvi-mal td { background: #FDF3F3 !important; }
+.mvi-mal [data-mc="cant"] { border-color: var(--crit); }
+.mvi-err { color: var(--crit); font-weight: 600; font-size: 12px; white-space: normal; }
+.mvi-av { color: var(--warn); font-weight: 600; }
+.mvi-ok { color: var(--ok); font-weight: 700; }
+.mvi-x { width: 30px; height: 30px; border-radius: 8px; color: var(--tinta-3); }
+.mvi-x:hover:not(:disabled) { background: var(--crit-bg); color: var(--crit); }
+.mvi-x:disabled { opacity: .35; cursor: not-allowed; }
+.mvi .sol-mas { margin-top: 10px; }
+@media (max-width: 900px) { .mvi-cab { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mvi-tipo { grid-template-columns: 1fr; } }
+/* Bodegas: ajustes del encabezado y de la barra */
+.phead.phead--fila { flex-direction: row; align-items: center; flex-wrap: wrap; }
+.phead--fila .guardado { position: static; order: 3; flex: 0 0 auto; margin-left: auto; }
+.phead--fila .nota--lado { order: 2; }
+@media (max-width: 1100px) { .phead.phead--fila { flex-direction: column; align-items: stretch; } .phead--fila .guardado { margin-left: 0; } }
+.bgv .dt__q { flex: 0 1 330px; }
+.bgv .fil__act { flex: 1; }
+.bgv .dt tbody td[data-l="Bodega"], .bgv .dt tbody td[data-l="Tipo"], .bgv .dt tbody td[data-l="Responsable"],
+.bgv .dt tbody td[data-l="Alertas"], .bgv .dt tbody td[data-l="Estado"], .bgv .dt tbody td[data-l="Ocupación"] { white-space: nowrap; }
+.bgv .dt tbody td[data-l="Ubicación"] { min-width: 150px; }
+.bgv .dt tbody td[data-l="Tipo"] { white-space: normal; min-width: 90px; }
+.bgv .dt tbody td[data-l="Ubicación"] { min-width: 120px; }
+.bgv .bgv-ocu { width: 64px; }
+.bgv .dt thead th > .dt__orden { padding-left: 10px; padding-right: 8px; }
+.bgv .dt tbody td { padding-left: 10px; padding-right: 8px; }
+.bgv .bgv-ic { width: 38px; height: 30px; }
+.bgv-ub { display: block; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bgv .dt tbody td[data-l="Último movimiento"] { white-space: nowrap; }
+.bgv .dt tbody td[data-l="Bodega"] { white-space: normal; min-width: 150px; } .bgv .dt tbody td[data-l="Bodega"] .tiny { white-space: normal; }

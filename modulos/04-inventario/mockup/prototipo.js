@@ -2774,136 +2774,11 @@
     }
     if (datos) {
       MOVS.unshift({ mv: datos.mv, fecha: HOY, bod: bod, tipo: datos.tipo, cod: cod, cant: delta,
-                     queda: STOCK[bod][cod], doc: datos.doc || "", quien: datos.quien || "Jefe de bodega", obs: datos.obs || "" });
+                     queda: STOCK[bod][cod], doc: datos.doc || "", quien: datos.quien || "Jefe de bodega", reg: datos.reg || "", obs: datos.obs || "" });
     }
     return STOCK[bod][cod];
   }
   function nuevoMB() { asegurarMovs(); NUM_BG += 1; return "MB-" + String(NUM_BG).padStart(4, "0"); }
-
-  /* ---- La pantalla */
-
-  var DOCS = {
-    Entrada: ["Orden de compra (OC)", "Devolución de producción", "Lote de Calidad", "Devolución del cliente", "Ajuste por conteo"],
-    Salida: ["Orden de producción (OP)", "Pedido de cliente", "Devolución al proveedor", "Baja por daño"],
-    Traslado: ["Remisión interna"]
-  };
-
-  function tipoMov() { var r = uno('input[name="bg-tipo"]:checked'); return r ? r.value : "Entrada"; }
-
-  function opcionesBodega(sel, valor, excepto) {
-    sel.innerHTML = Object.keys(NOMBRE_BOD).filter(function (b) { return b !== excepto; }).map(function (b) {
-      return '<option value="' + b + '"' + (b === valor ? " selected" : "") + ">" + b + " · " + NOMBRE_BOD[b] + "</option>";
-    }).join("");
-  }
-
-  function opcionesMaterial() {
-    var t = tipoMov(), bod = uno("#bg-bod").value, sel = uno("#bg-mat"), antes = sel.value;
-    var aqui = Object.keys(STOCK[bod] || {});
-    var h = '<optgroup label="Lo que hay en ' + bod + '">' + aqui.map(function (c) {
-      var i = infoMat(c);
-      return '<option value="' + c + '">' + c + " · " + i.nombre + " · hay " + miles(STOCK[bod][c]) + " " + i.unidad + "</option>";
-    }).join("") + "</optgroup>";
-    if (t === "Entrada") {
-      TIPOS.forEach(function (tp) {
-        var ms = CATALOGO.filter(function (m) { return m[2] === tp.k && aqui.indexOf(m[0]) < 0; });
-        if (ms.length) h += '<optgroup label="' + tp.t + ' (del catálogo)">' + ms.map(function (m) {
-          return '<option value="' + m[0] + '">' + m[0] + " · " + m[1] + " · " + m[3] + "</option>";
-        }).join("") + "</optgroup>";
-      });
-    }
-    sel.innerHTML = h;
-    if (antes && sel.querySelector('option[value="' + antes + '"]')) sel.value = antes;
-  }
-
-  function prepararFormulario() {
-    var t = tipoMov();
-    uno("#bg-bod-l").textContent = t === "Traslado" ? "Bodega de donde sale" : t === "Salida" ? "Bodega de donde sale" : "Bodega que lo recibe";
-    uno("#bg-dest-c").hidden = t !== "Traslado";
-    opcionesBodega(uno("#bg-dest"), uno("#bg-dest").value, uno("#bg-bod").value);
-    uno("#bg-doc").innerHTML = DOCS[t].map(function (d) { return "<option>" + d + "</option>"; }).join("");
-    uno("#bg-quien-l").textContent = t === "Entrada" ? "Quién lo entrega" : "Quién lo recibe";
-    opcionesMaterial();
-    cuentaBodega();
-  }
-
-  function cuentaBodega() {
-    var caja = uno("#bg-cuenta");
-    if (!caja) return;
-    var t = tipoMov(), bod = uno("#bg-bod").value, cod = uno("#bg-mat").value, q = numero(uno("#bg-cant").value);
-    var i = infoMat(cod || ""), hay = (STOCK[bod] || {})[cod] || 0;
-    uno("#bg-uni").textContent = i.unidad;
-    var calc = uno("#bg-calc"), ok = true, txt;
-    if (!cod) { txt = "Elija el material."; ok = false; }
-    else if (!q) { txt = "En " + bod + " hay <b>" + miles(hay) + " " + i.unidad + "</b> de " + i.nombre + ". Escriba la cantidad."; ok = false; }
-    else if (t === "Entrada") {
-      txt = bod + ": " + miles(hay) + " + " + miles(q) + " = <b>" + miles(hay + q) + " " + i.unidad + "</b> de " + i.nombre;
-    } else if (q > hay) {
-      txt = "En " + bod + " solo hay <b>" + miles(hay) + " " + i.unidad + "</b>. No se puede sacar " + miles(q) + " (RN-INV-01).";
-      ok = false;
-    } else if (t === "Salida") {
-      txt = bod + ": " + miles(hay) + " − " + miles(q) + " = <b>" + miles(hay - q) + " " + i.unidad + "</b> de " + i.nombre;
-    } else {
-      var dest = uno("#bg-dest").value, hayD = (STOCK[dest] || {})[cod] || 0;
-      txt = bod + ": " + miles(hay) + " − " + miles(q) + " = <b>" + miles(hay - q) + "</b> · " +
-            dest + ": " + miles(hayD) + " + " + miles(q) + " = <b>" + miles(hayD + q) + " " + i.unidad + "</b>";
-    }
-    caja.innerHTML = txt;
-    calc.classList.toggle("calc--crit", !ok && q > 0);
-    uno("#bg-guardar").disabled = !ok;
-  }
-
-  function registrarBodega() {
-    var t = tipoMov(), bod = uno("#bg-bod").value, cod = uno("#bg-mat").value, cant = uno("#bg-cant");
-    var q = numero(cant.value), i = infoMat(cod);
-    if (!q || q < 1) { cant.focus(); return aviso("Escriba una cantidad mayor que cero.", "crit"); }
-    var num = uno("#bg-num").value.trim();
-    var doc = uno("#bg-doc").value + (num ? " · " + num : "");
-    var datos = { tipo: t, doc: doc, quien: uno("#bg-quien").value, obs: uno("#bg-obs").value.trim() };
-    datos.mv = nuevoMB();
-    if (t === "Entrada") {
-      var q1 = moverStock(bod, cod, q, datos);
-      anotarKardex(cod, i.nombre, "Entrada", q, i.unidad, q1, doc, bod);
-      aviso("Entraron " + miles(q) + " " + i.unidad + " de " + cod + " a " + bod + ". Ahora hay " + miles(q1) + ".", "ok");
-    } else if (t === "Salida") {
-      var q2 = moverStock(bod, cod, -q, datos);
-      if (q2 === null) return aviso("En " + bod + " solo hay " + miles(STOCK[bod][cod] || 0) + " " + i.unidad + " de " + cod + ". No se puede sacar más.", "crit");
-      anotarKardex(cod, i.nombre, "Salida", -q, i.unidad, q2, doc, bod);
-      aviso("Salieron " + miles(q) + " " + i.unidad + " de " + cod + " de " + bod + ". Quedan " + miles(q2) + ".", "warn");
-    } else {
-      var dest = uno("#bg-dest").value;
-      if (dest === bod) return aviso("La bodega que recibe tiene que ser otra.", "crit");
-      var s = moverStock(bod, cod, -q, datos);
-      if (s === null) return aviso("En " + bod + " solo hay " + miles(STOCK[bod][cod] || 0) + " " + i.unidad + ". No se puede trasladar más.", "crit");
-      var e = moverStock(dest, cod, q, { mv: datos.mv, tipo: t, doc: doc + " · desde " + bod, quien: datos.quien, obs: datos.obs });
-      MOVS[1].doc = doc + " · hacia " + dest;
-      anotarKardex(cod, i.nombre, "Salida", -q, i.unidad, s, "Traslado a " + dest, bod);
-      anotarKardex(cod, i.nombre, "Entrada", q, i.unidad, e, "Traslado desde " + bod, dest);
-      aviso("Se trasladaron " + miles(q) + " " + i.unidad + " de " + cod + ": " + bod + " → " + dest + ".", "ok");
-    }
-    cant.value = ""; uno("#bg-num").value = ""; uno("#bg-obs").value = "";
-    BG_SEL = bod;
-    pintarBodegas();
-  }
-
-  function tarjetaBodega(b) {
-    asegurarMovs();
-    var cods = Object.keys(STOCK[b] || {});
-    var bajos = cods.filter(function (c) { return minDe(b, c) && STOCK[b][c] < minDe(b, c); }).length;
-    var mios = MOVS.filter(function (m) { return m.bod === b; });
-    var ent = mios.filter(function (m) { return m.cant > 0 && m.doc !== "Saldo inicial"; }).length;
-    var sal = mios.filter(function (m) { return m.cant < 0; }).length;
-    var ult = mios[0];
-    var pds = PEDIDOS.filter(function (p) { return p.bod === b && p.estado !== "Anulado"; }).length;
-    var tono = bajos ? "crit" : "ok";
-    return '<button type="button" class="bg-card bg-card--' + tono + (b === BG_SEL ? " is-on" : "") + '" data-bg-ver="' + b + '">' +
-      '<span class="bg-card__img">' + dibujoBodega(b) +
-      '<span class="pill pill--' + tono + '">' + (bajos ? bajos + " bajo el mínimo" : "Al día") + "</span></span>" +
-      '<span class="bg-card__cuerpo">' +
-      '<span class="bg-card__cod">' + b + "</span><span class=\"bg-card__n\">" + NOMBRE_BOD[b] + "</span>" +
-      '<span class="bg-card__num"><span><b>' + cods.length + "</b> material" + (cods.length === 1 ? "" : "es") + "</span><span class=\"bg-card__e\"><b>" + ent +
-      "</b> entrada" + (ent === 1 ? "" : "s") + "</span><span class=\"bg-card__s\"><b>" + sal + "</b> salida" + (sal === 1 ? "" : "s") + "</span><span class=\"bg-card__p\"><b>" + pds + "</b> pedido" + (pds === 1 ? "" : "s") + "</span></span>" +
-      '<span class="tiny">Último: ' + (ult ? ult.tipo.toLowerCase() + " de " + ult.cod + " · " + ult.fecha : "sin movimientos") + "</span></span></button>";
-  }
 
   /* Dibujo de cada bodega (mismo estilo que los de las máquinas) */
   var DIBUJO_BOD = {
@@ -2939,44 +2814,501 @@
       '<path class="a" d="M98 62h12v18H98z"/><rect class="d" x="101" y="57" width="6" height="5" rx="1"/>' +
       '<circle class="c" cx="104" cy="70" r="3"/>'
   };
+
+  /* ---- La pantalla de Bodegas (11)
+
+     La lista de bodegas con sus datos (FICHA_BOD). Al pulsar una se abre su
+     ficha; «Nueva bodega» abre el mismo formulario vacío. «Registrar
+     movimiento de inventario» abre un documento con varias líneas: cada una
+     es una entrada, salida o traslado de un material. */
+
+  var DOCS = {
+    Entrada: ["Orden de compra (OC)", "Devolución de producción", "Lote de Calidad", "Devolución del cliente", "Ajuste por conteo"],
+    Salida: ["Orden de producción (OP)", "Pedido de cliente", "Devolución al proveedor", "Baja por daño"],
+    Traslado: ["Remisión interna"]
+  };
+  var PERSONAS = ["Andrés Suárez · Jefe de bodega", "Diana Pérez · Auxiliar de bodega", "Erick Cuevas · Logística",
+                  "Luisa Mendoza · Corte", "Édgar Pabón · Guarnición", "Marcela Ortiz · Montaje", "Transportador del proveedor"];
+  var ORIGEN_EXT = ["Proveedor", "Producción", "Control de Calidad", "Cliente (devolución)", "Ajuste por conteo"];
+  var DESTINO_EXT = ["Producción", "Cliente", "Proveedor (devolución)", "Baja por daño"];
+  var TIPOS_BOD = ["Materia prima", "Producto terminado", "Merma y reproceso", "Insumos y químicos", "Producto en proceso", "Otro"];
+  var DIBUJO_DE_TIPO = { "Materia prima": "BOD-01", "Producto terminado": "BOD-02", "Merma y reproceso": "BOD-03",
+                         "Insumos y químicos": "BOD-04", "Producto en proceso": "BOD-01", "Otro": "BOD-01" };
+  var CONDICIONES = ["Ambiente seco", "Ventilada", "Temperatura controlada", "Refrigerada"];
+
+  var FICHA_BOD = {
+    "BOD-01": { nombre: "Principal", tipo: "Materia prima", sede: "Planta principal", zona: "Bloque A · primer piso",
+      resp: "Andrés Suárez · Jefe de bodega", tel: "Ext. 104", area: 180, estantes: 24, cond: "Ambiente seco",
+      inflamable: false, llave: false, horario: "Lun a sáb · 6:00 a 16:00", estado: "Activa", creada: "2025-02-10",
+      obs: "Cuero, suelas, forros y plantillas para corte y montaje." },
+    "BOD-02": { nombre: "Producto terminado", tipo: "Producto terminado", sede: "Planta principal", zona: "Bloque B · zona de despachos",
+      resp: "Erick Cuevas · Logística", tel: "Ext. 118", area: 120, estantes: 16, cond: "Ambiente seco",
+      inflamable: false, llave: true, horario: "Lun a sáb · 7:00 a 17:00", estado: "Activa", creada: "2025-02-10",
+      obs: "Pares aprobados por Calidad, listos para despachar." },
+    "BOD-03": { nombre: "Merma y reproceso", tipo: "Merma y reproceso", sede: "Planta principal", zona: "Patio de reproceso",
+      resp: "Andrés Suárez · Jefe de bodega", tel: "Ext. 104", area: 40, estantes: 6, cond: "Ventilada",
+      inflamable: false, llave: false, horario: "Lun a vie · 7:00 a 15:00", estado: "Activa", creada: "2025-06-02",
+      obs: "Retazos, pares para reproceso y suelas defectuosas." },
+    "BOD-04": { nombre: "Insumos y químicos", tipo: "Insumos y químicos", sede: "Planta principal", zona: "Bloque C · cuarto ventilado",
+      resp: "Diana Pérez · Auxiliar de bodega", tel: "Ext. 121", area: 35, estantes: 8, cond: "Ventilada",
+      inflamable: true, llave: true, horario: "Lun a sáb · 6:00 a 16:00", estado: "Activa", creada: "2025-02-10",
+      obs: "Pegantes, hilos, ojaletes y químicos. Lejos del calor." }
+  };
+  var BGV = { k: "", f: {} }, BGV_ABRIR_MOV = false;
+
+  function fichaDe(b) {
+    return FICHA_BOD[b] || { nombre: NOMBRE_BOD[b] || b, tipo: "Otro", sede: "", zona: "", resp: PERSONAS[0], tel: "", area: 0, estantes: 0,
+      cond: CONDICIONES[0], inflamable: false, llave: false, horario: "", estado: "Activa", creada: HOY, obs: "" };
+  }
+  function bodegasActivas() { return Object.keys(NOMBRE_BOD).filter(function (b) { return fichaDe(b).estado !== "Inactiva"; }); }
   function dibujoBodega(b) {
-    return '<svg class="eq" viewBox="0 0 120 88" aria-hidden="true">' + (DIBUJO_BOD[b] || DIBUJO_BOD["BOD-01"]) + "</svg>";
+    return '<svg class="eq" viewBox="0 0 120 88" aria-hidden="true">' + DIBUJO_BOD[DIBUJO_DE_TIPO[fichaDe(b).tipo] || "BOD-01"] + "</svg>";
+  }
+  function datosBodega(b) {
+    asegurarMovs();
+    var cods = Object.keys(STOCK[b] || {});
+    var bajos = cods.filter(function (c) { return minDe(b, c) && STOCK[b][c] < minDe(b, c); }).length;
+    var o = ocupacionBodega(b);
+    var mios = MOVS.filter(function (m) { return m.bod === b; });
+    return { cods: cods, bajos: bajos, ocu: Math.round(o.hay), ult: mios[0] };
   }
 
-  function pintarBodegas() {
-    var tarjetas = uno("#bg-tarjetas");
-    if (!tarjetas) return;
-    asegurarMovs();
-    tarjetas.innerHTML = Object.keys(NOMBRE_BOD).map(tarjetaBodega).join("");
+  /* ---- La tabla de bodegas */
 
-    /* lo que hay en la bodega elegida */
-    uno("#bg-hay-t").textContent = "Lo que hay en " + BG_SEL + " · " + NOMBRE_BOD[BG_SEL];
-    uno("#bg-hay").innerHTML = Object.keys(STOCK[BG_SEL] || {}).map(function (c) {
-      var i = infoMat(c), hay = STOCK[BG_SEL][c], mn = minDe(BG_SEL, c);
-      var est = mn ? estadoDe(hay, mn) : { tono: "off", texto: "Sin mínimo" };
-      var ent = 0, sal = 0;
-      MOVS.forEach(function (m) { if (m.bod === BG_SEL && m.cod === c && m.doc !== "Saldo inicial") { if (m.cant > 0) ent += m.cant; else sal -= m.cant; } });
-      return '<tr><td data-l="Material"><b>' + c + '</b><div class="tiny">' + i.nombre + "</div></td>" +
-        '<td class="num" data-l="Hay"><b>' + miles(hay) + '</b> <span class="tiny">' + i.unidad + "</span></td>" +
-        '<td class="num muted" data-l="Mínimo">' + (mn ? miles(mn) : "—") + "</td>" +
-        '<td data-l="Estado"><span class="pill pill--' + est.tono + '">' + est.texto + "</span></td>" +
-        '<td class="num" data-l="Entró"><span class="mov mov--mas">' + (ent ? "+" + miles(ent) : "—") + "</span></td>" +
-        '<td class="num" data-l="Salió"><span class="mov mov--menos">' + (sal ? "−" + miles(sal) : "—") + "</span></td></tr>";
+  function pintarTablaBodegas() {
+    var cuerpo = uno("#bgv-filas");
+    if (!cuerpo) return;
+    asegurarMovs();
+    var todas = Object.keys(NOMBRE_BOD);
+    cuerpo.innerHTML = todas.map(function (b) {
+      var f = fichaDe(b), d = datosBodega(b), act = f.estado !== "Inactiva";
+      var tono = d.ocu >= 90 ? "crit" : d.ocu >= 70 ? "warn" : "ok";
+      return '<tr class="bgv-fila' + (act ? "" : " bgv-fila--off") + '" data-bod="' + b + '" data-tipo="' + esc(f.tipo) + '" data-estado="' + f.estado +
+        '" data-resp="' + esc(f.resp) + '" data-alerta="' + (d.bajos ? "si" : "no") + '" data-ocu="' + d.ocu + '" tabindex="0" title="Ver los datos de ' + b + '">' +
+        '<td data-l="Bodega"><span class="bgv-b"><span class="bgv-ic">' + dibujoBodega(b) + '</span><span><b>' + b + '</b><span class="tiny">' + esc(f.nombre) + "</span></span></span></td>" +
+        '<td data-l="Tipo">' + esc(f.tipo) + "</td>" +
+        '<td data-l="Ubicación"><span class="bgv-ub" title="' + esc(f.sede + (f.zona ? " · " + f.zona : "")) + '">' + esc(f.zona || f.sede || "—") + '</span><span class="tiny">' + esc(f.zona ? f.sede : "") + "</span></td>" +
+        '<td data-l="Responsable">' + esc(f.resp.split(" · ")[0]) + '<span class="tiny">' + esc(f.resp.split(" · ")[1] || "") + "</span></td>" +
+        '<td class="num" data-l="Materiales"><b>' + d.cods.length + "</b></td>" +
+        '<td data-l="Ocupación"><span class="bgv-ocu bgv-ocu--' + tono + '"><i style="width:' + Math.min(100, d.ocu) + '%"></i></span><span class="tiny">' + d.ocu + " %</span></td>" +
+        '<td data-l="Alertas">' + (d.bajos ? '<span class="pill pill--crit">' + d.bajos + " bajo el mínimo</span>" : '<span class="pill pill--ok">Al día</span>') + "</td>" +
+        '<td data-l="Último movimiento">' + (d.ult ? d.ult.tipo + " · " + d.ult.cod + '<span class="tiny">' + d.ult.fecha + "</span>" : '<span class="dt__sinf">Sin movimientos</span>') + "</td>" +
+        '<td data-l="Estado"><span class="pill pill--' + (act ? "ok" : "off") + '">' + f.estado + "</span></td></tr>";
     }).join("");
 
-    /* el registro */
+    /* tarjetas de arriba */
+    var act = bodegasActivas(), mats = 0, bajos = 0, conBajos = 0, suma = 0, llena = null;
+    act.forEach(function (b) {
+      var d = datosBodega(b);
+      mats += d.cods.length; bajos += d.bajos; if (d.bajos) conBajos++; suma += d.ocu;
+      if (!llena || d.ocu > llena[1]) llena = [b, d.ocu];
+    });
+    uno("#kb-n").textContent = todas.length;
+    uno("#kb-ns").textContent = act.length + " activa" + (act.length === 1 ? "" : "s") + (todas.length > act.length ? " · " + (todas.length - act.length) + " inactiva(s)" : "");
+    uno("#kb-b").textContent = bajos;
+    uno("#kb-bs").textContent = conBajos ? "en " + conBajos + " bodega" + (conBajos === 1 ? "" : "s") : "todo al día";
+    uno("#kb-m").textContent = mats;
+    uno("#kb-o").textContent = (act.length ? Math.round(suma / act.length) : 0) + " %";
+    uno("#kb-os").textContent = llena ? "la más llena: " + llena[0] + " · " + llena[1] + " %" : "—";
+    todos("[data-bk]").forEach(function (x) {
+      var on = !!BGV.k && x.getAttribute("data-bk") === BGV.k;
+      x.classList.toggle("is-on", on); x.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+
+    /* listas de los filtros */
+    var tipos = TIPOS_BOD.filter(function (t) { return todas.some(function (b) { return fichaDe(b).tipo === t; }); });
+    llenarFiltro("#bgv-f-tipo", tipos);
+    llenarFiltro("#bgv-f-resp", todas.map(function (b) { return fichaDe(b).resp; }).filter(function (x, i, a) { return a.indexOf(x) === i; }));
+    uno("#bgv-res").innerHTML = '<span class="dt__res-t">Totales<em>de las ' + todas.length + " bodega(s)</em></span>" +
+      '<span class="dt__res-i dt__res-i--ok"><b>Activas</b><span>' + act.length + "</span></span>" +
+      '<span class="dt__res-i dt__res-i--crit"><b>Con alertas</b><span>' + conBajos + "</span></span>" +
+      '<span class="dt__res-i dt__res-i--off"><b>Inactivas</b><span>' + (todas.length - act.length) + "</span></span>";
+    filtrarBodegas();
+  }
+  function llenarFiltro(sel, lista) {
+    var s = uno(sel); if (!s) return;
+    var v = s.value;
+    s.innerHTML = '<option value="">Todos</option>' + lista.map(function (x) { return "<option>" + esc(x) + "</option>"; }).join("");
+    if (lista.indexOf(v) >= 0) s.value = v;
+  }
+  var NOMBRE_FIL = { tipo: "Tipo", estado: "Estado", resp: "Responsable", alerta: "Alertas" };
+  function filtrarBodegas() {
+    var dt = uno("#dt-bodegas"); if (!dt) return;
+    var q = (uno("#bgv-q").value || "").trim().toLowerCase();
+    var f = {};
+    todos("[data-bf]", dt).forEach(function (s) { if (s.value) f[s.getAttribute("data-bf")] = s.value; });
+    todos("#bgv-filas tr").forEach(function (tr) {
+      var ok = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+      for (var k in f) if (tr.getAttribute("data-" + k) !== f[k]) ok = false;
+      if (BGV.k === "alerta" && tr.getAttribute("data-alerta") !== "si") ok = false;
+      if (BGV.k === "activa" && tr.getAttribute("data-estado") !== "Activa") ok = false;
+      if (BGV.k === "llena" && numero(tr.getAttribute("data-ocu")) < 70) ok = false;
+      tr.dataset.pasa = ok ? "si" : "no";
+    });
+    var n = Object.keys(f).length;
+    uno("#bgv-nfil").hidden = !n; uno("#bgv-nfil").textContent = n;
+    uno("#bgv-fil-t").textContent = n ? n + " filtro(s) puesto(s)" : "Sin filtros puestos";
+    uno("#bgv-fichas").innerHTML = Object.keys(f).map(function (k) {
+      var s = uno('[data-bf="' + k + '"]', dt), txt = s.options[s.selectedIndex].text;
+      return '<span class="fil__chip">' + NOMBRE_FIL[k] + ": <b>" + esc(txt) + '</b><button type="button" data-bgv-quitar="' + k + '" aria-label="Quitar el filtro">×</button></span>';
+    }).join("");
+    var vacio = uno(".sin-filas", dt);
+    if (!vacio) { vacio = document.createElement("p"); vacio.className = "empty sin-filas"; vacio.textContent = "Ninguna bodega coincide con lo que buscó."; uno(".dt__scroll", dt).appendChild(vacio); }
+    dt.dataset.pag = dt.dataset.pag || 1;
+    dtPintar(dt);
+  }
+
+  /* ---- La ficha de una bodega (todos sus datos) */
+
+  function cerrarCapa(cl) { todos("." + cl).forEach(function (x) { x.remove(); }); }
+  function datoFicha(t, v) { return '<div class="bgv-dato"><span>' + t + "</span><b>" + (v === "" || v === undefined || v === null ? "—" : v) + "</b></div>"; }
+
+  function abrirFichaBodega(b) {
+    cerrarCapa("bgv-over");
+    var f = fichaDe(b), d = datosBodega(b), act = f.estado !== "Inactiva";
+    var hay = d.cods.map(function (c) {
+      var i = infoMat(c), q = STOCK[b][c], mn = minDe(b, c), cap = capDe(b, c);
+      var est = mn ? estadoDe(q, mn) : { tono: "off", texto: "Sin mínimo" };
+      return '<tr><td data-l="Material"><b>' + c + '</b><div class="tiny">' + esc(i.nombre) + "</div></td>" +
+        '<td class="num" data-l="Hay"><b>' + miles(q) + '</b> <span class="tiny">' + i.unidad + "</span></td>" +
+        '<td class="num muted" data-l="Mínimo">' + (mn ? miles(mn) : "—") + "</td>" +
+        '<td class="num muted" data-l="Cabe">' + (cap ? miles(cap) : "—") + "</td>" +
+        '<td data-l="Estado"><span class="pill pill--' + est.tono + '">' + est.texto + "</span></td></tr>";
+    }).join("");
+    var movs = MOVS.filter(function (m) { return m.bod === b; }).slice(0, 5).map(function (m) {
+      var i = infoMat(m.cod);
+      return '<li><span class="mov mov--' + (m.cant < 0 ? "menos" : "mas") + '">' + (m.cant < 0 ? "−" : "+") + miles(Math.abs(m.cant)) + "</span>" +
+        "<span><b>" + m.tipo + " · " + m.cod + '</b><span class="tiny">' + esc(i.nombre) + " · " + esc(m.doc) + "</span></span>" +
+        '<span class="tiny">' + m.fecha + (m.mv ? "<br>" + m.mv : "") + "</span></li>";
+    }).join("");
+    var capa = document.createElement("div");
+    capa.className = "overlay bgv-over";
+    capa.innerHTML = '<div class="modal bgv-modal" role="dialog" aria-modal="true" aria-labelledby="bgv-t">' +
+      '<div class="modal__head bgv-cab"><span class="bgv-cab__img">' + dibujoBodega(b) + "</span>" +
+      '<div><h3 id="bgv-t">' + b + " · " + esc(f.nombre) + '</h3><span class="bgv-cab__s"><span class="pill pill--' + (act ? "ok" : "off") + '">' + f.estado + "</span> " +
+      esc(f.tipo) + " · creada el " + f.creada + "</span></div>" +
+      '<button type="button" data-bgv-cerrar aria-label="Cerrar">✕</button></div>' +
+      '<div class="modal__body bgv-cuerpo">' +
+      '<h4 class="sol-h">Datos de la bodega</h4>' +
+      '<div class="bgv-datos">' +
+        datoFicha("Código", b) + datoFicha("Nombre", esc(f.nombre)) + datoFicha("Tipo", esc(f.tipo)) + datoFicha("Estado", f.estado) +
+        datoFicha("Sede", esc(f.sede)) + datoFicha("Zona / ubicación", esc(f.zona)) + datoFicha("Responsable", esc(f.resp)) + datoFicha("Teléfono / extensión", esc(f.tel)) +
+        datoFicha("Área", f.area ? miles(f.area) + " m²" : "") + datoFicha("Estantes o posiciones", f.estantes ? miles(f.estantes) : "") +
+        datoFicha("Condiciones", esc(f.cond)) + datoFicha("Horario", esc(f.horario)) +
+        datoFicha("Material inflamable", f.inflamable ? "Sí, con extintor cerca" : "No") + datoFicha("Bajo llave", f.llave ? "Sí" : "No") +
+        '<div class="bgv-dato bgv-dato--full"><span>Qué guarda / observaciones</span><b>' + (esc(f.obs) || "—") + "</b></div>" +
+      "</div>" +
+      '<div class="bgv-ocu-g"><span>Ocupación</span><span class="bgv-ocu bgv-ocu--' + (d.ocu >= 90 ? "crit" : d.ocu >= 70 ? "warn" : "ok") + '"><i style="width:' + Math.min(100, d.ocu) + '%"></i></span><b>' + d.ocu + " %</b>" +
+        (d.bajos ? '<span class="pill pill--crit">' + d.bajos + " bajo el mínimo</span>" : '<span class="pill pill--ok">Al día</span>') + "</div>" +
+      '<h4 class="sol-h">Lo que hay (' + d.cods.length + ")</h4>" +
+      (hay ? '<div class="scroll-x"><table class="tabla-simple"><thead><tr><th>Material</th><th class="num">Hay</th><th class="num">Mínimo</th><th class="num">Cabe</th><th>Estado</th></tr></thead><tbody>' + hay + "</tbody></table></div>"
+           : '<p class="empty">Todavía no guarda ningún material. Registre una entrada para empezar.</p>') +
+      '<h4 class="sol-h">Últimos movimientos</h4>' +
+      (movs ? '<ul class="bgv-movs">' + movs + "</ul>" : '<p class="empty">Sin movimientos.</p>') +
+      "</div>" +
+      '<div class="modal__foot bgv-pie">' +
+      '<button type="button" class="btn btn--ghost" data-bgv-estado="' + b + '">' + (act ? "Desactivar" : "Activar") + "</button>" +
+      '<span class="bgv-pie__sep"></span>' +
+      '<button type="button" class="btn btn--ghost" data-bgv-pedir="' + b + '"' + (act ? "" : " disabled") + ">Pedir a Compras</button>" +
+      '<button type="button" class="btn btn--oliva" data-bgv-mover="' + b + '"' + (act ? "" : " disabled") + ">Registrar movimiento aquí</button>" +
+      '<button type="button" class="btn" data-bgv-editar="' + b + '">Editar datos</button></div></div>';
+    document.body.appendChild(capa);
+  }
+
+  /* ---- Crear o editar una bodega */
+
+  function siguienteBodega() {
+    var n = 0;
+    Object.keys(NOMBRE_BOD).forEach(function (b) { n = Math.max(n, numero(b.replace("BOD-", ""))); });
+    return "BOD-" + String(n + 1).padStart(2, "0");
+  }
+  function opts(lista, v) { return lista.map(function (x) { return "<option" + (x === v ? " selected" : "") + ">" + esc(x) + "</option>"; }).join(""); }
+
+  function abrirFormBodega(b) {
+    cerrarCapa("bgv-over");
+    var nueva = !b, cod = b || siguienteBodega();
+    var f = b ? fichaDe(b) : { nombre: "", tipo: "Materia prima", sede: "Planta principal", zona: "", resp: PERSONAS[0], tel: "", area: "", estantes: "",
+      cond: CONDICIONES[0], inflamable: false, llave: false, horario: "Lun a sáb · 6:00 a 16:00", estado: "Activa", obs: "" };
+    var capa = document.createElement("div");
+    capa.className = "overlay bgv-over";
+    capa.innerHTML = '<div class="modal bgv-modal" role="dialog" aria-modal="true" aria-labelledby="bgf-t">' +
+      '<div class="modal__head"><div><h3 id="bgf-t">' + (nueva ? "Nueva bodega" : "Editar " + cod) + '</h3><span class="sol-sub">' + cod +
+      (nueva ? " · el código lo pone el sistema" : " · creada el " + f.creada) + "</span></div>" +
+      '<button type="button" data-bgv-cerrar aria-label="Cerrar">✕</button></div>' +
+      '<div class="modal__body bgf" data-cod="' + cod + '" data-nueva="' + nueva + '">' +
+      '<div class="bgf-top"><span class="bgf-img" id="bgf-img">' + '<svg class="eq" viewBox="0 0 120 88" aria-hidden="true">' + DIBUJO_BOD[DIBUJO_DE_TIPO[f.tipo]] + "</svg></span>" +
+      '<div class="bgf-grid">' +
+      '<label class="sol-f"><span>Nombre de la bodega *</span><input id="bgf-nombre" maxlength="40" value="' + esc(f.nombre) + '" placeholder="Ej. Bodega de suelas"></label>' +
+      '<label class="sol-f"><span>Tipo *</span><select id="bgf-tipo">' + opts(TIPOS_BOD, f.tipo) + "</select></label>" +
+      '<label class="sol-f"><span>Estado</span><select id="bgf-estado">' + opts(["Activa", "Inactiva"], f.estado) + "</select></label>" +
+      "</div></div>" +
+      '<h4 class="sol-h">Ubicación y responsable</h4><div class="bgf-grid">' +
+      '<label class="sol-f"><span>Sede *</span><input id="bgf-sede" maxlength="40" value="' + esc(f.sede) + '" placeholder="Ej. Planta principal"></label>' +
+      '<label class="sol-f"><span>Zona / ubicación</span><input id="bgf-zona" maxlength="50" value="' + esc(f.zona) + '" placeholder="Ej. Bloque A · segundo piso"></label>' +
+      '<label class="sol-f"><span>Responsable *</span><select id="bgf-resp">' + opts(PERSONAS.slice(0, 6), f.resp) + "</select></label>" +
+      '<label class="sol-f"><span>Teléfono / extensión</span><input id="bgf-tel" maxlength="20" value="' + esc(f.tel) + '" placeholder="Ej. Ext. 130"></label>' +
+      '<label class="sol-f"><span>Horario de atención</span><input id="bgf-horario" maxlength="40" value="' + esc(f.horario) + '"></label>' +
+      "</div>" +
+      '<h4 class="sol-h">Capacidad y condiciones</h4><div class="bgf-grid">' +
+      '<label class="sol-f"><span>Área (m²) *</span><input id="bgf-area" type="number" min="1" value="' + (f.area || "") + '" placeholder="Ej. 60"></label>' +
+      '<label class="sol-f"><span>Estantes o posiciones *</span><input id="bgf-estantes" type="number" min="1" value="' + (f.estantes || "") + '" placeholder="Ej. 10"></label>' +
+      '<label class="sol-f"><span>Condiciones de almacenamiento</span><select id="bgf-cond">' + opts(CONDICIONES, f.cond) + "</select></label>" +
+      '<label class="bgf-ck"><input type="checkbox" id="bgf-infl"' + (f.inflamable ? " checked" : "") + "><span>Guarda material inflamable</span></label>" +
+      '<label class="bgf-ck"><input type="checkbox" id="bgf-llave"' + (f.llave ? " checked" : "") + "><span>Queda bajo llave</span></label>" +
+      "</div>" +
+      '<label class="sol-f sol-f--full"><span>Qué guarda / observaciones</span><textarea id="bgf-obs" rows="2" maxlength="200" placeholder="Ej. Suelas de caucho y TR para montaje">' + esc(f.obs) + "</textarea></label>" +
+      '<p class="bgf-err" id="bgf-err" hidden></p>' +
+      "</div>" +
+      '<div class="modal__foot"><span class="tiny">Los campos con * son obligatorios.</span>' +
+      '<button type="button" class="btn btn--ghost" data-bgv-cerrar>Cancelar</button>' +
+      '<button type="button" class="btn" id="bgf-guardar">' + (nueva ? "Crear bodega" : "Guardar cambios") + "</button></div></div>";
+    document.body.appendChild(capa);
+    setTimeout(function () { uno("#bgf-nombre").focus(); }, 40);
+  }
+
+  function guardarBodega() {
+    var caja = uno(".bgf"), cod = caja.getAttribute("data-cod"), nueva = caja.getAttribute("data-nueva") === "true";
+    var v = function (id) { return uno("#" + id).value.trim(); };
+    var err = [];
+    if (!v("bgf-nombre")) err.push("el nombre");
+    if (!v("bgf-sede")) err.push("la sede");
+    if (!(numero(v("bgf-area")) > 0)) err.push("el área");
+    if (!(numero(v("bgf-estantes")) > 0)) err.push("los estantes");
+    var repetido = Object.keys(NOMBRE_BOD).filter(function (b) { return b !== cod && NOMBRE_BOD[b].toLowerCase() === v("bgf-nombre").toLowerCase(); })[0];
+    var e = uno("#bgf-err");
+    if (err.length || repetido) {
+      e.hidden = false;
+      e.textContent = repetido ? "Ya existe una bodega con ese nombre (" + repetido + ")." : "Falta " + err.join(", ") + ".";
+      return;
+    }
+    var antes = fichaDe(cod);
+    if (!nueva && v("bgf-estado") === "Inactiva" && antes.estado !== "Inactiva" && Object.keys(STOCK[cod] || {}).some(function (c) { return STOCK[cod][c] > 0; })) {
+      e.hidden = false; e.textContent = "No se puede desactivar: la bodega todavía guarda material. Trasládelo primero."; return;
+    }
+    FICHA_BOD[cod] = { nombre: v("bgf-nombre"), tipo: v("bgf-tipo"), sede: v("bgf-sede"), zona: v("bgf-zona"), resp: v("bgf-resp"), tel: v("bgf-tel"),
+      area: numero(v("bgf-area")), estantes: numero(v("bgf-estantes")), cond: v("bgf-cond"), inflamable: uno("#bgf-infl").checked,
+      llave: uno("#bgf-llave").checked, horario: v("bgf-horario"), estado: v("bgf-estado"), creada: nueva ? HOY : antes.creada, obs: v("bgf-obs") };
+    NOMBRE_BOD[cod] = FICHA_BOD[cod].nombre;
+    if (nueva) { STOCK[cod] = {}; MINIMOS[cod] = {}; CAPACIDAD[cod] = {}; }
+    sincronizarListaBodegas();
+    cerrarCapa("bgv-over");
+    pintarTablaBodegas(); pintarRegistro(); pintarPedidos();
+    guardarPronto();
+    aviso(nueva ? "Se creó " + cod + " · " + NOMBRE_BOD[cod] + ". Ya puede recibir material." : "Se guardaron los datos de " + cod + ".", "ok");
+  }
+  function sincronizarListaBodegas() {
+    BODEGAS = Object.keys(NOMBRE_BOD).filter(function (b) { return fichaDe(b).estado !== "Inactiva"; }).map(function (b) { return [b, b + " · " + NOMBRE_BOD[b]]; });
+    ["#bg-f-bod", "#pd-f-bod"].forEach(function (id) {
+      var s = uno(id); if (!s) return;
+      var v = s.value;
+      s.innerHTML = '<option value="">Todas las bodegas</option>' + Object.keys(NOMBRE_BOD).map(function (b) { return "<option>" + b + "</option>"; }).join("");
+      s.value = v;
+    });
+  }
+  function cambiarEstadoBodega(b) {
+    var f = fichaDe(b);
+    if (f.estado !== "Inactiva" && Object.keys(STOCK[b] || {}).some(function (c) { return STOCK[b][c] > 0; }))
+      return aviso(b + " todavía guarda material. Trasládelo a otra bodega antes de desactivarla.", "crit");
+    FICHA_BOD[b] = f; f.estado = f.estado === "Inactiva" ? "Activa" : "Inactiva";
+    sincronizarListaBodegas();
+    pintarTablaBodegas();
+    abrirFichaBodega(b);
+    guardarPronto();
+    aviso(b + (f.estado === "Activa" ? " quedó activa." : " quedó inactiva: ya no aparece para registrar movimientos."), f.estado === "Activa" ? "ok" : "warn");
+  }
+
+  /* ---- Registrar movimiento de inventario (varias líneas) */
+
+  var MVI = { tipo: "Entrada", lineas: [] };
+  function lineaNueva(bod) {
+    var t = MVI.tipo, act = bodegasActivas(), b = bod && act.indexOf(bod) >= 0 ? bod : act[0];
+    var l = { ori: t === "Entrada" ? ORIGEN_EXT[0] : b, des: t === "Salida" ? DESTINO_EXT[0] : (t === "Traslado" ? act.filter(function (x) { return x !== b; })[0] || b : b),
+              cod: "", cant: "", ent: PERSONAS[t === "Entrada" ? 6 : 0], rec: PERSONAS[t === "Entrada" ? 0 : 1], obs: "" };
+    var mats = materialesPara(l);
+    l.cod = mats.length ? mats[0][0] : "";
+    return l;
+  }
+  function bodOrigen(l) { return MVI.tipo === "Entrada" ? null : l.ori; }
+  function bodDestino(l) { return MVI.tipo === "Salida" ? null : l.des; }
+  function materialesPara(l) {
+    var bo = bodOrigen(l);
+    if (bo) return Object.keys(STOCK[bo] || {}).map(function (c) { var i = infoMat(c); return [c, c + " · " + i.nombre + " · hay " + miles(STOCK[bo][c]) + " " + i.unidad]; });
+    var aqui = Object.keys(STOCK[l.des] || {});
+    var lista = aqui.map(function (c) { var i = infoMat(c); return [c, c + " · " + i.nombre + " · hay " + miles(STOCK[l.des][c]) + " " + i.unidad]; });
+    CATALOGO.forEach(function (m) { if (aqui.indexOf(m[0]) < 0) lista.push([m[0], m[0] + " · " + m[1] + " · " + m[3]]); });
+    return lista;
+  }
+  /* Lo que queda en cada bodega después de cada línea, en orden (varias líneas pueden tocar el mismo material) */
+  function calcularLineas() {
+    var sim = {}, res = [];
+    function hay(b, c) { var k = b + "|" + c; if (sim[k] === undefined) sim[k] = (STOCK[b] || {})[c] || 0; return sim[k]; }
+    MVI.lineas.forEach(function (l) {
+      var q = numero(l.cant), bo = bodOrigen(l), bd = bodDestino(l), r = { ok: true, msg: "" };
+      var base = bo ? hay(bo, l.cod) : hay(bd, l.cod);
+      r.hay = base;
+      if (!l.cod) { r.ok = false; r.msg = "Elija el material"; }
+      else if (!(q > 0)) { r.ok = false; r.msg = "Escriba la cantidad"; }
+      else if (bo && q > base) { r.ok = false; r.msg = "Solo hay " + miles(base) + " (RN-INV-01)"; }
+      else if (MVI.tipo === "Traslado" && bo === bd) { r.ok = false; r.msg = "Origen y destino iguales"; }
+      else if (l.ent === l.rec) { r.ok = false; r.msg = "Entrega y recibe la misma persona"; }
+      if (r.ok) {
+        if (bo) sim[bo + "|" + l.cod] = base - q;
+        if (bd) { var hd = hay(bd, l.cod); sim[bd + "|" + l.cod] = hd + q; }
+        r.queda = bo ? base - q : base + q;
+        if (bd && MVI.tipo === "Traslado") r.quedaDes = sim[bd + "|" + l.cod];
+        if (bd) { var cap = capDe(bd, l.cod); if (cap && sim[bd + "|" + l.cod] > cap) r.aviso = "Pasa de lo que cabe (" + miles(cap) + ")"; }
+      }
+      res.push(r);
+    });
+    return res;
+  }
+  function selBod(dc, v, excepto) {
+    return '<select data-mc="' + dc + '">' + bodegasActivas().filter(function (b) { return b !== excepto; }).map(function (b) {
+      return '<option value="' + b + '"' + (b === v ? " selected" : "") + ">" + b + " · " + esc(NOMBRE_BOD[b]) + "</option>"; }).join("") + "</select>";
+  }
+  function selLista(dc, lista, v) { return '<select data-mc="' + dc + '">' + opts(lista, v) + "</select>"; }
+
+  function pintarLineas() {
+    var cuerpo = uno("#mvi-filas"); if (!cuerpo) return;
+    var t = MVI.tipo, calc = calcularLineas();
+    uno("#mvi-h-ori").textContent = t === "Entrada" ? "Viene de" : "Bodega origen";
+    uno("#mvi-h-des").textContent = t === "Salida" ? "Va para" : "Bodega destino";
+    uno("#mvi-h-hay").textContent = t === "Entrada" ? "Hay en destino" : "Hay en origen";
+    cuerpo.innerHTML = MVI.lineas.map(function (l, i) {
+      var r = calc[i], u = l.cod ? infoMat(l.cod).unidad : "";
+      var mats = materialesPara(l);
+      if (l.cod && !mats.some(function (m) { return m[0] === l.cod; })) mats.unshift([l.cod, l.cod + " · " + infoMat(l.cod).nombre + " · no hay aquí"]);
+      return '<tr data-i="' + i + '" class="' + (r.ok ? "" : "mvi-mal") + '">' +
+        '<td class="mvi-n" data-l="#">' + (i + 1) + "</td>" +
+        '<td data-l="Origen">' + (t === "Entrada" ? selLista("ori", ORIGEN_EXT, l.ori) : selBod("ori", l.ori)) + "</td>" +
+        '<td data-l="Destino">' + (t === "Salida" ? selLista("des", DESTINO_EXT, l.des) : selBod("des", l.des, t === "Traslado" ? l.ori : null)) + "</td>" +
+        '<td data-l="Material" class="mvi-mat"><select data-mc="cod">' + (mats.length ? mats.map(function (m) {
+          return '<option value="' + m[0] + '"' + (m[0] === l.cod ? " selected" : "") + ">" + esc(m[1]) + "</option>"; }).join("") : '<option value="">Esta bodega está vacía</option>') + "</select></td>" +
+        '<td class="num" data-l="Hay">' + (l.cod ? miles(r.hay) : "—") + "</td>" +
+        '<td data-l="Cantidad"><span class="mvi-cant"><input type="number" min="1" data-mc="cant" value="' + esc(l.cant) + '" placeholder="0"><b>' + u + "</b></span></td>" +
+        '<td class="num" data-l="Queda">' + (r.ok ? "<b>" + miles(r.queda) + "</b>" + (r.quedaDes !== undefined ? '<span class="tiny">destino: ' + miles(r.quedaDes) + "</span>" : "") +
+          (r.aviso ? '<span class="tiny mvi-av">' + r.aviso + "</span>" : "") : '<span class="mvi-err">' + r.msg + "</span>") + "</td>" +
+        '<td data-l="Entrega">' + selLista("ent", PERSONAS, l.ent) + "</td>" +
+        '<td data-l="Recibe">' + selLista("rec", PERSONAS, l.rec) + "</td>" +
+        '<td data-l="Observación"><input data-mc="obs" maxlength="80" value="' + esc(l.obs) + '" placeholder="Opcional"></td>' +
+        '<td data-l=""><button type="button" class="mvi-x" data-mvi-quitar="' + i + '" title="Quitar la línea"' + (MVI.lineas.length < 2 ? " disabled" : "") + ">✕</button></td></tr>";
+    }).join("");
+    resumenMovimiento(calc);
+  }
+
+  /* Solo las cuentas (sin rehacer la tabla, para no perder lo que se está escribiendo) */
+  function actualizarCalculos() {
+    var calc = calcularLineas();
+    todos("#mvi-filas tr").forEach(function (tr, i) {
+      var r = calc[i], l = MVI.lineas[i]; if (!r) return;
+      tr.classList.toggle("mvi-mal", !r.ok);
+      uno('[data-l="Hay"]', tr).textContent = l.cod ? miles(r.hay) : "—";
+      uno('[data-l="Queda"]', tr).innerHTML = r.ok ? "<b>" + miles(r.queda) + "</b>" + (r.quedaDes !== undefined ? '<span class="tiny">destino: ' + miles(r.quedaDes) + "</span>" : "") +
+        (r.aviso ? '<span class="tiny mvi-av">' + r.aviso + "</span>" : "") : '<span class="mvi-err">' + r.msg + "</span>";
+    });
+    resumenMovimiento(calc);
+  }
+  function resumenMovimiento(calc) {
+    var buenas = calc.filter(function (r) { return r.ok; }).length, total = MVI.lineas.reduce(function (a, l) { return a + (numero(l.cant) || 0); }, 0);
+    var okCab = uno("#mvi-reg").value && uno("#mvi-fecha").value && uno("#mvi-fecha").value <= HOY;
+    uno("#mvi-resumen").innerHTML = "<b>" + MVI.lineas.length + " línea(s)</b> · " + miles(total) + " unidades" +
+      (buenas === MVI.lineas.length && okCab ? ' · <span class="mvi-ok">listo para registrar</span>' : ' · <span class="sol-falta">revise lo marcado en rojo</span>');
+    uno("#mvi-guardar").disabled = !(buenas === MVI.lineas.length && okCab);
+  }
+
+  function abrirMovimiento(bod) {
+    cerrarCapa("mvi-over");
+    cerrarCapa("bgv-over");
+    MVI = { tipo: "Entrada", lineas: [] };
+    MVI.lineas.push(lineaNueva(bod));
+    var capa = document.createElement("div");
+    capa.className = "overlay mvi-over";
+    capa.innerHTML = '<div class="modal mvi-modal" role="dialog" aria-modal="true" aria-labelledby="mvi-t">' +
+      '<div class="modal__head"><div><h3 id="mvi-t">Registrar movimiento de inventario</h3><span class="sol-sub">MB-' + String(NUM_BG + 1).padStart(4, "0") +
+      " · cada línea es un material; todas quedan con el mismo número</span></div>" +
+      '<button type="button" data-mvi-cerrar aria-label="Cerrar">✕</button></div>' +
+      '<div class="modal__body mvi">' +
+      '<div class="mvi-tipo" role="radiogroup" aria-label="Tipo de movimiento">' +
+        '<label class="mvi-tipo__i mvi-tipo__i--ent"><input type="radio" name="mvi-tipo" value="Entrada" checked><b>Entrada</b><span>Llega material a una bodega</span></label>' +
+        '<label class="mvi-tipo__i mvi-tipo__i--sal"><input type="radio" name="mvi-tipo" value="Salida"><b>Salida</b><span>Sale material de una bodega</span></label>' +
+        '<label class="mvi-tipo__i mvi-tipo__i--tra"><input type="radio" name="mvi-tipo" value="Traslado"><b>Traslado</b><span>Pasa de una bodega a otra</span></label>' +
+      "</div>" +
+      '<div class="mvi-cab">' +
+        '<label class="sol-f"><span>Registrado por *</span><select id="mvi-reg">' + opts(PERSONAS.slice(0, 6), PERSONAS[0]) + "</select></label>" +
+        '<label class="sol-f"><span>Fecha *</span><input id="mvi-fecha" type="date" max="' + HOY + '" value="' + HOY + '"></label>' +
+        '<label class="sol-f"><span>Documento soporte</span><select id="mvi-doc">' + opts(DOCS.Entrada) + "</select></label>" +
+        '<label class="sol-f"><span>Número del documento</span><input id="mvi-num" maxlength="20" placeholder="Ej. OC-2026-015"></label>' +
+        '<label class="sol-f mvi-cab__obs"><span>Observación general</span><input id="mvi-obs" maxlength="120" placeholder="Opcional. Ej. Llegó en dos camiones"></label>' +
+      "</div>" +
+      '<div class="mvi-tabla"><table><thead><tr><th>#</th><th id="mvi-h-ori">Origen</th><th id="mvi-h-des">Destino</th><th>Material</th><th class="num" id="mvi-h-hay">Hay</th>' +
+        '<th>Cantidad</th><th class="num">Queda</th><th>Entrega</th><th>Recibe</th><th>Observación</th><th></th></tr></thead><tbody id="mvi-filas"></tbody></table></div>' +
+      '<button type="button" class="btn btn--sm btn--ghost sol-mas" data-mvi-mas>+ Agregar línea</button>' +
+      "</div>" +
+      '<div class="modal__foot sol-pie"><span class="sol-res" id="mvi-resumen"></span>' +
+      '<button type="button" class="btn btn--ghost" data-mvi-cerrar>Cancelar</button>' +
+      '<button type="button" class="btn btn--oliva" id="mvi-guardar">Registrar movimiento</button></div></div>';
+    document.body.appendChild(capa);
+    pintarLineas();
+  }
+
+  function cambiarTipoMov(t) {
+    var bod = MVI.lineas[0] ? (bodOrigen(MVI.lineas[0]) || bodDestino(MVI.lineas[0])) : null;
+    MVI.tipo = t;
+    MVI.lineas = MVI.lineas.map(function () { return lineaNueva(bod); });
+    uno("#mvi-doc").innerHTML = opts(DOCS[t]);
+    pintarLineas();
+  }
+
+  function registrarMovimientoInv() {
+    var calc = calcularLineas();
+    if (calc.some(function (r) { return !r.ok; })) return aviso("Hay líneas por corregir.", "crit");
+    var t = MVI.tipo, reg = uno("#mvi-reg").value, num = uno("#mvi-num").value.trim();
+    var doc = uno("#mvi-doc").value + (num ? " · " + num : ""), obsG = uno("#mvi-obs").value.trim();
+    var mv = nuevoMB(), n = 0;
+    MVI.lineas.forEach(function (l) {
+      var q = numero(l.cant), i = infoMat(l.cod), obs = [l.obs, obsG].filter(Boolean).join(" · ");
+      var base = { mv: mv, tipo: t, quien: t === "Entrada" ? l.ent : l.rec, reg: reg, obs: obs };
+      if (t === "Entrada") {
+        base.doc = doc + " · de " + l.ori;
+        var q1 = moverStock(l.des, l.cod, q, base);
+        anotarKardex(l.cod, i.nombre, "Entrada", q, i.unidad, q1, doc, l.des);
+      } else if (t === "Salida") {
+        base.doc = doc + " · para " + l.des;
+        var q2 = moverStock(l.ori, l.cod, -q, base);
+        anotarKardex(l.cod, i.nombre, "Salida", -q, i.unidad, q2, doc, l.ori);
+      } else {
+        base.doc = doc + " · hacia " + l.des;
+        var s = moverStock(l.ori, l.cod, -q, base);
+        var e = moverStock(l.des, l.cod, q, { mv: mv, tipo: t, doc: doc + " · desde " + l.ori, quien: l.rec, reg: reg, obs: obs });
+        anotarKardex(l.cod, i.nombre, "Salida", -q, i.unidad, s, "Traslado a " + l.des, l.ori);
+        anotarKardex(l.cod, i.nombre, "Entrada", q, i.unidad, e, "Traslado desde " + l.ori, l.des);
+      }
+      n++;
+    });
+    cerrarCapa("mvi-over");
+    pintarTablaBodegas(); pintarRegistro();
+    guardarPronto();
+    aviso("Se registró " + mv + ": " + n + " línea(s) de " + t.toLowerCase() + ". Todo quedó también en el Kárdex.", "ok");
+  }
+
+  /* ---- El registro de movimientos */
+
+  function pintarRegistro() {
+    var cuerpo = uno("#bg-filas"); if (!cuerpo) return;
+    asegurarMovs();
     var CH = { Entrada: "oliva", Salida: "cobre", Traslado: "vino" };
-    uno("#bg-filas").innerHTML = MOVS.map(function (m) {
+    cuerpo.innerHTML = MOVS.map(function (m) {
       var i = infoMat(m.cod);
       return "<tr><td data-l=\"Mov.\"><b class=\"nw\">" + m.mv + '</b><div class="tiny">' + m.fecha + "</div></td>" +
-        '<td data-l="Bodega"><b class="nw">' + m.bod + '</b><div class="tiny">' + NOMBRE_BOD[m.bod] + "</div></td>" +
+        '<td data-l="Bodega"><b class="nw">' + m.bod + '</b><div class="tiny">' + esc(NOMBRE_BOD[m.bod] || "") + "</div></td>" +
         '<td data-l="Tipo"><span class="chip chip--' + CH[m.tipo] + '">' + (m.tipo === "Traslado" ? (m.cant < 0 ? "Traslado · sale" : "Traslado · entra") : m.tipo) + "</span></td>" +
-        '<td data-l="Material"><b>' + m.cod + '</b><div class="tiny">' + i.nombre + "</div></td>" +
+        '<td data-l="Material"><b>' + m.cod + '</b><div class="tiny">' + esc(i.nombre) + "</div></td>" +
         '<td class="num" data-l="Cantidad"><span class="mov mov--' + (m.cant < 0 ? "menos" : "mas") + '">' + (m.cant > 0 ? "+" : "−") +
           miles(Math.abs(m.cant)) + '</span><div class="tiny">' + i.unidad + "</div></td>" +
         '<td class="num" data-l="Queda"><b>' + miles(m.queda) + "</b></td>" +
         '<td data-l="Documento">' + esc(m.doc) + (m.obs ? '<div class="tiny">' + esc(m.obs) + "</div>" : "") + "</td>" +
-        '<td class="muted" data-l="Quién">' + esc(m.quien) + "</td></tr>";
+        '<td class="muted" data-l="Entregó / recibió">' + esc(m.quien) + "</td>" +
+        '<td class="muted" data-l="Registró">' + esc(m.reg || m.quien) + "</td></tr>";
     }).join("");
     var c = { Entrada: 0, Salida: 0, Traslado: 0 };
     MOVS.forEach(function (m) { if (m.doc !== "Saldo inicial") c[m.tipo]++; });
@@ -2985,53 +3317,94 @@
       '<span class="dt__res-i dt__res-i--warn"><b>Salidas</b><span>' + c.Salida + "</span></span>" +
       '<span class="dt__res-i"><b>Traslados</b><span>' + (c.Traslado / 2) + "</span></span>";
     var dt = uno("#dt-04-registro-bodegas");
-    if (uno('input[type="search"]', dt).value || todos("select", uno(".dt__filtros", dt)).some(function (s) { return s.selectedIndex > 0; })) filtrar(dt);
+    if (uno('input[type="search"]', dt).value || todos(".dt__filtros select", dt).some(function (s) { return s.selectedIndex > 0; })) filtrar(dt);
     else dtPintar(dt);
-
-    if (uno("#bg-bod").value !== BG_SEL && !uno("#bg-bod").dataset.tocado) uno("#bg-bod").value = BG_SEL;
-    opcionesMaterial();
-    cuentaBodega();
   }
 
   function iniciarBodegas() {
-    if (!uno("#bg-tarjetas")) return;
+    if (!uno("#bgv-filas")) return;
     asegurarMovs();
-    if (!uno("#bg-bod").options.length) { opcionesBodega(uno("#bg-bod"), BG_SEL); opcionesBodega(uno("#bg-dest"), "BOD-02", BG_SEL); }
-    prepararFormulario();
-    pintarBodegas();
+    sincronizarListaBodegas();
+    pintarTablaBodegas();
+    pintarRegistro();
     pintarPedidos();
     if (IR_A_PEDIDOS) {
       IR_A_PEDIDOS = false;
       setTimeout(function () { var x = uno("#p-pedidos"); if (x) x.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
     }
+    if (BGV_ABRIR_MOV) { BGV_ABRIR_MOV = false; setTimeout(function () { abrirMovimiento(); }, 120); }
   }
+  /* compatibilidad: otras partes piden repintar las bodegas */
+  function pintarBodegas() { pintarTablaBodegas(); pintarRegistro(); }
 
   document.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target : null;
     if (!t) return;
-    var v = t.closest("[data-bg-ver]");
-    if (v) {
+    if (t.closest('.rapidas--ini a[href="11-bodegas.html"]')) { BGV_ABRIR_MOV = true; return; }
+    var x;
+    if ((x = t.closest("[data-bk]"))) { e.preventDefault(); var k = x.getAttribute("data-bk"); BGV.k = BGV.k === k ? "" : k; uno("#dt-bodegas").dataset.pag = 1; return pintarTablaBodegas(); }
+    if ((x = t.closest("[data-bgv]"))) { e.preventDefault(); return x.getAttribute("data-bgv") === "nueva" ? abrirFormBodega() : abrirMovimiento(); }
+    if ((x = t.closest("[data-bgv-quitar]"))) {
       e.preventDefault();
-      BG_SEL = v.getAttribute("data-bg-ver");
-      uno("#bg-bod").value = BG_SEL;
-      var f = uno("#bg-f-bod"); f.value = BG_SEL; filtrar(uno("#dt-04-registro-bodegas"));
-      var fp = uno("#pd-f-bod"); if (fp) { fp.value = BG_SEL; filtrar(uno("#dt-04-pedidos")); }
-      prepararFormulario();
-      pintarBodegas();
-      return aviso("Mostrando solo " + BG_SEL + " · " + NOMBRE_BOD[BG_SEL] + ". Para ver todas, elija «Todas las bodegas» en el filtro.", "ok");
+      var q = x.getAttribute("data-bgv-quitar");
+      todos("[data-bf]").forEach(function (s) { if (!q || s.getAttribute("data-bf") === q) s.value = ""; });
+      return filtrarBodegas();
     }
-    if (t.closest("#bg-guardar")) { e.preventDefault(); return registrarBodega(); }
+    if (t.closest("[data-bgv-cerrar]")) { e.preventDefault(); return cerrarCapa("bgv-over"); }
+    if ((x = t.closest("[data-bgv-editar]"))) { e.preventDefault(); return abrirFormBodega(x.getAttribute("data-bgv-editar")); }
+    if ((x = t.closest("[data-bgv-estado]"))) { e.preventDefault(); return cambiarEstadoBodega(x.getAttribute("data-bgv-estado")); }
+    if ((x = t.closest("[data-bgv-mover]"))) { e.preventDefault(); return abrirMovimiento(x.getAttribute("data-bgv-mover")); }
+    if ((x = t.closest("[data-bgv-pedir]"))) { e.preventDefault(); var b = x.getAttribute("data-bgv-pedir"); cerrarCapa("bgv-over"); return abrirSolicitud(b, faltantesDe(b), b + " · " + NOMBRE_BOD[b]); }
+    if (t.closest("#bgf-guardar")) { e.preventDefault(); return guardarBodega(); }
+    if (t.closest("[data-mvi-cerrar]")) { e.preventDefault(); return cerrarCapa("mvi-over"); }
+    if (t.closest("[data-mvi-mas]")) {
+      e.preventDefault();
+      var ult = MVI.lineas[MVI.lineas.length - 1];
+      var nl = lineaNueva(ult ? (bodOrigen(ult) || bodDestino(ult)) : null);
+      if (ult) { nl.ori = ult.ori; nl.des = ult.des; nl.ent = ult.ent; nl.rec = ult.rec; var ms = materialesPara(nl); nl.cod = ms.length ? ms[0][0] : ""; }
+      MVI.lineas.push(nl); pintarLineas();
+      var ins = todos('#mvi-filas [data-mc="cant"]'); if (ins.length) ins[ins.length - 1].focus();
+      return;
+    }
+    if ((x = t.closest("[data-mvi-quitar]"))) { e.preventDefault(); MVI.lineas.splice(numero(x.getAttribute("data-mvi-quitar")), 1); return pintarLineas(); }
+    if (t.closest("#mvi-guardar")) { e.preventDefault(); return registrarMovimientoInv(); }
+    if (t.classList && (t.classList.contains("bgv-over") || t.classList.contains("mvi-over"))) return t.remove();
+    var fila = t.closest("#bgv-filas tr[data-bod]");
+    if (fila) { e.preventDefault(); return abrirFichaBodega(fila.getAttribute("data-bod")); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { cerrarCapa("mvi-over"); cerrarCapa("bgv-over"); return; }
+    var f = e.target.closest ? e.target.closest("#bgv-filas tr[data-bod]") : null;
+    if (f && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); abrirFichaBodega(f.getAttribute("data-bod")); }
   });
   document.addEventListener("change", function (e) {
-    var id = e.target.id;
-    if (e.target.name === "bg-tipo" || id === "bg-bod") {
-      if (id === "bg-bod") { BG_SEL = e.target.value; pintarBodegas(); }
-      return prepararFormulario();
+    var t = e.target;
+    if (t.matches && t.matches("[data-bf]")) { uno("#dt-bodegas").dataset.pag = 1; return filtrarBodegas(); }
+    if (t.id === "bgv-tam") return;
+    if (t.id === "bgf-tipo") { uno("#bgf-img").innerHTML = '<svg class="eq" viewBox="0 0 120 88" aria-hidden="true">' + DIBUJO_BOD[DIBUJO_DE_TIPO[t.value]] + "</svg>"; return; }
+    if (t.name === "mvi-tipo") return cambiarTipoMov(t.value);
+    if (t.id === "mvi-reg" || t.id === "mvi-fecha") return pintarLineas();
+    var tr = t.closest ? t.closest("#mvi-filas tr") : null, mc = t.getAttribute && t.getAttribute("data-mc");
+    if (tr && mc) {
+      var l = MVI.lineas[numero(tr.getAttribute("data-i"))];
+      l[mc] = t.value;
+      if (mc === "ori" || mc === "des") {
+        if (MVI.tipo === "Traslado" && l.ori === l.des) l.des = bodegasActivas().filter(function (b) { return b !== l.ori; })[0] || l.des;
+        var ms = materialesPara(l);
+        if (!ms.some(function (m) { return m[0] === l.cod; })) l.cod = ms.length ? ms[0][0] : "";
+      }
+      if (mc !== "obs" && mc !== "cant") pintarLineas();
     }
-    if (id === "bg-mat" || id === "bg-dest") cuentaBodega();
   });
-  document.addEventListener("input", function (e) { if (e.target.id === "bg-cant") cuentaBodega(); });
-
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (t.id === "bgv-q") { uno("#dt-bodegas").dataset.pag = 1; return filtrarBodegas(); }
+    var tr = t.closest ? t.closest("#mvi-filas tr") : null, mc = t.getAttribute && t.getAttribute("data-mc");
+    if (tr && (mc === "cant" || mc === "obs")) {
+      MVI.lineas[numero(tr.getAttribute("data-i"))][mc] = t.value;
+      if (mc === "cant") actualizarCalculos();
+    }
+  });
 
 
   /* ---------------------------------------------------------------- Almacenamiento y movimientos (Inicio)
@@ -3092,7 +3465,7 @@
   function serie(b, tipo) {
     var bods = b ? [b] : Object.keys(HISTORIA);
     return MESES.map(function (m, i) {
-      var v = bods.reduce(function (a, x) { return a + HISTORIA[x][tipo][i]; }, 0);
+      var v = bods.reduce(function (a, x) { return a + (HISTORIA[x] ? HISTORIA[x][tipo][i] : 0); }, 0);
       return i === MESES.length - 1 ? v + movsDelMes(b, tipo) : v;
     });
   }
@@ -3456,7 +3829,7 @@
      Al recargar sigue igual. El botón «Datos de ejemplo» vuelve todo al inicio.
      Es solo del navegador de quien lo usa: otra persona ve los datos de ejemplo. */
 
-  var LLAVE_INV = "sicaf.inventario.v7";   // al cambiar las pantallas se sube el número y se arranca limpio
+  var LLAVE_INV = "sicaf.inventario.v8";   // al cambiar las pantallas se sube el número y se arranca limpio
   var GUARDADO = (function () {
     try { return JSON.parse(window.localStorage.getItem(LLAVE_INV)) || {}; } catch (e) { return {}; }
   })();
@@ -3472,7 +3845,8 @@
       });
       GUARDADO.estado = { SALDO: SALDO, NUM_MOV: NUM_MOV, PARA_KARDEX: PARA_KARDEX,
                           MAQ: MAQ, MQ_SEL: MQ_SEL, COSTO_UNIDAD: COSTO_UNIDAD, ULTIMA_SC: ULTIMA_SC,
-                          STOCK: STOCK, MOVS: MOVS, NUM_BG: NUM_BG, BG_SEL: BG_SEL, PEDIDOS: PEDIDOS, menu: menu };
+                          STOCK: STOCK, MOVS: MOVS, NUM_BG: NUM_BG, BG_SEL: BG_SEL, PEDIDOS: PEDIDOS,
+                          FICHA_BOD: FICHA_BOD, NOMBRE_BOD: NOMBRE_BOD, MINIMOS: MINIMOS, CAPACIDAD: CAPACIDAD, menu: menu };
       window.localStorage.setItem(LLAVE_INV, JSON.stringify(GUARDADO));
       marcarGuardado(true);
     } catch (e) { marcarGuardado(false); }
@@ -3495,6 +3869,11 @@
     if (e.NUM_BG) NUM_BG = e.NUM_BG;
     if (e.BG_SEL) BG_SEL = e.BG_SEL;
     if (e.PEDIDOS) PEDIDOS = e.PEDIDOS;
+    if (e.FICHA_BOD) FICHA_BOD = e.FICHA_BOD;
+    if (e.NOMBRE_BOD) NOMBRE_BOD = e.NOMBRE_BOD;
+    if (e.MINIMOS) MINIMOS = e.MINIMOS;
+    if (e.CAPACIDAD) CAPACIDAD = e.CAPACIDAD;
+    if (e.NOMBRE_BOD) sincronizarListaBodegas();
     if (e.menu) {
       for (var href in e.menu) {
         var a = todos(".nav__si").filter(function (x) { return x.getAttribute("href") === href; })[0];
