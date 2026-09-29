@@ -367,7 +367,7 @@ body:has(.overlay:not([hidden])) .flash {
 
 /* Con el detalle de una cotización (el panel de la derecha), arriba a la izquierda,
    sobre la lista, para no tapar el título del panel */
-body:has(#cot-det:not([hidden])) .flash { left: 24px; right: auto; margin: 0; }
+body:has(.cot-det-fondo:not([hidden])) .flash { left: 24px; right: auto; margin: 0; }
 
 /* La fila que se acaba de agregar o de cambiar */
 
@@ -803,6 +803,11 @@ tr.va-a-borrarse > td {
   font-size: 13.5px;
   color: var(--tinta);
 }
+
+/* Los filtros de valor se escriben: sin las flechas del navegador (Clientes, Cotizaciones y Facturación) */
+.dt__in[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+.dt__in[type="number"]::-webkit-inner-spin-button,
+.dt__in[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
 select.dt__in {
   min-width: 140px;
@@ -2991,6 +2996,7 @@ select.dt__in {
 @media (max-width: 1180px) {
   .fac { grid-template-columns: minmax(0, 1fr); }
   .fac__iq { max-width: none; }
+}
 
 /* ── Modal Interactivo de Seguimiento y Actualización al Cliente ────── */
 .modal-backdrop {
@@ -3165,3 +3171,324 @@ select.dt__in {
   font-family: var(--letra-texto, sans-serif);
 }
 
+
+/* =====================================================================
+   CLIENTES: 04-clientes.html (la lista, como Facturación) y
+   04-cliente-nuevo.html (el formulario para registrar o cambiar uno)
+   ===================================================================== */
+
+/* ---- La lista ---- */
+
+/* El nombre es un botón (abre la ficha con el teclado) y se recorta con "…" */
+.dt__cli .dt__ver { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+
+/* Cuánto del cupo ya usó: la barra de comun/ y el porcentaje al lado */
+.cli-uso { display: inline-flex; align-items: center; gap: 6px; min-width: 84px; }
+.cli-uso .bar { flex: 1 1 40px; height: 7px; }
+.cli-uso b { flex: 0 0 auto; min-width: 38px; font-size: 12.5px; font-variant-numeric: tabular-nums; text-align: right; color: var(--tinta); }
+
+/* ---- La ficha del cliente (el panel de la derecha) ---- */
+
+/* El crédito en cuatro cifras, con la barra de lo que ya usó */
+.cli-credito {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.cli-credito__i {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--crema);
+  border: 1px solid var(--linea-2);
+  border-radius: var(--r-s);
+}
+.cli-credito__i span { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--tinta-2); }
+.cli-credito__i b { font-size: 14px; font-variant-numeric: tabular-nums; color: var(--tinta); }
+.cli-credito__i.is-mal b { color: var(--crit); }
+.cli-credito__uso { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; }
+.cli-credito__uso .cli-uso { flex: 1 1 auto; }
+.cli-credito__uso small { flex: 0 0 auto; font-size: 12px; color: var(--tinta-2); }
+.cot-det__estado .cot-vencidas { margin-top: 14px; }
+
+/* "A futuro": lo de la factura electrónica, que todavía no se usa */
+.cli-futuro {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--info-bg);
+  color: var(--info);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.cli-obs { font-family: var(--letra-texto); font-size: 13px; line-height: 1.5; color: var(--tinta-2); }
+
+/* Abajo, siempre a la vista: Cotizar y Editar cliente */
+.cli-det__acc {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--papel);
+  border-top: 1px solid var(--linea);
+}
+
+/* ---- El formulario ---- */
+
+/* El formulario a la izquierda y la ficha como va quedando a la derecha */
+.cli {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
+  gap: 14px;
+  align-items: stretch;
+}
+.cli__form, .cli__res { display: flex; flex-direction: column; min-width: 0; margin: 0; }
+
+/* Las dos pestañas, como un control de dos botones: la elegida en vino */
+.cli-tabs {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 12px 14px 0;
+  padding: 4px;
+  background: var(--arena);
+  border-radius: var(--r-m);
+}
+.cli-tabs__i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vino-800);
+}
+.cli-tabs__i:hover { background: rgba(255, 255, 255, .55); }
+.cli-tabs__i[aria-selected="true"] { background: var(--vino-800); color: #fff; box-shadow: 0 6px 14px -8px rgba(58, 42, 34, .8); }
+.cli-tabs__i[aria-selected="true"] .cli-futuro { background: rgba(255, 255, 255, .18); color: #fff; }
+.cli-tabs__i:focus-visible { outline: 2px solid var(--cobre-500); outline-offset: 2px; }
+.cli-tabs__n {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--crit);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cli__cuerpo { padding: 12px 14px 14px; }
+
+/* Cada sección en su tarjeta, a todo el ancho; en una pantalla muy ancha, de a dos */
+.cli-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 12px; align-items: start; }
+.cli-card {
+  min-width: 0;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-m);
+  overflow: hidden;
+}
+.cli-card--ancha { grid-column: 1 / -1; }
+.cli-card .cot-barra { padding: 10px 14px; }
+.cli-card .cot-barra__t { font-size: 14px; }
+.cli-card__cuerpo { padding: 12px 14px 2px; }
+.cli-card .field { margin-bottom: 12px; }
+.cli-card .control input, .cli-card .control select { height: 40px; }
+.cli-card .control textarea { height: 64px; }
+
+/* Varios campos en un renglón; si no caben, bajan */
+.cli-fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0 12px; }
+.cli-fila--2a1 { grid-template-columns: minmax(0, 2fr) minmax(170px, 1fr); }
+.cli-fila--pago { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+.cli-fila--doc { grid-template-columns: minmax(180px, 1.3fr) minmax(170px, 1.3fr) 76px; }
+.cli-dv input { text-align: center; font-weight: 700; color: var(--vino-800); background: var(--crema); }
+
+.cli-o { color: var(--crit); font-weight: 700; }
+.cli-ayuda { margin-top: 4px; font-size: 11.5px; color: var(--tinta-2); }
+.cli-card .err { font-size: 12px; margin-top: 4px; }
+
+/* El prefijo que no se escribe: +57 o $ */
+.cli-pre { display: flex; align-items: stretch; }
+.cli-pre__t {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  padding: 0 8px;
+  border: 1px solid #E4DACF;
+  border-right: 0;
+  border-radius: var(--r-m) 0 0 var(--r-m);
+  background: var(--crema);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tinta-2);
+}
+.cli-pre input { border-radius: 0 var(--r-m) var(--r-m) 0; padding: 0 10px; }
+
+/* Dos opciones que se eligen con un clic (tipo de persona, forma de pago) */
+.cli-seg { border: 0; padding: 0; min-width: 0; }
+.cli-seg legend { padding: 0; margin-bottom: 5px; font-weight: 700; font-size: 12.5px; color: var(--vino-600); }
+.cli-seg__g { display: inline-flex; gap: 4px; padding: 3px; background: var(--arena); border-radius: var(--r-m); }
+.cli-seg__op { position: relative; cursor: pointer; }
+.cli-seg__op input { position: absolute; opacity: 0; pointer-events: none; }
+.cli-seg__op span { display: block; padding: 7px 14px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--vino-800); }
+.cli-seg__op input:checked + span { background: var(--papel); box-shadow: 0 2px 8px -4px rgba(58, 42, 34, .6); }
+.cli-seg__op input:focus-visible + span { outline: 2px solid var(--cobre-500); outline-offset: 1px; }
+
+/* Interruptor: la casilla de siempre, dibujada como un botón que se prende */
+/* position: relative para que la casilla escondida quede dentro (si no, alarga la página) */
+.cli-sw { position: relative; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; cursor: pointer; }
+.cli-sw input { position: absolute; opacity: 0; pointer-events: none; }
+.cli-sw__p {
+  flex: 0 0 auto;
+  position: relative;
+  width: 38px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 999px;
+  background: var(--linea);
+  transition: background .15s;
+}
+.cli-sw__p i {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+  transition: transform .15s;
+}
+.cli-sw input:checked + .cli-sw__p { background: var(--oliva-600); }
+.cli-sw input:checked + .cli-sw__p i { transform: translateX(16px); }
+.cli-sw input:focus-visible + .cli-sw__p { outline: 2px solid var(--cobre-500); outline-offset: 2px; }
+.cli-sw__t { font-size: 13px; font-weight: 600; color: var(--tinta); }
+.cli-sw__t small, .cli-check__l small { display: block; font-weight: 400; font-size: 11.5px; color: var(--tinta-2); }
+
+/* La autorización de datos personales */
+/* .cli-check > label pesa más que ".field > label" de comun/ (que la volvería bloque y vino) */
+.cli-check > .cli-check__l { display: flex; align-items: flex-start; gap: 9px; margin: 0; font-size: 13px; font-weight: 600; color: var(--tinta); cursor: pointer; }
+.cli-check__l input { flex: 0 0 auto; width: 17px; height: 17px; margin-top: 2px; accent-color: var(--vino-800); }
+.cli-check.bad > .cli-check__l { color: var(--crit); }
+.cli-seg.bad .cli-seg__g { box-shadow: 0 0 0 1px var(--crit); }
+.cli-resp + .cli-ayuda { margin-bottom: 14px; }
+
+.cli-aviso { margin: 0 0 12px; align-items: center; font-size: 12.5px; }
+.cli-aviso span { font-family: var(--letra-texto); color: var(--tinta-2); }
+
+/* La pestaña de factura electrónica: el aviso de que es para más adelante */
+.aviso.cli-futuro-aviso { background: var(--info-bg); border-color: var(--info); margin-bottom: 12px; }
+.aviso.cli-futuro-aviso > .ico { color: var(--info); }
+.cli-kv .kv { padding: 6px 0; font-size: 13px; }
+/* Un correo debajo de su nombre, con todo el ancho: se parte en la @ o en un punto */
+.kv.kv--largo { flex-direction: column; align-items: flex-start; gap: 1px; }
+.kv.kv--largo > b { text-align: left; overflow-wrap: normal; }
+.cli-kv .kv:last-child { border-bottom: 0; }
+.cli-card .cli-kv { padding-bottom: 10px; }
+
+/* Responsabilidades: fichas que se marcan (se pueden varias) */
+.cli-resp { border: 0; padding: 0; margin: 0; min-width: 0; }
+.cli-resp__g { display: flex; flex-direction: column; gap: 6px; }
+.cli-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-s);
+  background: var(--papel);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.cli-chip input { width: 16px; height: 16px; accent-color: var(--vino-800); }
+.cli-chip b { min-width: 58px; font-variant-numeric: tabular-nums; color: var(--vino-800); }
+.cli-chip span { color: var(--tinta-2); }
+.cli-chip:has(input:checked) { border-color: var(--vino-600); background: var(--cobre-100); }
+.cli-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.cli-no { display: flex; flex-direction: column; gap: 8px; margin: 0 0 12px; padding-left: 18px; }
+.cli-no li { font-family: var(--letra-texto); font-size: 12.5px; line-height: 1.45; color: var(--tinta-2); }
+.cli-no li b { color: var(--tinta); }
+
+/* ---- A la derecha: la ficha como va quedando, lo que falta y Guardar ---- */
+
+.cli__res-cuerpo { background: var(--papel); }
+.fac-cli__nombre.is-vacio { color: var(--tinta-3); font-weight: 500; }
+.cli-falta { padding: 4px 16px 14px; }
+.cli-falta .cot-det__t { margin-bottom: 6px; }
+.cli-falta ul { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.cli-falta button, .cli-falta .is-listo {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: var(--r-s);
+  font-size: 12.5px;
+  text-align: left;
+}
+.cli-falta button { background: var(--crit-bg); color: var(--crit); font-weight: 600; }
+.cli-falta button:hover { outline: 1px solid var(--crit); }
+.cli-falta button small { display: block; font-weight: 400; color: var(--tinta-2); }
+.cli-falta .ico { flex: 0 0 auto; margin-top: 2px; }
+.cli-falta .is-listo { background: var(--ok-bg); color: var(--ok); font-weight: 600; }
+.cli__botones { display: flex; gap: 10px; }
+.cli__botones .btn { flex: 1 1 auto; justify-content: center; white-space: nowrap; }
+.cli__botones .btn--ghost { flex: 0 0 auto; }
+.cli-vista__datos { padding: 0 16px 10px; }
+
+/* El aviso flotante no tapa Guardar: sale abajo a la izquierda, sobre el formulario */
+@media (min-width: 1181px) {
+  body:has(#cli-form) .flash { left: calc(var(--ancho-menu) + 24px); right: auto; margin: 0; }
+}
+
+/* En la lista, el nombre del cliente tiene espacio para leerse entero */
+#dt-cli .dt__thcli { min-width: 170px; }
+@media (min-width: 1340px) { #dt-cli .dt__thcli { min-width: 200px; } }
+@media (min-width: 1420px) { #dt-cli .dt__thcli { min-width: 235px; } }
+
+/* El que ya no se le vende se ve apagado */
+#dt-cli tr.is-inactivo td { color: var(--tinta-3); }
+#dt-cli tr.is-inactivo .dt__ver { color: var(--tinta-2); }
+
+/* La ficha del panel empieza como la de Facturación: foto centrada, nombre y documento */
+.cli-det__cab { padding: 6px 0 2px; }
+.cli-det__texto { font-family: var(--letra-texto); font-size: 13.5px; line-height: 1.5; color: var(--tinta-2); }
+.cli-det__texto b { color: var(--tinta); }
+.cli-det__texto + .cli-credito { margin-top: 12px; }
+.cot-det__estado > .cli-credito:first-child { margin-top: 0; }
+
+/* Pantalla ancha: la pantalla no se desplaza; el formulario y la ficha, cada uno por dentro */
+@media (min-width: 1181px) and (min-height: 600px) {
+  .page:has(> .cli) { gap: 12px; }
+  .page > .cli { flex: 1 1 auto; min-height: 380px; }
+  .cli__form, .cli__res { min-height: 0; }
+  .cli__cuerpo, .cli__res-cuerpo { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+}
+
+/* Tableta y celular: una columna; la ficha y Guardar debajo del formulario */
+@media (max-width: 1180px) {
+  .cli { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .cli-fila--2a1, .cli-fila--pago { grid-template-columns: minmax(0, 1fr); }
+  .cli-fila--doc { grid-template-columns: minmax(0, 1fr) 76px; }
+  .cli-fila--doc > :first-child { grid-column: 1 / -1; }
+  .cli-credito { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cli-tabs__i { font-size: 12.5px; flex-wrap: wrap; }
+}

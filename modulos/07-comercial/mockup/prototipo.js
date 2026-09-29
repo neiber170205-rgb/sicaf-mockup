@@ -1,14 +1,15 @@
 /* =====================================================================
    07-comercial/mockup/prototipo.js
 
-   Hace que el mockup de Comercial RESPONDA: registrar clientes, generar
-   cotizaciones, convertirlas en pedido, confirmar, mandar a Logística,
-   cambiar cupos, eliminar y filtrar, sin recargar la página.
+   Hace que el mockup de Comercial RESPONDA: registrar y editar clientes,
+   generar cotizaciones, convertirlas en pedido, confirmar, mandar a
+   Logística, facturar, eliminar y filtrar, sin recargar la página.
 
    Mismo motor que el de 04-inventario, con lo propio de este módulo.
    Las cotizaciones tienen su parte: la lista (tarjetas, filtros, orden y
    páginas) en la sección 9, la nueva cotización (cliente, productos y
    totales) en la 10 y el detalle que se abre desde la lista en la 11.
+   Facturación va en la 12 y Clientes (lista, ficha y formulario) en la 13.
    Los datos viven en la pantalla: con F5 vuelve todo a como estaba.
    ===================================================================== */
 (function () {
@@ -128,7 +129,8 @@
   var guardadas = {};   // lo que el usuario ya cambió en cada pantalla
 
   /* Una pantalla sin pestaña propia deja marcada la pestaña de la que sale */
-  var PADRE = { "09-cotizacion-nueva.html": "09-cotizacion.html", "10-facturacion-nueva.html": "10-facturacion.html" };
+  var PADRE = { "09-cotizacion-nueva.html": "09-cotizacion.html", "10-facturacion-nueva.html": "10-facturacion.html",
+                "04-cliente-nuevo.html": "04-clientes.html" };
 
   function marcarMenu() {
     var marcada = PADRE[actual] || actual;
@@ -143,12 +145,19 @@
     nodos.forEach(function (n) { p.appendChild(n); });
   }
 
+  var yendo = null;     // la pantalla que se está trayendo: un doble clic no la pide dos veces
+  var turno = 0;        // cada navegación toma el suyo: si llega tarde la respuesta de una vieja, no se pinta
+  var navegadoEn = 0;   // cuándo se cambió de pantalla (el segundo clic de un doble clic cae en la nueva)
   function ir(archivo, guardarEnHistorial) {
-    if (archivo === actual || !pagina()) return;
+    if (archivo === actual || archivo === yendo || !pagina()) return;
+    var mio = ++turno;
+    cerrarDetalle();
     guardadas[actual] = Array.prototype.slice.call(pagina().childNodes);
 
     function terminar() {
       actual = archivo;
+      yendo = null;
+      navegadoEn = Date.now();
       marcarMenu();
       alEntrar();
       if (guardarEnHistorial) history.pushState({ pantalla: archivo }, "", archivo);
@@ -160,14 +169,17 @@
     }
 
     if (guardadas[archivo]) {
+      yendo = null;
       pintar(guardadas[archivo]);
       terminar();
       return;
     }
 
+    yendo = archivo;
     fetch(archivo)
       .then(function (r) { return r.text(); })
       .then(function (html) {
+        if (mio !== turno) return;   // mientras tanto se pidió otra pantalla: esta ya no
         var doc = new DOMParser().parseFromString(html, "text/html");
         var sub = uno(".subnav", doc);
         if (sub) sub.parentNode.removeChild(sub);
@@ -176,17 +188,21 @@
         if (doc.title) document.title = doc.title;
         terminar();
       })
-      .catch(function () { location.href = archivo; });   // sin servidor, se navega normal
+      .catch(function () { yendo = null; location.href = archivo; });   // sin servidor, se navega normal
   }
 
   document.addEventListener("click", function (e) {
     var a = e.target.closest ? e.target.closest("a[href]") : null;
-    if (!a) return;
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;   // Ctrl+clic: otra pestaña, como siempre
     var href = a.getAttribute("href");
     if (!ES_PANTALLA.test(href)) return;
     e.preventDefault();
     ir(href, true);
   });
+
+  document.addEventListener("click", function (e) {
+    if (e.detail > 1 && Date.now() - navegadoEn < 600) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
 
   window.addEventListener("popstate", function (e) {
     var destino = (e.state && e.state.pantalla) || (location.pathname.split("/").pop());
@@ -219,7 +235,7 @@
       if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "center" }); }
       else aviso("No hay pendientes sin atender.", "ok");
     }
-    if (actual !== "04-clientes.html") { ir("04-clientes.html", true); setTimeout(abrir, 260); }
+    if (actual !== "01-inicio.html") { ir("01-inicio.html", true); setTimeout(abrir, 260); }
     else abrir();
   });
 
@@ -318,28 +334,6 @@
 
   /* ---------------------------------------------------------------- 7. Los formularios de Comercial */
 
-  function registrarCliente() {
-    var nom = uno("#cn-nombre"), nit = uno("#cn-nit"), ciu = uno("#cn-ciudad"), cupo = uno("#cn-cupo");
-    if (!nom.value.trim()) { nom.focus(); return aviso("Escriba el nombre del cliente.", "crit"); }
-    if (!nit.value.trim()) { nit.focus(); return aviso("Escriba el NIT.", "crit"); }
-
-    var panel = panelPorTitulo("Clientes y Cupo de Crédito");
-    if (!panel) return aviso("Cliente registrado.", "ok");
-
-    var codigo = siguienteCodigo(panel, "Cliente");
-    var fila = nuevaFila(panel, "Cliente");
-    ponerCelda(fila, "Cliente", "<b>" + codigo + '</b><div class="tiny">' + nit.value.trim() + "</div>");
-    ponerCelda(fila, "Nombre", nom.value.trim() + '<div class="tiny">' + ciu.value + "</div>");
-    ponerCelda(fila, "Cupo", pesos(numero(cupo.value)));
-    ponerCelda(fila, "Saldo", "$0");
-    ponerCelda(fila, "Estado", '<span class="pill pill--ok">Al día</span>');
-    recontar(panel, "clientes");
-    sumarAlMenu("04-clientes.html", 1);
-    var creado = nom.value.trim();
-    nom.value = ""; nit.value = ""; cupo.value = "";
-    aviso(creado + " queda registrado como " + codigo + " · entra con saldo en cero.", "ok");
-  }
-
   function generarCotizacion() {
     var cl = uno("#f-v-cl"), ref = uno("#f-v-ref"), cant = uno("#f-v-cant"), pre = uno("#f-v-precio"), ciu = uno("#f-v-ciu");
     var pares = numero(cant ? cant.value : 0), precio = numero(pre ? pre.value : 0);
@@ -428,7 +422,7 @@
   /* Las tres acciones rápidas del tablero de Inicio */
   var RAPIDAS = {
     "venta":   { a: "02-ventas.html",   dice: "Arme la cotización: cliente, referencia y cantidad." },
-    "cliente": { a: "04-clientes.html", dice: "Registre el cliente con su NIT y el cupo que se le asigna." },
+    "cliente": { a: "04-cliente-nuevo.html", dice: "Registre el cliente: identificación, contacto, entrega y crédito." },
     "pedido":  { a: "05-pedidos.html",  dice: "Los pedidos salen de una cotización aceptada." }
   };
 
@@ -466,7 +460,6 @@
     if (lleva && ES_PANTALLA.test(lleva)) { e.preventDefault(); return ir(lleva, true); }
 
     if (texto === "Generar reporte")     { e.preventDefault(); return generarReporte(); }
-    if (texto === "Registrar cliente")   { e.preventDefault(); return registrarCliente(); }
     if (texto === "Generar cotización")  { e.preventDefault(); return generarCotizacion(); }
     if (texto === "Eliminar" || texto === "¿Seguro?") { e.preventDefault(); return eliminarFila(b); }
 
@@ -478,42 +471,6 @@
         { className: "pill pill--ok", textContent: "Atendida" }));
       contarPendientes(-1);
       return aviso("Pendiente marcado como atendido.", "ok");
-    }
-
-    /* cambiar el cupo de un cliente, ahí mismo en la tabla */
-    if (texto === "Cambiar cupo") {
-      e.preventDefault();
-      var fc = b.closest("tr");
-      var td = celda(fc, "Cupo");
-      if (td.querySelector("input")) return;
-      td.innerHTML = '<input class="control" type="number" value="' + numero(td.textContent) +
-                     '" style="width:120px;padding:4px 8px" aria-label="Cupo de crédito">';
-      td.querySelector("input").focus();
-      b.textContent = "Guardar cupo";
-      b.className = "btn btn--sm btn--oliva";
-      return;
-    }
-
-    if (texto === "Guardar cupo") {
-      e.preventDefault();
-      var fg = b.closest("tr");
-      var tdg = celda(fg, "Cupo");
-      var caja = tdg.querySelector("input");
-      if (!caja) return;
-      var nuevo = numero(caja.value);
-      var saldo = numero(celda(fg, "Saldo").textContent);
-      tdg.textContent = pesos(nuevo);
-      var est = celda(fg, "Estado");
-      if (est) {
-        est.innerHTML = saldo > nuevo
-          ? '<span class="pill pill--crit">Cupo excedido</span>'
-          : (saldo > nuevo * 0.8 ? '<span class="pill pill--warn">Cupo casi lleno</span>'
-                                 : '<span class="pill pill--ok">Al día</span>');
-      }
-      fg.classList.add("es-nueva");
-      b.textContent = "Cambiar cupo";
-      b.className = "btn btn--sm btn--ghost";
-      return aviso("Cupo actualizado a " + pesos(nuevo) + ".", "ok");
     }
 
     if (texto === "Convertir en pedido") {
@@ -848,7 +805,7 @@
   }
 
   /* ---- El motor de las tablas de datos ----
-     Cotizaciones (#dt-cot) y Facturación (#dt-fac) usan la misma tabla: las
+     Cotizaciones (#dt-cot), Facturación (#dt-fac) y Clientes (#dt-cli) usan la misma tabla: las
      tarjetas filtran, el buscador, la caja de filtros con sus fichas, el orden
      por columna, los totales de lo filtrado y las páginas. Lo que cambia de una
      a otra va en TABLAS: sus estados, sus filtros, cómo se ordena cada columna,
@@ -858,9 +815,13 @@
   var TABLAS = {};
   var vistas = {};
 
-  function vistaNueva(tam) { return { q: "", f: {}, orden: "fecha", dir: -1, pag: 1, tam: tam || 10 }; }
-  function vistaDe(id) { return vistas[id] || (vistas[id] = vistaNueva()); }
-  /* La tabla de datos que está en pantalla (#dt-cot o #dt-fac), o null */
+  /* Empieza de la más nueva a la más vieja, salvo que la tabla diga otro orden (orden: [columna, 1 o -1]) */
+  function vistaNueva(tam, conf) {
+    var o = conf && conf.orden || ["fecha", -1];
+    return { q: "", f: {}, orden: o[0], dir: o[1], pag: 1, tam: tam || 10 };
+  }
+  function vistaDe(id) { return vistas[id] || (vistas[id] = vistaNueva(10, TABLAS[id])); }
+  /* La tabla de datos que está en pantalla (#dt-cot, #dt-fac o #dt-cli), o null */
   function tablaVisible() {
     for (var id in TABLAS) {
       var dt = uno("#" + id);
@@ -875,7 +836,7 @@
   /* Las piezas de cada tabla se llaman como ella: #dt-cot-q, #dt-cot-pag... */
   function pieza(dt, que) { return uno("#" + dt.id + "-" + que); }
 
-  /* Filtros que sirven a las dos tablas; los propios de cada una van en su "filtros" */
+  /* Filtros que sirven a todas las tablas; los propios de cada una van en su "filtros" */
   function contiene(columna) {
     return function (tr, v) { return sinTildes(textoDe(tr, columna)).indexOf(sinTildes(v.trim())) >= 0; };
   }
@@ -918,7 +879,8 @@
       var x = claveOrden(a, vista.orden, conf), y = claveOrden(b, vista.orden, conf);
       if (x < y) return -vista.dir;
       if (x > y) return vista.dir;
-      return cola(textoDe(b, conf.codigo)) - cola(textoDe(a, conf.codigo));   // empate: la más nueva arriba
+      return cola(conf.codigoDe ? conf.codigoDe(b) : textoDe(b, conf.codigo)) -
+             cola(conf.codigoDe ? conf.codigoDe(a) : textoDe(a, conf.codigo));   // empate: la más nueva arriba
     };
   }
 
@@ -954,16 +916,16 @@
       var t = uno('[data-tot="' + e + '"]', dt);
       if (t) t.textContent = pesos(suma(e));
     });
-    var filtrada = vistas_.length !== filas.length;
-    pieza(dt, "de").textContent = !filtrada ? "de las " + filas.length + " " + conf.plural
-      : vistas_.length === 1 ? "de la única que cumple el filtro"
-      : "de las " + vistas_.length + " que cumplen el filtro";
+    var filtrada = vistas_.length !== filas.length, los = conf.masculino ? "los" : "las";
+    pieza(dt, "de").textContent = !filtrada ? "de " + los + " " + filas.length + " " + conf.plural
+      : vistas_.length === 1 ? (conf.masculino ? "del único" : "de la única") + " que cumple el filtro"
+      : "de " + los + " " + vistas_.length + " que cumplen el filtro";
 
     // Cuántas se ven y el paginador
     pieza(dt, "info").innerHTML = vistas_.length
       ? "Mostrando <b>" + (desde + 1) + "&ndash;" + Math.min(hasta, vistas_.length) + "</b> de <b>" +
         vistas_.length + "</b> " + conf.unaOVarias + (filtrada ? " · hay " + filas.length + " en total" : "")
-      : "Ninguna " + conf.una + " cumple el filtro";
+      : (conf.masculino ? "Ningún " : "Ninguna ") + conf.una + " cumple el filtro";
     var h = '<button class="dt__pag dt__pag--n" type="button" data-pag="-1" aria-label="Página anterior"' +
             (vista.pag === 1 ? " disabled" : "") + ">&lsaquo;</button>";
     for (var n = 1; n <= paginas; n++) {
@@ -1042,15 +1004,22 @@
     var dt = uno("#" + id), conf = TABLAS[id];
     if (!dt.getAttribute("data-listo")) {
       dt.setAttribute("data-listo", "1");
-      vistas[id] = vistaNueva();
+      vistas[id] = vistaNueva(10, conf);
     }
     var vista = vistaDe(id);
-    if (conf.alEntrar(dt, uno("tbody", dt))) {
-      vistas[id] = vista = vistaNueva(vista.tam);
+    var hubo = conf.alEntrar(dt, uno("tbody", dt));
+    if (hubo) {
+      vistas[id] = vista = vistaNueva(vista.tam, conf);
       pieza(dt, "q").value = "";
     }
     pieza(dt, "tam").value = String(vista.tam);
     pintarLista(dt);
+    // Lo que se acaba de crear o cambiar tiene que verse: si quedó en otra página, se va a esa
+    var filas = todos("tr[data-estado]", uno("tbody", dt)), nueva = uno("tr.es-nueva", dt);
+    if (hubo && nueva && filas.indexOf(nueva) >= vista.tam) {
+      vista.pag = Math.floor(filas.indexOf(nueva) / vista.tam) + 1;
+      pintarLista(dt);
+    }
   }
 
   function ponerFiltro(dt, campo) {
@@ -1109,7 +1078,8 @@
       if (vista.orden === k) vista.dir = -vista.dir;
       else {
         vista.orden = k;
-        vista.dir = (k === "fecha" || k === "valor" || k === "pares") ? -1 : 1;   // lo más nuevo o lo más grande primero
+        // lo más nuevo o lo más grande primero (y lo que la tabla diga, como el cupo de un cliente)
+        vista.dir = (k === "fecha" || k === "valor" || k === "pares" || (TABLAS[dt.id].mayorPrimero || []).indexOf(k) >= 0) ? -1 : 1;
       }
       vista.pag = 1;
       return pintarLista(dt);
@@ -1172,7 +1142,7 @@
       '" data-vence="' + fechaIso(c.vence) + '" data-pares="' + c.pares + '" data-valor="' + c.valor + '">' +
       '<td data-l="Cotización"><button class="dt__ver" type="button" title="Ver el detalle">' + c.numero + "</button></td>" +
       '<td class="dt__fec" data-l="Fecha">' + fechaCorta(c.fecha) + "</td>" +
-      '<td class="dt__cli" data-l="Cliente" title="' + esc(c.cliente.nombre) + " · NIT " + c.cliente.nit + '">' +
+      '<td class="dt__cli" data-l="Cliente" title="' + esc(c.cliente.nombre + " · " + idDe(c.cliente)) + '">' +
         esc(c.cliente.nombre) + "</td>" +
       '<td data-l="Vendedor" title="' + esc(c.vendedor) + '">' + esc(nombreCorto(c.vendedor)) + "</td>" +
       '<td class="num" data-l="Pares">' + miles(c.pares) + "</td>" +
@@ -1194,10 +1164,19 @@
     }
   }
 
+  /* El cliente de una fila con su nombre y su documento de hoy: pudo cambiar en Clientes */
+  function ponerClienteEnFila(tr, c) {
+    var td = celda(tr, "Cliente");
+    if (!td || !c) return;
+    td.textContent = c.nombre;
+    td.title = c.nombre + " · " + idDe(c);
+  }
+
   function entrarACotizaciones(dt, cuerpo) {
     todos("tr[data-estado]", cuerpo).forEach(function (tr) {
       var h = HISTORIAL[textoDe(tr, "Cotización")];
       if (h && h.estado !== tr.getAttribute("data-estado")) ponerEstadoCot(tr, h);
+      if (h) ponerClienteEnFila(tr, clientePor(h.cli));
     });
     var hubo = cotNuevas.length > 0;
     if (hubo) {
@@ -1232,52 +1211,92 @@
   /* Quien entró al sistema. Sin inicio de sesión no se puede saber solo */
   var VENDEDOR = { nombre: "Valentina Rojas", codigo: "VEN-03", zona: "Cúcuta" };
 
-  /* Los clientes de 04-clientes.html, con todo lo que se sabe de cada uno.
-     "vencidas" son sus facturas que ya pasaron la fecha de pago y no están pagas */
+  /* Los clientes de 04-clientes.html, con todo lo que se sabe de cada uno. Los
+     campos salen de lo que pide la DIAN para la factura electrónica (Anexo técnico
+     1.9) y de lo que usa Comercial para vender a crédito y despachar:
+     - Identificación: tipoPersona (juridica / natural), tipoDoc (código DIAN: 31 NIT,
+       13 cédula...), nit (el número como se muestra, con el DV si es NIT), nombre
+       (la razón social, o nombres y apellidos de la persona natural) y "nombres"
+       (los cuatro por separado, solo persona natural).
+     - Contacto: contacto (la persona con quien se habla; la persona natural puede no
+       dar otra y entonces es ella misma), cargo, telefono (celular), fijo, correo.
+     - Ubicación: dane (código del municipio), ciudad, direccion, barrio.
+     - Venta: canal, vendedor, pago ("Contado" o "Crédito N días"), cupo, saldo (lo
+       que debe hoy) y "vencidas": sus facturas que ya pasaron la fecha de pago y no
+       están pagas.
+     - Facturación electrónica (a futuro): responsabilidades fiscales, tributo, el
+       correo donde recibe la factura (correoFe) y si él mismo factura electrónicamente.
+     - activo: false si ya no se le vende (no sale para cotizar).
+     El de contado no tiene cupo: paga al recibir. */
   var CLIENTES = [
-    { codigo: "CL-001", nombre: "Calzado El Dorado", nit: "830.112.991-1", desde: 2023, ciudad: "Bogotá",
-      direccion: "Cra. 13 # 63-40", barrio: "Chapinero", contacto: "Luis Gómez · compras", telefono: "310 245 8871",
-      correo: "compras@calzadoeldorado.com.co", pago: "Crédito 30 días",
-      cupo: 12000000, saldo: 4800000,
-      vencidas: [] },
-    { codigo: "CL-002", nombre: "Distribuidora Tamanaco", nit: "900.221.334-7", desde: 2021, ciudad: "Cúcuta",
-      direccion: "Av. 0 # 11-52", barrio: "Centro", contacto: "Carmen Pabón · gerente", telefono: "315 882 1043",
-      correo: "pedidos@tamanaco.com.co", pago: "Crédito 60 días",
-      cupo: 9000000, saldo: 8600000,
-      vencidas: [{ factura: "FV-2026-0098", vence: "2026-09-12", total: 2150000 }] },
-    { codigo: "CL-003", nombre: "Calzado Norte", nit: "830.112.998-4", desde: 2022, ciudad: "Bogotá",
-      direccion: "Calle 80 # 24-15", barrio: "Las Ferias", contacto: "Jorge Ramírez · compras", telefono: "301 554 2290",
-      correo: "compras@calzadonorte.com.co", pago: "Crédito 30 días",
-      cupo: 15000000, saldo: 3300000,
-      vencidas: [] },
-    { codigo: "CL-004", nombre: "Almacén La Bota Fina", nit: "901.455.210-2", desde: 2024, ciudad: "Bucaramanga",
-      direccion: "Cra. 15 # 34-21", barrio: "Centro", contacto: "Diana Serrano · propietaria", telefono: "317 640 3318",
-      correo: "ventas@labotafina.com.co", pago: "Contado",
-      cupo: 6000000, saldo: 0,
-      vencidas: [] },
-    { codigo: "CL-005", nombre: "Comercial Los Andes", nit: "890.332.117-9", desde: 2019, ciudad: "Bucaramanga",
-      direccion: "Calle 36 # 19-40", barrio: "Cabecera del Llano", contacto: "Óscar Villamizar · compras", telefono: "312 908 4476",
-      correo: "compras@comerciallosandes.com.co", pago: "Crédito 60 días",
-      cupo: 18000000, saldo: 15900000,
+    { codigo: "CL-001", nombre: "Calzado El Dorado", tipoPersona: "juridica", tipoDoc: "31", nit: "830.112.991-6",
+      desde: 2023, dane: "11001", ciudad: "Bogotá", direccion: "Cra. 13 # 63-40", barrio: "Chapinero",
+      contacto: "Luis Gómez", cargo: "compras", telefono: "310 245 8871", fijo: "601 348 2210",
+      correo: "compras@calzadoeldorado.com.co", canal: "Almacén", vendedor: "Andrés Quintero",
+      pago: "Crédito 30 días", cupo: 12000000, saldo: 4800000, vencidas: [],
+      responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "facturas@calzadoeldorado.com.co", facturador: true },
+    { codigo: "CL-002", nombre: "Distribuidora Tamanaco", tipoPersona: "juridica", tipoDoc: "31", nit: "900.221.334-8",
+      desde: 2021, dane: "54001", ciudad: "Cúcuta", direccion: "Av. 0 # 11-52", barrio: "Centro",
+      contacto: "Carmen Pabón", cargo: "gerente", telefono: "315 882 1043", fijo: "607 571 4420",
+      correo: "pedidos@tamanaco.com.co", canal: "Distribuidor", vendedor: "Valentina Rojas",
+      pago: "Crédito 60 días", cupo: 9000000, saldo: 8600000,
+      vencidas: [{ factura: "FV-2026-0098", vence: "2026-09-12", total: 2150000 }],
+      responsabilidades: ["O-47"], tributo: "01", correoFe: "facturacion@tamanaco.com.co", facturador: true,
+      obs: "Recibe de lunes a viernes, de 7 a 11 de la mañana, en la bodega de la Av. 0." },
+    { codigo: "CL-003", nombre: "Calzado Norte", tipoPersona: "juridica", tipoDoc: "31", nit: "830.112.998-7",
+      desde: 2022, dane: "11001", ciudad: "Bogotá", direccion: "Calle 80 # 24-15", barrio: "Las Ferias",
+      contacto: "Jorge Ramírez", cargo: "compras", telefono: "301 554 2290", fijo: "",
+      correo: "compras@calzadonorte.com.co", canal: "Almacén", vendedor: "Andrés Quintero",
+      pago: "Crédito 30 días", cupo: 15000000, saldo: 13200000, vencidas: [],
+      responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "compras@calzadonorte.com.co", facturador: true },
+    { codigo: "CL-004", nombre: "Almacén La Bota Fina", tipoPersona: "juridica", tipoDoc: "31", nit: "901.455.210-1",
+      desde: 2024, dane: "68001", ciudad: "Bucaramanga", direccion: "Cra. 15 # 34-21", barrio: "Centro",
+      contacto: "Diana Serrano", cargo: "propietaria", telefono: "317 640 3318", fijo: "",
+      correo: "ventas@labotafina.com.co", canal: "Almacén", vendedor: "Valentina Rojas",
+      pago: "Contado", cupo: 0, saldo: 0, vencidas: [],
+      responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "ventas@labotafina.com.co", facturador: true },
+    { codigo: "CL-005", nombre: "Comercial Los Andes", tipoPersona: "juridica", tipoDoc: "31", nit: "890.332.117-7",
+      desde: 2019, dane: "68001", ciudad: "Bucaramanga", direccion: "Calle 36 # 19-40", barrio: "Cabecera del Llano",
+      contacto: "Óscar Villamizar", cargo: "compras", telefono: "312 908 4476", fijo: "607 634 9012",
+      correo: "compras@comerciallosandes.com.co", canal: "Cadena", vendedor: "Marcela Duarte",
+      pago: "Crédito 60 días", cupo: 18000000, saldo: 15900000,
       vencidas: [{ factura: "FV-2026-0091", vence: "2026-09-04", total: 3480000 },
-                 { factura: "FV-2026-0104", vence: "2026-09-22", total: 1920000 }] },
-    { codigo: "CL-006", nombre: "Almacén Sur", nit: "901.778.043-5", desde: 2025, ciudad: "Bucaramanga",
-      direccion: "Cra. 21 # 45-08", barrio: "La Concordia", contacto: "Paola Rueda · administradora", telefono: "318 221 7765",
-      correo: "compras@almacensur.com.co", pago: "Crédito 30 días",
-      cupo: 7000000, saldo: 2480000,
-      vencidas: [] },
-    { codigo: "CL-007", nombre: "Comercializadora Pamplona", nit: "900.664.812-3", desde: 2022, ciudad: "Pamplona",
-      direccion: "Calle 6 # 5-33", barrio: "El Carmen", contacto: "Hernán Jaimes · gerente", telefono: "314 776 0091",
-      correo: "gerencia@comercializadorapamplona.com.co", pago: "Crédito 30 días",
-      cupo: 5000000, saldo: 5200000,
+                 { factura: "FV-2026-0104", vence: "2026-09-22", total: 1920000 }],
+      responsabilidades: ["O-15", "O-23"], tributo: "01", correoFe: "recepcionfe@comerciallosandes.com.co", facturador: true,
+      obs: "Exige orden de compra en cada factura; sin ella la devuelven." },
+    { codigo: "CL-006", nombre: "Almacén Sur", tipoPersona: "juridica", tipoDoc: "31", nit: "901.778.043-4",
+      desde: 2025, dane: "68001", ciudad: "Bucaramanga", direccion: "Cra. 21 # 45-08", barrio: "La Concordia",
+      contacto: "Paola Rueda", cargo: "administradora", telefono: "318 221 7765", fijo: "",
+      correo: "compras@almacensur.com.co", canal: "Almacén", vendedor: "Andrés Quintero",
+      pago: "Crédito 30 días", cupo: 7000000, saldo: 2480000, vencidas: [],
+      responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "compras@almacensur.com.co", facturador: true },
+    { codigo: "CL-007", nombre: "Comercializadora Pamplona", tipoPersona: "juridica", tipoDoc: "31", nit: "900.664.812-8",
+      desde: 2022, dane: "54518", ciudad: "Pamplona", direccion: "Calle 6 # 5-33", barrio: "El Carmen",
+      contacto: "Hernán Jaimes", cargo: "gerente", telefono: "314 776 0091", fijo: "",
+      correo: "gerencia@comercializadorapamplona.com.co", canal: "Distribuidor", vendedor: "Marcela Duarte",
+      pago: "Crédito 30 días", cupo: 5000000, saldo: 5200000,
       vencidas: [{ factura: "FV-2026-0076", vence: "2026-07-20", total: 1640000 },
                  { factura: "FV-2026-0089", vence: "2026-08-01", total: 2310000 },
-                 { factura: "FV-2026-0101", vence: "2026-08-19", total: 1250000 }] },
-    { codigo: "CL-008", nombre: "Calzado del Oriente", nit: "901.220.556-8", desde: 2024, ciudad: "Ocaña",
-      direccion: "Calle 11 # 13-60", barrio: "Centro", contacto: "Yolanda Quintero · propietaria", telefono: "316 430 5582",
-      correo: "ventas@calzadodeloriente.com.co", pago: "Contado",
-      cupo: 4000000, saldo: 0,
-      vencidas: [] }
+                 { factura: "FV-2026-0101", vence: "2026-08-19", total: 1250000 }],
+      responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "gerencia@comercializadorapamplona.com.co", facturador: true },
+    { codigo: "CL-008", nombre: "Calzado del Oriente", tipoPersona: "juridica", tipoDoc: "31", nit: "901.220.556-5",
+      desde: 2024, dane: "54498", ciudad: "Ocaña", direccion: "Calle 11 # 13-60", barrio: "Centro",
+      contacto: "Yolanda Quintero", cargo: "propietaria", telefono: "316 430 5582", fijo: "",
+      correo: "ventas@calzadodeloriente.com.co", canal: "Almacén", vendedor: "Valentina Rojas",
+      pago: "Contado", cupo: 0, saldo: 0, vencidas: [],
+      responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "ventas@calzadodeloriente.com.co", facturador: true }
+  ];
+
+  /* Los tipos de documento, con su código de la DIAN para la factura electrónica (tabla
+     13.2.1 del Anexo técnico 1.9). Los usa todo lo que muestra el documento de un cliente */
+  var TIPOS_DOC = [
+    { cod: "31", nombre: "NIT", sigla: "NIT" },
+    { cod: "13", nombre: "Cédula de ciudadanía", sigla: "C.C." },
+    { cod: "22", nombre: "Cédula de extranjería", sigla: "C.E." },
+    { cod: "41", nombre: "Pasaporte", sigla: "Pasaporte" },
+    { cod: "48", nombre: "Permiso por Protección Temporal (PPT)", sigla: "PPT" },
+    { cod: "42", nombre: "Documento de identificación extranjero", sigla: "Doc. extranjero" },
+    { cod: "50", nombre: "NIT de otro país", sigla: "NIT ext." }
   ];
 
   /* Los modelos de Diseño (02-diseno) con el precio de lista de Comercial y los
@@ -1343,6 +1362,8 @@
     return (p[0].charAt(0) + p[p.length - 1].charAt(0)).toUpperCase();
   }
   function estadoCliente(c) {
+    // de contado: no tiene cupo que llenar; si todavía debe algo, es como pasarse del cupo
+    if (!c.cupo) return c.saldo > 0 ? { texto: "Cupo excedido", tono: "crit" } : { texto: "Al día", tono: "ok" };
     if (c.saldo > c.cupo) return { texto: "Cupo excedido", tono: "crit" };
     if (c.saldo >= c.cupo * CUPO_AVISO / 100) return { texto: "Cupo casi lleno", tono: "warn" };
     return { texto: "Al día", tono: "ok" };
@@ -1361,6 +1382,17 @@
     });
   }
   function totalVencido(c) { return c.vencidas.reduce(function (s, v) { return s + v.total; }, 0); }
+
+  function tipoDocDe(cod) { return TIPOS_DOC.filter(function (t) { return t.cod === cod; })[0] || TIPOS_DOC[0]; }
+  /* Su documento como se lee: "NIT 900.221.334-8", "C.C. 1.090.441.203" */
+  function idDe(c) { return tipoDocDe(c.tipoDoc).sigla + " " + c.nit; }
+  /* Cuánto del cupo ya usó, en %; null si es de contado (no tiene cupo) */
+  function usoDe(c) { return c.cupo ? Math.floor(100 * c.saldo / c.cupo) : null; }
+  /* Con quién se habla, con su cargo: "Carmen Pabón · gerente". Si la persona natural
+     no dio otro contacto, es ella misma (con su nombre de hoy) */
+  function contactoDe(c) { return [c.contacto || c.nombre, c.cargo].filter(Boolean).join(" · "); }
+  /* El correo, que puede partir el renglón después de la @ y de cada punto */
+  function correoHtml(correo) { return esc(correo).replace(/([@.])/g, "$1<wbr>"); }
   function entero(v) {
     var n = parseInt(v, 10);
     return isNaN(n) ? 0 : n;
@@ -1393,17 +1425,22 @@
 
   function pintarClientes() {
     var caja = uno("#cot-cli-res");
-    var lista = buscarEn(CLIENTES, uno("#cot-cli-q").value, function (c) {
-      return c.nombre + " " + c.nit + " " + c.codigo + " " + c.ciudad;
+    var lista = buscarEn(activos(), uno("#cot-cli-q").value, function (c) {   // al inactivo ya no se le vende
+      return c.nombre + " " + idDe(c) + " " + c.ciudad;
     });
+    // Si no hay activos con eso pero sí un inactivo, se dice: no hay que registrarlo otra vez
+    var inactivo = lista.length ? null : buscarEn(CLIENTES.filter(function (c) { return c.activo === false; }), uno("#cot-cli-q").value,
+      function (c) { return c.nombre + " " + idDe(c) + " " + c.ciudad; })[0];
     caja.innerHTML = lista.length ? lista.map(function (c, i) {
       var e = estadoPrincipal(c);
       return '<button type="button" class="cot-res__i' + (i === 0 ? " is-on" : "") + '" role="option" data-cli="' + c.codigo + '">' +
-        '<span class="avatar avatar--sm" aria-hidden="true">' + iniciales(c.nombre) + "</span>" +
-        '<span class="cot-res__x"><b>' + c.nombre + "</b><small>NIT " + c.nit + " · " + c.codigo + " · " + c.ciudad + "</small></span>" +
+        '<span class="avatar avatar--sm" aria-hidden="true">' + esc(iniciales(c.nombre)) + "</span>" +
+        '<span class="cot-res__x"><b>' + esc(c.nombre) + "</b><small>" + esc(idDe(c)) + " · " + c.ciudad + "</small></span>" +
         '<span class="pill pill--' + e.tono + '">' + e.texto + "</span></button>";
-    }).join("") : '<p class="cot-res__vacio">Ningún cliente tiene ese nombre, NIT o cédula. Si es nuevo, ' +
-                  'regístrelo primero en <a href="04-clientes.html">Clientes</a>.</p>';
+    }).join("") : inactivo ? '<p class="cot-res__vacio">' + esc(inactivo.nombre) + ' está inactivo: para cotizarle, actívelo en ' +
+                  '<a href="04-clientes.html">Clientes</a> (Editar cliente).</p>'
+                : '<p class="cot-res__vacio">Ningún cliente tiene ese nombre, NIT o cédula. Si es nuevo, ' +
+                  'regístrelo primero en <a href="04-cliente-nuevo.html">Nuevo cliente</a>.</p>';
     verResultados(caja, true);
   }
 
@@ -1446,7 +1483,7 @@
 
   function iniciarNueva() {
     var form = uno("#cot-form");
-    if (form.getAttribute("data-listo")) return;   // volvió a una que dejó a medias
+    if (form.getAttribute("data-listo")) return pintarCotizacion();   // volvió a una que dejó a medias
     form.setAttribute("data-listo", "1");
     var dia = new Date();
     cot = { numero: "", estado: "nueva", cliente: null, lineas: [], descuentos: {}, fecha: dia, verFicha: false };
@@ -1458,6 +1495,10 @@
     uno("#cot-cli-q").value = "";
     uno("#cot-obs").value = "";
     pintarCotizacion();
+    if (cliACotizar) {
+      elegirCliente(cliACotizar);
+      cliACotizar = null;
+    }
   }
 
   /* Todo lo que depende de cot: número, estado, pasos, ficha, productos y botones */
@@ -1480,18 +1521,21 @@
     pintarLineas(t);
     var cotizar = uno('[data-cot="cotizar"]');
     cotizar.hidden = !nueva;
-    cotizar.disabled = !cot.cliente;
+    var inactivo = !!cot.cliente && cot.cliente.activo === false;
+    todos('[data-cot="abrir-productos"]').forEach(function (b) { b.disabled = inactivo; });
+    cotizar.disabled = !cot.cliente || inactivo;
     var borrador = uno('[data-cot="borrador"]');
     borrador.hidden = nueva;
-    borrador.disabled = !cot.cliente || !t.renglones;
+    borrador.disabled = !cot.cliente || inactivo || !t.renglones;
     var enviar = uno('[data-cot="enviar"]');
     enviar.hidden = nueva;
-    enviar.disabled = !cot.cliente || !t.renglones || t.sinCant > 0 || t.descAlto > 0;
+    enviar.disabled = !cot.cliente || inactivo || !t.renglones || t.sinCant > 0 || t.descAlto > 0;
     uno("#cot-msg").textContent = mensaje(t);
   }
 
   function mensaje(t) {
     if (!cot.cliente) return "Seleccione un cliente para poder cotizar.";
+    if (cot.cliente.activo === false) return cot.cliente.nombre + " ya no está activo: actívelo en Clientes (Editar cliente) o cambie de cliente.";
     if (cot.estado === "nueva") return "Todo listo: al cotizar, la cotización toma su número y se abre la lista de productos.";
     if (!t.renglones) return "Agregue al menos un producto para poder enviarla.";
     if (t.sinCant) return "Hay renglones sin cantidad: escríbala o quite el renglón.";
@@ -1518,13 +1562,15 @@
     ficha.hidden = !c;
     if (!c) return;
     var e = estadoCliente(c), n = c.vencidas.length;
-    var libre = Math.max(0, c.cupo - c.saldo);
-    var uso = Math.min(100, Math.round(100 * c.saldo / c.cupo));
+    var libre = Math.max(0, c.cupo - c.saldo), uso = usoDe(c);
     // Arriba, lo que más pesa: si tiene facturas vencidas no está "Al día", aunque le quede cupo
-    var estados = (n ? '<span class="pill pill--crit">' + cuantas(n, "factura vencida", "facturas vencidas") + "</span>" : "") +
+    var estados = (c.activo === false ? '<span class="pill pill--off">Inactivo</span>' : "") +
+                  (n ? '<span class="pill pill--crit">' + cuantas(n, "factura vencida", "facturas vencidas") + "</span>" : "") +
                   (!n || e.tono !== "ok" ? '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>" : "");
     var alerta = "";
-    if (e.tono === "crit") {
+    if (c.activo === false) {
+      // ya lo dice su aviso de vencidas o la píldora: no se le cotiza
+    } else if (e.tono === "crit") {
       alerta = avisoHtml("crit", "Cupo excedido", "Debe " + pesos(c.saldo) + " con un cupo de " + pesos(c.cupo) +
                          ". Se le puede cotizar, pero Facturación la retiene hasta que pague.");
     } else if (e.tono === "warn") {
@@ -1533,27 +1579,28 @@
     }
     ficha.innerHTML =
       '<div class="cot-ficha__cab">' +
-        '<div class="who"><span class="avatar" aria-hidden="true">' + iniciales(c.nombre) + "</span>" +
-          "<div><b>" + c.nombre + "</b><small>NIT " + c.nit + " · " + c.codigo + " · cliente desde " + c.desde + "</small></div></div>" +
+        '<div class="who"><span class="avatar" aria-hidden="true">' + esc(iniciales(c.nombre)) + "</span>" +
+          "<div><b>" + esc(c.nombre) + "</b><small>" + esc(idDe(c)) + " · cliente desde " + c.desde + "</small></div></div>" +
         '<span class="cot-ficha__estados">' + estados + "</span>" +
         '<button class="btn btn--sm btn--ghost" type="button" data-cot="cambiar-cliente">Cambiar cliente</button>' +
       "</div>" +
       '<div class="cot-ficha__g">' +
-        seccion("Contacto", kv("Persona", c.contacto) + kv("Teléfono", c.telefono) + kv("Correo", c.correo.replace("@", "@<wbr>"))) +
-        seccion("Entrega", kv("Dirección", c.direccion) + kv("Barrio", c.barrio) + kv("Ciudad", c.ciudad)) +
-        seccion("Crédito", kv("Forma de pago", c.pago) + kv("Cupo", pesos(c.cupo)) + kv("Debe hoy", pesos(c.saldo)) +
-                           kv("Disponible", pesos(libre)) +
-                           '<div class="bar' + (e.tono === "ok" ? " bar--ok" : e.tono === "crit" ? " bar--crit" : "") +
-                           '"><i style="width:' + uso + '%"></i></div>' +
-                           '<span class="tiny">Usa el ' + uso + " % del cupo</span>" +
+        seccion("Contacto", kv("Persona", esc(contactoDe(c))) + kv("Teléfono", esc(c.telefono)) + kv("Correo", correoHtml(c.correo))) +
+        seccion("Entrega", kv("Dirección", esc(c.direccion)) + (c.barrio ? kv("Barrio", esc(c.barrio)) : "") + kv("Ciudad", c.ciudad)) +
+        seccion("Crédito", kv("Forma de pago", c.pago) +
+                           (uso === null ? '<span class="tiny">De contado: no tiene cupo de crédito.</span>'
+                             : kv("Cupo", pesos(c.cupo)) + kv("Debe hoy", pesos(c.saldo)) + kv("Disponible", pesos(libre)) +
+                               '<div class="bar' + (e.tono === "ok" ? " bar--ok" : e.tono === "crit" ? " bar--crit" : "") +
+                               '"><i style="width:' + Math.min(100, uso) + '%"></i></div>' +
+                               '<span class="tiny">Usa el ' + uso + " % del cupo</span>") +
                            kv("Facturas vencidas", n ? '<span class="cot-mal">' + n + " · " + pesos(totalVencido(c)) + "</span>"
                                                      : '<span class="cot-bien">Ninguna</span>')) +
       "</div>" + vencidasHtml(c) + alerta;
     if (resumida) {
       uno("#cot-cli-mini").innerHTML =
-        '<span class="avatar avatar--sm" aria-hidden="true">' + iniciales(c.nombre) + "</span>" +
-        '<div class="cot-cli-mini__x"><div class="cot-cli-mini__n"><b>' + c.nombre + '</b><span class="cot-ficha__estados">' + estados + "</span></div>" +
-          "<small>NIT " + c.nit + " · " + c.ciudad + " · " + c.pago + " · disponible " + pesos(libre) + "</small></div>" +
+        '<span class="avatar avatar--sm" aria-hidden="true">' + esc(iniciales(c.nombre)) + "</span>" +
+        '<div class="cot-cli-mini__x"><div class="cot-cli-mini__n"><b>' + esc(c.nombre) + '</b><span class="cot-ficha__estados">' + estados + "</span></div>" +
+          "<small>" + esc(idDe(c)) + " · " + c.ciudad + " · " + c.pago + (c.cupo ? " · disponible " + pesos(libre) : "") + "</small></div>" +
         '<button class="btn btn--sm btn--ghost" type="button" data-cot="ver-ficha" aria-expanded="' + !!cot.verFicha + '" aria-controls="cot-cli-cuerpo">' +
           (cot.verFicha ? "Ocultar ficha" : "Ver ficha completa") + "</button>" +
         '<button class="btn btn--sm btn--ghost" type="button" data-cot="cambiar-cliente">Cambiar cliente</button>';
@@ -1568,7 +1615,8 @@
     return '<div class="cot-vencidas">' +
       '<div class="cot-vencidas__cab">' + icono("alerta", 20) +
         "<div><b>" + cuantas(vs.length, "factura vencida", "facturas vencidas") + " por " + pesos(totalVencido(c)) + "</b>" +
-        "<p>Se le puede cotizar, pero no se le podrá facturar hasta que las pague.</p></div></div>" +
+        "<p>" + (c.activo === false ? "Está inactivo: no se le cotiza, y no se le podrá facturar hasta que las pague."
+                                     : "Se le puede cotizar, pero no se le podrá facturar hasta que las pague.") + "</p></div></div>" +
       '<table class="cot-vencidas__t"><thead><tr><th>Factura</th><th>Venció el</th><th class="num">Hace</th><th class="num">Total</th></tr></thead><tbody>' +
       vs.map(function (v) {
         return '<tr><td data-l="Factura"><b>' + v.factura + '</b></td><td data-l="Venció el">' + fechaLarga(v.vence) + "</td>" +
@@ -1590,7 +1638,8 @@
         '<button class="btn btn--sm" type="button" data-cot="abrir-productos">Agregar productos</button></div>';
 
     uno("#cot-tot").innerHTML = totalesHtml(t);
-    uno("#cot-avisos").innerHTML = t.renglones ? avisosCotizacion(t) : "";
+    // el de un cliente inactivo sale siempre, aunque todavía no haya productos
+    uno("#cot-avisos").innerHTML = t.renglones || (cot.cliente && cot.cliente.activo === false) ? avisosCotizacion(t) : "";
   }
 
   /* Subtotal, descuentos, el IVA de cada tarifa (y sobre cuánto), lo que no lleva IVA y el total */
@@ -1646,6 +1695,9 @@
   /* Lo que el vendedor tiene que saber antes de enviarla */
   function avisosCotizacion(t) {
     var c = cot.cliente, h = "";
+    if (c && c.activo === false) {
+      return avisoHtml("crit", c.nombre + " ya no está activo", "No se le puede cotizar. Para volver a venderle, actívelo en Clientes (Editar cliente).");
+    }
     if (c && c.vencidas.length) {
       h += avisoHtml("crit", "El cliente tiene " + cuantas(c.vencidas.length, "factura vencida", "facturas vencidas") +
                      " por " + pesos(totalVencido(c)), "Se puede enviar a Facturación, pero allá no se le podrá facturar hasta que las pague.");
@@ -1969,11 +2021,12 @@
 
   function abrirProductos() {
     var c = cot.cliente;
+    if (c && c.activo === false) return aviso(c.nombre + " ya no está activo: no se le puede cotizar.", "crit");
     if (!c) {
       uno("#cot-cli-q").focus();
       return aviso("Primero seleccione un cliente.", "crit");
     }
-    uno("#cot-dlg-sub").textContent = cot.numero + " · " + c.nombre + " · cupo disponible " + pesos(Math.max(0, c.cupo - c.saldo));
+    uno("#cot-dlg-sub").textContent = cot.numero + " · " + c.nombre + (c.cupo ? " · cupo disponible " + pesos(Math.max(0, c.cupo - c.saldo)) : " · de contado");
     uno("#cot-dlg").hidden = false;
     uno("#cot-vit-q").value = vit.q;
     uno("#cot-vit-solo").checked = vit.solo;
@@ -2297,6 +2350,7 @@
       uno("#cot-cli-q").focus();
       return aviso("Primero seleccione un cliente.", "crit");
     }
+    if (cot.cliente.activo === false) return aviso(cot.cliente.nombre + " ya no está activo: no se le puede cotizar.", "crit");
     cot.numero = "CO-" + cot.fecha.getFullYear() + "-" + ("00" + (ultimaCot + 1)).slice(-3);
     cot.estado = "elaboracion";
     pintarCotizacion();
@@ -2307,6 +2361,7 @@
   function guardarCotizacion(estado) {
     var t = totales();
     if (!cot.cliente) return aviso("Seleccione un cliente.", "crit");
+    if (cot.cliente.activo === false) return aviso(cot.cliente.nombre + " ya no está activo: no se le puede cotizar.", "crit");
     if (!t.renglones) return aviso("Agregue al menos un producto.", "crit");
     if (t.sinCant) return aviso("Hay renglones sin cantidad: escríbala o quite el renglón.", "crit");
     if (estado === "porfacturar" && t.descAlto) {
@@ -2470,6 +2525,9 @@
     if (uno("#cot-form")) iniciarNueva();
     if (uno("#dt-fac")) iniciarTabla("dt-fac");
     if (uno("#fac-form")) iniciarFactura();
+    if (uno("#dt-cli")) iniciarTabla("dt-cli");
+    if (uno("#cli-form")) iniciarCliente();
+    ponerEnMenu(CLI_LISTA, activos().length);   // los clientes a los que se les vende
     // Las cotizaciones por facturar: lo que espera Facturación, en las dos pestañas
     var n = porFacturar().length;
     ponerEnMenu(LISTA, n);
@@ -2654,18 +2712,18 @@
         nombreEstado(q.estado) + "</span><p>" + textoEstado(q) + "</p></div>" + recorridoHtml(q) +
       (["borrador", "porfacturar"].indexOf(q.estado) >= 0 && vs.length
         ? avisoHtml("crit", "Facturación no la puede facturar mientras el cliente tenga facturas vencidas",
-            c.nombre + " debe " + enLista(vs.map(function (v) {
+            esc(c.nombre) + " debe " + enLista(vs.map(function (v) {
               return sinPartir(v.factura) + " (" + pesos(v.total) + ", vencida hace " + sinPartir(cuantas(v.dias, "día", "días")) + ")";
             })) + ". Primero tiene que pagarlas.")
         : "");
 
     uno("#cot-det-ficha").innerHTML =
-      seccion("Cliente", '<b class="cot-det__cli">' + c.nombre + '</b><span class="tiny">NIT ' + c.nit + " · " + c.ciudad + "</span>" +
-                         kv("Contacto", c.contacto) + kv("Teléfono", c.telefono) + kv("Forma de pago", c.pago)) +
+      seccion("Cliente", '<b class="cot-det__cli">' + esc(c.nombre) + '</b><span class="tiny">' + esc(idDe(c)) + " · " + c.ciudad + "</span>" +
+                         kv("Contacto", esc(contactoDe(c))) + kv("Teléfono", esc(c.telefono)) + kv("Forma de pago", c.pago)) +
       seccion("Datos", kv("Fecha", fechaLarga(q.fecha)) + kv("Válida hasta", fechaLarga(q.vence)) +
                        kv("Vendedor", q.vendedor) +
                        // Al enviarla a Facturación, al cliente le llega el PDF: solo para que la conozca
-                       (q.pasos.porfacturar !== undefined ? kv("PDF enviado a", c.correo.replace("@", "@<wbr>")) : "") +
+                       (q.pasos.porfacturar !== undefined ? kv("PDF enviado a", correoHtml(c.correo)) : "") +
                        (q.factura ? kv("Factura", q.factura) : ""));
 
     uno("#cot-det-prod-sub").textContent = cuantas(refs.length, "modelo", "modelos") + " · " + cuantas(t.pares, "par", "pares");
@@ -2676,25 +2734,32 @@
     uno("#cot-det-tot").innerHTML = totalesHtml(t);
   }
 
-  function detalleAbierto() {
-    var caja = uno("#cot-det");
-    return !!caja && !caja.hidden;
-  }
+  /* ---- El panel de detalle, el mismo para todas las tablas ----
+     Cada tabla que abre un detalle dice aquí en qué panel (su id) y cómo se pinta
+     lo de la fila. Cotizaciones y Clientes lo usan igual: se abre con un clic en la
+     fila (o Enter sobre su primer botón) y se cierra con la ✕, con Esc o pulsando
+     fuera; mientras está abierto, el Tab no se sale de él. */
+  var DETALLES = {
+    "dt-cot": { panel: "cot-det", pintar: function (tr) { pintarDetalle(detalleDe(tr)); } }
+  };
+
+  function panelAbierto() { return uno(".cot-det-fondo:not([hidden])"); }
 
   function abrirDetalle(tr) {
-    var caja = uno("#cot-det");
+    var caja = uno("#" + DETALLES[tr.closest(".dt").id].panel);
     if (detalleDesde) detalleDesde.classList.remove("is-sel");
     detalleDesde = tr;
     tr.classList.add("is-sel");
-    pintarDetalle(detalleDe(tr));
+    DETALLES[tr.closest(".dt").id].pintar(tr);
     caja.hidden = false;
     uno(".cot-det__cuerpo", caja).scrollTop = 0;
     uno(".cot-det", caja).focus();
   }
 
   function cerrarDetalle() {
-    if (!detalleAbierto()) return;
-    uno("#cot-det").hidden = true;
+    var caja = panelAbierto();
+    if (!caja) return;
+    caja.hidden = true;
     if (!detalleDesde) return;
     detalleDesde.classList.remove("is-sel");
     var b = uno(".dt__ver", detalleDesde);
@@ -2703,31 +2768,35 @@
   }
 
   document.addEventListener("click", function (e) {
-    if (!e.target.closest || !uno("#cot-det")) return;
-    if (detalleAbierto()) {
+    if (!e.target.closest) return;
+    var caja = panelAbierto();
+    if (caja) {
       // Se cierra con la ✕ o pulsando fuera del panel
-      if (e.target === uno("#cot-det") || e.target.closest('[data-det="cerrar"]')) cerrarDetalle();
+      // (el segundo clic de un doble clic en la fila, detail 2, no lo cierra)
+      if ((e.target === caja && e.detail < 2) || e.target.closest('[data-det="cerrar"]')) cerrarDetalle();
       return;
     }
-    var tr = e.target.closest("#dt-cot tbody tr[data-estado]");
-    if (!tr || e.target.closest("a, input, select")) return;
+    var tr = e.target.closest(".dt tbody tr[data-estado]");
+    if (!tr || !DETALLES[tr.closest(".dt").id] || e.target.closest("a, input, select")) return;
     if (String(window.getSelection && window.getSelection()).trim()) return;   // estaba copiando texto de la fila
     abrirDetalle(tr);
   });
 
   // Con el detalle abierto, Esc lo cierra y el Tab no se sale de él
   document.addEventListener("keydown", function (e) {
-    if (!detalleAbierto()) return;
+    var caja = panelAbierto();
+    if (!caja) return;
     if (e.key === "Escape") {
       e.preventDefault();
       e.stopPropagation();
       return cerrarDetalle();
     }
     if (e.key === "Tab") {
-      var f = todos('[data-det="cerrar"], .cot-det__cuerpo', uno("#cot-det"));
+      var f = todos('button:not([disabled]), a[href], [tabindex="0"]', caja).filter(function (x) { return x.offsetParent; });
       var i = f.indexOf(document.activeElement);
       e.preventDefault();
-      f[(i + (e.shiftKey ? f.length - 1 : 1)) % f.length].focus();
+      if (i < 0) f[e.shiftKey ? f.length - 1 : 0].focus();   // recién abierto: el foco está en el panel
+      else f[(i + (e.shiftKey ? f.length - 1 : 1)) % f.length].focus();
     }
   }, true);
 
@@ -2810,7 +2879,7 @@
       '" data-vence="' + (f.vence ? fechaIso(f.vence) : "") + '" data-valor="' + f.valor + '">' +
       '<td data-l="Factura"><b>' + f.numero + "</b></td>" +
       '<td class="dt__fec" data-l="Fecha">' + fechaCorta(f.fecha) + "</td>" +
-      '<td class="dt__cli" data-l="Cliente" title="' + esc(f.cliente.nombre) + " · NIT " + f.cliente.nit + '">' +
+      '<td class="dt__cli" data-l="Cliente" title="' + esc(f.cliente.nombre + " · " + idDe(f.cliente)) + '">' +
         esc(f.cliente.nombre) + "</td>" +
       '<td data-l="Cotización">' + f.cotizacion + "</td>" +
       '<td data-l="Pago">' + f.pago + "</td>" +
@@ -2818,7 +2887,14 @@
       '<td data-l="Estado"><span class="pill pill--' + TONO_FAC[f.estado] + '">' + NOMBRE_FAC[f.estado] + "</span></td></tr>";
   }
 
+  /* De quién es una factura: de la cotización que se facturó con ella, o del cliente que la debe */
+  function clienteDeFactura(numero) {
+    for (var n in HISTORIAL) if (HISTORIAL[n].factura === numero) return clientePor(HISTORIAL[n].cli);
+    return CLIENTES.filter(function (c) { return c.vencidas.some(function (v) { return v.factura === numero; }); })[0];
+  }
+
   function entrarAFacturas(dt, cuerpo) {
+    todos("tr[data-estado]", cuerpo).forEach(function (tr) { ponerClienteEnFila(tr, clienteDeFactura(textoDe(tr, "Factura"))); });
     var hubo = facNuevas.length > 0;
     if (hubo) {
       todos("tr.es-nueva", cuerpo).forEach(function (tr) { tr.classList.remove("es-nueva"); });
@@ -2898,7 +2974,7 @@
 
   function iniciarFactura() {
     var form = uno("#fac-form");
-    if (form.getAttribute("data-listo")) return;   // volvió a una que dejó a medias
+    if (form.getAttribute("data-listo")) return pintarFactura();   // volvió a una que dejó a medias
     form.setAttribute("data-listo", "1");
     var dia = new Date();
     fac = { cot: null, pago: "", q: "", iq: "", fecha: dia };
@@ -2997,16 +3073,17 @@
      centrada, el nombre, su identificación y debajo lo demás */
   function clienteFacturaHtml(c, r) {
     var e = estadoCliente(c), n = r.vencidas.length;
-    var estados = (n ? '<span class="pill pill--crit">' + cuantas(n, "factura vencida", "facturas vencidas") + "</span>" : "") +
+    var estados = (c.activo === false ? '<span class="pill pill--off" title="Ya no se le vende: no sale para cotizar">Inactivo</span>' : "") +
+                  (n ? '<span class="pill pill--crit">' + cuantas(n, "factura vencida", "facturas vencidas") + "</span>" : "") +
                   (!n || e.tono !== "ok" ? '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>" : "");
     return '<div class="fac-cli">' +
-      '<span class="avatar fac-cli__foto" aria-hidden="true">' + iniciales(c.nombre) + "</span>" +
-      '<b class="fac-cli__nombre">' + c.nombre + "</b>" +
-      '<span class="fac-cli__id"><span>NIT</span> ' + c.nit + "</span>" +
+      '<span class="avatar fac-cli__foto" aria-hidden="true">' + esc(iniciales(c.nombre)) + "</span>" +
+      '<b class="fac-cli__nombre">' + esc(c.nombre) + "</b>" +
+      '<span class="fac-cli__id"><span>' + tipoDocDe(c.tipoDoc).sigla + "</span> " + esc(c.nit) + "</span>" +
       '<span class="cot-ficha__estados">' + estados + "</span>" +
       '<div class="fac-cli__datos">' +
-        seccion("Contacto", kv("Persona", c.contacto) + kv("Teléfono", c.telefono) + kv("Correo", c.correo.replace("@", "@<wbr>"))) +
-        seccion("Entrega", kv("Dirección", c.direccion) + kv("Barrio", c.barrio) + kv("Ciudad", c.ciudad)) +
+        seccion("Contacto", kv("Persona", esc(contactoDe(c))) + kv("Teléfono", esc(c.telefono)) + kv("Correo", correoHtml(c.correo))) +
+        seccion("Entrega", kv("Dirección", esc(c.direccion)) + (c.barrio ? kv("Barrio", esc(c.barrio)) : "") + kv("Ciudad", c.ciudad)) +
         seccion("Crédito", kv("Forma de pago", c.pago) +
                            (r.tieneCredito ? kv("Cupo", pesos(c.cupo)) + kv("Debe hoy", pesos(c.saldo)) + kv("Disponible", pesos(r.libre)) : "")) +
       "</div></div>";
@@ -3040,8 +3117,8 @@
         (on ? " is-elegida" : "") + '" role="option" aria-selected="' + on + '" data-fac-cot="' + x.numero + '">' +
       '<span class="fac-op__num"><b>' + x.numero + (on ? icono("visto", 14) : "") + "</b>" +
         "<small>de " + nombreCorto(x.vendedor) + "</small></span>" +
-      '<span class="fac-op__cli"><b title="' + x.cliente.nombre + '">' + x.cliente.nombre + "</b>" +
-        "<small>NIT " + x.cliente.nit + "</small></span>" +
+      '<span class="fac-op__cli"><b title="' + esc(x.cliente.nombre) + '">' + esc(x.cliente.nombre) + "</b>" +
+        "<small>" + esc(idDe(x.cliente)) + "</small></span>" +
       '<span class="fac-op__f fac-op__hecha"><span><span class="fac-op__l">Hecha </span>' + fechaCorta(x.fecha) + "</span>" +
         "<small>" + cuandoSeHizo(x.fecha) + "</small></span>" +
       '<span class="fac-op__f fac-op__vence"><span><span class="fac-op__l">Vence </span>' + fechaCorta(x.vence) + "</span>" +
@@ -3069,7 +3146,7 @@
       return opcionPago(p.valor, p.valor, p.ayuda, "", false);
     }).join("");
     if (!r.q) return h + opcionPago("credito", "Crédito", "Según el plazo del cliente", "", true);
-    if (!r.tieneCredito) return h + opcionPago("credito", "Crédito", r.c.nombre + " paga de contado", "", true);
+    if (!r.tieneCredito) return h + opcionPago("credito", "Crédito", esc(r.c.nombre) + " paga de contado", "", true);
     if (r.pasaCupo) {
       return h + opcionPago("credito", r.c.pago, "Pasa del cupo disponible por " + pesos(r.t.total - r.libre) +
                             ": cóbrela de contado o espere a que el cliente abone", "is-mal", true);
@@ -3095,7 +3172,7 @@
       '<div class="cot-vencidas__cab">' + icono("alerta", 20) +
         "<div><b>No se puede facturar: " + cuantas(r.vencidas.length, "factura vencida", "facturas vencidas") +
         " por " + pesos(totalVencido(r.c)) + "</b>" +
-        "<p>" + r.c.nombre + " tiene que pagarlas primero. La cotización sigue por facturar hasta que pague.</p></div></div>" +
+        "<p>" + esc(r.c.nombre) + " tiene que pagarlas primero. La cotización sigue por facturar hasta que pague.</p></div></div>" +
       // En la columna angosta va como lista: cada factura con su total, cuándo venció y hace cuánto
       '<ul class="fac-venc">' + r.vencidas.map(function (v) {
         return '<li><span class="fac-venc__cab"><b>' + v.factura + "</b><b>" + pesos(v.total) + "</b></span>" +
@@ -3221,10 +3298,802 @@
     if (items[i]) items[i].scrollIntoView({ block: "nearest" });
   });
 
-  /* ---------------------------------------------------------------- 13. Arranque */
+  /* ---------------------------------------------------------------- 13. Clientes
+
+     04-clientes.html es la lista de clientes, con la misma tabla de datos de
+     Cotizaciones y Facturación: las tarjetas (al día, cupo casi lleno y con
+     facturas vencidas) filtran, y un clic en un cliente abre su ficha a la
+     derecha, con "Editar cliente" y "Cotizar". Las filas se pintan desde CLIENTES
+     cada vez que se entra, porque lo que debe un cliente cambia en Facturación.
+     04-cliente-nuevo.html registra un cliente o cambia uno que ya existe: el mismo
+     formulario, con dos pestañas (los datos del cliente y lo de la factura
+     electrónica, que es para más adelante). A la derecha, la ficha como va
+     quedando, lo que falta y Guardar. El formulario ES el estado: se lee de los
+     campos cada vez que algo cambia (en React sería un useState con todos). */
+
+  var CLI_LISTA = "04-clientes.html";
+  var CLI_NUEVO = "04-cliente-nuevo.html";
+  var cliEditar = null;     // el cliente que se va a cambiar al abrir el formulario; null es uno nuevo
+  var cliCambiados = [];    // los que se acaban de crear o cambiar: su fila sale resaltada
+  var cliACotizar = null;   // el cliente con el que se abre la próxima cotización nueva
+  var cliNuevo = false;     // se pidió un cliente nuevo ("Nuevo cliente" o la acción rápida de Inicio)
+  var cliAntes = null;      // tributo y "factura electrónicamente" de antes de pasar solos a ZZ y No (documento sin NIT)
+  var cliIntento = false;   // ya pulsó Guardar: desde ahí cada campo dice lo que le falta
+  var CORREO = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+  /* ---- Lo que solo usa Clientes ----
+     Las listas del formulario (con los códigos de la DIAN para la factura electrónica,
+     de la Caja de herramientas del Anexo técnico 1.9: 13.2.3 tipo de persona, 13.2.6.1
+     responsabilidades y 13.2.6.2 tributos; los municipios, con su código DANE de la
+     tabla 13.4.3), el estado de un cliente en su lista y el dígito de verificación. */
+  var RESPONSABILIDADES = [
+    { cod: "O-13", nombre: "Gran contribuyente" },
+    { cod: "O-15", nombre: "Autorretenedor" },
+    { cod: "O-23", nombre: "Agente de retención IVA" },
+    { cod: "O-47", nombre: "Régimen simple de tributación" },
+    { cod: "R-99-PN", nombre: "No aplica – Otros" }
+  ];
+  var TRIBUTOS = [
+    { cod: "01", nombre: "IVA" },
+    { cod: "04", nombre: "INC (impuesto al consumo)" },
+    { cod: "ZA", nombre: "IVA e INC" },
+    { cod: "ZZ", nombre: "No aplica" }
+  ];
+  var DEPARTAMENTOS = [
+    { cod: "54", nombre: "Norte de Santander" },
+    { cod: "68", nombre: "Santander" },
+    { cod: "11", nombre: "Bogotá, D.C." },
+    { cod: "05", nombre: "Antioquia" },
+    { cod: "76", nombre: "Valle del Cauca" },
+    { cod: "08", nombre: "Atlántico" }
+  ];
+  var MUNICIPIOS = [
+    { dane: "54001", nombre: "Cúcuta" }, { dane: "54874", nombre: "Villa del Rosario" }, { dane: "54405", nombre: "Los Patios" },
+    { dane: "54518", nombre: "Pamplona" }, { dane: "54498", nombre: "Ocaña" },
+    { dane: "68001", nombre: "Bucaramanga" }, { dane: "68276", nombre: "Floridablanca" }, { dane: "68307", nombre: "Girón" },
+    { dane: "68547", nombre: "Piedecuesta" },
+    { dane: "11001", nombre: "Bogotá" },
+    { dane: "05001", nombre: "Medellín" }, { dane: "76001", nombre: "Cali" }, { dane: "08001", nombre: "Barranquilla" }
+  ];
+  var CANALES = ["Almacén", "Distribuidor", "Cadena"];
+  var VENDEDORES = ["Valentina Rojas", "Andrés Quintero", "Marcela Duarte"];
+  var PLAZOS = [15, 30, 45, 60];   // días de crédito
+  var PLAZO_LEY = 45;              // Ley 2024 de 2020, art. 3: plazo máximo de pago entre comerciantes
+
+  /* El estado de un cliente en su lista: el que más pesa, en este orden */
+  var ESTADOS_CLI = ["vencidas", "excedido", "casi", "aldia"];
+  var NOMBRE_CLI = { vencidas: "Con facturas vencidas", excedido: "Cupo excedido", casi: "Cupo casi lleno",
+                     aldia: "Al día", inactivo: "Inactivo", cupo: "Cupo lleno o excedido" };
+  var CORTO_CLI = { excedido: "Excedido", casi: "Casi lleno", aldia: "Al día" };
+  /* El estado es el de su cartera (lo que debe), esté activo o no: a un inactivo se le
+     sigue cobrando. Que ya no se le vende es una marca aparte (c.activo === false) */
+  function estadoDe(c) {
+    if (c.vencidas.length) return "vencidas";
+    return { "Cupo excedido": "excedido", "Cupo casi lleno": "casi" }[estadoCliente(c).texto] || "aldia";
+  }
+
+  /* El dígito de verificación (DV) del NIT, como lo calcula la DIAN: cada cifra, de
+     derecha a izquierda, por su peso; se suma todo y se saca el residuo de dividir
+     entre 11. Si es 0 o 1, ese es el DV; si no, 11 menos el residuo */
+  var PESOS_DV = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+  function dvNit(cifras) {
+    var d = String(cifras).split("").reverse();
+    if (!/^\d+$/.test(cifras) || d.length > PESOS_DV.length) return "";
+    var r = d.reduce(function (s, c, i) { return s + Number(c) * PESOS_DV[i]; }, 0) % 11;
+    return String(r < 2 ? r : 11 - r);
+  }
+  /* 900221334 → 900.221.334 (solo si son cifras: un pasaporte va tal cual) */
+  function conPuntos(id) { return /^\d+$/.test(id) ? miles(id) : id; }
+  /* Un dato largo (un correo) debajo de su nombre, con todo el ancho para él */
+  function kvLargo(nombre, valor) { return '<div class="kv kv--largo"><span>' + nombre + "</span><b>" + valor + "</b></div>"; }
+  /* El número sin puntos ni DV: lo que se escribe en el formulario */
+  function cifrasDe(c) { return c.nit.split("-")[0].replace(/\./g, ""); }
+  function municipioDe(dane) { return MUNICIPIOS.filter(function (m) { return m.dane === dane; })[0]; }
+  function departamentoDe(dane) {
+    return DEPARTAMENTOS.filter(function (d) { return d.cod === String(dane).slice(0, 2); })[0];
+  }
+
+  /* ---- La tabla de clientes ---- */
+
+  TABLAS["dt-cli"] = {
+    codigo: "Cliente", una: "cliente", plural: "clientes", unaOVarias: "cliente(s)", masculino: true,
+    codigoDe: function (tr) { return tr.getAttribute("data-cli"); },
+    orden: ["cliente", 1], mayorPrimero: ["cupo", "uso"],
+    estados: ESTADOS_CLI, nombres: NOMBRE_CLI,
+    nombreFiltro: {
+      cliente: "Cliente", ciudad: "Ciudad", vendedor: "Vendedor", pago: "Forma de pago", estado: "Estado",
+      valorMin: "Debe desde", valorMax: "Debe hasta"
+    },
+    filtros: {
+      cliente: contiene("Cliente"),
+      // la tarjeta "Cupo lleno o excedido" junta dos estados
+      estado: function (tr, v) {
+        var e = tr.getAttribute("data-estado");
+        return v === "cupo" ? e === "casi" || e === "excedido" : v === "inactivo" ? tr.getAttribute("data-activo") === "no" : e === v;
+      },
+      ciudad: function (tr, v) { return textoDe(tr, "Ciudad") === v; },
+      vendedor: function (tr, v) { return tr.getAttribute("data-vendedor") === v; },
+      pago: function (tr, v) { return (textoDe(tr, "Pago") === "Contado") === (v === "Contado"); }
+    },
+    claves: {
+      cupo: function (tr) { return numero(tr.getAttribute("data-cupo")); },
+      uso: function (tr) { return numero(tr.getAttribute("data-uso")); },
+      id: function (tr) { return numero(cifrasDe(clientePor(tr.getAttribute("data-cli")))); }   // como número, no como texto
+    },
+    columnas: { cliente: "Cliente", id: "Documento", ciudad: "Ciudad", pago: "Pago" },
+    buscar: function (tr) {
+      var c = clientePor(tr.getAttribute("data-cli"));
+      return tr.textContent + " " + idDe(c) + " " + c.vendedor + " " + contactoDe(c) + " " + c.correo;
+    },
+    contar: contarClientes,
+    alEntrar: entrarAClientes
+  };
+
+  function activos() { return CLIENTES.filter(function (c) { return c.activo !== false; }); }
+
+  /* Las tarjetas cuentan TODOS los clientes, no solo los filtrados */
+  function contarClientes(filas) {
+    function de(e) { return filas.filter(function (tr) { return tr.getAttribute("data-estado") === e; }); }
+    function clientes(lista) { return lista.map(function (tr) { return clientePor(tr.getAttribute("data-cli")); }); }
+    var aldia = de("aldia"), contado = aldia.filter(function (tr) { return textoDe(tr, "Pago") === "Contado"; });
+    var casi = de("casi").length, excedido = de("excedido").length;
+    var inactivos = filas.filter(function (tr) { return tr.getAttribute("data-activo") === "no"; }).length;
+    var cartera = filas.reduce(function (s, tr) { return s + valorDe(tr); }, 0);
+    var vencido = clientes(de("vencidas")).reduce(function (s, c) { return s + totalVencido(c); }, 0);
+    ponerKpi("todas", filas.length, pesos(cartera) + " por cobrar" + (inactivos ? " · " + cuantas(inactivos, "inactivo", "inactivos") : ""));
+    ponerKpi("aldia", aldia.length, (aldia.length - contado.length) + " a crédito · " + contado.length + " de contado");
+    ponerKpi("cupo", casi + excedido, !excedido ? CUPO_AVISO + " % o más del cupo"
+      : [casi ? cuantas(casi, "casi lleno", "casi llenos") : "", cuantas(excedido, "excedido", "excedidos")].filter(Boolean).join(" · "));
+    ponerKpi("vencidas", de("vencidas").length, pesos(vencido) + " vencido");
+  }
+
+  /* Cuánto del cupo ya usó: la barra y el porcentaje, en el color de su estado */
+  function usoHtml(c) {
+    var uso = usoDe(c);
+    if (uso === null) return '<span class="dt__sinf">De contado</span>';
+    var tono = { crit: " bar--crit", warn: "", ok: " bar--ok" }[estadoCliente(c).tono];
+    return '<span class="cli-uso" title="Debe ' + pesos(c.saldo) + " de un cupo de " + pesos(c.cupo) + '">' +
+           '<span class="bar' + tono + '"><i style="width:' + Math.min(uso, 100) + '%"></i></span><b>' + uso + " %</b></span>";
+  }
+
+  /* En la tabla va corto ("2 vencidas") para que quepa; el texto entero, en el title */
+  /* El inactivo que no debe nada sale "Inactivo"; si debe, manda lo que debe (y el title dice las dos cosas) */
+  function pillCliente(c, corto) {
+    var e = estadoDe(c), p = estadoPrincipal(c), n = c.vencidas.length, inactivo = c.activo === false;
+    if (inactivo && e === "aldia") return '<span class="pill pill--off" title="Inactivo · al día">Inactivo</span>';
+    return '<span class="pill pill--' + p.tono + '" title="' + (inactivo ? "Inactivo · " : "") + p.texto + '">' +
+           (!corto ? p.texto : n ? n + (n === 1 ? " vencida" : " vencidas") : CORTO_CLI[e]) + "</span>";
+  }
+
+  /* La fila de un cliente. La primera celda es un botón: así se abre su ficha con el teclado */
+  function filaCliente(c) {
+    var clases = [cliCambiados.indexOf(c.codigo) >= 0 ? "es-nueva" : "", c.activo === false ? "is-inactivo" : ""].filter(Boolean).join(" ");
+    return "<tr" + (clases ? ' class="' + clases + '"' : "") + ' data-cli="' + c.codigo +
+      '" data-estado="' + estadoDe(c) + '" data-activo="' + (c.activo === false ? "no" : "si") + '" data-vendedor="' + c.vendedor +
+      '" data-valor="' + c.saldo + '" data-cupo="' + c.cupo +
+      '" data-uso="' + (usoDe(c) === null ? -1 : usoDe(c)) + '">' +
+      '<td class="dt__cli" data-l="Cliente"><button class="dt__ver" type="button" title="Ver la ficha de ' + esc(c.nombre) + '">' +
+        esc(c.nombre) + "</button></td>" +
+      '<td class="dt__fec" data-l="Documento" title="' + esc(idDe(c)) + '">' + esc(c.nit) + "</td>" +
+      '<td data-l="Ciudad">' + c.ciudad + "</td>" +
+      '<td data-l="Pago">' + c.pago + "</td>" +
+      '<td class="num" data-l="Cupo">' + (c.cupo ? pesos(c.cupo) : '<span class="dt__sinf">—</span>') + "</td>" +
+      '<td class="num" data-l="Debe hoy">' + pesos(c.saldo) + "</td>" +
+      '<td data-l="Uso del cupo">' + usoHtml(c) + "</td>" +
+      '<td data-l="Estado">' + pillCliente(c, true) + "</td></tr>";
+  }
+
+  /* Cada vez que se entra, las filas salen de CLIENTES: lo que debe cada uno pudo
+     cambiar en Facturación. Si hay uno recién creado o cambiado, la vista vuelve
+     a empezar (sin filtros) para que se vea */
+  function entrarAClientes(dt, cuerpo) {
+    todos("tr[data-estado]", cuerpo).forEach(function (tr) { cuerpo.removeChild(tr); });
+    cuerpo.insertAdjacentHTML("afterbegin", CLIENTES.map(filaCliente).join(""));
+    var ciudad = uno('[data-f="ciudad"]', dt), elegida = ciudad.value;
+    var ciudades = CLIENTES.map(function (c) { return c.ciudad; }).filter(function (x, i, l) { return l.indexOf(x) === i; }).sort();
+    ciudad.innerHTML = '<option value="">Todas</option>' + ciudades.map(function (x) { return opcion(x, x, elegida); }).join("");
+    var hubo = cliCambiados.length > 0;
+    cliCambiados = [];
+    return hubo;
+  }
+
+  /* ---- La ficha de un cliente (el panel de la derecha) ---- */
+
+  DETALLES["dt-cli"] = { panel: "cli-det", pintar: function (tr) { pintarFichaCliente(clientePor(tr.getAttribute("data-cli"))); } };
+
+  /* Lo que pasa con el cliente, dicho con palabras. Las vencidas no: ya las dice su aviso, con la tabla */
+  function textoCliente(c) {
+    if (c.activo === false) return "<b>Ya no se le vende:</b> no sale para cotizar. Para volver a venderle, edítelo y márquelo como activo." +
+                                   (c.saldo && !c.vencidas.length ? " Debe " + pesos(c.saldo) + "." : "");
+    var libre = c.cupo - c.saldo;
+    switch (estadoDe(c)) {
+      case "vencidas": return "";
+      case "excedido": return c.cupo ? "<b>Debe más que su cupo</b> (" + pesos(c.saldo) + " de " + pesos(c.cupo) +
+                                       "). Se le cotiza, pero Facturación no le factura a crédito hasta que abone."
+                                     : "<b>Debe " + pesos(c.saldo) + " y no tiene cupo de crédito.</b> Facturación no le factura a crédito hasta que pague.";
+      case "casi": return "<b>Ya usó el " + usoDe(c) + " % de su cupo:</b> le quedan " + pesos(libre) + " para comprar a crédito.";
+    }
+    return c.cupo ? "<b>Al día:</b> puede comprar a crédito hasta " + pesos(libre) + " más, a " + plazoDe(c) + " días."
+                  : "<b>Paga de contado:</b> no tiene cupo de crédito; paga cuando recibe la mercancía.";
+  }
+
+  /* El crédito en cuatro cifras y la barra de lo que ya usó */
+  function creditoHtml(c) {
+    if (!c.cupo) return c.saldo ? '<div class="cli-credito"><div class="cli-credito__i is-mal"><span>Debe hoy</span><b>' + pesos(c.saldo) + "</b></div></div>" : "";
+    return '<div class="cli-credito">' +
+      '<div class="cli-credito__i"><span>Cupo</span><b>' + pesos(c.cupo) + "</b></div>" +
+      '<div class="cli-credito__i"><span>Debe hoy</span><b>' + pesos(c.saldo) + "</b></div>" +
+      '<div class="cli-credito__i"><span>Disponible</span><b>' + pesos(Math.max(0, c.cupo - c.saldo)) + "</b></div>" +
+      '<div class="cli-credito__i' + (c.vencidas.length ? " is-mal" : "") + '"><span>Vencido</span><b>' + pesos(totalVencido(c)) + "</b></div>" +
+      '<div class="cli-credito__uso">' + usoHtml(c) + "<small>del cupo usado</small></div></div>";
+  }
+
+  function lugarDe(c) {
+    var d = departamentoDe(c.dane);
+    return c.ciudad + (d ? ", " + d.nombre : "");
+  }
+  function respDe(codigos) {
+    return codigos.map(function (k) {
+      var r = RESPONSABILIDADES.filter(function (x) { return x.cod === k; })[0];
+      return '<span title="' + (r ? r.nombre : "") + '">' + k + "</span>";
+    }).join(" · ");
+  }
+  function tributoDe(cod) {
+    var t = TRIBUTOS.filter(function (x) { return x.cod === cod; })[0];
+    return t ? cod + " · " + t.nombre : cod;
+  }
+
+  /* Todo lo que se sabe del cliente, por secciones (las mismas del formulario) */
+  function fichaClienteHtml(c) {
+    var natural = c.tipoPersona === "natural";
+    var contacto = contactoDe(c).split(" · ");
+    return seccion("Identificación",
+        kv("Tipo de persona", natural ? "Natural" : "Jurídica") +
+        kv("Documento", tipoDocDe(c.tipoDoc).nombre)) +
+      seccion("Contacto",
+        kv("Persona", esc(contacto[0]), esc(contacto[1] || "")) +
+        kv("Celular", "+57 " + esc(c.telefono)) +
+        (c.fijo ? kv("Teléfono fijo", "+57 " + esc(c.fijo)) : "") +
+        kvLargo("Correo", correoHtml(c.correo))) +
+      seccion("Ubicación y entrega",
+        kv("Dirección", esc(c.direccion)) +
+        (c.barrio ? kv("Barrio", esc(c.barrio)) : "") +
+        kv("Municipio", lugarDe(c), "DANE " + c.dane)) +
+      seccion("Venta y crédito",
+        kv("Canal", c.canal) +
+        kv("Vendedor", c.vendedor) +
+        kv("Forma de pago", c.pago) +
+        kv("Cliente desde", String(c.desde))) +
+      seccion('Factura electrónica <span class="cli-futuro">A futuro</span>',
+        kv("Responsabilidades", respDe(c.responsabilidades)) +
+        kv("Tributo", tributoDe(c.tributo)) +
+        kvLargo("Recibe la factura en", correoHtml(c.correoFe)) +
+        kv("Factura electrónicamente", c.facturador ? "Sí" : "No")) +
+      (c.obs ? seccion("Observaciones", '<p class="cli-obs">' + esc(c.obs) + "</p>") : "");
+  }
+
+  /* Arriba, como en Facturación: la foto centrada, el nombre, su documento y sus estados */
+  function cabClienteHtml(c) {
+    return '<div class="fac-cli cli-det__cab">' +
+      '<span class="avatar fac-cli__foto" aria-hidden="true">' + esc(iniciales(c.nombre)) + "</span>" +
+      '<b class="fac-cli__nombre">' + esc(c.nombre) + "</b>" +
+      '<span class="fac-cli__id"><span>' + tipoDocDe(c.tipoDoc).sigla + "</span> " + esc(c.nit) + "</span>" +
+      '<span class="cot-ficha__estados">' + (c.activo === false ? '<span class="pill pill--off">Inactivo</span>' : "") +
+        (c.activo === false && estadoDe(c) === "aldia" ? "" : pillCliente(c)) + '<span class="pill pill--off">' + c.canal + "</span></span></div>";
+  }
+
+  function pintarFichaCliente(c) {
+    var tono = c.activo === false && estadoDe(c) === "aldia" ? "off" : estadoPrincipal(c).tono, texto = textoCliente(c);
+    var caja = uno("#cli-det");
+    caja.setAttribute("data-cli", c.codigo);   // de quién es: Editar y Cotizar lo leen de aquí
+    uno("#cli-det-t").textContent = "Ficha del cliente";
+    uno("#cli-det-sub").textContent = c.ciudad + " · cliente desde " + c.desde;
+    uno("#cli-det-cab").innerHTML = cabClienteHtml(c);
+    var estado = uno("#cli-det-estado");
+    estado.className = "cot-det__estado cot-det__estado--" + tono;
+    estado.innerHTML = (texto ? '<p class="cli-det__texto">' + texto + "</p>" : "") + creditoHtml(c) + vencidasHtml(c);
+    estado.hidden = !estado.innerHTML;
+    uno("#cli-det-ficha").innerHTML = fichaClienteHtml(c);
+    uno('#cli-det [data-cl="cotizar"]').disabled = c.activo === false;
+  }
+
+  /* "Editar cliente" y "Cotizar", desde la ficha */
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("#cli-det [data-cl]") : null;
+    if (!b) return;
+    var c = clientePor(uno("#cli-det").getAttribute("data-cli"));
+    cerrarDetalle();
+    if (b.getAttribute("data-cl") === "editar") {
+      cliEditar = c.codigo;
+      ir(CLI_NUEVO, true);
+      return;
+    }
+    // Cotizar: se abre una cotización nueva con el cliente ya elegido, salvo que haya una a medias
+    if (guardadas[NUEVA] && cot && cot.estado !== "nueva") {
+      aviso("Termine primero la cotización " + cot.numero + ", que quedó a medias.", "warn");
+      return ir(NUEVA, true);
+    }
+    cliACotizar = c.codigo;
+    delete guardadas[NUEVA];
+    ir(NUEVA, true);
+  });
+
+  /* ---- El formulario: 04-cliente-nuevo.html ---- */
+
+  function opcion(valor, texto, elegida) {
+    return '<option value="' + valor + '"' + (valor === elegida ? " selected" : "") + ">" + texto + "</option>";
+  }
+
+  /* Las listas salen de los mismos datos que usa la ficha */
+  function llenarListas() {
+    uno("#cl-tipodoc").innerHTML = TIPOS_DOC.map(function (t) { return opcion(t.cod, t.cod + " · " + t.nombre); }).join("");
+    uno("#cl-depto").innerHTML = DEPARTAMENTOS.map(function (d) { return opcion(d.cod, d.nombre); }).join("");
+    uno("#cl-canal").innerHTML = CANALES.map(function (x) { return opcion(x, x); }).join("");
+    uno("#cl-vendedor").innerHTML = VENDEDORES.map(function (x) { return opcion(x, x); }).join("");
+    uno("#cl-plazo").innerHTML = PLAZOS.map(function (d) { return opcion(String(d), d + " días"); }).join("");
+    uno("#cl-tributo").innerHTML = TRIBUTOS.map(function (t) { return opcion(t.cod, t.cod + " · " + t.nombre); }).join("");
+    uno("#cl-resp").innerHTML = RESPONSABILIDADES.map(function (r) {
+      return '<label class="cli-chip"><input type="checkbox" name="cl-resp" value="' + r.cod + '">' +
+             "<b>" + r.cod + "</b><span>" + r.nombre + "</span></label>";
+    }).join("");
+  }
+
+  function llenarMunicipios(depto, elegido) {
+    uno("#cl-muni").innerHTML = MUNICIPIOS.filter(function (m) { return m.dane.slice(0, 2) === depto; })
+      .map(function (m) { return opcion(m.dane, m.nombre, elegido); }).join("");
+  }
+
+  function marcar(nombre, valor) {
+    todos('[name="' + nombre + '"]').forEach(function (x) { x.checked = x.value === valor; });
+  }
+  function poner(id, v) { uno("#" + id).value = v == null ? "" : v; }
+
+  /* Un cliente nuevo empieza así: persona jurídica con NIT, en Cúcuta, del vendedor
+     que tiene la sesión, a crédito a 30 días */
+  function clienteEnBlanco() {
+    return { tipoPersona: "juridica", tipoDoc: "31", nit: "", nombre: "", contacto: "", cargo: "", telefono: "", fijo: "", correo: "",
+             dane: "54001", direccion: "", barrio: "", canal: CANALES[0], vendedor: VENDEDOR.nombre, pago: "Crédito 30 días",
+             cupo: 0, obs: "", activo: true, responsabilidades: ["R-99-PN"], tributo: "01", correoFe: "", facturador: true };
+  }
+
+  function cargarCliente(c) {
+    var natural = c.tipoPersona === "natural";
+    marcar("cl-persona", c.tipoPersona);
+    poner("cl-tipodoc", c.tipoDoc);
+    poner("cl-num", c.nit ? cifrasDe(c) : "");
+    poner("cl-razon", natural ? "" : c.nombre);
+    ["cl-nom1", "cl-nom2", "cl-ape1", "cl-ape2"].forEach(function (id, i) { poner(id, natural && c.nombres ? c.nombres[i] : ""); });
+    poner("cl-contacto", c.contacto);
+    poner("cl-cargo", c.cargo);
+    poner("cl-cel", c.telefono);
+    poner("cl-fijo", c.fijo);
+    poner("cl-correo", c.correo);
+    poner("cl-depto", c.dane.slice(0, 2));
+    llenarMunicipios(c.dane.slice(0, 2), c.dane);
+    poner("cl-dir", c.direccion);
+    poner("cl-barrio", c.barrio);
+    poner("cl-canal", c.canal);
+    poner("cl-vendedor", c.vendedor);
+    marcar("cl-pago", c.pago === "Contado" ? "contado" : "credito");
+    poner("cl-plazo", String(plazoDe(c) || 30));
+    poner("cl-cupo", c.cupo ? miles(c.cupo) : "");
+    poner("cl-obs", c.obs);
+    uno("#cl-datos").checked = !!c.datos;
+    uno("#cl-activo").checked = c.activo !== false;
+    todos('[name="cl-resp"]').forEach(function (x) { x.checked = c.responsabilidades.indexOf(x.value) >= 0; });
+    poner("cl-tributo", c.tributo);
+    uno("#cl-mismo").checked = !c.correoFe || c.correoFe === c.correo;
+    poner("cl-correofe", c.correoFe);
+    uno("#cl-facturador").checked = !!c.facturador;
+  }
+
+  /* Al entrar: el que se eligió con "Editar cliente", o uno nuevo con "Nuevo cliente".
+     Si se vuelve (con el menú, Atrás o Adelante) al que quedó a medias, sigue como
+     estaba. El historial del navegador guarda qué cliente se editaba: así F5 lo vuelve
+     a abrir. En React, el código iría en la ruta (/clientes/CL-006/editar) */
+  function iniciarCliente() {
+    var form = uno("#cli-form"), antes = form.getAttribute("data-codigo") || "";
+    // Con Atrás, Adelante o F5, el historial dice de quién es esta entrada. Al llegar desde
+    // otra pantalla, el historial todavía es el de esa pantalla (ir() lo anota después)
+    var entrada = history.state && history.state.pantalla === CLI_NUEVO ? history.state : null;
+    var codigo = cliEditar || (cliNuevo ? "" : entrada ? entrada.cliente || "" : antes);
+    var otro = !form.getAttribute("data-listo") || codigo !== antes;   // el mismo que dejó a medias: sigue como estaba
+    if (otro && form.getAttribute("data-listo")) {
+      if (!antes && aMedias()) aviso("Se descartó el cliente nuevo que había dejado a medias.", "warn");
+      else if (antes && clientePor(antes) && cambiado(clientePor(antes))) {
+        aviso("Se descartaron los cambios sin guardar de " + clientePor(antes).nombre + ".", "warn");
+      }
+    }
+    cliEditar = null;
+    cliNuevo = false;
+    // Después de que ir() anote la pantalla en el historial, se le agrega el cliente
+    setTimeout(function () {
+      if (actual === CLI_NUEVO) history.replaceState({ pantalla: CLI_NUEVO, cliente: codigo || null }, "", CLI_NUEVO);
+    }, 0);
+    if (!otro) return pintarCliente();
+    if (codigo && !clientePor(codigo)) codigo = "";
+    form.setAttribute("data-listo", "1");
+    form.setAttribute("data-codigo", codigo);
+    form.removeAttribute("data-guardado");
+    cliIntento = false;
+    cliAntes = null;
+    marcarCampos([]);
+    var c = codigo ? clientePor(codigo) : clienteEnBlanco();
+    llenarListas();
+    cargarCliente(c);
+    uno("#cl-t").textContent = codigo ? "Editar cliente" : "Nuevo cliente";
+    uno("#cl-guardar-t").textContent = codigo ? "Guardar cambios" : "Guardar cliente";
+    uno("#cl-activo-c").hidden = !codigo;
+    var estado = uno("#cl-estado");
+    estado.className = "pill " + (codigo ? "pill--ok" : "pill--off");
+    estado.textContent = codigo ? "Cliente desde " + c.desde : "Sin guardar";
+    verPestana("datos");
+    pintarCliente();
+  }
+
+  /* Lo que se guarda de un cliente, como lo dice el formulario. Guardar lo copia al cliente,
+     y los avisos de descarte lo comparan con lo guardado: así las dos listas no se separan */
+  var CAMPOS_CLI = ["tipoPersona", "tipoDoc", "nit", "nombre", "nombres", "contacto", "cargo", "telefono", "fijo", "correo", "dane",
+                    "direccion", "barrio", "canal", "vendedor", "pago", "cupo", "obs", "datos", "activo", "responsabilidades",
+                    "tributo", "correoFe", "facturador"];
+  function datosDe(f) {
+    return {
+      tipoPersona: f.tipoPersona, tipoDoc: f.tipoDoc, nit: nitDe(f), nombre: nombreDe(f), nombres: natural(f) ? f.nombres : null,
+      contacto: f.contacto, cargo: f.cargo, telefono: f.cel, fijo: f.fijo, correo: f.correo, dane: f.dane, direccion: f.dir,
+      barrio: f.barrio, canal: f.canal, vendedor: f.vendedor, pago: f.credito ? "Crédito " + f.plazo + " días" : "Contado",
+      cupo: f.credito ? f.cupo : 0, obs: f.obs, datos: f.datos, activo: f.activo, responsabilidades: f.resp,
+      tributo: f.tributo, correoFe: f.correoFe, facturador: f.facturador
+    };
+  }
+  /* ¿Son distintos? (la autorización cuenta como sí o no: guardada lleva la fecha) */
+  function distintos(a, b) {
+    return CAMPOS_CLI.some(function (k) {
+      var x = k === "datos" ? !!a[k] : a[k], y = k === "datos" ? !!b[k] : b[k];
+      return JSON.stringify(x == null ? "" : x) !== JSON.stringify(y == null ? "" : y);
+    });
+  }
+  /* ¿Lo que dice el formulario es distinto de lo guardado de ese cliente? */
+  function cambiado(c) {
+    var guardado = {};
+    CAMPOS_CLI.forEach(function (k) { guardado[k] = c[k]; });
+    guardado.activo = c.activo !== false;
+    guardado.facturador = !!c.facturador;
+    if (c.tipoPersona !== "natural") guardado.nombres = null;
+    return distintos(datosDe(leerCliente()), guardado);
+  }
+  /* ¿El cliente nuevo tiene algo escrito? Se compara con uno en blanco */
+  function aMedias() {
+    var blanco = clienteEnBlanco();
+    blanco.nombres = null;
+    blanco.datos = false;
+    blanco.correoFe = "";
+    return distintos(datosDe(leerCliente()), blanco);
+  }
+
+  /* Lo que dice el formulario en este momento */
+  function leerCliente() {
+    function v(id) { return uno("#" + id).value.trim(); }
+    var mismo = uno("#cl-mismo").checked;
+    return {
+      codigo: uno("#cli-form").getAttribute("data-codigo"),
+      tipoPersona: uno('[name="cl-persona"]:checked').value, tipoDoc: v("cl-tipodoc"),
+      num: numDe(v("cl-num"), v("cl-tipodoc")), guiones: (v("cl-num").match(/-/g) || []).length,
+      dvEscrito: v("cl-tipodoc") === "31" && v("cl-num").indexOf("-") > 0 ? v("cl-num").split("-").pop().trim() : "",
+      razon: v("cl-razon"), nombres: [v("cl-nom1"), v("cl-nom2"), v("cl-ape1"), v("cl-ape2")],
+      contacto: v("cl-contacto"), cargo: v("cl-cargo"), cel: v("cl-cel"), fijo: v("cl-fijo"), correo: v("cl-correo"),
+      dane: v("cl-muni"), dir: v("cl-dir"), barrio: v("cl-barrio"), canal: v("cl-canal"), vendedor: v("cl-vendedor"),
+      credito: uno('[name="cl-pago"]:checked').value === "credito", plazo: numero(v("cl-plazo")), cupo: Number(pesosEscritos(v("cl-cupo"))),
+      obs: v("cl-obs"), datos: uno("#cl-datos").checked, activo: uno("#cl-activo").checked,
+      resp: todos('[name="cl-resp"]:checked').map(function (x) { return x.value; }),
+      tributo: v("cl-tributo"), mismo: mismo, correoFe: mismo ? v("cl-correo") : v("cl-correofe"),
+      facturador: uno("#cl-facturador").checked
+    };
+  }
+
+  function natural(f) { return f.tipoPersona === "natural"; }
+  /* El nombre que va en la factura: la razón social, o nombres y apellidos en uno solo */
+  function nombreDe(f) { return natural(f) ? f.nombres.filter(Boolean).join(" ") : f.razon; }
+  /* El número como se muestra: con puntos y, si es NIT, con su DV */
+  function nitDe(f) {
+    var dv = f.tipoDoc === "31" ? dvNit(f.num) : "";
+    return conPuntos(f.num) + (dv ? "-" + dv : "");
+  }
+  /* El número sin puntos ni espacios (y sin el DV, si es un NIT pegado con él: 900.221.334-8).
+     Solo el NIT lleva guion: en otro documento el guion se queda y el número sale mal */
+  function numDe(texto, tipoDoc) {
+    return (tipoDoc === "31" && texto.indexOf("-") > 0 ? texto.split("-")[0] : texto).replace(/[.\s]/g, "").toUpperCase();
+  }
+  function soloCifras(tipoDoc) { return ["31", "13", "22"].indexOf(tipoDoc) >= 0; }
+  /* Una persona jurídica se identifica con NIT (o NIT de otro país); las cédulas son de personas */
+  function deEmpresa(tipoDoc) { return tipoDoc === "31" || tipoDoc === "50"; }
+  /* El NIT de una persona natural es su cédula con el DV: son el mismo documento */
+  function mismoDocumento(c, f) {
+    var tipos = [c.tipoDoc, f.tipoDoc].sort().join();
+    return cifrasDe(c) === f.num && (c.tipoDoc === f.tipoDoc || tipos === "13,31");
+  }
+  function sinEspacios(t) { return t.replace(/\s/g, ""); }
+
+  /* Lo que falta o está mal, en el orden del formulario. Cada uno dice en qué
+     campo está, para llevar allá al pulsarlo */
+  function faltasCliente(f) {
+    var l = [];
+    function falta(id, texto, mal) { l.push({ id: id, texto: texto, mal: mal || "" }); }
+    var otro = CLIENTES.filter(function (c) { return c.codigo !== f.codigo && mismoDocumento(c, f); })[0];
+    // un NIT con su DV pegado al final, sin guion: 9002213348 es el 900.221.334 con DV 8
+    var conDv = f.tipoDoc === "31" && f.num.length > 5 && dvNit(f.num.slice(0, -1)) === f.num.slice(-1) &&
+      CLIENTES.filter(function (c) { return c.codigo !== f.codigo && c.tipoDoc === "31" && cifrasDe(c) === f.num.slice(0, -1); })[0];
+    var largo = soloCifras(f.tipoDoc) ? [6, 10] : [5, 20];
+    if (!natural(f) && !deEmpresa(f.tipoDoc)) falta("cl-tipodoc", "Tipo de documento", "Una persona jurídica se identifica con NIT.");
+    if (!f.num) falta("cl-num", "Número de identificación");
+    else if (soloCifras(f.tipoDoc) && !/^\d+$/.test(f.num)) falta("cl-num", "Número de identificación",
+      f.num.indexOf("-") < 0 ? "Lleva solo cifras, sin letras."
+        : f.tipoDoc === "31" ? "Lleva solo cifras (el guion va solo antes del DV)." : "Lleva solo cifras (¿es un NIT con su DV? Elija NIT).");
+    else if (f.tipoDoc === "31" && f.guiones > 1) falta("cl-num", "Número de identificación", "El NIT lleva un solo guion, antes del DV.");
+    else if (!/^[A-Z0-9]+$/.test(f.num)) falta("cl-num", "Número de identificación", "Solo letras y cifras.");
+    else if (f.num.charAt(0) === "0") falta("cl-num", "Número de identificación", "No empieza por cero.");
+    else if (f.num.length < largo[0]) falta("cl-num", "Número de identificación", "Está muy corto: revíselo.");
+    else if (f.num.length > largo[1]) falta("cl-num", "Número de identificación", "Está muy largo: son máximo " + largo[1] + (soloCifras(f.tipoDoc) ? " cifras." : " caracteres."));
+    else if (f.dvEscrito && f.dvEscrito !== dvNit(f.num)) falta("cl-num", "Número de identificación", "El DV escrito (" + f.dvEscrito + ") no es el de ese NIT: es " + dvNit(f.num) + ".");
+    else if (conDv) falta("cl-num", "Número de identificación", "Parece " + conDv.nit + " con el DV pegado (el DV va aparte): ya es de " + conDv.nombre + ".");
+    else if (otro) falta("cl-num", "Número de identificación", "Ya es de " + otro.nombre +
+                         (otro.activo === false ? " (inactivo: actívelo en su ficha con Editar cliente)." : "."));
+    if (!natural(f) && !f.razon) falta("cl-razon", "Razón social");
+    if (natural(f) && !f.nombres[0]) falta("cl-nom1", "Primer nombre");
+    if (natural(f) && !f.nombres[2]) falta("cl-ape1", "Primer apellido");
+    if (!natural(f) && !f.contacto) falta("cl-contacto", "Persona de contacto");
+    if (!f.correo) falta("cl-correo", "Correo");
+    else if (!CORREO.test(f.correo)) falta("cl-correo", "Correo", "No está bien escrito (nombre@empresa.com).");
+    if (!f.cel) falta("cl-cel", "Celular");
+    else if (!/^3\d{9}$/.test(sinEspacios(f.cel))) falta("cl-cel", "Celular", "Son 10 cifras y empieza por 3.");
+    if (f.fijo && !/^60\d{8}$/.test(sinEspacios(f.fijo))) falta("cl-fijo", "Teléfono fijo", "Son 10 cifras y empieza por 60 (601, 607...).");
+    if (!f.dir) falta("cl-dir", "Dirección");
+    var debe = f.codigo ? clientePor(f.codigo).saldo : 0;
+    if (!f.credito && debe) falta("cl-pago-contado", "Forma de pago", "Debe " + pesos(debe) + ", así que sigue a crédito hasta que pague.");
+    if (f.credito && !f.cupo) falta("cl-cupo", "Cupo de crédito");
+    if (natural(f) && !f.datos) falta("cl-datos", "Autorización de datos personales");
+    if (f.tributo !== "ZZ" && f.tipoDoc !== "31") falta("cl-tributo", "Tributo", "Si es responsable de IVA o INC, se identifica con NIT (31).");
+    if (!f.mismo && !f.correoFe) falta("cl-correofe", "Correo para la factura electrónica");
+    else if (!f.mismo && !CORREO.test(f.correoFe)) falta("cl-correofe", "Correo para la factura electrónica", "No está bien escrito.");
+    return l;
+  }
+
+  function enPestanaFe(id) { return !!uno("#" + id).closest("#cl-p-fe"); }
+
+  function verPestana(cual) {
+    todos("[data-cl-tab]").forEach(function (t) {
+      var on = t.getAttribute("data-cl-tab") === cual;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      uno("#" + t.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+
+  /* Lleva al campo: cambia de pestaña si hace falta y lo deja listo para escribir */
+  function irACampo(id) {
+    verPestana(enPestanaFe(id) ? "fe" : "datos");
+    var campo = uno("#" + id);
+    campo.scrollIntoView({ block: "center" });
+    campo.focus();
+  }
+
+  /* El mensaje de error de cada campo, debajo de él (solo después de pulsar Guardar) */
+  function marcarCampos(l) {
+    todos("#cli-form .field[data-campo]").forEach(function (fl) {
+      var f = l.filter(function (x) { return x.id === fl.getAttribute("data-campo"); })[0];
+      var ctl = uno(".control", fl) || fl, err = uno(".err", fl);
+      ctl.classList.toggle("bad", !!f);
+      err.textContent = f ? (f.mal || "Falta: " + f.texto.toLowerCase() + ".") : "";
+      err.hidden = !f;
+    });
+  }
+
+  /* Lo que la factura electrónica tomará de la pestaña de datos, ya en sus códigos */
+  function baseFeHtml(f) {
+    var m = municipioDe(f.dane), d = departamentoDe(f.dane);
+    return kv("Tipo de persona", natural(f) ? "2 · Natural" : "1 · Jurídica") +
+      kv("Documento", f.tipoDoc + " · " + tipoDocDe(f.tipoDoc).nombre) +
+      kv("Número", f.num ? esc(f.num) + (f.tipoDoc === "31" ? ' <span class="tiny">DV ' + dvNit(f.num) + "</span>" : "") : "—") +
+      kv("Nombre en la factura", esc(nombreDe(f)) || "—") +
+      kv("Municipio", m ? f.dane + " · " + m.nombre + (d ? ", " + d.nombre : "") + " · CO" : "—");
+  }
+
+  /* La ficha como va quedando, como la de Facturación: arriba la foto, el nombre y el
+     documento (debajo va lo que falta); después sus datos */
+  function vistaClienteHtml(f) {
+    var nombre = nombreDe(f);
+    return '<div class="fac-cli">' +
+      '<span class="avatar fac-cli__foto" aria-hidden="true">' + (nombre ? esc(iniciales(nombre)) : "?") + "</span>" +
+      '<b class="fac-cli__nombre' + (nombre ? "" : " is-vacio") + '">' + (esc(nombre) || "Sin nombre todavía") + "</b>" +
+      '<span class="fac-cli__id"><span>' + tipoDocDe(f.tipoDoc).sigla + "</span> " + (f.num ? esc(nitDe(f)) : "—") + "</span>" +
+      '<span class="cot-ficha__estados"><span class="pill pill--' + (f.activo ? "ok" : "off") + '">' +
+        (f.activo ? (f.codigo ? "Activo" : "Nuevo") : "Inactivo") + '</span><span class="pill pill--off">' + f.canal + "</span></span></div>";
+  }
+  function vistaDatosHtml(f) {
+    var nombre = nombreDe(f), m = municipioDe(f.dane);
+    var persona = [f.contacto || (natural(f) ? nombre : ""), f.cargo].filter(Boolean).join(" · ");
+    return '<div class="fac-cli__datos">' +
+      seccion("Contacto", kv("Persona", esc(persona) || "—") + kv("Celular", f.cel ? "+57 " + esc(f.cel) : "—") +
+                          kvLargo("Correo", f.correo ? correoHtml(f.correo) : "—")) +
+      seccion("Entrega", kv("Dirección", esc(f.dir) || "—") + kv("Municipio", m ? m.nombre : "—")) +
+      seccion("Venta", kv("Vendedor", f.vendedor) +
+                       kv("Forma de pago", f.credito ? "Crédito " + f.plazo + " días" : "Contado") +
+                       (f.credito ? kv("Cupo", f.cupo ? pesos(f.cupo) : "—") : "")) + "</div>";
+  }
+
+  /* Todo lo que depende de lo escrito se vuelve a dibujar */
+  function pintarCliente() {
+    var f = leerCliente(), l = faltasCliente(f);
+    todos(".cli-si-juridica").forEach(function (x) { x.hidden = natural(f); });
+    todos(".cli-si-natural").forEach(function (x) { x.hidden = !natural(f); });
+    uno("#cl-dv-c").hidden = f.tipoDoc !== "31";
+    uno("#cl-dv").value = f.tipoDoc === "31" ? dvNit(f.num) : "";
+    todos(".cli-si-credito").forEach(function (x) { x.hidden = !f.credito; });
+    uno("#cl-plazo-aviso").hidden = !(f.credito && f.plazo > PLAZO_LEY);
+    var cupo = uno("#cl-cupo");
+    uno("#cl-cupo-lee").textContent = cupo.value.trim() && cupo.value.trim() !== miles(f.cupo)
+      ? "Se lee como " + pesos(f.cupo) + (f.cupo ? "" : ": escriba las cifras") : "Lo autoriza cartera";
+    uno("#cl-dane").textContent = "Código DANE " + f.dane;
+    uno("#cl-datos-o").hidden = !natural(f);
+    var fe = uno("#cl-correofe");
+    fe.disabled = f.mismo;
+    if (f.mismo) fe.value = f.correo;
+    uno("#cl-fe-base").innerHTML = baseFeHtml(f);
+    uno("#cl-ficha").innerHTML = vistaClienteHtml(f);
+    uno("#cl-ficha-datos").innerHTML = vistaDatosHtml(f);
+
+    // Lo que falta: en la lista de la derecha y en cada pestaña
+    uno("#cl-falta").innerHTML = l.length
+      ? l.map(function (x) {
+          return '<li><button type="button" data-cl-ir="' + x.id + '">' + icono("alerta", 14) + "<span>" + x.texto +
+                 (x.mal ? "<small>" + esc(x.mal) + "</small>" : "") + "</span></button></li>";
+        }).join("")
+      : '<li class="is-listo">' + icono("visto", 14) + "<span>No falta nada: ya se puede guardar.</span></li>";
+    uno("#cl-falta-t").textContent = l.length ? "Falta por llenar (" + l.length + ")" : "Todo listo";
+    ["datos", "fe"].forEach(function (p) {
+      var n = l.filter(function (x) { return (p === "fe") === enPestanaFe(x.id); }).length, ct = uno("#cl-tab-" + p + " .cli-tabs__n");
+      ct.textContent = n;
+      ct.hidden = !n;
+    });
+    if (cliIntento) marcarCampos(l);
+    var pendientes = f.codigo && !f.activo ? porFacturar().filter(function (q) { return q.cliente.codigo === f.codigo; }).length : 0;
+    var conVencidas = f.codigo && clientePor(f.codigo).vencidas.length;
+    uno("#cl-msg").textContent = l.length
+      ? "Llene o corrija lo que dice la lista; al pulsarlo lo lleva al campo."
+      : pendientes ? "Ojo: tiene " + cuantas(pendientes, "cotización", "cotizaciones") + " por facturar; " +
+                     (conVencidas ? "Facturación no podrá facturarla" + (pendientes > 1 ? "s" : "") + " mientras deba facturas vencidas."
+                                  : "Facturación todavía puede facturarla" + (pendientes > 1 ? "s" : "") + ".")
+      : f.codigo ? "Los cambios se ven en la lista y en la ficha del cliente." : "Al guardar entra a la lista de clientes, sin deuda.";
+  }
+
+  /* Las cifras de un valor en pesos, escrito o pegado como venga: "3.500.000,00",
+     "3500000.00", "3,500,000.00", "5,000,000" o "$ 3.500.000 COP". El cupo no lleva
+     centavos: una coma con 1 o 2 cifras al final son centavos, y un punto también, pero
+     solo si hay comas de miles o si antes de él van más de 3 cifras seguidas. Así "12.34"
+     (lo que queda al borrar una cifra de "12.345") se lee 1.234 y no 12. Mientras se
+     escribe, debajo del campo dice cómo se está leyendo */
+  function pesosEscritos(texto) {
+    var t = texto.trim().replace(/[^\d.,]+$/, "");
+    var coma = /,\d{1,2}$/.test(t);
+    var punto = /\.\d{1,2}$/.test(t) && (t.indexOf(",") >= 0 || /^\D*\d{4,}\.\d{1,2}$/.test(t));
+    if (coma || punto) t = t.replace(/[.,]\d{1,2}$/, "");
+    return t.replace(/\D/g, "").slice(0, 13);
+  }
+
+  function siguienteCliente() {
+    return siguiente(CLIENTES.reduce(function (a, c) { return cola(c.codigo) > cola(a.codigo) ? c : a; }).codigo);
+  }
+
+  function guardarCliente() {
+    var form = uno("#cli-form");
+    if (form.getAttribute("data-guardado")) return;   // doble clic: ya se guardó y va saliendo
+    var f = leerCliente(), l = faltasCliente(f);
+    cliIntento = true;
+    pintarCliente();
+    if (l.length) {
+      irACampo(l[0].id);
+      var primero = l[0].texto + (l[0].mal ? ": " + l[0].mal.charAt(0).toLowerCase() + l[0].mal.slice(1) : ".");
+      return aviso(l.length === 1 ? (l[0].mal ? "Corrija " : "Falta: ") + primero.charAt(0).toLowerCase() + primero.slice(1)
+                                  : "Hay " + l.length + " datos por llenar o corregir. El primero: " + primero.charAt(0).toLowerCase() + primero.slice(1), "crit");
+    }
+    form.setAttribute("data-guardado", "1");
+    var c = f.codigo ? clientePor(f.codigo) : { codigo: siguienteCliente(), desde: new Date().getFullYear(), saldo: 0, vencidas: [] };
+    var d = datosDe(f);   // la persona natural sin otro contacto: es ella misma (contactoDe)
+    CAMPOS_CLI.forEach(function (k) { c[k] = d[k]; });
+    c.ciudad = municipioDe(f.dane).nombre;
+    c.datos = f.datos ? (c.datos || hoy()) : "";   // la fecha en que autorizó
+    if (!f.codigo) CLIENTES.push(c);
+    cliCambiados.push(c.codigo);
+    cliIntento = false;
+    cliAntes = null;
+    ir(CLI_LISTA, true);
+    delete guardadas[CLI_NUEVO];   // el próximo cliente empieza en blanco
+    aviso(f.codigo ? "Cambios guardados: " + c.nombre + "."
+                   : c.nombre + " queda registrado, sin deuda" + (c.cupo ? " y con un cupo de " + pesos(c.cupo) : " y de contado") + ".", "ok");
+  }
+
+  // "Nuevo cliente" pide uno en blanco aunque se estuviera editando otro. Se marca antes
+  // de que el oyente de los enlaces navegue (fase de captura)
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-rapida="cliente"]')) cliNuevo = true;   // un botón: navega aunque lleve Ctrl
+    else if (!(e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) && e.target.closest('a[href="' + CLI_NUEVO + '"]')) cliNuevo = true;
+  }, true);
+
+  // Cada cosa que se escribe o se elige vuelve a dibujar lo que depende de ella
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (!t.closest || !t.closest("#cli-form")) return;
+    pintarCliente();
+  });
+
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (!t.closest || !t.closest("#cli-form")) return;
+    if (t.id === "cl-cupo") {   // al salir del campo, el cupo queda escrito como se leyó
+      var cifras = pesosEscritos(t.value);
+      t.value = cifras ? miles(Number(cifras)) : "";
+    }
+    if (t.id === "cl-depto") llenarMunicipios(t.value);
+    if (t.name === "cl-persona" && t.value === "juridica" && !deEmpresa(uno("#cl-tipodoc").value)) poner("cl-tipodoc", "31");
+    // Sin NIT no es responsable de IVA ni factura electrónicamente: el tributo pasa solo a ZZ
+    // y el interruptor a No; si regresa a NIT, vuelven a lo que tenían
+    if (t.id === "cl-tipodoc" || t.name === "cl-persona") {
+      var trib = uno("#cl-tributo"), fe = uno("#cl-facturador"), conNit = uno("#cl-tipodoc").value === "31";
+      if (!conNit && trib.value !== "ZZ") {
+        cliAntes = { tributo: trib.value, facturador: fe.checked };
+        trib.value = "ZZ";
+        fe.checked = false;
+      } else if (conNit && cliAntes && trib.value === "ZZ") {
+        trib.value = cliAntes.tributo;
+        fe.checked = cliAntes.facturador;
+        cliAntes = null;
+      }
+    }
+    if (t.id === "cl-tributo" || t.id === "cl-facturador") cliAntes = null;   // lo eligió a mano
+    if (t.name === "cl-resp") {
+      // "R-99-PN" (no aplica) no va con las demás; y si no marca ninguna, queda esa
+      var cajas = todos('[name="cl-resp"]');
+      if (t.checked) cajas.forEach(function (x) { if (x !== t && (t.value === "R-99-PN" || x.value === "R-99-PN")) x.checked = false; });
+      if (!cajas.some(function (x) { return x.checked; })) cajas.filter(function (x) { return x.value === "R-99-PN"; })[0].checked = true;
+    }
+    pintarCliente();
+  });
+
+  document.addEventListener("submit", function (e) {
+    if (e.target.id !== "cli-form") return;
+    e.preventDefault();
+    guardarCliente();
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest("#cli-form")) return;
+    var tab = e.target.closest("[data-cl-tab]");
+    if (tab) return verPestana(tab.getAttribute("data-cl-tab"));
+    var campo = e.target.closest("[data-cl-ir]");
+    if (campo) return irACampo(campo.getAttribute("data-cl-ir"));
+    if (e.target.closest('[data-cl="cancelar"]')) {
+      cliIntento = false;
+      cliAntes = null;
+      ir(CLI_LISTA, true);
+      delete guardadas[CLI_NUEVO];
+    }
+  });
+
+  // Las pestañas también se cambian con las flechas, como pide su rol de "tablist"
+  document.addEventListener("keydown", function (e) {
+    var tab = e.target.closest ? e.target.closest("[data-cl-tab]") : null;
+    if (!tab || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+    e.preventDefault();
+    var otra = tab.getAttribute("data-cl-tab") === "datos" ? "fe" : "datos";
+    verPestana(otra);
+    uno('[data-cl-tab="' + otra + '"]').focus();
+  });
+
+  /* ---------------------------------------------------------------- 14. Arranque */
 
   marcarMenu();
-  history.replaceState({ pantalla: actual }, "", actual);
+  // con F5, el historial todavía sabe qué cliente se estaba editando
+  history.replaceState({ pantalla: actual, cliente: (history.state && history.state.cliente) || null }, "", actual);
   alEntrar();
   sincronizarEtapasPedidosComercial();
 })();
