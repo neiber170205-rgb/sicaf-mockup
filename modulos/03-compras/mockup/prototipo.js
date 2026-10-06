@@ -343,113 +343,468 @@
 
   /* ---------------------------------------------------------------- 7. Los formularios de Compras */
 
-  /* --- Registrar cotización (03) ---
+  /* --- Pedir cotización (04) ---
 
-     Una cotización lleva varios productos: primero se arman los renglones con
-     "Agregar producto" y al final se registra todo junto.
+     Se le pide un precio a uno o varios proveedores por los productos de una
+     solicitud. Cada proveedor elegido genera su cotización "Pedida". Cuando el
+     proveedor contesta, sus precios se cargan en "Respuesta del Proveedor" y la
+     cotización queda "Respondida", lista para elegirla y ordenar.
   */
 
+  var PROVEEDORES = {
+    "PV-01": { nombre: "Curtiembre del Norte", cal: "4.8 / 5", dias: 5, ins: ["MP-01", "MP-03"] },
+    "PV-02": { nombre: "Suelas Pacífico",      cal: "4.2 / 5", dias: 8, ins: ["MP-02", "MP-05", "MP-06"] },
+    "PV-03": { nombre: "Insumos Textiles JR",  cal: "4.5 / 5", dias: 3, ins: ["MP-03", "MP-04", "MP-07", "MP-08"] }
+  };
+  var COD_INSUMO = {
+    "Cuero vacuno graso": "MP-01", "Suela caucho 38-42": "MP-02", "Hilo poliéster 40": "MP-04", "Plantilla EVA": "MP-05",
+    "Pegante de montaje": "MP-06", "Herraje ojalillo": "MP-07", "Cordón encerado 120 cm": "MP-08"
+  };
+  var PRODUCTOS_SOLICITUD = {
+    "SC-2026-004": [["Cuero vacuno graso", "dm²", 960], ["Plantilla EVA", "par", 120], ["Cordón encerado 120 cm", "par", 210]],
+    "SM-2026-002": [["Cordón encerado 120 cm", "par", 210]],
+    "SM-2026-001": [["Plantilla EVA", "par", 120]]
+  };
+
+  /* Las cotizaciones y lo que cotizó cada proveedor: [insumo, unidad, cantidad, precio unitario] */
+  var LLAVE_COT = "sicaf.cotizaciones";
+  var COTS = {
+    "CT-001": { sol: "SM-2026-001", prov: "PV-02", dias: 8, cal: 4, estado: "Respondida", items: [["Plantilla EVA", "par", 120, 2080]] },
+    "CT-002": { sol: "SM-2026-001", prov: "PV-03", dias: 3, cal: 5, estado: "Respondida", items: [["Plantilla EVA", "par", 120, 2150]] },
+    "CT-003": { sol: "SM-2026-002", prov: "PV-03", dias: 0, cal: 0, estado: "Pedida",     items: [["Cordón encerado 120 cm", "par", 210, 0]] }
+  };
+  try {
+    var guardadasCot = JSON.parse(window.localStorage.getItem(LLAVE_COT));
+    if (guardadasCot) for (var kc in guardadasCot) COTS[kc] = guardadasCot[kc];
+  } catch (e) {}
+  function guardarCots() { try { window.localStorage.setItem(LLAVE_COT, JSON.stringify(COTS)); } catch (e) {} }
+
+  var cotElegida = "";   // la cotización que se eligió en la pantalla 04 para ordenar en la 06
+
+  function sumarDias(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+  function valorDe(id, valor) { var c = uno("#" + id); if (c) c.value = valor; return c; }
+  function textoDe(id, valor) { var c = uno("#" + id); if (c) c.textContent = valor; return c; }
+  function totalDe(items) { return items.reduce(function (a, i) { return a + i[2] * i[3]; }, 0); }
+
   function renglonesDeCotizacion() { return todos("#ct-reng tbody tr"); }
+  function productosDePedido() {
+    return renglonesDeCotizacion().map(function (f) {
+      var nombre = (uno("b", celda(f, "Insumo")) || {}).textContent || "";
+      var unidad = ((uno(".tiny", celda(f, "Insumo")) || {}).textContent || "").replace("medido en", "").trim();
+      return [nombre, unidad, numero(celda(f, "Cantidad").textContent), 0];
+    });
+  }
+  function proveedoresElegidos() {
+    return todos("#ct-prov-tabla input[data-pv]:checked").map(function (c) { return c.getAttribute("data-pv"); });
+  }
 
   function recalcularCotizacion() {
-    var filas = renglonesDeCotizacion();
-    var total = filas.reduce(function (suma, f) {
-      return suma + numero(celda(f, "Subtotal").textContent);
-    }, 0);
-    var t = uno("#ct-total");
-    if (t) t.innerHTML = "<b>" + pesos(total) + "</b>";
+    var prods = productosDePedido();
     var n = uno("#ct-cuantos");
-    if (n) n.textContent = filas.length + (filas.length === 1 ? " producto" : " productos");
-    return { filas: filas.length, total: total };
+    if (n) n.textContent = prods.length + (prods.length === 1 ? " producto" : " productos");
+    /* qué proveedores cubren qué */
+    todos("#ct-prov-tabla input[data-pv]").forEach(function (c) {
+      var id = c.getAttribute("data-pv"), p = PROVEEDORES[id];
+      var cubre = prods.filter(function (x) { return p.ins.indexOf(COD_INSUMO[x[0]]) >= 0; }).length;
+      var td = uno("#ct-cubre-" + id);
+      if (td) td.innerHTML = prods.length
+        ? (cubre ? '<span class="chip chip--' + (cubre === prods.length ? "oliva" : "tinta") + '">' + cubre + " de " + prods.length + " productos</span>"
+                 : '<span class="tiny">Ninguno de la lista</span>')
+        : "—";
+    });
+    actualizarResumenCotizacion();
+    return { filas: prods.length };
+  }
+
+  function actualizarResumenCotizacion() {
+    if (!uno("#rs-sol")) return;
+    var sol = uno("#ct-sol"), elegidos = proveedoresElegidos();
+    textoDe("rs-sol", sol.value);
+    textoDe("rs-prod", String(renglonesDeCotizacion().length));
+    textoDe("rs-prov", elegidos.length ? elegidos.map(function (i) { return PROVEEDORES[i].nombre; }).join(", ") : "Ninguno");
+    textoDe("rs-lim", (uno("#ct-limite") || {}).value || "—");
+    textoDe("rs-ent", (uno("#ct-entrega") || {}).value || "—");
+    textoDe("rs-pago", (uno("#ct-pago") || {}).value || "—");
+    textoDe("ct-cuantos-pv", elegidos.length + (elegidos.length === 1 ? " elegido" : " elegidos"));
+  }
+
+  function filaDeCotizacion(nombre, unidad, cantidad) {
+    var fila = document.createElement("tr");
+    fila.innerHTML =
+      '<td data-l="Insumo"><b>' + nombre + '</b><div class="tiny">medido en ' + unidad + "</div></td>" +
+      '<td class="num" data-l="Cantidad">' + miles(cantidad) + "</td>" +
+      '<td class="acts"><button class="btn btn--sm btn--ghost" type="button">Quitar</button></td>';
+    return fila;
+  }
+
+  function cargarSolicitud() {
+    var sol = uno("#ct-sol"), cuerpo = uno("#ct-reng tbody");
+    if (!sol || !cuerpo) return;
+    cuerpo.innerHTML = "";
+    (PRODUCTOS_SOLICITUD[sol.value] || []).forEach(function (p) { cuerpo.appendChild(filaDeCotizacion(p[0], p[1], p[2])); });
+    /* se marcan de una vez los proveedores que surten algo de la solicitud */
+    var prods = productosDePedido();
+    todos("#ct-prov-tabla input[data-pv]").forEach(function (c) {
+      var p = PROVEEDORES[c.getAttribute("data-pv")];
+      c.checked = prods.some(function (x) { return p.ins.indexOf(COD_INSUMO[x[0]]) >= 0; });
+    });
+    recalcularCotizacion();
   }
 
   function agregarProducto() {
-    var ins = uno("#ct-ins"), cant = uno("#ct-cant"), pre = uno("#ct-pre");
-    var unidades = numero(cant && cant.value), unitario = numero(pre && pre.value);
-    if (!unidades) { if (cant) cant.focus(); return aviso("Escriba cuánto cotizó el proveedor.", "crit"); }
-    if (!unitario) { if (pre) pre.focus(); return aviso("Escriba el precio unitario.", "crit"); }
-
+    var ins = uno("#ct-ins"), cant = uno("#ct-cant");
+    var unidades = numero(cant && cant.value);
+    if (!unidades) { if (cant) cant.focus(); return aviso("Escriba cuánto necesita cotizar.", "crit"); }
     var partes = ins.value.split("|");
     var nombre = partes[0], unidad = partes[1] || "unidad";
-    var cuerpo = uno("#ct-reng tbody");
-
-    var repetida = renglonesDeCotizacion().filter(function (f) {
-      return (uno("b", celda(f, "Insumo")) || {}).textContent === nombre;
-    })[0];
-    if (repetida) {
-      return aviso(nombre + " ya está en la cotización · quítelo primero si lo va a cambiar.", "warn");
-    }
-
-    var fila = document.createElement("tr");
+    var repetida = productosDePedido().filter(function (x) { return x[0] === nombre; })[0];
+    if (repetida) return aviso(nombre + " ya está en el pedido · quítelo primero si lo va a cambiar.", "warn");
+    var fila = filaDeCotizacion(nombre, unidad, unidades);
     fila.className = "es-nueva";
-    fila.innerHTML =
-      '<td data-l="Insumo"><b>' + nombre + '</b><div class="tiny">medido en ' + unidad + "</div></td>" +
-      '<td class="num" data-l="Cantidad">' + miles(unidades) + "</td>" +
-      '<td class="num" data-l="Precio unitario">' + pesos(unitario) + "</td>" +
-      '<td class="num" data-l="Subtotal">' + pesos(unidades * unitario) + "</td>" +
-      '<td class="acts"><button class="btn btn--sm btn--ghost" type="button">Quitar</button></td>';
-    cuerpo.appendChild(fila);
-
+    uno("#ct-reng tbody").appendChild(fila);
     cant.value = "";
-    pre.value = "";
     var r = recalcularCotizacion();
-    aviso(nombre + " agregado · la cotización va en " + r.filas + " productos por " + pesos(r.total) + ".", "ok");
+    aviso(nombre + " agregado · el pedido va en " + r.filas + (r.filas === 1 ? " producto." : " productos."), "ok");
   }
 
   function quitarProducto(boton) {
     var fila = boton.closest("tr");
     if (!fila) return;
+    var esOrden = !!fila.closest("#oc-reng");
     var nombre = (uno("b", celda(fila, "Insumo")) || {}).textContent || "El producto";
     fila.remove();
-    recalcularCotizacion();
-    aviso(nombre + " se quitó de la cotización.", "warn");
+    if (esOrden) recalcularOrden(); else recalcularCotizacion();
+    aviso(nombre + (esOrden ? " se quitó de la orden." : " se quitó del pedido."), "warn");
   }
 
-  function registrarCotizacion() {
-    var sol = uno("#ct-sol"), prov = uno("#ct-prov"), dias = uno("#ct-dias"), cal = uno("#ct-cal");
-    var r = recalcularCotizacion();
-    if (!r.filas) return aviso("La cotización no tiene productos: agregue al menos uno.", "crit");
+  function pedirCotizacion() {
+    var sol = uno("#ct-sol"), limite = uno("#ct-limite"), entrega = uno("#ct-entrega");
+    var prods = productosDePedido(), elegidos = proveedoresElegidos();
+    if (!prods.length) return aviso("No hay productos para cotizar: agregue al menos uno.", "crit");
+    if (!elegidos.length) return aviso("Elija al menos un proveedor al que pedirle la cotización.", "crit");
+    if (!limite.value) { limite.focus(); return aviso("Indique hasta qué fecha el proveedor puede responder.", "crit"); }
+    if (!entrega.value) { entrega.focus(); return aviso("Indique cuándo necesita recibir los materiales.", "crit"); }
+    if (entrega.value < limite.value) { entrega.focus(); return aviso("La entrega no puede ser antes de la fecha límite de respuesta.", "crit"); }
 
     var panel = panelPorTitulo("Cotizaciones por Solicitud");
-    if (!panel) return aviso("Cotización registrada.", "ok");
-
-    var codigo = siguienteCodigo(panel, "Cotización");
-    var fila = nuevaFila(panel, "Cotización");
-    ponerCelda(fila, "Cotización", "<b>" + codigo + '</b><div class="tiny">' + hoy() + "</div>");
-    ponerCelda(fila, "Solicitud", sol.value.split("·")[0].trim() +
-               '<div class="tiny">' + r.filas + " producto(s)</div>");
-    ponerCelda(fila, "Proveedor", prov.options[prov.selectedIndex].text);
-    ponerCelda(fila, "Precio", pesos(r.total));
-    ponerCelda(fila, "Entrega", dias.value + " días");
-    ponerCelda(fila, "Calidad", cal.value);
-    ponerCelda(fila, "Estado", '<span class="pill pill--warn">En estudio</span>');
+    if (!panel) return aviso("Cotización pedida.", "ok");
+    var codSol = sol.value;
+    var creadas = elegidos.map(function (id) {
+      var codigo = siguienteCodigo(panel, "Cotización");
+      var fila = nuevaFila(panel, "Cotización");
+      ponerCelda(fila, "Cotización", "<b>" + codigo + '</b><div class="tiny">' + hoy() + "</div>");
+      ponerCelda(fila, "Solicitud", codSol + '<div class="tiny">' + prods.length + " producto(s)</div>");
+      ponerCelda(fila, "Proveedor", PROVEEDORES[id].nombre);
+      ponerCelda(fila, "Precio", '—<div class="tiny">sin responder</div>');
+      ponerCelda(fila, "Entrega", '—<div class="tiny">pide ' + entrega.value + "</div>");
+      ponerCelda(fila, "Calidad", "—");
+      ponerCelda(fila, "Estado", '<span class="pill pill--warn">Pedida</span>');
+      ponerCelda(fila, "Acciones", '<div class="acts"><button class="btn btn--sm btn--ghost" type="button">Cargar respuesta</button></div>');
+      COTS[codigo] = { sol: codSol, prov: id, dias: 0, cal: 0, estado: "Pedida", items: prods.map(function (p) { return p.slice(); }) };
+      return codigo;
+    });
+    guardarCots();
     recontar(panel, "cotizaciones");
-    aviso("Cotización " + codigo + " registrada con " + r.filas + " producto(s) por " + pesos(r.total) +
-          " · queda en estudio hasta que Contabilidad la apruebe.", "ok");
+    llenarRespuestas(creadas[0]);
+    valorDe("ct-obs", "");
+    aviso("Se pidió cotización a " + elegidos.length + " proveedor(es) (" + creadas.join(", ") +
+          ") · esperan respuesta hasta el " + limite.value + ".", "ok");
   }
 
-  /* --- Nueva orden de compra (04) --- */
+  /* --- Respuesta del proveedor --- */
+
+  function llenarRespuestas(elegida) {
+    var sel = uno("#rp-cot");
+    if (!sel) return;
+    var pendientes = Object.keys(COTS).filter(function (k) { return COTS[k].estado === "Pedida"; }).sort();
+    sel.innerHTML = pendientes.length
+      ? pendientes.map(function (k) {
+          return '<option value="' + k + '">' + k + " · " + PROVEEDORES[COTS[k].prov].nombre + " · " + COTS[k].sol + "</option>";
+        }).join("")
+      : '<option value="">No hay cotizaciones esperando respuesta</option>';
+    if (elegida && COTS[elegida] && COTS[elegida].estado === "Pedida") sel.value = elegida;
+    pintarRespuesta();
+  }
+
+  function pintarRespuesta() {
+    var sel = uno("#rp-cot"), cuerpo = uno("#rp-reng tbody");
+    if (!sel || !cuerpo) return;
+    var c = COTS[sel.value];
+    cuerpo.innerHTML = "";
+    if (!c) { recalcularRespuesta(); return; }
+    c.items.forEach(function (i) {
+      var fila = document.createElement("tr");
+      fila.innerHTML =
+        '<td data-l="Insumo"><b>' + i[0] + '</b><div class="tiny">medido en ' + i[1] + "</div></td>" +
+        '<td class="num" data-l="Cantidad">' + miles(i[2]) + "</td>" +
+        '<td class="num" data-l="Precio unitario"><input class="rp-precio" type="number" min="1" placeholder="$" aria-label="Precio unitario de ' + i[0] + '"></td>' +
+        '<td class="num" data-l="Subtotal">$0</td>';
+      cuerpo.appendChild(fila);
+    });
+    valorDe("rp-dias", PROVEEDORES[c.prov].dias);
+    recalcularRespuesta();
+  }
+
+  function recalcularRespuesta() {
+    var total = 0;
+    todos("#rp-reng tbody tr").forEach(function (f) {
+      var p = numero((uno(".rp-precio", f) || {}).value), q = numero(celda(f, "Cantidad").textContent);
+      celda(f, "Subtotal").textContent = pesos(p * q);
+      total += p * q;
+    });
+    var t = uno("#rp-total");
+    if (t) t.innerHTML = "<b>" + pesos(total) + "</b>";
+    return total;
+  }
+
+  function guardarRespuesta() {
+    var sel = uno("#rp-cot"), c = sel && COTS[sel.value];
+    if (!c) return aviso("No hay una cotización esperando respuesta.", "warn");
+    var precios = todos(".rp-precio");
+    var falta = precios.filter(function (p) { return !numero(p.value); })[0];
+    if (falta) { falta.focus(); return aviso("Escriba el precio unitario de cada producto.", "crit"); }
+    var dias = numero((uno("#rp-dias") || {}).value);
+    if (!dias) { uno("#rp-dias").focus(); return aviso("Escriba en cuántos días entrega el proveedor.", "crit"); }
+    var codigo = sel.value;
+    precios.forEach(function (p, i) { c.items[i][3] = numero(p.value); });
+    c.dias = dias; c.cal = numero(uno("#rp-cal").value); c.estado = "Respondida";
+    guardarCots();
+
+    var panel = panelPorTitulo("Cotizaciones por Solicitud");
+    var fila = panel && todos("tbody tr", tablaDe(panel)).filter(function (tr) { return codigoDeFila(tr, "Cotización") === codigo; })[0];
+    var total = totalDe(c.items);
+    if (fila) {
+      ponerCelda(fila, "Precio", pesos(total) + '<div class="tiny">' + c.items.length + " producto(s)</div>");
+      ponerCelda(fila, "Entrega", c.dias + '<div class="tiny">días</div>');
+      ponerCelda(fila, "Calidad", c.cal + " / 5");
+      ponerCelda(fila, "Estado", '<span class="pill pill--warn">Respondida</span>');
+      ponerCelda(fila, "Acciones", '<div class="acts"><button class="btn btn--sm btn--oliva">Elegir y ordenar</button></div>');
+      fila.classList.add("es-nueva");
+    }
+    llenarRespuestas();
+    aviso(codigo + " respondida por " + PROVEEDORES[c.prov].nombre + ": " + pesos(total) +
+          " en " + c.dias + " días · ya se puede elegir y ordenar.", "ok");
+  }
+
+  /* --- Nueva orden de compra (06) ---
+
+     Una orden lleva varios productos con su precio acordado. Nace de una
+     cotización elegida (trae proveedor, productos y precios) o se hace directa.
+  */
+
+  var TOPE_GERENTE = 2000000;
+
+  function renglonesDeOrden() { return todos("#oc-reng tbody tr"); }
+
+  function recalcularOrden() {
+    var filas = renglonesDeOrden();
+    var total = filas.reduce(function (suma, f) { return suma + numero(celda(f, "Subtotal").textContent); }, 0);
+    var t = uno("#oc-total");
+    if (t) t.innerHTML = "<b>" + pesos(total) + "</b>";
+    var n = uno("#oc-cuantos");
+    if (n) n.textContent = filas.length + (filas.length === 1 ? " producto" : " productos");
+    actualizarResumenOrden(total, filas.length);
+    return { filas: filas.length, total: total };
+  }
+
+  function actualizarResumenOrden(total, filas) {
+    if (!uno("#rs-oc-num")) return;
+    var prov = uno("#f-oc-prov"), cot = uno("#f-oc-cot");
+    textoDe("rs-oc-num", (uno("#f-oc-num") || {}).value || "—");
+    textoDe("rs-oc-prov", PROVEEDORES[prov.value] ? PROVEEDORES[prov.value].nombre : "—");
+    textoDe("rs-oc-cot", cot.value || "Compra directa");
+    textoDe("rs-oc-prod", String(filas));
+    textoDe("rs-oc-ent", (uno("#f-oc-llega") || {}).value || "—");
+    textoDe("rs-oc-pago", (uno("#f-oc-pago") || {}).value || "—");
+    textoDe("rs-oc-total", pesos(total));
+    var av = uno("#rs-oc-aviso");
+    if (av) {
+      var alto = total > TOPE_GERENTE;
+      av.className = alto ? "aviso aviso--warn" : "aviso";
+      var d = uno("div", av);
+      if (d) d.innerHTML = alto
+        ? "<b>Requiere aprobación del gerente</b><p>La orden supera $2.000.000: queda por aprobar.</p>"
+        : "<b>Aprobación automática</b><p>Hasta $2.000.000 la orden se aprueba sola.</p>";
+    }
+  }
+
+  function filaDeOrden(codigo, nombre, unidad, cantidad, precio) {
+    var fila = document.createElement("tr");
+    fila.innerHTML =
+      '<td data-l="Insumo"><b>' + nombre + '</b><div class="tiny">' + codigo + " · medido en " + unidad + "</div></td>" +
+      '<td class="num" data-l="Cantidad">' + miles(cantidad) + "</td>" +
+      '<td class="num" data-l="Precio unitario">' + pesos(precio) + "</td>" +
+      '<td class="num" data-l="Subtotal">' + pesos(cantidad * precio) + "</td>" +
+      '<td class="acts"><button class="btn btn--sm btn--ghost" type="button">Quitar</button></td>';
+    return fila;
+  }
+
+  function fechaDeEntrega() {
+    var p = PROVEEDORES[(uno("#f-oc-prov") || {}).value];
+    if (p) valorDe("f-oc-llega", sumarDias(p.dias));
+  }
+
+  /* Las cotizaciones que ya tienen precios son las que se pueden ordenar */
+  function llenarCotizaciones(elegida) {
+    var sel = uno("#f-oc-cot");
+    if (!sel) return;
+    var listas = Object.keys(COTS).filter(function (k) { return COTS[k].estado === "Respondida"; }).sort();
+    sel.innerHTML = '<option value="">Compra directa · sin cotización</option>' + listas.map(function (k) {
+      return '<option value="' + k + '">' + k + " · " + PROVEEDORES[COTS[k].prov].nombre + " · " + pesos(totalDe(COTS[k].items)) + "</option>";
+    }).join("");
+    if (elegida) sel.value = elegida;
+  }
+
+  function cargarCotizacion() {
+    var sel = uno("#f-oc-cot"), cuerpo = uno("#oc-reng tbody");
+    if (!sel || !cuerpo) return;
+    var c = COTS[sel.value];
+    if (!c) { recalcularOrden(); return; }
+    valorDe("f-oc-prov", c.prov);
+    fechaDeEntrega();
+    cuerpo.innerHTML = "";
+    c.items.forEach(function (i) {
+      cuerpo.appendChild(filaDeOrden(COD_INSUMO[i[0]] || "MP", i[0], i[1], i[2], i[3]));
+    });
+    var r = recalcularOrden();
+    aviso(sel.value + " cargada · " + PROVEEDORES[c.prov].nombre + ", " + pesos(r.total) + ".", "ok");
+  }
+
+  function agregarProductoOrden() {
+    var ins = uno("#f-oc-ins"), cant = uno("#f-oc-cant"), pre = uno("#f-oc-pre");
+    var unidades = numero(cant && cant.value), unitario = numero(pre && pre.value);
+    if (!unidades) { if (cant) cant.focus(); return aviso("Escriba la cantidad que va a ordenar.", "crit"); }
+    if (!unitario) { if (pre) pre.focus(); return aviso("Escriba el precio unitario acordado.", "crit"); }
+    var partes = ins.value.split("|");
+    var codigo = partes[0], nombre = partes[1], unidad = partes[2] || "unidad";
+    var repetida = renglonesDeOrden().filter(function (f) {
+      return (uno("b", celda(f, "Insumo")) || {}).textContent === nombre;
+    })[0];
+    if (repetida) return aviso(nombre + " ya está en la orden · quítelo primero si lo va a cambiar.", "warn");
+    var fila = filaDeOrden(codigo, nombre, unidad, unidades, unitario);
+    fila.className = "es-nueva";
+    uno("#oc-reng tbody").appendChild(fila);
+    cant.value = "";
+    pre.value = "";
+    var r = recalcularOrden();
+    aviso(nombre + " agregado · la orden va en " + r.filas + (r.filas === 1 ? " producto" : " productos") +
+          " por " + pesos(r.total) + ".", "ok");
+  }
+
+  function numeroDeOrden() {
+    var panel = panelPorTitulo("Órdenes de Compra");
+    return panel ? siguienteCodigo(panel, "Orden") : "OC-2026-0" + (ULTIMA_OC + 1);
+  }
+
   function generarOrden() {
-    var ins = uno("#f-oc-ins"), prov = uno("#f-oc-prov"), cant = uno("#f-oc-cant"), pre = uno("#f-oc-pre");
-    var unidades = numero(cant.value), unitario = numero(pre.value);
-    if (!unidades) { cant.focus(); return aviso("Escriba la cantidad que va a ordenar.", "crit"); }
-    if (!unitario) { pre.focus(); return aviso("Escriba el precio unitario acordado.", "crit"); }
+    var prov = uno("#f-oc-prov"), llega = uno("#f-oc-llega"), cot = uno("#f-oc-cot");
+    var r = recalcularOrden();
+    if (!r.filas) return aviso("La orden no tiene productos: agregue al menos uno.", "crit");
+    if (!llega.value) { llega.focus(); return aviso("Indique la fecha de entrega esperada.", "crit"); }
+    if (llega.value < hoy()) { llega.focus(); return aviso("La entrega esperada no puede ser una fecha pasada.", "crit"); }
 
     var panel = panelPorTitulo("Órdenes de Compra");
     if (!panel) return aviso("Orden generada.", "ok");
 
-    var codigo = siguienteCodigo(panel, "Orden");
+    var filas = renglonesDeOrden();
+    var primera = filas[0];
+    var nombre1 = (uno("b", celda(primera, "Insumo")) || {}).textContent || "";
+    var detalle1 = (uno(".tiny", celda(primera, "Insumo")) || {}).textContent || "";
+    var cod1 = detalle1.split("·")[0].trim();
+    var unidad1 = (detalle1.split("medido en")[1] || "").trim();
+    var cantidad1 = numero(celda(primera, "Cantidad").textContent);
+
+    var codigo = numeroDeOrden();
+    var porAprobar = r.total > TOPE_GERENTE;
     var fila = nuevaFila(panel, "Orden");
-    ponerCelda(fila, "Orden", "<b>" + codigo + "</b><div class=\"tiny\">" +
-      prov.options[prov.selectedIndex].text + " · manual</div>");
-    ponerCelda(fila, "Insumo", ins.value);
-    ponerCelda(fila, "Recibido", "0 / " + miles(unidades));
-    ponerCelda(fila, "Monto", pesos(unidades * unitario));
-    ponerCelda(fila, "Estado", '<span class="pill pill--warn">Aprobada</span>');
+    ponerCelda(fila, "Orden", "<b>" + codigo + '</b><div class="tiny">' +
+      PROVEEDORES[prov.value].nombre + " · " + (cot.value ? "desde " + cot.value : "manual") + "</div>");
+    ponerCelda(fila, "Insumo", nombre1 + (filas.length > 1 ? " y " + (filas.length - 1) + " más" : "") +
+      '<div class="tiny">' + cod1 + (filas.length > 1 ? " y otros" : "") + "</div>");
+    ponerCelda(fila, "Recibido", filas.length > 1
+      ? "0 de " + filas.length + '<div class="tiny">productos</div>'
+      : "0 / " + miles(cantidad1) + '<div class="tiny">' + unidad1 + "</div>");
+    ponerCelda(fila, "Monto", pesos(r.total));
+    ponerCelda(fila, "Estado", '<span class="pill pill--warn">' + (porAprobar ? "Por aprobar" : "Aprobada") + "</span>");
+    ponerCelda(fila, "Acciones", porAprobar
+      ? '<span class="tiny">Espera al gerente</span>'
+      : '<div class="acts"><button class="btn btn--sm btn--ghost" type="button">Enviar</button></div>');
     recontar(panel, "órdenes");
-    sumarAlMenu("04-ordenes.html", 1);
-    cant.value = "";
-    aviso("Orden " + codigo + " generada: " + miles(unidades) + " un por " + pesos(unidades * unitario) + ".", "ok");
+    sumarAlMenu("06-ordenes.html", 1);
+
+    /* la pantalla queda lista para la siguiente orden */
+    var usada = cot.value;
+    uno("#oc-reng tbody").innerHTML = "";
+    valorDe("f-oc-obs", "");
+    valorDe("f-oc-cot", "");
+    valorDe("f-oc-num", numeroDeOrden());
+    fechaDeEntrega();
+    recalcularOrden();
+    aviso("Orden " + codigo + " generada por " + pesos(r.total) +
+          (porAprobar ? " · supera $2.000.000, queda por aprobar por un gerente." : " · aprobada, lista para enviar."),
+          porAprobar ? "warn" : "ok");
+  }
+
+  /* Deja listos los campos de las dos pantallas cada vez que se abren */
+  function iniciarFormularios() {
+    if (uno("#ct-sol")) {
+      var lim = uno("#ct-limite"), ent = uno("#ct-entrega");
+      if (lim && !lim.value) lim.value = sumarDias(3);
+      if (ent && !ent.value) ent.value = sumarDias(10);
+      if (lim) lim.min = hoy();
+      if (ent) ent.min = hoy();
+      if (!proveedoresElegidos().length && !uno("#ct-prov-tabla").dataset.listo) { cargarSolicitud(); uno("#ct-prov-tabla").dataset.listo = "1"; }
+      recalcularCotizacion();
+      llenarRespuestas();
+    }
+    if (uno("#f-oc-num")) {
+      valorDe("f-oc-num", numeroDeOrden());
+      valorDe("f-oc-fecha", hoy());
+      var lle = uno("#f-oc-llega");
+      if (lle) lle.min = hoy();
+      llenarCotizaciones();
+      if (cotElegida && COTS[cotElegida]) {
+        llenarCotizaciones(cotElegida);
+        cotElegida = "";
+        cargarCotizacion();
+      } else {
+        if (lle && !lle.value) fechaDeEntrega();
+        recalcularOrden();
+      }
+    }
+  }
+
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (!t || !t.id) { if (t && t.matches && t.matches("#ct-prov-tabla input")) actualizarResumenCotizacion(); return; }
+    if (t.id === "ct-sol")     cargarSolicitud();
+    if (t.id === "rp-cot")     pintarRespuesta();
+    if (t.id === "f-oc-prov")  { fechaDeEntrega(); recalcularOrden(); }
+    if (t.id === "f-oc-cot")   cargarCotizacion();
+    if (t.id.indexOf("ct-") === 0) actualizarResumenCotizacion();
+    if (t.id.indexOf("f-oc-") === 0) recalcularOrden();
+  });
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (t && t.classList && t.classList.contains("rp-precio")) recalcularRespuesta();
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (t && t.matches && t.matches("#ct-prov-tabla input")) actualizarResumenCotizacion();
+  });
+
+  /* Las pantallas 04 y 06 comparten el botón "Agregar producto": cada una sabe cuál es el suyo */
+  function agregarSegunPantalla(boton) {
+    return boton.closest(".panel").querySelector("#oc-reng") ? agregarProductoOrden() : agregarProducto();
+  }
+
+  function cargarRespuesta(boton) {
+    var fila = boton.closest("tr");
+    var codigo = codigoDeFila(fila, "Cotización");
+    llenarRespuestas(codigo);
+    var p = panelPorTitulo("Respuesta del Proveedor");
+    if (p && p.scrollIntoView) p.scrollIntoView({ behavior: "smooth", block: "start" });
+    aviso(codigo + ": escriba los precios que contestó el proveedor.", "ok");
   }
 
   /* --- Registrar novedad (06) --- */
@@ -524,14 +879,14 @@
     var texto = b.textContent.trim();
 
     /* --- formularios --- */
-    if (texto === "Agregar producto") { e.preventDefault(); return agregarProducto(); }
-    if (texto === "Quitar")           { e.preventDefault(); return quitarProducto(b); }
-    if (texto === "Registrar cotización") { e.preventDefault(); return registrarCotizacion(); }
+    if (texto === "Agregar producto") { e.preventDefault(); return agregarSegunPantalla(b); }
+    if (texto === "Quitar" && b.closest("#ct-reng, #oc-reng")) { e.preventDefault(); return quitarProducto(b); }
+    if (b.id === "ct-pedir")          { e.preventDefault(); return pedirCotizacion(); }
+    if (b.id === "rp-guardar")        { e.preventDefault(); return guardarRespuesta(); }
+    if (texto === "Cargar respuesta") { e.preventDefault(); return cargarRespuesta(b); }
+    if (b.id === "oc-generar")        { e.preventDefault(); return generarOrden(); }
     if (texto === "Registrar novedad")    { e.preventDefault(); return registrarNovedad(); }
     if (texto === "Registrar recepción")  { e.preventDefault(); return registrarRecepcion(b); }
-    if (texto === "Generar orden" && b.closest(".panel__body--form")) {
-      e.preventDefault(); return generarOrden();
-    }
 
     /* --- pendientes --- */
     if (texto === "Marcar atendida") {
@@ -555,7 +910,12 @@
       fila.classList.add("es-nueva");
       b.disabled = true;
       var cual = (fila.querySelector("b") || {}).textContent || "El registro";
-      return aviso(cual + " " + destino.dice + ".", destino.aviso);
+      aviso(cual + " " + destino.dice + ".", destino.aviso);
+      if (texto === "Elegir y ordenar") {
+        cotElegida = cual;
+        setTimeout(function () { ir("06-ordenes.html", true); }, 800);
+      }
+      return;
     }
 
     /* --- paso 1: de un insumo bajo el mínimo sale la solicitud --- */
@@ -625,6 +985,7 @@
   /* ---------------------------------------------------------------- 10. Arranque */
 
   marcarMenu();
+  iniciarFormularios();
   setTimeout(pintarFlujo, 300);
   history.replaceState({ pantalla: actual }, "", actual);
 
@@ -1044,6 +1405,7 @@
   }
 
   function pintarFlujo() {
+    iniciarFormularios();
     pintarSolicitudes();
     pintarPorAprobar();
     pintarOrdenes();

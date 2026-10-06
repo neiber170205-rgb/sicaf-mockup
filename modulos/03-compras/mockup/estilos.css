@@ -320,6 +320,16 @@ tr.es-nueva > td {
 .reng .btn { flex: 0 0 auto; }
 .tabla-tools b { font-size: 13.5px; color: var(--vino-800); }
 
+/* ── Barra de acciones de "Pedir cotización" y "Nueva orden de compra" ───── */
+.form-actions {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  border-top: 1px solid var(--linea);
+}
+.form-actions .btn { height: 44px; white-space: nowrap; }
+.form-actions > p { flex: 1 1 280px; margin: 0; }
+.field .chip { margin: 2px 4px 2px 0; }
+.control input[readonly] { background: var(--crema); color: var(--tinta-2); cursor: default; }
+
 /* ═════════════════════════════════════════════════════════════════════
    TABLA DE DATOS (.dt) — buscador, filtros, orden, totales y páginas.
    Es la misma tabla que usa Producción, copiada tal cual para que todos
@@ -1293,3 +1303,25 @@ select.dt__in {
 }
 .dt__cols label:hover { background: var(--arena); }
 .dt__acts { position: relative; }
+
+
+/* ── Pedir cotización y Nueva orden de compra: formulario + resumen al lado ── */
+.compra-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; align-items: stretch; }
+.compra-main { min-width: 0; }
+.compra-side {
+  background: var(--arena); border-left: 1px solid var(--linea);
+  padding: 16px 20px 20px;
+}
+.compra-side h3 { font-size: 13.5px; color: var(--vino-800); margin: 0 0 8px; }
+.compra-side .kv b { text-align: right; }
+.compra-side .aviso { margin-bottom: 0; }
+#ct-prov-tabla input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--vino-600); }
+.rp-precio {
+  width: 120px; height: 36px; padding: 0 10px; text-align: right;
+  border: 1px solid var(--linea); border-radius: var(--r-m); background: var(--papel);
+}
+.rp-precio:focus { border-color: var(--cobre-500); outline: none; }
+@media (max-width: 1100px) {
+  .compra-grid { grid-template-columns: minmax(0, 1fr); }
+  .compra-side { border-left: 0; border-top: 1px solid var(--linea); }
+}
