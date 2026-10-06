@@ -29,7 +29,7 @@
     return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
   function pesos(n) { return "$" + miles(n); }
-  function hoy() { return new Date().toISOString().slice(0, 10); }
+  function hoy() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function ahora() {
     var d = new Date();
     return hoy() + " " + String(d.getHours()).padStart(2, "0") + ":" +
@@ -361,53 +361,6 @@
     return n;
   }
 
-  /* --- Merma (05) --- */
-  function registrarMerma() {
-    var ref = uno("#mr-ref"), cant = uno("#mr-cant"), etapa = uno("#mr-etapa"), causa = uno("#mr-causa");
-    var unidades = numero(cant.value);
-    if (!unidades || unidades < 1) { cant.focus(); return aviso("Escriba una cantidad mayor que cero.", "crit"); }
-    if (!causa.value.trim()) { causa.focus(); return aviso("Escriba la causa de la merma.", "crit"); }
-
-    var panel = panelPorTitulo("Merma Registrada");
-    if (!panel) return aviso("Merma registrada.", "ok");
-
-    var previa = uno("tbody tr", tablaDe(panel));
-    var codigo = siguienteCodigo(panel, "Registro");
-    /* el costo de una unidad de ESA referencia (no el de la fila de arriba) */
-    var unitario = COSTO_UNIDAD[ref.value] || Math.round(numero(celda(previa, "Costo").textContent) /
-                              Math.max(1, numero(celda(previa, "Cantidad").textContent)));
-
-    var fila = nuevaFila(panel, "Registro");
-    ponerCelda(fila, "Registro", "<b>" + codigo + "</b><div class=\"tiny\">" + HOY + "</div>");
-    ponerCelda(fila, "Origen", '<span class="chip chip--cobre">Inventario</span><div class="tiny">Bodega</div>');
-    ponerCelda(fila, "Referencia", ref.value + '<div class="tiny">' + etapa.value + "</div>");
-    ponerCelda(fila, "Cantidad", String(unidades));
-    ponerCelda(fila, "Causa", causa.value.trim());
-    ponerCelda(fila, "Costo", pesos(unidades * unitario));
-    ponerCelda(fila, "Responsable", "Jefe de bodega");
-
-    /* los totales del pie de la tabla */
-    var tfoot = uno("tfoot tr", tablaDe(panel));
-    if (tfoot) {
-      var tds = todos("td", tfoot);
-      tds.forEach(function (td) {
-        if (td.classList.contains("num")) {
-          td.textContent = td.textContent.indexOf("$") >= 0
-            ? pesos(numero(td.textContent) + unidades * unitario)
-            : miles(numero(td.textContent) + unidades);
-        }
-      });
-      var primero = tds[0];
-      if (primero) primero.innerHTML = primero.innerHTML.replace(/<b>\d+/, "<b>" +
-        uno("tbody", tablaDe(panel)).rows.length);
-    }
-    recontar(panel, "registros");
-    sumarAlMenu("05-merma.html", 1);
-    causa.value = "";
-    cant.value = "1";
-    aviso("Merma " + codigo + " registrada: " + unidades + " un de " + ref.value + ".", "ok");
-  }
-
   /* --- Ajuste por conteo físico (02) --- */
   function registrarAjuste() {
     var ins = uno("#f-aj-ins"), cant = uno("#f-aj-cant"), just = uno("#f-aj-just");
@@ -571,14 +524,13 @@
     var rapida = e.target.closest(".rapida");
     if (rapida) {
       e.preventDefault();
-      var destino = { "+ Entrada": "02-m-prima.html", "+ Producción": "03-en-proceso.html",
-                      "+ Avería": "06-maquinaria.html", "+ Merma": "05-merma.html" };
+      var destino = { "+ Entrada": "02-m-prima.html", "+ Producción": "11-bodegas.html",
+                      "+ Avería": "06-maquinaria.html" };
       var clave = (uno("b", rapida) || {}).textContent;
       return ir(destino[clave] || "01-inicio.html", true);
     }
 
     /* --- formularios --- */
-    if (texto === "Registrar merma")  { e.preventDefault(); return mermaConTope(); }
     if (texto === "Registrar ajuste") { e.preventDefault(); return ajustarConteo(); }
     if (texto === "Enviar solicitud") { e.preventDefault(); return enviarSolicitud(); }
     if (texto === "Asignar rol")      { e.preventDefault(); return asignarRol(); }
@@ -610,7 +562,7 @@
     }
     if (texto === "Ver historial") {
       e.preventDefault();
-      return ir("07-kardex.html", true);
+      return ir("11-bodegas.html", true);
     }
 
     /* --- avisos automáticos de Config. --- */
@@ -802,8 +754,6 @@
           sale ? "warn" : "ok");
     moverStock(bod.value, art.value, sale ? -cuanto : cuanto,
                { mv: nuevoMB(), tipo: sale ? "Salida" : "Entrada", doc: (mot.value || "Movimiento") + " · desde Inicio" });
-    anotarKardex(art.value, (celda(fila, "Qué es") || {}).textContent || "", sale ? "Salida" : "Entrada",
-                 sale ? -cuanto : cuanto, unidad, queda, mot.value || "Movimiento", bod.value);
     pintarAlmacen();
   }
 
@@ -931,10 +881,10 @@
     filas.forEach(function (f) {
       var p = uno(".pill", f);
       p.className = "pill pill--warn";
-      p.textContent = "Pedido a Compras";
+      p.textContent = "Solicitado a Compras";
       var boton = uno(".btn", f);
       if (boton) {
-        boton.textContent = "Pedido";
+        boton.textContent = "Solicitado";
         boton.disabled = true;
         boton.classList.add("btn--ghost");
       }
@@ -978,7 +928,7 @@
 
     /* el botón de cada fila de «Qué hay que abastecer» */
     var fila = b.closest("#dt-04-abastecer tbody tr");
-    if (fila && b.textContent.trim() === "Pedir a Compras") {
+    if (fila && b.textContent.trim() === "Solicitar a Compras") {
       e.preventDefault();
       return pedirParaBodega((celda(fila, "Bodega") || {}).textContent.trim());
     }
@@ -1265,7 +1215,7 @@
           abastecer.classList.remove("es-pedida");
           abastecer.classList.add("es-nueva");
           var boton = uno(".btn", abastecer);
-          if (boton) { boton.textContent = "Pedir a Compras"; boton.disabled = false; boton.classList.add("btn--ghost"); }
+          if (boton) { boton.textContent = "Solicitar a Compras"; boton.disabled = false; boton.classList.add("btn--ghost"); }
         }
       });
       refrescarBodega(s.bodega);
@@ -1299,7 +1249,18 @@
      en SALDO para que todas las pantallas cuenten lo mismo.
      ===================================================================== */
 
-  var HOY = "2026-09-23";   // la fecha del mockup (la misma del encabezado)
+  /* La fecha de hoy (la del computador, no la de Londres): la usa el encabezado y cada registro nuevo */
+  var HOY = (function () {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  })();
+  function ponerFechaHoy() {
+    todos(".phead__f").forEach(function (f) {
+      var t = [].filter.call(f.childNodes, function (n) { return n.nodeType === 3 && n.textContent.trim(); });
+      if (t.length) t[t.length - 1].textContent = " " + HOY + " ";
+      else f.appendChild(document.createTextNode(" " + HOY));
+    });
+  }
 
   /* Lo que hay de cada referencia. Materia prima en su unidad; las REF en
      unidades (en planta + en bodega de producto terminado). */
@@ -1315,14 +1276,12 @@
     "REF-1051": "no hay unidades en planta ni en bodega",
     "REF-0987": "modelo descontinuado: no hay unidades"
   };
-  /* Lo que vale una unidad de cada referencia (para valorizar la merma) */
+  /* Lo que vale una unidad de cada referencia (para valorizar el inventario) */
   var COSTO_UNIDAD = {
     "MP-01": 1450, "MP-02": 9800, "MP-03": 3200, "MP-04": 6500, "MP-05": 2100, "MP-06": 18500,
     "MP-07": 45, "MP-08": 1200, "REF-1042": 37025, "REF-1043": 30180, "REF-1044": 30275,
     "REF-1045": 23170, "REF-1046": 35830, "REF-1051": 31500, "REF-0987": 29800
   };
-  var NUM_MOV = 10;          // el último MV del kárdex
-  var PARA_KARDEX = [];      // movimientos que esperan a que se abra el kárdex
 
   /* RN-INV-02: el estado sale del saldo frente al mínimo */
   function estadoDe(saldo, minimo) {
@@ -1332,54 +1291,6 @@
   }
 
   function decimal(n) { return String(Math.round(n * 10) / 10).replace(".", ","); }
-
-  /* Todo lo que cambia un saldo queda en el kárdex (paso 9 del proceso) */
-  function anotarKardex(ref, nombre, tipo, cantidad, unidad, saldo, documento, bodega) {
-    NUM_MOV += 1;
-    PARA_KARDEX.push({
-      mv: "MV-" + String(NUM_MOV).padStart(4, "0"), ref: ref, nombre: nombre, tipo: tipo,
-      cant: cantidad, unidad: unidad, saldo: saldo, doc: documento,
-      bod: bodega || (ref.indexOf("REF-") === 0 ? "Planta" : bodegaDe(ref))
-    });
-    if (actual === "07-kardex.html") vaciarKardex();
-  }
-
-  function vaciarKardex() {
-    var panel = panelPorTitulo("Kárdex de Movimientos");
-    if (!panel || !PARA_KARDEX.length) return;
-    var CHIP = { Entrada: "oliva", Salida: "cobre", Ajuste: "tinta", Merma: "vino" };
-    PARA_KARDEX.forEach(function (m) {
-      var f = nuevaFila(panel, "Mov.");
-      var signo = m.cant > 0 ? "+" : "";
-      ponerCelda(f, "Mov.", '<b class="nw">' + m.mv + "</b>");
-      ponerCelda(f, "Referencia", "<b>" + m.ref + '</b><div class="tiny">' + m.nombre + "</div>");
-      ponerCelda(f, "Bodega", '<b class="nw">' + (m.bod || "—") + "</b>");
-      ponerCelda(f, "Tipo", '<span class="chip chip--' + (CHIP[m.tipo] || "tinta") + '">' + m.tipo + "</span>");
-      ponerCelda(f, "Cantidad", '<span class="mov mov--' + (m.cant >= 0 ? "mas" : "menos") + '">' +
-                 signo + miles(m.cant) + '</span><div class="tiny">' + m.unidad + "</div>");
-      ponerCelda(f, "Saldo", "<b>" + miles(m.saldo) + "</b>");
-      ponerCelda(f, "Documento", m.doc);
-      ponerCelda(f, "Responsable", "Jefe de bodega");
-      ponerCelda(f, "Fecha", HOY);
-    });
-    var n = PARA_KARDEX.length;
-    PARA_KARDEX = [];
-    /* los totales: cuántos movimientos hay de cada tipo */
-    var cuenta = { Entrada: 0, Salida: 0, Ajuste: 0, Merma: 0 }, filasK = todos("tbody tr", panel);
-    filasK.forEach(function (f) { var t = (celda(f, "Tipo") || {}).textContent.trim(); if (t in cuenta) cuenta[t]++; });
-    var res = uno(".dt__res", panel);
-    if (res) res.innerHTML = '<span class="dt__res-t">Totales<em>de los ' + filasK.length + " registro(s)</em></span>" +
-      Object.keys(cuenta).filter(function (k) { return cuenta[k]; }).map(function (k) {
-        var t = { Entrada: "ok", Salida: "warn", Ajuste: "", Merma: "crit" }[k];
-        return '<span class="dt__res-i' + (t ? " dt__res-i--" + t : "") + '"><b>' + k + "</b><span>" + cuenta[k] + "</span></span>";
-      }).join("");
-    var pieK = uno("tfoot tr td", panel);
-    if (pieK) pieK.innerHTML = "<b>" + filasK.length + ' movimientos</b> <span class="tiny">' + cuenta.Entrada + " entradas · " +
-      cuenta.Salida + " salidas · " + cuenta.Ajuste + " ajustes · " + cuenta.Merma + " mermas</span>";
-    var dt = uno(".dt", panel);
-    if (dt) { dt.dataset.pag = 1; dtPintar(dt); }
-    aviso("El kárdex tiene " + n + " movimiento(s) nuevo(s) de esta sesión.", "ok");
-  }
 
   /* ---------------------------------------------------------------- M. Prima (02) */
 
@@ -1399,7 +1310,7 @@
     if (acts) {
       var pedir = uno('[data-acc="pedir"]', acts);
       if (est.tono === "crit" && !pedir) {
-        acts.insertAdjacentHTML("beforeend", '<button class="btn btn--sm btn--cobre" data-acc="pedir">Pedir</button>');
+        acts.insertAdjacentHTML("beforeend", '<button class="btn btn--sm btn--cobre" data-acc="pedir">Solicitar</button>');
       }
       if (est.tono !== "crit" && pedir) pedir.remove();
     }
@@ -1474,7 +1385,6 @@
     SALDO[ref] = s + q;
     COSTO_UNIDAD[ref] = nuevo;
     pintarMP(fila);
-    anotarKardex(ref, uno(".tiny", fila).textContent, "Entrada", q, fila.dataset.unidad, s + q, doc.value.trim());
     aviso("Entraron " + miles(q) + " " + fila.dataset.unidad + " de " + ref + ". Costo promedio: " +
           pesos(c) + " → " + pesos(nuevo) + ".", "ok");
     cant.value = ""; cost.value = ""; doc.value = "";
@@ -1497,9 +1407,8 @@
                                          doc: "Ajuste por conteo · " + just.value.trim() });
     SALDO[ref] = contado;
     pintarMP(fila);
-    anotarKardex(ref, uno(".tiny", fila).textContent, "Ajuste", dif, fila.dataset.unidad, contado, just.value.trim());
     aviso("Saldo de " + ref + " ajustado de " + miles(antes) + " a " + miles(contado) +
-          " (" + (dif > 0 ? "+" : "") + miles(dif) + "). Quedó en el kárdex con su justificación.", "ok");
+          " (" + (dif > 0 ? "+" : "") + miles(dif) + "). Quedó en el registro con su justificación.", "ok");
     just.value = ""; cant.value = "";
   }
 
@@ -1523,44 +1432,6 @@
     }
     if (acc === "entrada") explicarEntrada();
     setTimeout(function () { var c = uno(destino[2]); if (c) c.focus(); }, 320);
-  }
-
-  /* ---------------------------------------------------------------- Merma (05) */
-
-  function mostrarExistencia() {
-    var caja = uno("#mr-hay"), sel = uno("#mr-ref");
-    if (!caja || !sel) return;
-    var ref = sel.value, hay = SALDO[ref] || 0;
-    var nombre = sel.options[sel.selectedIndex].textContent;
-    caja.innerHTML = nombre + ": <b>" + miles(hay) + "</b> " + (ref.indexOf("MP-") === 0 ? "en bodega" :
-      "unidades (" + (DETALLE[ref] || "en planta y en bodega") + ")") +
-      ". " + (hay ? "No se puede registrar una merma mayor." : "No se puede registrar merma de algo que no hay.");
-    caja.parentNode.classList.toggle("calc--crit", !hay);
-  }
-
-  /* RN-INV-05: la merma exige cantidad, etapa y causa, y no supera la existencia */
-  function mermaConTope() {
-    var ref = uno("#mr-ref"), cant = uno("#mr-cant"), causa = uno("#mr-causa");
-    var unidades = numero(cant.value);
-    if (!unidades || unidades < 1) { cant.focus(); return aviso("Escriba una cantidad mayor que cero.", "crit"); }
-    if (!causa.value.trim()) { causa.focus(); return aviso("Escriba la causa de la merma.", "crit"); }
-    var hay = SALDO[ref.value] || 0;
-    if (unidades > hay) {
-      cant.focus();
-      return aviso("Solo hay " + miles(hay) + " unidades de " + ref.value +
-                   ": no se puede perder más de lo que hay.", "crit");
-    }
-    if (ref.value.indexOf("MP-") === 0) {
-      moverStock(bodegaDe(ref.value), ref.value, -unidades, { mv: nuevoMB(), tipo: "Salida", doc: "Merma · " + causa.value.trim() });
-    }
-    SALDO[ref.value] = hay - unidades;
-    var nombre = ref.options[ref.selectedIndex].textContent.split("·").slice(1).join("·").trim();
-    registrarMerma();   // la de siempre: agrega la fila y suma los totales
-    var dtm = uno(".dt", panelPorTitulo("Merma Registrada") || document.createElement("div"));
-    if (dtm) { dtm.dataset.pag = 1; dtPintar(dtm); }
-    anotarKardex(ref.value, nombre, "Merma", -unidades, ref.value.indexOf("MP-") === 0 ? "" : "un",
-                 hay - unidades, "Merma en " + uno("#mr-etapa").value.toLowerCase());
-    mostrarExistencia();
   }
 
   /* ---------------------------------------------------------------- Terminado (04) */
@@ -1598,12 +1469,11 @@
     if (panel) totalesTerminado(panel);
     SALDO[d.ref] = (SALDO[d.ref] || 0);   // el lote ya estaba contado en planta: solo cambia de lugar
     moverStock("BOD-02", "PT-" + d.ref, pares, { mv: nuevoMB(), tipo: "Entrada", doc: "Lote de Calidad · " + d.lote, quien: "Control de Calidad" });
-    anotarKardex("PT-" + d.ref, d.modelo, "Entrada", pares, "pares", total, d.lote + " · conforme", "BOD-02");
     tr.remove();
     var quedan = todos("#p-lotes tbody tr").length;
     var n = uno("#lotes-n");
     if (n) n.textContent = quedan ? quedan + " por recibir" : "Todo recibido";
-    aviso("Entraron " + pares + " pares de " + d.ref + " a BOD-02. Quedó la entrada en el kárdex.", "ok");
+    aviso("Entraron " + pares + " pares de " + d.ref + " a BOD-02. Quedó la entrada en el registro de Bodegas.", "ok");
   }
 
   function totalesTerminado(panel) {
@@ -1664,6 +1534,16 @@
   var ORDENES = ["OP-2026-031", "OP-2026-028", "OP-2026-029", "OP-2026-034", "OP-2026-035",
                  "OP-2026-038", "OP-2026-043", "OP-2026-044"];
   var OPERARIOS = ["Luisa Mendoza", "Édgar Pabón", "Marcela Ortiz", "Jorge Rincón", "Técnico externo"];
+  /* Dónde está cada equipo y quién responde por él (el que lo usa es el operario) */
+  var AREAS_MQ = { "Corte": "Sala de corte", "Guarnición": "Sala de guarnición", "Montaje": "Línea de montaje", "Terminado": "Zona de acabados" };
+  var ENCARGADOS_MQ = { "Corte": "Carlos Ruiz · Jefe de corte", "Guarnición": "Patricia Gómez · Jefa de guarnición",
+                        "Montaje": "Hernán Díaz · Jefe de montaje", "Terminado": "Sofía Vargas · Jefa de acabados" };
+  function areaDe(m) { return m.area || AREAS_MQ[m.etapa] || "Sin área"; }
+  function encargadoDe(m) { return m.encargado || ENCARGADOS_MQ[m.etapa] || "Sin encargado"; }
+  function usandoDe(m) {
+    if (m.estado === "operativa" || m.estado === "mantenimiento") return m.operario || "Sin asignar";
+    return "Sin asignar";
+  }
 
   /* ---- Los dibujos de cada tipo de equipo (SVG hecho a mano) */
   var EQUIPOS = [
@@ -1760,13 +1640,25 @@
     return '<button type="button" class="mq-card mq-card--' + e.tono + (m.cod === MQ_SEL ? " is-on" : "") +
       '" data-mq-ver="' + m.cod + '" aria-pressed="' + (m.cod === MQ_SEL) + '">' +
       '<span class="mq-card__img">' + dibujo(m.img) +
-        '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>" +
+        (m.estado === "descartado" ? '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>"
+          : '<span class="pill pill--' + e.tono + ' mq-pill" role="button" tabindex="0" data-mq-estado="' + m.cod + '" title="Cambiar el estado">' +
+            e.texto + ' <i aria-hidden="true">▾</i></span>') +
         '<span class="mq-card__tipo">' + (esHerramienta(m) ? "Herramienta" : "Máquina") + "</span></span>" +
       '<span class="mq-card__cuerpo"><span class="mq-card__cod">' + m.cod + '</span><span class="mq-card__n">' + esc(m.nombre) + "</span>" +
       '<span class="mq-card__et">' + m.etapa + " · " + nombreEquipo(m.img) + "</span>" +
+      '<span class="mq-card__quien">' +
+        '<span><em>Área</em><b>' + esc(areaDe(m)) + "</b></span>" +
+        '<span><em>Responsable</em><b>' + esc(encargadoDe(m)) + "</b></span>" +
+        '<span><em>Operador</em>' + (m.estado === "descartado" ? "<b>" + esc(usandoDe(m)) + "</b>" :
+          '<b class="mq-op' + (usandoDe(m) === "Sin asignar" ? " mq-nadie" : "") + '" role="button" tabindex="0" data-mq-op="' + m.cod + '" title="Asignar o cambiar el operador">' +
+          esc(usandoDe(m)) + ' <i aria-hidden="true">✎</i></b>') + "</span>" +
+      "</span>" +
       '<span class="mq-card__pasa mq-card__pasa--' + e.tono + '">' + esc(queLePasa(m)) + "</span>" +
       (m.estado === "desuso" ? "" : '<span class="mq-card__m"><span class="bar bar--' + (mt.tono === "ok" ? "ok" : "crit") + '"><i style="width:' + usado + '%"></i></span>' +
         '<span class="tiny">Mantenimiento: ' + mt.texto.toLowerCase() + "</span></span>") +
+      (m.estado === "descartado" ? "" : '<span class="mq-card__ed" role="button" tabindex="0" data-mq-editar="' + m.cod + '" title="Editar ' + m.cod + '">' +
+        '<svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg> Editar</span>') +
       "</span></button>";
   }
 
@@ -1775,8 +1667,10 @@
     var kv = [
       ["Tipo", nombreEquipo(m.img) + (esHerramienta(m) ? " (herramienta)" : " (máquina)")],
       ["Etapa", m.etapa],
+      ["Área", esc(areaDe(m))],
+      ["Responsable", esc(encargadoDe(m))],
       ["Orden en curso", m.orden ? m.orden + (m.estado === "averiada" ? " · suspendida" : "") : "Sin orden"],
-      ["Operario", m.operario || "Sin asignar"],
+      ["Operador asignado", esc(usandoDe(m))],
       ["Turno", m.turno === "1" ? "Turno 1 · 06:00 – 14:00" : m.turno === "2" ? "Turno 2 · 14:00 – 22:00" : "Sin turno"],
       ["Horas acumuladas", miles(numero(m.horas)) + " h"],
       ["Último mantenimiento", m.ultimo],
@@ -1885,13 +1779,157 @@
       if (uno('input[type="search"]', dt).value || uno("select", dt).selectedIndex) filtrar(dt);
       else dtPintar(dt);
     }
+    pintarReporteMQ();
     var problemas = MAQ.filter(function (m) { return m.estado === "averiada" || (m.estado !== "desuso" && faltan(m) < 0); }).length;
     sumarAlMenu("06-maquinaria.html", 0, problemas);
   }
 
+  /* ---- Reporte de cambios: cada cambio de estado, área o responsable queda anotado */
+  var REPORTE_MQ = [];
+  var USUARIO_MQ = "Admin Principal";
+  function anotarReporte(m, que, antes, despues, detalle) {
+    if (antes === despues) return;
+    REPORTE_MQ.unshift({ f: ahora(), cod: m.cod, nombre: m.nombre, que: que, antes: antes || "—", despues: despues || "—",
+                         detalle: detalle || "", quien: USUARIO_MQ });
+  }
+  function pintarReporteMQ() {
+    var cuerpo = uno("#mqr-filas");
+    if (!cuerpo) return;
+    var TONO = { "Estado": "vino", "Área": "oliva", "Responsable": "cobre", "Operador": "tinta" };
+    cuerpo.innerHTML = REPORTE_MQ.map(function (r) {
+      return '<tr><td data-l="Fecha"><span class="nw">' + r.f + "</span></td>" +
+        '<td data-l="Equipo"><b class="nw">' + r.cod + '</b><div class="tiny">' + esc(r.nombre) + "</div></td>" +
+        '<td data-l="Cambio"><span class="chip chip--' + (TONO[r.que] || "tinta") + '">' + r.que + "</span></td>" +
+        '<td data-l="Antes" class="muted">' + esc(r.antes) + "</td>" +
+        '<td data-l="Ahora"><b>' + esc(r.despues) + "</b>" + (r.detalle ? '<div class="tiny">' + esc(r.detalle) + "</div>" : "") + "</td>" +
+        '<td data-l="Registró" class="muted">' + esc(r.quien) + "</td></tr>";
+    }).join("");
+    var vacio = uno("#mqr-vacio");
+    if (vacio) vacio.hidden = REPORTE_MQ.length > 0;
+    var n = uno("#mqr-n");
+    if (n) n.textContent = REPORTE_MQ.length + " cambio(s)";
+    var dt = cuerpo.closest(".dt");
+    if (dt) { if (uno('input[type="search"]', dt).value || todos(".dt__filtros select", dt).some(function (x) { return x.selectedIndex > 0; })) filtrar(dt); else dtPintar(dt); }
+  }
+  function descargarReporteMQ() {
+    if (!REPORTE_MQ.length) return aviso("Todavía no hay cambios para el reporte.", "warn");
+    var col = ["Fecha", "Equipo", "Nombre", "Cambio", "Antes", "Ahora", "Detalle", "Registró"];
+    var filas = REPORTE_MQ.map(function (r) { return [r.f, r.cod, r.nombre, r.que, r.antes, r.despues, r.detalle, r.quien]; });
+    var csv = "\ufeff" + [col].concat(filas).map(function (f) {
+      return f.map(function (x) { return '"' + String(x || "").replace(/"/g, '""') + '"'; }).join(";");
+    }).join("\r\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "reporte-maquinaria-" + HOY + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    aviso("Se descargó el reporte con " + REPORTE_MQ.length + " cambio(s).", "ok");
+  }
+
+  /* El menú para asignar o cambiar quién usa el equipo */
+  function abrirMenuOperador(el) {
+    cerrarMenuEstado();
+    var m = maq(el.getAttribute("data-mq-op"));
+    if (!m) return;
+    var menu = document.createElement("div");
+    menu.className = "mq-menu";
+    menu.setAttribute("role", "menu");
+    var nota = m.estado === "averiada" ? "Está averiada: primero hay que repararla."
+             : m.estado === "desuso" ? "Está en desuso: primero hay que reactivarla."
+             : m.estado === "libre" ? "Al asignarla se pide la orden y el turno."
+             : m.estado === "mantenimiento" ? "Quién hace el mantenimiento." : "";
+    var bloqueado = m.estado === "averiada" || m.estado === "desuso";
+    menu.innerHTML = '<span class="mq-menu__t">Operador de ' + m.cod + "</span>" +
+      (nota ? '<small class="mq-menu__nota">' + nota + "</small>" : "") +
+      OPERARIOS.map(function (o) {
+        var actual = o === m.operario;
+        return '<button type="button" role="menuitem" data-mq-asignar="' + esc(o) + '" data-cod="' + m.cod + '"' + (actual || bloqueado ? " disabled" : "") + ">" +
+          '<span class="mq-menu__p"><span class="bgv-resp__av">' + iniciales(o) + "</span><b>" + esc(o) + "</b></span>" +
+          (actual ? "<small>Es el operador actual</small>" : "") + "</button>";
+      }).join("") +
+      (m.operario && !bloqueado ? '<button type="button" role="menuitem" data-mq-asignar="" data-cod="' + m.cod + '"><span class="mq-menu__p"><b>Quitar operador</b></span>' +
+        "<small>" + (m.estado === "operativa" ? "La máquina queda libre" : "Queda sin asignar") + "</small></button>" : "");
+    document.body.appendChild(menu);
+    var r = el.getBoundingClientRect();
+    menu.style.top = (window.scrollY + r.bottom + 6) + "px";
+    menu.style.left = Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - menu.offsetWidth - 12) + "px";
+    var primero = uno("button:not([disabled])", menu);
+    if (primero) primero.focus();
+  }
+  function asignarOperador(cod, persona) {
+    cerrarMenuEstado();
+    var m = maq(cod), antes = m.operario || "Sin asignar";
+    MQ_SEL = cod;
+    if (m.estado === "libre" && persona) {
+      /* para trabajar necesita orden y turno: se abre el editor con la persona ya puesta */
+      abrirEditor(cod, "asignar");
+      var sel = uno("#ed-operario");
+      if (sel) { sel.value = persona; revisarEditor(); }
+      return;
+    }
+    if (!persona) {
+      anotarHist(m, "Se quitó el operador " + antes + ".", "info");
+      anotarReporte(m, "Operador", antes, "Sin asignar", m.estado === "operativa" ? "La máquina quedó libre" : "");
+      if (m.estado === "operativa") {
+        anotarReporte(m, "Estado", "Operativa", "Libre", m.orden ? "Se liberó la orden " + m.orden : "");
+        m.estado = "libre"; m.orden = ""; m.turno = "";
+      }
+      m.operario = "";
+      pintarMaquinas();
+      return aviso(m.cod + ": se quitó el operador " + antes + ".", "ok");
+    }
+    anotarHist(m, "Cambio de operador: " + antes + " → " + persona + ".", "info");
+    anotarReporte(m, "Operador", antes, persona, m.orden ? "Orden " + m.orden : "");
+    m.operario = persona;
+    pintarMaquinas();
+    aviso(m.cod + ": ahora la usa " + persona + ".", "ok");
+  }
+
+  /* El menú que sale al pulsar el marcador de estado de una tarjeta */
+  function cerrarMenuEstado() { var x = uno(".mq-menu"); if (x) x.remove(); }
+  function abrirMenuEstado(pill) {
+    cerrarMenuEstado();
+    var m = maq(pill.getAttribute("data-mq-estado"));
+    if (!m) return;
+    var menu = document.createElement("div");
+    menu.className = "mq-menu";
+    menu.setAttribute("role", "menu");
+    menu.innerHTML = '<span class="mq-menu__t">Cambiar estado de ' + m.cod + "</span>" +
+      ["operativa", "libre", "averiada", "mantenimiento", "desuso"].map(function (k) {
+        var e = ESTADO_MQ[k];
+        return '<button type="button" role="menuitem" data-mq-cambiar="' + k + '" data-cod="' + m.cod + '"' + (k === m.estado ? " disabled" : "") + ">" +
+          '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>" +
+          "<small>" + (k === "operativa" ? "Pide orden, operador y turno" : k === "averiada" ? "Pide qué se dañó y cuándo" :
+                       k === "desuso" ? "Pide el motivo" : e.dice) + "</small></button>";
+      }).join("");
+    document.body.appendChild(menu);
+    var r = pill.getBoundingClientRect();
+    menu.style.top = (window.scrollY + r.bottom + 6) + "px";
+    menu.style.left = Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - menu.offsetWidth - 12) + "px";
+    var primero = uno("button:not([disabled])", menu);
+    if (primero) primero.focus();
+  }
+  function cambiarDesdeMenu(cod, k) {
+    cerrarMenuEstado();
+    var m = maq(cod);
+    MQ_SEL = cod;
+    if (k === "operativa") return abrirEditor(cod, "asignar");
+    if (k === "averiada") return abrirEditor(cod, "averia");
+    if (k === "desuso") return abrirEditor(cod, "baja");
+    if (k === "mantenimiento") return cambiarEstadoMQ("mantener");
+    if (k === "libre") {
+      var antes = ESTADO_MQ[m.estado].texto;
+      anotarHist(m, "Pasó a libre (cambio desde el marcador).", "info");
+      anotarReporte(m, "Estado", antes, "Libre", m.orden ? "Se liberó la orden " + m.orden : "");
+      if (m.operario) anotarReporte(m, "Operador", m.operario, "Sin asignar", "");
+      m.estado = "libre"; m.orden = ""; m.operario = ""; m.turno = ""; m.nota = "";
+      pintarMaquinas();
+      return aviso(m.cod + ": " + antes + " → Libre.", "ok");
+    }
+  }
+
   /* Cambios de estado directos (los que no piden datos) */
   function cambiarEstadoMQ(accion) {
-    var m = maq(MQ_SEL), antes = ESTADO_MQ[m.estado].texto;
+    var m = maq(MQ_SEL), antes = ESTADO_MQ[m.estado].texto, opAntes = m.operario || "";
     if (accion === "asignar" || accion === "averia" || accion === "baja") return abrirEditor(m.cod, accion);
     if (accion === "editar") return abrirEditor(m.cod);
     if (accion === "descartar") return abrirDescarte(m.cod);
@@ -1916,6 +1954,8 @@
       anotarHist(m, "Se volvió a poner en uso.", "ok");
       m.estado = "libre"; m.motivo = ""; m.fechadesuso = ""; m.ultimo = HOY; m.nota = "";
     }
+    anotarReporte(m, "Estado", antes, ESTADO_MQ[m.estado].texto, (m.hist && m.hist[0] && m.hist[0].f === HOY) ? m.hist[0].t : "");
+    if ((m.operario || "") !== opAntes) anotarReporte(m, "Operador", opAntes || "Sin asignar", m.operario || "Sin asignar", "");
     pintarMaquinas();
     aviso(m.cod + ": " + antes + " → " + ESTADO_MQ[m.estado].texto + ". " + ESTADO_MQ[m.estado].dice,
           ESTADO_MQ[m.estado].tono === "off" || ESTADO_MQ[m.estado].tono === "info" ? "ok" : ESTADO_MQ[m.estado].tono);
@@ -1957,6 +1997,12 @@
       '<div class="mq-tiles" role="radiogroup" aria-label="Tipo de equipo">' + tiles + "</div>" +
       campo("ed-nombre", "Nombre", '<input id="ed-nombre" maxlength="60" value="' + esc(m.nombre) + '" placeholder="Ej. Cosedora de poste">', "Como lo llaman en planta. Mínimo 4 letras.") +
       campo("ed-etapa", "Etapa donde trabaja", '<select id="ed-etapa">' + opciones(ETAPAS_MQ, m.etapa) + "</select>", "Si se daña, esta es la etapa que se detiene.") +
+      '<div class="mq-fila2">' +
+      campo("ed-area", "Área donde está", '<input id="ed-area" maxlength="50" list="ed-areas" value="' + esc(areaDe(m)) + '" placeholder="Ej. Sala de corte">' +
+            '<datalist id="ed-areas">' + Object.keys(AREAS_MQ).map(function (k) { return '<option value="' + AREAS_MQ[k] + '">'; }).join("") + "</datalist>", "") +
+      campo("ed-encargado", "Responsable", '<input id="ed-encargado" maxlength="60" list="ed-encargados" value="' + esc(encargadoDe(m)) + '" placeholder="Nombre · cargo">' +
+            '<datalist id="ed-encargados">' + Object.keys(ENCARGADOS_MQ).map(function (k) { return '<option value="' + ENCARGADOS_MQ[k] + '">'; }).join("") + "</datalist>", "Quien responde por el equipo.") +
+      "</div>" +
       "</fieldset>" +
       '<fieldset class="mq-paso"><legend><span>2</span> Cómo está</legend>' +
       campo("ed-estado", "Estado", '<select id="ed-estado">' +
@@ -2002,6 +2048,7 @@
     return {
       img: img ? img.value : "troqueladora",
       nombre: uno("#ed-nombre").value.trim(), etapa: uno("#ed-etapa").value, estado: uno("#ed-estado").value,
+      area: uno("#ed-area").value.trim(), encargado: uno("#ed-encargado").value.trim(),
       orden: uno("#ed-orden").value, operario: uno("#ed-operario").value, turno: uno("#ed-turno").value,
       dano: uno("#ed-dano").value.trim(), fechadano: uno("#ed-fechadano").value, necesita: uno("#ed-necesita").value,
       motivo: uno("#ed-motivo").value, fechadesuso: uno("#ed-fechadesuso").value,
@@ -2035,7 +2082,7 @@
       return '<li class="' + (c[0] ? "si" : "no") + '"><span>' + (c[0] ? "✓" : "✕") + "</span>" + c[1] + "</li>";
     }).join("");
     uno("#ed-guardar").disabled = !ok;
-    var previa = { cod: cod, nombre: v.nombre || "Sin nombre", etapa: v.etapa, estado: v.estado, img: v.img,
+    var previa = { cod: cod, nombre: v.nombre || "Sin nombre", etapa: v.etapa, estado: v.estado, img: v.img, area: v.area, encargado: v.encargado,
                    orden: v.orden, operario: v.operario, dano: v.dano, fechadano: v.fechadano, necesita: v.necesita,
                    motivo: v.motivo, fechadesuso: v.fechadesuso, ultimo: v.ultimo || HOY, cada: String(cada || 60) };
     var guardada = MQ_SEL; MQ_SEL = "";
@@ -2047,7 +2094,8 @@
     var ed = uno(".mq-ed"), v = valoresEditor(), nueva = ed.dataset.nueva === "true";
     var m = nueva ? { cod: ed.dataset.cod, horas: "0", hist: [] } : maq(ed.dataset.cod);
     var antes = m.estado;
-    ["img", "nombre", "etapa", "estado", "ultimo"].forEach(function (k) { m[k] = v[k]; });
+    var prev = nueva ? null : { estado: ESTADO_MQ[m.estado].texto, area: areaDe(m), enc: encargadoDe(m), op: m.operario || "" };
+    ["img", "nombre", "etapa", "estado", "ultimo", "area", "encargado"].forEach(function (k) { m[k] = v[k]; });
     m.cada = String(numero(v.cada) || 60);
     m.orden = v.estado === "operativa" ? v.orden : ""; m.operario = v.estado === "operativa" ? v.operario : (v.estado === "mantenimiento" ? m.operario : "");
     m.turno = v.estado === "operativa" ? v.turno : "";
@@ -2062,6 +2110,19 @@
       else if (v.estado === "operativa") anotarHist(m, "Empezó la orden " + v.orden + " con " + v.operario + ".", "ok");
       else if (!nueva) anotarHist(m, "Pasó a " + ESTADO_MQ[v.estado].texto.toLowerCase() + ".", "info");
     } else if (!nueva) anotarHist(m, "Se editaron sus datos.", "info");
+    if (nueva) {
+      anotarReporte(m, "Estado", "Nuevo", ESTADO_MQ[m.estado].texto, "Se agregó al inventario de equipos");
+      anotarReporte(m, "Área", "", areaDe(m), "Asignación inicial");
+      anotarReporte(m, "Responsable", "", encargadoDe(m), "Asignación inicial");
+    } else {
+      var det = v.estado === "averiada" ? "Se dañó: " + v.dano + " · necesita " + v.necesita.toLowerCase()
+              : v.estado === "operativa" ? "Orden " + v.orden + " · turno " + v.turno
+              : v.estado === "desuso" ? v.motivo : "";
+      anotarReporte(m, "Estado", prev.estado, ESTADO_MQ[m.estado].texto, det);
+      anotarReporte(m, "Área", prev.area, areaDe(m), "Reasignación de área");
+      anotarReporte(m, "Responsable", prev.enc, encargadoDe(m), "Reasignación de responsable");
+      anotarReporte(m, "Operador", prev.op || "Sin asignar", m.operario || "Sin asignar", "");
+    }
     MQ_SEL = m.cod;
     cerrarEditor();
     pintarMaquinas();
@@ -2070,6 +2131,15 @@
   }
 
   function cerrarEditor() { var c = uno(".mq-over"); if (c) c.remove(); }
+  document.addEventListener("keydown", function (e) {
+    var p = e.target.closest ? e.target.closest("[data-mq-estado]") : null;
+    if (p && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); abrirMenuEstado(p); }
+    var ec = e.target.closest ? e.target.closest(".mq-card__ed") : null;
+    if (ec && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); e.stopPropagation(); MQ_SEL = ec.getAttribute("data-mq-editar"); pintarMaquinas(); abrirEditor(MQ_SEL); return; }
+    var o = e.target.closest ? e.target.closest("[data-mq-op]") : null;
+    if (o && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); abrirMenuOperador(o); }
+    if (e.key === "Escape") cerrarMenuEstado();
+  });
 
   /* Descartar: el equipo sale de la planta. Queda en «Descartados» con su motivo
      (se puede restaurar). Si se registró por error, se borra de la lista. */
@@ -2104,6 +2174,7 @@
       return aviso(cod + " se borró de la lista (se había registrado por error).", "warn");
     }
     anotarHist(m, "Descartado: " + motivo.toLowerCase() + (nota ? " · " + nota : "") + ".", "off");
+    anotarReporte(m, "Estado", ESTADO_MQ[m.estado].texto, "Descartado", motivo);
     m.estado = "descartado"; m.motivodescarte = motivo; m.fechadescarte = fecha;
     m.orden = ""; m.operario = ""; m.turno = ""; m.nota = nota;
     var otro = MAQ.filter(function (x) { return x.estado !== "descartado"; })[0];
@@ -2115,6 +2186,18 @@
   document.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target : null;
     if (!t) return;
+    var edc = t.closest(".mq-card__ed");
+    if (edc) { e.preventDefault(); e.stopPropagation(); MQ_SEL = edc.getAttribute("data-mq-editar"); pintarMaquinas(); return abrirEditor(MQ_SEL); }
+    var opb = t.closest("[data-mq-op]");
+    if (opb) { e.preventDefault(); e.stopPropagation(); return abrirMenuOperador(opb); }
+    var asg = t.closest("[data-mq-asignar]");
+    if (asg) { e.preventDefault(); return asignarOperador(asg.getAttribute("data-cod"), asg.getAttribute("data-mq-asignar")); }
+    var pill = t.closest("[data-mq-estado]");
+    if (pill) { e.preventDefault(); e.stopPropagation(); return abrirMenuEstado(pill); }
+    var cam = t.closest("[data-mq-cambiar]");
+    if (cam) { e.preventDefault(); return cambiarDesdeMenu(cam.getAttribute("data-cod"), cam.getAttribute("data-mq-cambiar")); }
+    if (!t.closest(".mq-menu")) cerrarMenuEstado();
+    if (t.closest("#mqr-bajar")) { e.preventDefault(); return descargarReporteMQ(); }
     var ver = t.closest("[data-mq-ver]");
     if (ver && !t.closest(".mq-ed__lado")) {
       e.preventDefault();
@@ -2150,7 +2233,6 @@
   document.addEventListener("change", function (e) {
     if (e.target.closest && e.target.closest(".mq-ed")) revisarEditor();
     if (e.target.id === "ec-ins") explicarEntrada();
-    if (e.target.id === "mr-ref") mostrarExistencia();
   });
 
   /* Si un saldo cambió en otra pantalla, esta se pone al día */
@@ -2179,7 +2261,7 @@
 
   /* ---------------------------------------------------------------- Solicitud de material (formulario completo)
 
-     «Pedir para esta bodega», «Pedir a Compras» y «Pedir» de M. Prima abren
+     «Solicitar para esta bodega», «Solicitar a Compras» y «Solicitar» de M. Prima abren
      este formulario. Se pueden pedir varios materiales a la vez: el tipo, cuál,
      el color, la medida y la cantidad. Viene lleno con lo que le falta a la bodega. */
 
@@ -2223,7 +2305,7 @@
     ["PT-REF-1046", "Botín Casual Cuero", "terminado", "par", 35830]
   ];
   var BODEGAS = [["BOD-01", "BOD-01 · Principal"], ["BOD-02", "BOD-02 · Producto terminado"],
-                 ["BOD-03", "BOD-03 · Merma y reproceso"], ["BOD-04", "BOD-04 · Insumos y químicos"]];
+                 ["BOD-03", "BOD-03 · Insumos y químicos"]];
   var PROVEEDORES = ["Curtiembre Los Andes", "Suelas Pacífico", "Insumos Textiles JR", "Químicos del Norte",
                      "Herrajes Cúcuta", "Producción (orden interna)"];
 
@@ -2291,7 +2373,7 @@
      puede editar o anular, y se pueden hacer varios para el mismo material. */
 
   var PEDIDOS = [
-    { id: "SM-2026-002", fecha: "2026-09-15", bod: "BOD-04", urg: "Alta", para: "2026-09-25", prov: "Insumos Textiles JR",
+    { id: "SM-2026-002", fecha: "2026-09-15", bod: "BOD-03", urg: "Alta", para: "2026-09-25", prov: "Insumos Textiles JR",
       obs: "Generado solo: el cordón quedó bajo el mínimo.", estado: "Registrado", editado: "",
       items: [{ k: "cordon", cod: "MP-08", nombre: "Cordón encerado", color: "Negro", medida: "120 cm", cant: 210, unidad: "par" }] },
     { id: "SM-2026-001", fecha: "2026-09-15", bod: "BOD-01", urg: "Alta", para: "2026-09-25", prov: "Suelas Pacífico",
@@ -2304,8 +2386,7 @@
   var CAPACIDAD = {
     "BOD-01": { "MP-01": 4000, "MP-02": 800, "MP-03": 500, "MP-05": 500 },
     "BOD-02": { "PT-REF-1042": 200, "PT-REF-1043": 150 },
-    "BOD-03": { "ME-01": 100, "ME-02": 100, "ME-03": 50 },
-    "BOD-04": { "MP-04": 80, "MP-06": 50, "MP-07": 12000, "MP-08": 700 }
+    "BOD-03": { "MP-04": 80, "MP-06": 50, "MP-07": 12000, "MP-08": 700 }
   };
   var CAP_POR_UNIDAD = { "dm²": 3000, "par": 400, "m": 400, "cono": 60, "kg": 40, "un": 8000, "l": 40 };
   function capDe(b, c) {
@@ -2356,8 +2437,8 @@
         var hay = hayEnBodega(bod, cod), ped = pedidoDe(bod, cod, PD_EDITANDO), cap = capDe(bod, cod);
         var queda = hay + ped + suma[cod];
         lleno = Math.round(queda * 100 / cap);
-        txt = "En " + bod + " hay " + miles(hay) + " " + m[3] + (ped ? " · ya pedido y por llegar " + miles(ped) : "") +
-              " · caben " + miles(cap) + " · con este pedido quedaría en " + miles(queda) + " (" + lleno + " %)";
+        txt = "En " + bod + " hay " + miles(hay) + " " + m[3] + (ped ? " · ya solicitado y por llegar " + miles(ped) : "") +
+              " · caben " + miles(cap) + " · con esta solicitud quedaría en " + miles(queda) + " (" + lleno + " %)";
         if (cant) total += cant * m[4];
         if (queda > cap) falta.push("bajar la cantidad: sobrepasa la capacidad de " + bod + " en " + miles(queda - cap) + " " + m[3] +
                                     " (máximo " + miles(Math.max(0, cap - hay - ped - (suma[cod] - cant))) + ")");
@@ -2387,6 +2468,7 @@
 
   function abrirSolicitud(bod, renglones, titulo, editar) {
     cerrarSolicitud();
+    SP_PIDIENDO = null;   // si viene de Solicitudes, pedirFaltanteSP lo vuelve a poner
     var p = editar ? PEDIDOS.filter(function (x) { return x.id === editar; })[0] : null;
     PD_EDITANDO = p ? p.id : null;
     if (p) renglones = p.items.map(function (it) {
@@ -2399,7 +2481,7 @@
     capa.className = "overlay sol-over";
     capa.innerHTML =
       '<div class="modal sol-modal" role="dialog" aria-modal="true" aria-labelledby="sol-t">' +
-      '<div class="modal__head"><div><h3 id="sol-t">' + (p ? "Editar el pedido " + p.id : "Pedido de material a Compras") + "</h3>" +
+      '<div class="modal__head"><div><h3 id="sol-t">' + (p ? "Editar la solicitud " + p.id : "Solicitud de material a Compras") + "</h3>" +
       '<span class="sol-sub">' + codigo + (p ? " · registrado el " + p.fecha : "") + (titulo ? " · " + titulo : "") + "</span></div>" +
       '<button type="button" data-sol="cerrar" aria-label="Cerrar">✕</button></div>' +
       '<div class="modal__body sol">' +
@@ -2422,7 +2504,7 @@
       "</div>" +
       '<div class="modal__foot sol-pie"><span class="sol-res" id="sol-resumen"></span>' +
       '<button type="button" class="btn btn--ghost" data-sol="cerrar">Cancelar</button>' +
-      '<button type="button" class="btn" id="sol-enviar">' + (p ? "Guardar cambios" : "Registrar pedido") + "</button></div></div>";
+      '<button type="button" class="btn" id="sol-enviar">' + (p ? "Guardar cambios" : "Enviar a Compras") + "</button></div></div>";
     document.body.appendChild(capa);
     if (!p) { var prov = tipo(renglones[0].tipo || "cuero").prov; if (prov) uno("#sol-prov").value = prov; }
     revisarSolicitud();
@@ -2464,9 +2546,9 @@
         var f = nuevaFila(panel, "Mov.");
         ponerCelda(f, "Mov.", "<b>" + p.id + "</b>");
         ponerCelda(f, "Referencia", bod + '<div class="tiny">' + items.length + " material(es)</div>");
-        ponerCelda(f, "Tipo", '<span class="chip chip--vino">Pedido</span>');
+        ponerCelda(f, "Tipo", '<span class="chip chip--vino">Solicitud</span>');
         ponerCelda(f, "Cantidad", items.length);
-        ponerCelda(f, "Documento", "Pedido a Compras · " + urg);
+        ponerCelda(f, "Documento", "Solicitud a Compras · " + urg);
         ponerCelda(f, "Fecha", HOY);
         recontar(panel, "movimientos");
       }
@@ -2492,14 +2574,15 @@
                       return { cod: it.cod, que: it.nombre, falta: it.cant, proveedor: prov, color: it.color, medida: it.medida };
                     }) });
     guardarFlujo(lista);
+    if (nuevo) ligarPedidoSP(p);
     PD_EDITANDO = null;
     cerrarSolicitud();
     marcarPedidosInicio();
     pintarPedidos();
     pintarAlmacen();
-    aviso(nuevo ? "Pedido " + p.id + " registrado: " + items.length + " material(es) para " + bod + ", urgencia " + urg.toLowerCase() +
-                  ", para el " + fecha + ". Lo ve en Bodegas → Pedidos a Compras."
-                : "Pedido " + p.id + " editado. Quedó con " + items.length + " material(es).", "ok");
+    aviso(nuevo ? "Solicitud " + p.id + " enviada a Compras: " + items.length + " material(es) para " + bod + ", urgencia " + urg.toLowerCase() +
+                  ", para el " + fecha + ". La ve en Solicitudes → Enviadas a Compras."
+                : "Solicitud " + p.id + " editada. Quedó con " + items.length + " material(es).", "ok");
   }
 
   /* En «Qué hay que abastecer» (Inicio): la fila dice lo que ya está pedido, sin bloquearse */
@@ -2510,12 +2593,12 @@
       var ped = pedidoDe(b, c), est = celda(f, "Cómo está"), boton = uno(".btn", f);
       if (boton) {
         boton.disabled = false;
-        boton.textContent = ped ? "Pedir más" : "Pedir a Compras";
+        boton.textContent = ped ? "Solicitar más" : "Solicitar a Compras";
         boton.classList.toggle("btn--ghost", !!ped || !uno(".pill--crit", f));
       }
       if (est) {
         var p = uno(".pill", est);
-        if (p && p.textContent === "Pedido a Compras") {           // lo que dejó la versión anterior
+        if (p && p.textContent === "Solicitado a Compras") {           // lo que dejó la versión anterior
           var h = hayEnBodega(b, c), mn = minDe(b, c), e = mn ? estadoDe(h, mn) : { tono: "ok", texto: "Suficiente" };
           p.className = "pill pill--" + e.tono; p.textContent = e.texto;
         }
@@ -2523,7 +2606,7 @@
         var m = material(c);
         if (ped) {
           if (!nota) { nota = document.createElement("div"); nota.className = "tiny pd-nota"; est.appendChild(nota); }
-          nota.textContent = "Pedido: " + miles(ped) + " " + (m ? m[3] : "") + " por llegar";
+          nota.textContent = "Solicitado: " + miles(ped) + " " + (m ? m[3] : "") + " por llegar";
         } else if (nota) nota.remove();
       }
       f.classList.remove("es-pedida");
@@ -2539,9 +2622,9 @@
         return '<li><b>' + miles(it.cant) + " " + it.unidad + "</b> · " + (it.cod === "NUEVO" ? "" : it.cod + " ") + esc(it.nombre) +
           ' <span class="tiny">· ' + esc(it.color) + " · " + esc(it.medida) + "</span></li>";
       }).join("");
-      return '<tr class="' + (p.estado === "Anulado" ? "pd-anulado" : "") + '"><td data-l="Pedido"><b class="nw">' + p.id + '</b><div class="tiny nw">' + p.fecha + "</div></td>" +
+      return '<tr class="' + (p.estado === "Anulado" ? "pd-anulado" : "") + '"><td data-l="Solicitud"><b class="nw">' + p.id + '</b><div class="tiny nw">' + p.fecha + "</div></td>" +
         '<td data-l="Bodega"><b class="nw">' + p.bod + '</b><div class="tiny">' + NOMBRE_BOD[p.bod] + "</div></td>" +
-        '<td data-l="Qué se pidió"><ul class="pd-items">' + lista + "</ul>" +
+        '<td data-l="Qué se solicitó"><ul class="pd-items">' + lista + "</ul>" +
           (p.prov ? '<div class="tiny">Proveedor: ' + esc(p.prov) + "</div>" : "") +
           (p.obs ? '<div class="tiny">Nota: ' + esc(p.obs) + "</div>" : "") + "</td>" +
         '<td data-l="Urgencia"><span class="pill pill--' + (p.urg === "Normal" ? "off" : p.urg === "Alta" ? "warn" : "crit") + '">' + p.urg + "</span></td>" +
@@ -2549,17 +2632,18 @@
         '<td data-l="Estado"><span class="pill pill--' + tono + '">' + p.estado + "</span>" +
           (p.editado ? '<div class="tiny nw">el ' + p.editado + "</div>" : "") + "</td>" +
         '<td data-l="Acciones"><div class="acts">' +
-          (p.estado === "Anulado" ? '<button type="button" class="btn btn--sm btn--ghost" data-pd="copiar" data-id="' + p.id + '">Pedir de nuevo</button>'
+          (p.estado === "Anulado" ? '<button type="button" class="btn btn--sm btn--ghost" data-pd="copiar" data-id="' + p.id + '">Solicitar de nuevo</button>'
             : '<button type="button" class="btn btn--sm" data-pd="editar" data-id="' + p.id + '">Editar</button>' +
               '<button type="button" class="btn btn--sm btn--ghost" data-pd="anular" data-id="' + p.id + '">Anular</button>') +
         "</div></td></tr>";
     }).join("");
     var c = { Registrado: 0, Editado: 0, Anulado: 0 };
     PEDIDOS.forEach(function (p) { c[p.estado]++; });
-    uno("#pd-res").innerHTML = '<span class="dt__res-t">Totales<em>de los ' + PEDIDOS.length + " pedido(s)</em></span>" +
+    uno("#pd-res").innerHTML = '<span class="dt__res-t">Totales<em>de los ' + PEDIDOS.length + " solicitud(es)</em></span>" +
       '<span class="dt__res-i dt__res-i--ok"><b>Registrados</b><span>' + c.Registrado + "</span></span>" +
       '<span class="dt__res-i dt__res-i--warn"><b>Editados</b><span>' + c.Editado + "</span></span>" +
       '<span class="dt__res-i"><b>Anulados</b><span>' + c.Anulado + "</span></span>";
+    pintarResumenSolicitudes();
     var dt = uno("#dt-04-pedidos");
     if (uno('input[type="search"]', dt).value || todos(".dt__filtros select", dt).some(function (s) { return s.selectedIndex > 0; })) filtrar(dt);
     else dtPintar(dt);
@@ -2575,7 +2659,7 @@
     e.stopPropagation();   // «Anular» de aquí no es el «Anular» de las solicitudes viejas
     var acc = b.getAttribute("data-pd"), id = b.getAttribute("data-id");
     var p = PEDIDOS.filter(function (x) { return x.id === id; })[0];
-    if (acc === "nuevo") return abrirSolicitud(typeof BG_SEL !== "undefined" ? BG_SEL : "BOD-01", faltantesDe(BG_SEL), "nuevo pedido");
+    if (acc === "nuevo") return abrirSolicitud(typeof BG_SEL !== "undefined" ? BG_SEL : "BOD-01", faltantesDe(BG_SEL), "nueva solicitud");
     if (acc === "editar") return abrirSolicitud(p.bod, null, "cambie lo que necesite", p.id);
     if (acc === "copiar") {
       return abrirSolicitud(p.bod, p.items.map(function (it) {
@@ -2591,7 +2675,7 @@
       p.estado = "Anulado"; p.editado = HOY;
       guardarFlujo(leerFlujo().map(function (x) { if (x.id === p.id) x.estado = "Anulada"; return x; }));
       pintarPedidos(); marcarPedidosInicio();
-      return aviso("Pedido " + p.id + " anulado. No se borra: queda en el historial.", "warn");
+      return aviso("Solicitud " + p.id + " anulada. No se borra: queda en el historial.", "warn");
     }
   }, true);
 
@@ -2611,7 +2695,7 @@
       return abrirSolicitud(bod, falt, falt.length ? "viene con lo que le falta a " + bod : "para " + bod);
     }
     var filaAb = b && b.closest("#dt-04-abastecer tbody tr");
-    if (filaAb && /^Pedir/.test(b.textContent.trim())) {
+    if (filaAb && /^Solicitar/.test(b.textContent.trim())) {
       e.preventDefault(); e.stopPropagation();
       var bodA = (celda(filaAb, "Bodega") || {}).textContent.trim();
       var cod = (celda(filaAb, "Insumo") || {}).textContent.trim().split(/[\s·]+/)[0];
@@ -2720,19 +2804,18 @@
      que mueven material (Inicio, Bodegas, M. Prima) pasan por moverStock. */
 
   var NOMBRE_BOD = { "BOD-01": "Principal", "BOD-02": "Producto terminado",
-                     "BOD-03": "Merma y reproceso", "BOD-04": "Insumos y químicos" };
+                     "BOD-03": "Insumos y químicos" };
   var STOCK = {
     "BOD-01": { "MP-01": 2400, "MP-02": 420, "MP-03": 260, "MP-05": 180 },
     "BOD-02": { "PT-REF-1042": 78, "PT-REF-1043": 44 },
-    "BOD-03": { "ME-01": 38, "ME-02": 41, "ME-03": 12 },
-    "BOD-04": { "MP-04": 34, "MP-06": 22, "MP-07": 5600, "MP-08": 240 }
+    "BOD-03": { "MP-04": 34, "MP-06": 22, "MP-07": 5600, "MP-08": 240 }
   };
   /* El mínimo es de cada bodega: un material que llega a otra bodega no trae su mínimo */
   var MINIMOS = { "BOD-01": { "MP-01": 800, "MP-02": 150, "MP-03": 120, "MP-05": 200 },
                   "BOD-02": { "PT-REF-1042": 40, "PT-REF-1043": 30 },
-                  "BOD-04": { "MP-04": 20, "MP-06": 15, "MP-07": 2000, "MP-08": 300 } };
+                  "BOD-03": { "MP-04": 20, "MP-06": 15, "MP-07": 2000, "MP-08": 300 } };
   function minDe(b, c) { return (MINIMOS[b] || {})[c] || 0; }
-  var EXTRA = { "ME-01": ["Cuero con manchas", "dm²"], "ME-02": ["Pares para reproceso", "par"], "ME-03": ["Suela defectuosa", "par"] };
+  var EXTRA = {};
   var MOVS = null, NUM_BG = 0, BG_SEL = "BOD-01";
 
   function infoMat(cod) {
@@ -2799,15 +2882,8 @@
       '<path class="d" d="M58 80v-6q0-4 4-6l10-4q4-8 10-14h10q2 8 0 14 10 2 16 6 4 3 4 10z"/>' +
       '<path class="e" d="M62 68l10-4q4-8 10-14h10q2 8 0 14 10 2 16 6-12 2-24 0-12-2-22-2z" opacity=".9"/>' +
       '<path class="l" d="M80 56l6 2M78 60l6 2" stroke="var(--papel)"/>',
-    /* Merma y reproceso: caneca con retazos y flechas de reciclaje */
-    "BOD-03": '<rect class="c" x="6" y="80" width="108" height="5" rx="2.5"/>' +
-      '<path class="b" d="M22 38h50l-5 42H27z"/><rect class="d" x="18" y="32" width="58" height="7" rx="3"/>' +
-      '<path class="l" d="M36 46v26M47 46v26M58 46v26" stroke="var(--papel)" opacity=".7"/>' +
-      '<path class="a" d="M26 32l6-12 8 4-3 8z"/><path class="e" d="M40 32l4-16 10 2-2 14z"/><path class="a" d="M56 32l8-10 6 6-4 4z"/>' +
-      '<path class="l" d="M84 34a14 14 0 0 1 22 6" stroke="var(--oliva-600,#5a6b2e)" stroke-width="3"/><path d="M104 32l3 9-9-1z" fill="var(--oliva-600,#5a6b2e)"/>' +
-      '<path class="l" d="M106 52a14 14 0 0 1-22 6" stroke="var(--oliva-600,#5a6b2e)" stroke-width="3"/><path d="M86 62l-3-9 9 1z" fill="var(--oliva-600,#5a6b2e)"/>',
     /* Insumos y químicos: canecas, galones y frascos */
-    "BOD-04": '<rect class="c" x="6" y="80" width="108" height="5" rx="2.5"/>' +
+    "BOD-03": '<rect class="c" x="6" y="80" width="108" height="5" rx="2.5"/>' +
       '<rect class="a" x="12" y="36" width="30" height="44" rx="4"/><rect class="d" x="12" y="44" width="30" height="3"/><rect class="d" x="12" y="68" width="30" height="3"/><rect class="d" x="18" y="32" width="18" height="5" rx="2"/>' +
       '<path class="e" d="M48 50h24v30H48z"/><path class="e" d="M52 44h12l8 6H48z"/><rect class="d" x="54" y="40" width="7" height="5" rx="1"/><rect class="c" x="52" y="58" width="16" height="10" rx="1"/>' +
       '<path class="b" d="M80 58h14v22H80z"/><rect class="d" x="83" y="52" width="8" height="6" rx="1"/><rect class="c" x="82" y="64" width="10" height="7" rx="1"/>' +
@@ -2827,13 +2903,13 @@
     Salida: ["Orden de producción (OP)", "Pedido de cliente", "Devolución al proveedor", "Baja por daño"],
     Traslado: ["Remisión interna"]
   };
-  var PERSONAS = ["Andrés Suárez · Jefe de bodega", "Diana Pérez · Auxiliar de bodega", "Erick Cuevas · Logística",
+  var PERSONAS = ["Andrés Suárez · Jefe de bodega", "Diana Pérez · Coordinadora de bodega", "Erick Cuevas · Coordinador de bodega",
                   "Luisa Mendoza · Corte", "Édgar Pabón · Guarnición", "Marcela Ortiz · Montaje", "Transportador del proveedor"];
   var ORIGEN_EXT = ["Proveedor", "Producción", "Control de Calidad", "Cliente (devolución)", "Ajuste por conteo"];
   var DESTINO_EXT = ["Producción", "Cliente", "Proveedor (devolución)", "Baja por daño"];
-  var TIPOS_BOD = ["Materia prima", "Producto terminado", "Merma y reproceso", "Insumos y químicos", "Producto en proceso", "Otro"];
-  var DIBUJO_DE_TIPO = { "Materia prima": "BOD-01", "Producto terminado": "BOD-02", "Merma y reproceso": "BOD-03",
-                         "Insumos y químicos": "BOD-04", "Producto en proceso": "BOD-01", "Otro": "BOD-01" };
+  var TIPOS_BOD = ["Materia prima", "Producto terminado", "Insumos y químicos", "Producto en proceso", "Otro"];
+  var DIBUJO_DE_TIPO = { "Materia prima": "BOD-01", "Producto terminado": "BOD-02",
+                         "Insumos y químicos": "BOD-03", "Producto en proceso": "BOD-01", "Otro": "BOD-01" };
   var CONDICIONES = ["Ambiente seco", "Ventilada", "Temperatura controlada", "Refrigerada"];
 
   var FICHA_BOD = {
@@ -2842,15 +2918,11 @@
       inflamable: false, llave: false, horario: "Lun a sáb · 6:00 a 16:00", estado: "Activa", creada: "2025-02-10",
       obs: "Cuero, suelas, forros y plantillas para corte y montaje." },
     "BOD-02": { nombre: "Producto terminado", tipo: "Producto terminado", sede: "Planta principal", zona: "Bloque B · zona de despachos",
-      resp: "Erick Cuevas · Logística", tel: "Ext. 118", area: 120, estantes: 16, cond: "Ambiente seco",
+      resp: "Erick Cuevas · Coordinador de bodega", tel: "Ext. 118", area: 120, estantes: 16, cond: "Ambiente seco",
       inflamable: false, llave: true, horario: "Lun a sáb · 7:00 a 17:00", estado: "Activa", creada: "2025-02-10",
       obs: "Pares aprobados por Calidad, listos para despachar." },
-    "BOD-03": { nombre: "Merma y reproceso", tipo: "Merma y reproceso", sede: "Planta principal", zona: "Patio de reproceso",
-      resp: "Andrés Suárez · Jefe de bodega", tel: "Ext. 104", area: 40, estantes: 6, cond: "Ventilada",
-      inflamable: false, llave: false, horario: "Lun a vie · 7:00 a 15:00", estado: "Activa", creada: "2025-06-02",
-      obs: "Retazos, pares para reproceso y suelas defectuosas." },
-    "BOD-04": { nombre: "Insumos y químicos", tipo: "Insumos y químicos", sede: "Planta principal", zona: "Bloque C · cuarto ventilado",
-      resp: "Diana Pérez · Auxiliar de bodega", tel: "Ext. 121", area: 35, estantes: 8, cond: "Ventilada",
+    "BOD-03": { nombre: "Insumos y químicos", tipo: "Insumos y químicos", sede: "Planta principal", zona: "Bloque C · cuarto ventilado",
+      resp: "Diana Pérez · Coordinadora de bodega", tel: "Ext. 121", area: 35, estantes: 8, cond: "Ventilada",
       inflamable: true, llave: true, horario: "Lun a sáb · 6:00 a 16:00", estado: "Activa", creada: "2025-02-10",
       obs: "Pegantes, hilos, ojaletes y químicos. Lejos del calor." }
   };
@@ -2868,12 +2940,45 @@
     asegurarMovs();
     var cods = Object.keys(STOCK[b] || {});
     var bajos = cods.filter(function (c) { return minDe(b, c) && STOCK[b][c] < minDe(b, c); }).length;
+    var cerca = cods.filter(function (c) { var mn = minDe(b, c); return mn && STOCK[b][c] >= mn && STOCK[b][c] < mn * 1.6; }).length;
     var o = ocupacionBodega(b);
     var mios = MOVS.filter(function (m) { return m.bod === b; });
-    return { cods: cods, bajos: bajos, ocu: Math.round(o.hay), ult: mios[0] };
+    return { cods: cods, bajos: bajos, cerca: cerca, ocu: Math.round(o.hay), ult: mios[0] };
   }
 
   /* ---- La tabla de bodegas */
+
+  /* Alertas de stock de una bodega: el aviso corto y el detalle que sale al pasar el cursor */
+  function alertaStock(b, d, act) {
+    if (!act) return '<span class="pill pill--off">No aplica</span>';
+    var filas = d.cods.map(function (c) {
+      var mn = minDe(b, c), hay = STOCK[b][c];
+      if (!mn || hay >= mn * 1.6) return null;
+      var i = infoMat(c), e = estadoDe(hay, mn), ped = pedidoDe(b, c);
+      return { tono: e.tono, html: '<li class="bgv-al__i bgv-al__i--' + e.tono + '"><b>' + c + " · " + esc(i.nombre) + "</b>" +
+               "<span>" + e.texto + " · hay " + miles(hay) + " " + i.unidad + " · mínimo " + miles(mn) + (hay < mn ? " · faltan " + miles(mn - hay) : "") +
+               (ped ? " · solicitado " + miles(ped) : " · sin solicitar") + "</span></li>" };
+    }).filter(Boolean);
+    if (!filas.length) return '<span class="pill pill--off" title="Todo el material está sobre el mínimo">No aplica</span>';
+    var tono = d.bajos ? "crit" : "warn";
+    var texto = d.bajos ? d.bajos + " bajo el mínimo" : d.cerca + " cerca del mínimo";
+    if (d.bajos && d.cerca) texto = d.bajos + " bajo · " + d.cerca + " cerca";
+    filas.sort(function (x, y) { return (x.tono === "crit" ? 0 : 1) - (y.tono === "crit" ? 0 : 1); });
+    return '<span class="bgv-al" tabindex="0"><span class="pill pill--' + tono + '">' + texto + "</span>" +
+      '<span class="bgv-al__pop" role="tooltip"><b class="bgv-al__t">Alertas de stock · ' + b + "</b><ul>" +
+      filas.map(function (x) { return x.html; }).join("") + "</ul></span></span>";
+  }
+  /* El detalle flota sobre la tabla (para que la tabla con scroll no lo corte) */
+  function ubicarAlerta(al) {
+    var pop = al.querySelector(".bgv-al__pop"); if (!pop) return;
+    var r = al.getBoundingClientRect(), w = 290, h = pop.offsetHeight || 120;
+    var left = Math.max(8, Math.min(r.right - w, window.innerWidth - w - 8));
+    var top = r.bottom + 8 + h > window.innerHeight ? r.top - h - 8 : r.bottom + 8;
+    pop.style.left = left + "px"; pop.style.top = Math.max(8, top) + "px";
+  }
+  document.addEventListener("mouseover", function (e) { var al = e.target.closest ? e.target.closest(".bgv-al") : null; if (al) ubicarAlerta(al); });
+  document.addEventListener("focusin", function (e) { var al = e.target.closest ? e.target.closest(".bgv-al") : null; if (al) ubicarAlerta(al); });
+  function iniciales(n) { return n.split(" ").filter(Boolean).slice(0, 2).map(function (x) { return x[0]; }).join("").toUpperCase(); }
 
   function pintarTablaBodegas() {
     var cuerpo = uno("#bgv-filas");
@@ -2886,14 +2991,15 @@
       return '<tr class="bgv-fila' + (act ? "" : " bgv-fila--off") + '" data-bod="' + b + '" data-tipo="' + esc(f.tipo) + '" data-estado="' + f.estado +
         '" data-resp="' + esc(f.resp) + '" data-alerta="' + (d.bajos ? "si" : "no") + '" data-ocu="' + d.ocu + '" tabindex="0" title="Ver los datos de ' + b + '">' +
         '<td data-l="Bodega"><span class="bgv-b"><span class="bgv-ic">' + dibujoBodega(b) + '</span><span><b>' + b + '</b><span class="tiny">' + esc(f.nombre) + "</span></span></span></td>" +
+        '<td data-l="Estado"><span class="pill pill--' + (act ? "ok" : "off") + '">' + (act ? "Activa" : "Inactiva") + "</span></td>" +
         '<td data-l="Tipo">' + esc(f.tipo) + "</td>" +
         '<td data-l="Ubicación"><span class="bgv-ub" title="' + esc(f.sede + (f.zona ? " · " + f.zona : "")) + '">' + esc(f.zona || f.sede || "—") + '</span><span class="tiny">' + esc(f.zona ? f.sede : "") + "</span></td>" +
-        '<td data-l="Responsable">' + esc(f.resp.split(" · ")[0]) + '<span class="tiny">' + esc(f.resp.split(" · ")[1] || "") + "</span></td>" +
+        '<td data-l="Responsable"><span class="bgv-resp"><span class="bgv-resp__av" aria-hidden="true">' + iniciales(f.resp.split(" · ")[0]) + "</span>" +
+          "<span><b>" + esc(f.resp.split(" · ")[0]) + '</b><span class="tiny">' + esc(f.resp.split(" · ")[1] || "Sin cargo") + "</span></span></span></td>" +
         '<td class="num" data-l="Materiales"><b>' + d.cods.length + "</b></td>" +
         '<td data-l="Ocupación"><span class="bgv-ocu bgv-ocu--' + tono + '"><i style="width:' + Math.min(100, d.ocu) + '%"></i></span><span class="tiny">' + d.ocu + " %</span></td>" +
-        '<td data-l="Alertas">' + (d.bajos ? '<span class="pill pill--crit">' + d.bajos + " bajo el mínimo</span>" : '<span class="pill pill--ok">Al día</span>') + "</td>" +
-        '<td data-l="Último movimiento">' + (d.ult ? d.ult.tipo + " · " + d.ult.cod + '<span class="tiny">' + d.ult.fecha + "</span>" : '<span class="dt__sinf">Sin movimientos</span>') + "</td>" +
-        '<td data-l="Estado"><span class="pill pill--' + (act ? "ok" : "off") + '">' + f.estado + "</span></td></tr>";
+        '<td data-l="Alertas de stock">' + alertaStock(b, d, act) + "</td>" +
+        '<td data-l="Último movimiento">' + (d.ult ? d.ult.tipo + " · " + d.ult.cod + '<span class="tiny">' + d.ult.fecha + "</span>" : '<span class="dt__sinf">Sin movimientos</span>') + "</td></tr>";
     }).join("");
 
     /* tarjetas de arriba */
@@ -2903,6 +3009,7 @@
       mats += d.cods.length; bajos += d.bajos; if (d.bajos) conBajos++; suma += d.ocu;
       if (!llena || d.ocu > llena[1]) llena = [b, d.ocu];
     });
+    if (uno("#kb-n")) {   // las tarjetas de números solo están en Inicio; aquí ya no
     uno("#kb-n").textContent = todas.length;
     uno("#kb-ns").textContent = act.length + " activa" + (act.length === 1 ? "" : "s") + (todas.length > act.length ? " · " + (todas.length - act.length) + " inactiva(s)" : "");
     uno("#kb-b").textContent = bajos;
@@ -2910,6 +3017,7 @@
     uno("#kb-m").textContent = mats;
     uno("#kb-o").textContent = (act.length ? Math.round(suma / act.length) : 0) + " %";
     uno("#kb-os").textContent = llena ? "la más llena: " + llena[0] + " · " + llena[1] + " %" : "—";
+    }
     todos("[data-bk]").forEach(function (x) {
       var on = !!BGV.k && x.getAttribute("data-bk") === BGV.k;
       x.classList.toggle("is-on", on); x.setAttribute("aria-pressed", on ? "true" : "false");
@@ -2931,7 +3039,7 @@
     s.innerHTML = '<option value="">Todos</option>' + lista.map(function (x) { return "<option>" + esc(x) + "</option>"; }).join("");
     if (lista.indexOf(v) >= 0) s.value = v;
   }
-  var NOMBRE_FIL = { tipo: "Tipo", estado: "Estado", resp: "Responsable", alerta: "Alertas" };
+  var NOMBRE_FIL = { tipo: "Tipo", estado: "Estado", resp: "Responsable", alerta: "Alertas de stock" };
   function filtrarBodegas() {
     var dt = uno("#dt-bodegas"); if (!dt) return;
     var q = (uno("#bgv-q").value || "").trim().toLowerCase();
@@ -3009,7 +3117,7 @@
       '<div class="modal__foot bgv-pie">' +
       '<button type="button" class="btn btn--ghost" data-bgv-estado="' + b + '">' + (act ? "Desactivar" : "Activar") + "</button>" +
       '<span class="bgv-pie__sep"></span>' +
-      '<button type="button" class="btn btn--ghost" data-bgv-pedir="' + b + '"' + (act ? "" : " disabled") + ">Pedir a Compras</button>" +
+      '<button type="button" class="btn btn--ghost" data-bgv-pedir="' + b + '"' + (act ? "" : " disabled") + ">Solicitar a Compras</button>" +
       '<button type="button" class="btn btn--oliva" data-bgv-mover="' + b + '"' + (act ? "" : " disabled") + ">Registrar movimiento aquí</button>" +
       '<button type="button" class="btn" data-bgv-editar="' + b + '">Editar datos</button></div></div>';
     document.body.appendChild(capa);
@@ -3132,10 +3240,11 @@
   function bodDestino(l) { return MVI.tipo === "Salida" ? null : l.des; }
   function materialesPara(l) {
     var bo = bodOrigen(l);
-    if (bo) return Object.keys(STOCK[bo] || {}).map(function (c) { var i = infoMat(c); return [c, c + " · " + i.nombre + " · hay " + miles(STOCK[bo][c]) + " " + i.unidad]; });
+    function sm() { return ""; }
+    if (bo) return Object.keys(STOCK[bo] || {}).map(function (c) { var i = infoMat(c); return [c, c + " · " + i.nombre + " · " + sm(c) + "hay " + miles(STOCK[bo][c]) + " " + i.unidad]; });
     var aqui = Object.keys(STOCK[l.des] || {});
-    var lista = aqui.map(function (c) { var i = infoMat(c); return [c, c + " · " + i.nombre + " · hay " + miles(STOCK[l.des][c]) + " " + i.unidad]; });
-    CATALOGO.forEach(function (m) { if (aqui.indexOf(m[0]) < 0) lista.push([m[0], m[0] + " · " + m[1] + " · " + m[3]]); });
+    var lista = aqui.map(function (c) { var i = infoMat(c); return [c, c + " · " + i.nombre + " · " + sm(c) + "hay " + miles(STOCK[l.des][c]) + " " + i.unidad]; });
+    CATALOGO.forEach(function (m) { if (aqui.indexOf(m[0]) < 0) lista.push([m[0], m[0] + " · " + m[1] + " · " + sm(m[0]) + m[3]]); });
     return lista;
   }
   /* Lo que queda en cada bodega después de cada línea, en orden (varias líneas pueden tocar el mismo material) */
@@ -3271,24 +3380,20 @@
       if (t === "Entrada") {
         base.doc = doc + " · de " + l.ori;
         var q1 = moverStock(l.des, l.cod, q, base);
-        anotarKardex(l.cod, i.nombre, "Entrada", q, i.unidad, q1, doc, l.des);
       } else if (t === "Salida") {
         base.doc = doc + " · para " + l.des;
         var q2 = moverStock(l.ori, l.cod, -q, base);
-        anotarKardex(l.cod, i.nombre, "Salida", -q, i.unidad, q2, doc, l.ori);
       } else {
         base.doc = doc + " · hacia " + l.des;
         var s = moverStock(l.ori, l.cod, -q, base);
         var e = moverStock(l.des, l.cod, q, { mv: mv, tipo: t, doc: doc + " · desde " + l.ori, quien: l.rec, reg: reg, obs: obs });
-        anotarKardex(l.cod, i.nombre, "Salida", -q, i.unidad, s, "Traslado a " + l.des, l.ori);
-        anotarKardex(l.cod, i.nombre, "Entrada", q, i.unidad, e, "Traslado desde " + l.ori, l.des);
       }
       n++;
     });
     cerrarCapa("mvi-over");
     pintarTablaBodegas(); pintarRegistro();
     guardarPronto();
-    aviso("Se registró " + mv + ": " + n + " línea(s) de " + t.toLowerCase() + ". Todo quedó también en el Kárdex.", "ok");
+    aviso("Se registró " + mv + ": " + n + " línea(s) de " + t.toLowerCase() + ".", "ok");
   }
 
   /* ---- El registro de movimientos */
@@ -3420,8 +3525,7 @@
   var HISTORIA = {
     "BOD-01": { e: [1890, 2160, 1845, 2295, 2430, 1755], s: [1755, 2025, 1935, 2160, 2340, 1620] },
     "BOD-02": { e: [420, 480, 410, 510, 540, 390],       s: [390, 450, 430, 480, 520, 360] },
-    "BOD-03": { e: [210, 240, 205, 255, 270, 195],       s: [195, 225, 215, 240, 260, 180] },
-    "BOD-04": { e: [1680, 1920, 1640, 2040, 2160, 1560], s: [1560, 1800, 1720, 1920, 2080, 1440] }
+    "BOD-03": { e: [1680, 1920, 1640, 2040, 2160, 1560], s: [1560, 1800, 1720, 1920, 2080, 1440] }
   };
 
   function ocupacion(b, c) {
@@ -3436,12 +3540,103 @@
     return { hay: h / cods.length, ped: p / cods.length, n: cods.length };
   }
 
+  /* Cada material pone su % dividido entre los materiales de la bodega: así las partes suman el total */
+  function partesBodega(b) {
+    var cods = Object.keys(STOCK[b] || {});
+    return cods.map(function (c, i) {
+      var inf = infoMat(c);
+      return { k: c, n: inf.nombre, q: "hay " + miles(hayEnBodega(b, c)) + " " + inf.unidad, v: ocupacion(b, c).hay / cods.length, c: colorDe(i) };
+    });
+  }
+  /* Las líneas de un grupo (materiales = insumos, referencias = calzado), de una bodega o de todas.
+     Cada línea pone su % dividido entre las líneas del grupo: así las partes suman el total. */
+  function partesGrupo(bod, grupo) {
+    var l = [];
+    (bod ? [bod] : Object.keys(STOCK)).forEach(function (b) {
+      Object.keys(STOCK[b] || {}).forEach(function (c) {
+        var m = material(c), ref = m && m[2] === "terminado";
+        if (!m || (grupo === "referencias") !== ref) return;
+        l.push({ b: b, c: c, m: m });
+      });
+    });
+    return l.map(function (x, i) {
+      return { k: x.c + (bod ? "" : " · " + x.b), n: x.m[1], q: "hay " + miles(hayEnBodega(x.b, x.c)) + " " + x.m[3],
+               v: ocupacion(x.b, x.c).hay / l.length, c: colorDe(i) };
+    });
+  }
+  /* Lo que tiene cada bodega, dicho en corto: insumos, referencias y pares */
+  function contenidoBodega(b) {
+    var ins = 0, refs = 0, pares = 0;
+    Object.keys(STOCK[b] || {}).forEach(function (c) {
+      var m = material(c);
+      if (m && m[2] === "terminado") { refs++; pares += STOCK[b][c]; } else ins++;
+    });
+    var t = [];
+    if (ins) t.push(ins + " insumo" + (ins === 1 ? "" : "s"));
+    if (refs) t.push(refs + " ref. · " + miles(pares) + " pares");
+    return t.join(" · ") || "vacía";
+  }
+  /* Las máquinas y herramientas por estado (las de Maquinaria; si no se ha abierto, las de ejemplo) */
+  var MAQ_EJEMPLO = [["MQ-01", "Troqueladora hidráulica", "operativa"], ["MQ-02", "Máquina de guarnición plana", "operativa"],
+                     ["MQ-03", "Prensa de montaje", "averiada"], ["MQ-04", "Horno reactivador", "mantenimiento"],
+                     ["MQ-05", "Pulidora de acabado", "libre"], ["MQ-06", "Cosedora de poste antigua", "desuso"],
+                     ["HE-01", "Pistola de pegante caliente", "operativa"], ["HE-02", "Juego de cuchillas de corte", "averiada"],
+                     ["HE-03", "Hormas talla 36 a 43", "libre"]];
+  function partesMaquinas() {
+    var lista = (MAQ && MAQ.length ? MAQ.map(function (m) { return [m.cod, m.nombre, m.estado]; }) : MAQ_EJEMPLO)
+                  .filter(function (x) { return x[2] !== "descartado"; });
+    var COLOR = { operativa: "#4F7A28", libre: "#2F6690", averiada: "#8E1B2B", mantenimiento: "#D9772B", desuso: "#9A8F86" };
+    var NOM = { operativa: "Operativa", libre: "Libre", averiada: "Averiada", mantenimiento: "Mantenimiento", desuso: "En desuso" };
+    var partes = ["operativa", "libre", "mantenimiento", "averiada", "desuso"].map(function (k) {
+      var de = lista.filter(function (x) { return x[2] === k; });
+      return { k: NOM[k], n: de.length + " equipo" + (de.length === 1 ? "" : "s"), q: de.map(function (x) { return x[0]; }).join(", "),
+               v: lista.length ? de.length * 100 / lista.length : 0, c: COLOR[k] };
+    });
+    return { partes: partes, n: lista.length, usando: lista.filter(function (x) { return x[2] === "operativa"; }).length };
+  }
   function tipBodega(b) {
     var o = ocupacionBodega(b), cods = Object.keys(STOCK[b] || {});
     var bajos = cods.filter(function (c) { return minDe(b, c) && STOCK[b][c] < minDe(b, c); }).length;
     var peds = PEDIDOS.filter(function (x) { return x.bod === b && x.estado !== "Anulado"; }).length;
-    return "<b>" + b + " · " + NOMBRE_BOD[b] + "</b>" + Math.round(o.hay) + " % ocupado · " + cods.length + " materiales<br>" +
-      (bajos ? bajos + " bajo el mínimo" : "Nada bajo el mínimo") + " · " + peds + " pedido" + (peds === 1 ? "" : "s") + " en camino";
+    return "<b>" + b + "</b>" + cods.length + " materiales<br>" +
+      (bajos ? bajos + " bajo el mínimo" : "Nada bajo el mínimo") + " · " + peds + " solicitud" + (peds === 1 ? "" : "es") + " a Compras";
+  }
+  /* Cada parte del anillo tiene su color: así se ve qué material (o qué bodega) ocupa cuánto.
+     Los colores se repiten en orden si hay más materiales o más bodegas que colores. */
+  var COLORES_ALM = ["#8E1B2B", "#D9772B", "#4F7A28", "#2F6690", "#C9A227", "#7A4E9C", "#3B8C88", "#B5546C", "#6B4F3A", "#5C7C99"];
+  function colorDe(i) { return COLORES_ALM[i % COLORES_ALM.length]; }
+  /* partes: [{ k: "MP-01", n: "Cuero vacuno graso", v: 15 }] en % del total del anillo */
+  function anilloPartes(partes, titulo, sub, datoBod, grande, tip, centro) {
+    var ps = partes.map(function (x, i) { return { k: x.k, n: x.n, q: x.q || "", v: Math.round(x.v * 10) / 10, c: x.c || colorDe(i) }; })
+                   .filter(function (x) { return x.v > 0; });
+    var total = Math.min(100, ps.reduce(function (a, x) { return a + x.v; }, 0));
+    var ini = 0, trozos = ps.map(function (x) {
+      var fin = Math.min(100, ini + x.v), t = x.c + " " + ini + "% " + fin + "%";
+      ini = fin; return t;
+    });
+    trozos.push("var(--linea-2) " + ini + "% 100%");
+    return '<button type="button" class="ring' + (grande ? " ring--gral" : "") + '"' + (datoBod ? ' data-alm-bod="' + datoBod + '"' : "") +
+      ' data-tip="' + esc(tip || "<b>" + titulo + "</b>") + '">' +
+      '<span class="ring__c ring__c--partes" data-partes="' + esc(JSON.stringify(ps)) + '" style="background:conic-gradient(' + trozos.join(", ") + ')">' +
+        "<b>" + (centro || decimal(total) + " %") + "</b></span>" +
+      '<span class="ring__t">' + titulo + "</span>" + (sub ? '<span class="ring__s">' + sub + "</span>" : "") + "</button>";
+  }
+  /* El cuadrito de un color: qué es, cuánto ocupa y cuánto hay */
+  function tipColor(c, nombre, linea) {
+    return '<span class="tipc"><i style="background:' + c + '"></i><span><b>' + esc(nombre) + "</b>" + linea + "</span></span>";
+  }
+  /* Qué parte del anillo está bajo el cursor (por el ángulo desde el centro) */
+  function parteDelAnillo(el, x, y) {
+    var r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var dx = x - cx, dy = y - cy, rad = Math.sqrt(dx * dx + dy * dy);
+    if (rad < r.width / 2 - 11) return null;                  // en el centro blanco: el cuadro del anillo
+    var ang = (Math.atan2(dx, -dy) * 180 / Math.PI + 360) % 360, pct = ang / 3.6;
+    var ps = JSON.parse(el.getAttribute("data-partes") || "[]"), acc = 0;
+    for (var i = 0; i < ps.length; i++) {
+      acc += ps[i].v;
+      if (pct <= acc) return tipColor(ps[i].c, ps[i].k + " · " + ps[i].n, decimal(ps[i].v) + " %" + (ps[i].q ? " · " + ps[i].q : ""));
+    }
+    return tipColor("var(--linea-2)", "Libre", decimal(Math.max(0, 100 - acc)) + " %");
   }
   function anillo(pct, ped, titulo, sub, datoBod, grande, tip) {
     var h = Math.round(pct), p = Math.min(100 - h, Math.round(ped));
@@ -3469,6 +3664,25 @@
       return i === MESES.length - 1 ? v + movsDelMes(b, tipo) : v;
     });
   }
+  /* Cómo se reparte cada mes: en General por bodega; en una bodega, por material
+     (lo de la bodega se reparte según lo que ocupa cada material). */
+  function partesMes(totales, tipo) {
+    if (!ALM.bod) {
+      return Object.keys(NOMBRE_BOD).map(function (b, k) {
+        return { n: b, c: colorDe(k), vals: HISTORIA[b] ? serie(b, tipo) : totales.map(function () { return 0; }) };
+      });
+    }
+    var ps = partesBodega(ALM.bod), suma = ps.reduce(function (a, x) { return a + x.v; }, 0) || 1;
+    var segs = ps.map(function (x) { return { n: x.k + " · " + x.n, c: x.c, vals: [] }; });
+    totales.forEach(function (t) {
+      var puesto = 0;
+      ps.forEach(function (x, j) {
+        var v = j === ps.length - 1 ? t - puesto : Math.round(t * x.v / suma);
+        segs[j].vals.push(v); puesto += v;
+      });
+    });
+    return segs;
+  }
   function techo(v) {
     var paso = Math.pow(10, Math.floor(Math.log10(Math.max(v, 10))));
     var n = Math.ceil(v / paso) * paso;
@@ -3484,54 +3698,74 @@
     todos("[data-alm-bod]", uno(".alm__h", caja)).forEach(function (x) { x.classList.toggle("is-on", x.getAttribute("data-alm-bod") === ALM.bod); });
     todos("[data-alm-ver]", caja).forEach(function (x) { x.classList.toggle("is-on", x.getAttribute("data-alm-ver") === ALM.ver); });
 
-    /* anillos */
+    /* anillos: General (por bodega), Materiales (insumos) y Referencias (calzado).
+       Viendo una sola bodega: esa bodega y sus materiales o referencias. */
     var rings;
     if (!ALM.bod) {
-      var todas = Object.keys(NOMBRE_BOD), sh = 0, sp = 0, sn = 0;
-      todas.forEach(function (b) { var o = ocupacionBodega(b); sh += o.hay * o.n; sp += o.ped * o.n; sn += o.n; });
-      var bajosT = 0, pedsT = PEDIDOS.filter(function (x) { return x.estado !== "Anulado"; }).length;
+      var todas = Object.keys(NOMBRE_BOD), sh = 0, sn = 0;
+      todas.forEach(function (b) { var o = ocupacionBodega(b); sh += o.hay * o.n; sn += o.n; });
+      var bajosT = 0;
       todas.forEach(function (b) { Object.keys(STOCK[b] || {}).forEach(function (c) { if (minDe(b, c) && STOCK[b][c] < minDe(b, c)) bajosT++; }); });
-      rings = anillo(sh / sn, sp / sn, "General", sn + " materiales", "", true,
-                     "<b>Todo el almacén</b>" + Math.round(sh / sn) + " % ocupado · " + sn + " materiales en 4 bodegas<br>" +
-                     bajosT + " bajo el mínimo · " + pedsT + " pedidos en camino") +
+      var mats = partesGrupo("", "materiales"), refs = partesGrupo("", "referencias");
+      rings = anilloPartes(todas.map(function (b, i) {
+                var o = ocupacionBodega(b);
+                return { k: b, n: o.n + " materiales", q: "", v: sn ? o.hay * o.n / sn : 0, c: colorDe(i) };
+              }), "General", sn + " artículos", "", true,
+              "<b>Todo el almacén</b>" + todas.map(function (b) { return b + " · " + contenidoBodega(b); }).join("<br>") +
+              "<br>" + bajosT + " bajo el mínimo") +
+        anilloPartes(mats, "Materiales", mats.length + " insumos", "", true, "<b>Materiales</b><i>Insumos de todas las bodegas</i>") +
+        anilloPartes(refs, "Referencias", refs.length + " ref. · " + miles(refs.reduce(function (a, x) { return a + numero(x.q); }, 0)) + " pares", "", true,
+                     "<b>Referencias</b><i>Pares hechos, por referencia</i>") +
+        (function () {
+          var mq = partesMaquinas();
+          return anilloPartes(mq.partes, "Máquinas", mq.usando + " de " + mq.n + " trabajando", "", true,
+                              "<b>Máquinas y herramientas</b><i>Pase el cursor por un color para ver su estado</i>", mq.n + " eq.");
+        })() +
+        /* cada bodega con lo que tiene: al pasar el cursor por un color dice qué material es y cuánto hay */
+        '<span class="alm__sep">Bodegas · pulse una para verla sola</span>' +
         todas.map(function (b) {
-          var o = ocupacionBodega(b);
-          return anillo(o.hay, o.ped, b, NOMBRE_BOD[b], b, false, tipBodega(b) + "<br><i>Pulse para verla sola</i>");
+          var cods = Object.keys(STOCK[b] || {});
+          return anilloPartes(partesBodega(b), b, contenidoBodega(b), b, false,
+                              "<b>" + b + "</b><i>Pulse para verla sola</i>");
         }).join("");
-      uno("#alm-anillos-t").textContent = "Cuánto está ocupada cada bodega · pulse una para verla sola";
+      uno("#alm-anillos-t").textContent = "Cuánto está ocupado · pase el cursor por un color para ver qué es";
     } else {
-      var o = ocupacionBodega(ALM.bod);
-      rings = anillo(o.hay, o.ped, ALM.bod, NOMBRE_BOD[ALM.bod] + " · volver a todas", "*", true,
-                     tipBodega(ALM.bod) + "<br><i>Pulse para volver a todas</i>") +
-        Object.keys(STOCK[ALM.bod] || {}).map(function (c) {
-          var x = ocupacion(ALM.bod, c), i = infoMat(c), mn = minDe(ALM.bod, c), pd = pedidoDe(ALM.bod, c);
-          var hay = hayEnBodega(ALM.bod, c), est = mn ? estadoDe(hay, mn).texto : "Sin mínimo";
-          return anillo(x.hay, x.ped, c, i.nombre + " · " + miles(hay) + " de " + miles(capDe(ALM.bod, c)) + " " + i.unidad, "", false,
-                        "<b>" + c + " · " + i.nombre + "</b>Hay " + miles(hay) + " de " + miles(capDe(ALM.bod, c)) + " " + i.unidad +
-                        "<br>" + est + (mn ? " (mínimo " + miles(mn) + ")" : "") + (pd ? " · pedido " + miles(pd) : ""));
+      var m1 = partesGrupo(ALM.bod, "materiales"), r1 = partesGrupo(ALM.bod, "referencias");
+      rings = anilloPartes(partesBodega(ALM.bod), ALM.bod, "volver a todas", "*", true, "<b>" + ALM.bod + "</b><i>Pulse para volver a todas</i>") +
+        /* como antes: un anillo por cada material de la bodega, con cuánto hay y cuánto cabe */
+        Object.keys(STOCK[ALM.bod] || {}).map(function (c, k) {
+          var i = infoMat(c), hay = hayEnBodega(ALM.bod, c), cap = capDe(ALM.bod, c), mn = minDe(ALM.bod, c);
+          var est = mn ? estadoDe(hay, mn).texto : "Sin mínimo";
+          return anilloPartes([{ k: c, n: i.nombre, q: "hay " + miles(hay) + " de " + miles(cap) + " " + i.unidad + " · " + est, v: ocupacion(ALM.bod, c).hay, c: colorDe(k) }],
+                              c, i.nombre + " · " + miles(hay) + " de " + miles(cap) + " " + i.unidad, "", false, "<b>" + c + " · " + i.nombre + "</b>" + est);
         }).join("");
-      uno("#alm-anillos-t").textContent = "Cuánto ocupa cada material en " + ALM.bod + " · " + NOMBRE_BOD[ALM.bod];
+      uno("#alm-anillos-t").textContent = "Cuánto ocupa cada material en " + ALM.bod;
     }
     uno("#alm-rings").innerHTML = rings;
 
-    /* barras por mes */
+    /* barras por mes: cada barra se parte con los mismos colores del anillo */
     var ent = serie(ALM.bod, "e"), sal = serie(ALM.bod, "s");
+    var segE = partesMes(ent, "e"), segS = partesMes(sal, "s");
     var verE = ALM.ver !== "salidas", verS = ALM.ver !== "entradas";
     var max = techo(Math.max.apply(null, (verE ? ent : []).concat(verS ? sal : [])));
     var marcas = [1, .75, .5, .25, 0].map(function (f) { return '<span style="bottom:' + f * 100 + '%"><em>' + miles(Math.round(max * f)) + "</em></span>"; }).join("");
     var cols = MESES.map(function (m, i) {
       function barra(v, k, nombre) {
+        var segs = (k === "e" ? segE : segS).map(function (sg) {
+          var x = sg.vals[i];
+          if (!x) return "";
+          return '<span class="barra__s" style="height:' + (x * 100 / (v || 1)).toFixed(2) + "%;background-color:" + sg.c + '" data-tip="' +
+            esc(tipColor(sg.c, sg.n, m[2] + " · " + nombre + " <b class=\"tipc__n\">" + miles(x) + "</b>")) + '"></span>';
+        }).join("");
         return '<span class="barra barra--' + k + '" style="height:' + (v * 100 / max).toFixed(1) + '%">' +
-          '<em>' + miles(v) + "</em></span>";
+          '<span class="barra__pila">' + segs + "</span><em>" + miles(v) + "</em></span>";
       }
       var bal = ent[i] - sal[i];
-      var tip = "<b>" + m[2] + " · " + (ALM.bod || "todas las bodegas") + "</b>" +
-        (verE ? "Entraron " + miles(ent[i]) : "") + (verE && verS ? " · " : "") + (verS ? "Salieron " + miles(sal[i]) : "") +
-        (verE && verS ? "<br>Balance " + (bal >= 0 ? "+" : "−") + miles(Math.abs(bal)) : "") +
-        (i === MESES.length - 1 ? "<br><i>Va hasta hoy</i>" : "");
+      var tip = "<b>" + m[2] + "</b>" +
+        (verE ? "Entraron " + miles(ent[i]) : "") + (verE && verS ? " · " : "") + (verS ? "Salieron " + miles(sal[i]) : "");
       return '<div class="alm__mes' + (i === MESES.length - 1 ? " alm__mes--hoy" : "") + '" data-tip="' + esc(tip) + '"><div class="alm__par">' +
         (verE ? barra(ent[i], "e", "entraron") : "") + (verS ? barra(sal[i], "s", "salieron") : "") +
-        '</div><span class="alm__x">' + m[1] + (i === MESES.length - 1 ? " · va" : "") + "</span></div>";
+        '</div><span class="alm__x">' + m[1] + "</span></div>";
     }).join("");
     uno("#alm-barras").innerHTML = '<div class="alm__ejes">' + marcas + "</div>" + '<div class="alm__cols">' + cols + "</div>";
 
@@ -3540,7 +3774,7 @@
       (verE ? '<span class="alm__dato alm__dato--e"><i></i><b>' + miles(te) + "</b> entraron</span>" : "") +
       (verS ? '<span class="alm__dato alm__dato--s"><i></i><b>' + miles(ts) + "</b> salieron</span>" : "") +
       (verE && verS ? '<span class="alm__dato"><b>' + (te - ts >= 0 ? "+" : "−") + miles(Math.abs(te - ts)) + "</b> quedaron</span>" : "") +
-      '<span class="alm__dato alm__dato--nota">unidades · abril a septiembre · ' + (ALM.bod ? ALM.bod : "las cuatro bodegas") + "</span>";
+      '<span class="alm__dato alm__dato--nota">unidades · abril a septiembre · ' + (ALM.bod ? ALM.bod : "las " + Object.keys(NOMBRE_BOD).length + " bodegas") + "</span>";
 
     uno("#alm-tabla").innerHTML = "<thead><tr><th>Mes</th>" + (verE ? '<th class="num">Entraron</th>' : "") + (verS ? '<th class="num">Salieron</th>' : "") +
       (verE && verS ? '<th class="num">Balance</th>' : "") + "</tr></thead><tbody>" + MESES.map(function (m, i) {
@@ -3553,9 +3787,9 @@
 
   /* El resumen corto al pasar el cursor por un anillo o un mes */
   var TIP;
-  function mostrarTip(el, x, y) {
+  function mostrarTip(el, x, y, html) {
     if (!TIP) { TIP = document.createElement("div"); TIP.className = "alm-tip"; TIP.setAttribute("role", "tooltip"); document.body.appendChild(TIP); }
-    TIP.innerHTML = el.getAttribute("data-tip");
+    TIP.innerHTML = html || el.getAttribute("data-tip");
     TIP.classList.add("is-on");
     var w = TIP.offsetWidth, h = TIP.offsetHeight;
     var left = Math.min(Math.max(8, x - w / 2), window.innerWidth - w - 8);
@@ -3564,6 +3798,9 @@
   }
   function ocultarTip() { if (TIP) TIP.classList.remove("is-on"); }
   document.addEventListener("mousemove", function (e) {
+    var anillo = e.target.closest ? e.target.closest("#alm .ring__c--partes") : null;
+    var parte = anillo ? parteDelAnillo(anillo, e.clientX, e.clientY) : null;
+    if (parte) return mostrarTip(anillo, e.clientX, e.clientY, parte);
     var el = e.target.closest ? e.target.closest("#alm [data-tip]") : null;
     if (el) mostrarTip(el, e.clientX, e.clientY); else ocultarTip();
   });
@@ -3604,26 +3841,17 @@
   }
 
   function pintarResumenInicio() {
-    var ul = uno("#ini-pedir");
-    if (!ul) return;
+    if (!uno("#ini-alertas")) return;
     asegurarMovs();
-    var lista = porPedir();
-    ul.innerHTML = lista.length ? lista.map(function (x) {
-      var i = infoMat(x.c), pct = Math.min(100, Math.round(x.hay * 50 / x.mn));
-      return '<article class="pp pp--' + x.est.tono + '">' +
-        '<header class="pp__h"><span class="pp__cod">' + x.c + '</span><span class="pill pill--' + x.est.tono + '">' + x.est.texto + "</span></header>" +
-        '<b class="pp__n">' + esc(i.nombre) + '</b><span class="pp__b">' + x.b + " · " + NOMBRE_BOD[x.b] + "</span>" +
-        '<span class="ini-bar ini-bar--' + x.est.tono + '"><i style="width:' + pct + '%"></i><em style="left:50%"></em></span>' +
-        '<span class="pp__num"><span>Hay <b>' + miles(x.hay) + " " + i.unidad + "</b></span><span>Mínimo <b>" + miles(x.mn) + "</b></span>" +
-          (x.ped ? '<span class="ini-ped">En camino <b>' + miles(x.ped) + "</b></span>" : "") + "</span>" +
-        '<button type="button" class="btn btn--sm' + (x.ped ? " btn--ghost" : "") + '" data-pedir-cod="' + x.c + '" data-bod="' + x.b + '">' +
-          (x.ped ? "Pedir más" : "Pedir") + "</button></article>";
-    }).join("") : '<p class="empty">Todo está por encima del mínimo.</p>';
+    var lista = porPedir();   // el detalle de lo que hay que pedir vive en Solicitudes
+    contarSolicitudes();
+    contarIni();
+    if (INI_VER) pintarDesp();
 
     /* alertas */
     var al = [];
     lista.filter(function (x) { return x.est.tono === "crit"; }).forEach(function (x) {
-      al.push(["crit", "Bajo el mínimo · " + infoMat(x.c).nombre, miles(x.hay) + " de " + miles(x.mn) + " en " + x.b + (x.ped ? " · ya pedido" : " · sin pedir"), "11-bodegas.html"]);
+      al.push(["crit", "Bajo el mínimo · " + infoMat(x.c).nombre, miles(x.hay) + " de " + miles(x.mn) + " en " + x.b + (x.ped ? " · ya solicitado" : " · sin solicitar"), "11-bodegas.html"]);
     });
     var maqs = MAQ ? MAQ.filter(function (m) { return m.estado === "averiada" || m.estado === "mantenimiento" || faltan(m) < 0; })
                         .map(function (m) {
@@ -3634,7 +3862,9 @@
       al.push([m[2] === "averiada" ? "crit" : "warn", (m[2] === "averiada" ? "Avería · " : "Máquina · ") + m[1], m[0] + " · " + m[3], "06-maquinaria.html"]);
     });
     var urg = PEDIDOS.filter(function (p) { return p.estado !== "Anulado" && p.urg === "Urgente"; }).length;
-    if (urg) al.push(["warn", "Pedidos urgentes", urg + " pedido(s) urgente(s) esperando a Compras", "11-bodegas.html"]);
+    if (urg) al.push(["warn", "Solicitudes urgentes", urg + " solicitud(es) urgente(s) esperando a Compras", "11-bodegas.html"]);
+    var porVer = SOL_PROD.filter(function (s) { return s.estado === "Por verificar"; }).length;
+    if (porVer) al.unshift(["warn", "Producción pide material", porVer + " solicitud(es) esperando que Inventario las verifique", "12-solicitudes.html"]);
     uno("#ini-alertas").innerHTML = al.length ? al.map(function (a) {
       return '<li><a class="ini-al ini-al--' + a[0] + '" href="' + a[3] + '"><span class="ini-al__p"></span><span><b>' + esc(a[1]) +
         '</b><span class="tiny">' + esc(a[2]) + "</span></span></a></li>";
@@ -3661,6 +3891,285 @@
     abrirSolicitud(bod, [{ tipo: m ? m[2] : "otro", cod: m ? c : "otro", cant: sugerido(bod, c) || "" }], c + " para " + bod);
   });
 
+  /* ---------------------------------------------------------------- Inicio: las dos tarjetas que se despliegan
+
+     «Referencias de insumo» y «Pares terminados»: al pulsar una se abre
+     debajo lo que contiene cada una, con lo que hay en cada bodega. */
+
+  var INI_VER = "";
+
+  function lineasIni(clave) {
+    var l = [];
+    Object.keys(STOCK).forEach(function (b) {
+      Object.keys(STOCK[b]).forEach(function (c) {
+        var m = material(c);
+        if (!m) return;
+        if (clave === "insumos" ? m[2] === "terminado" : m[2] !== "terminado") return;
+        l.push({ b: b, c: c, m: m, hay: STOCK[b][c], mn: minDe(b, c) });
+      });
+    });
+    return l.sort(function (x, y) { return x.c < y.c ? -1 : x.c > y.c ? 1 : 0; });
+  }
+
+  function contarIni() {
+    var ins = {}, pares = 0;
+    lineasIni("insumos").forEach(function (x) { ins[x.c] = 1; });
+    lineasIni("terminados").forEach(function (x) { pares += x.hay; });
+    var a = uno("#ini-n-ins"), t = uno("#ini-n-ter");
+    if (a) a.textContent = Object.keys(ins).length;
+    if (t) t.textContent = miles(pares);
+  }
+
+  function pintarDesp() {
+    var caja = uno("#ini-desp");
+    if (!caja) return;
+    todos("[data-ini-ver]").forEach(function (b) {
+      var on = b.getAttribute("data-ini-ver") === INI_VER;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-expanded", on ? "true" : "false");
+    });
+    caja.hidden = !INI_VER;
+    if (!INI_VER) { caja.innerHTML = ""; return; }
+    var ins = INI_VER === "insumos", l = lineasIni(INI_VER);
+    var filas = l.map(function (x) {
+      var t = tipo(x.m[2]), e = x.mn ? estadoDe(x.hay, x.mn) : null;
+      return "<tr><td data-l=\"Código\"><b class=\"nw\">" + x.c + "</b></td>" +
+        '<td data-l="' + (ins ? "Insumo" : "Modelo") + '">' + esc(x.m[1]) + (ins && t ? '<div class="tiny">' + esc(t.t) + "</div>" : "") + "</td>" +
+        '<td data-l="Bodega"><b class="nw">' + x.b + '</b><div class="tiny">' + esc(NOMBRE_BOD[x.b] || "") + "</div></td>" +
+        '<td class="num" data-l="Hay"><b>' + miles(x.hay) + '</b> <span class="tiny">' + x.m[3] + "</span></td>" +
+        '<td class="num" data-l="Mínimo">' + (x.mn ? miles(x.mn) : "—") + "</td>" +
+        '<td data-l="Cómo está">' + (e ? '<span class="pill pill--' + e.tono + '">' + e.texto + "</span>" : '<span class="pill pill--off">Sin mínimo</span>') + "</td></tr>";
+    }).join("");
+    var total = l.reduce(function (s, x) { return s + x.hay; }, 0);
+    caja.innerHTML = '<header class="panel__head panel__head--' + (ins ? "cobre" : "oliva") + '"><div><h2>' +
+        (ins ? "Referencias de insumo" : "Pares terminados") + "</h2></div>" +
+        '<button type="button" class="ghostbtn" data-ini-cerrar>Cerrar</button></header>' +
+      '<div class="panel__body panel__body--flush"><div class="dt__scroll"><table><thead><tr>' +
+        "<th>Código</th><th>" + (ins ? "Insumo" : "Modelo") + '</th><th>Bodega</th><th class="num">Hay</th><th class="num">Mínimo</th><th>Cómo está</th>' +
+      "</tr></thead><tbody>" + (filas || '<tr><td colspan="6" class="empty">No hay nada guardado.</td></tr>') + "</tbody></table></div>" +
+      '<p class="ini-desp__pie">' + l.length + (ins ? " línea(s) de insumo en las bodegas" : " referencia(s) · " + miles(total) + " pares en bodega") + "</p></div>";
+  }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-ini-ver], [data-ini-cerrar]") : null;
+    if (!b) return;
+    e.preventDefault();
+    var k = b.getAttribute("data-ini-ver") || "";
+    INI_VER = INI_VER === k ? "" : k;
+    pintarDesp();
+    if (INI_VER) uno("#ini-desp").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  /* La tarjeta de un material que está bajo el mínimo o cerca (Inicio y Solicitudes) */
+  function tarjetaPorPedir(x) {
+    var i = infoMat(x.c), pct = Math.min(100, Math.round(x.hay * 50 / x.mn));
+    return '<article class="pp pp--' + x.est.tono + '">' +
+      '<header class="pp__h"><span class="pp__cod">' + x.c + '</span><span class="pill pill--' + x.est.tono + '">' + x.est.texto + "</span></header>" +
+      '<b class="pp__n">' + esc(i.nombre) + '</b><span class="pp__b">' + x.b + " · " + NOMBRE_BOD[x.b] + "</span>" +
+      '<span class="ini-bar ini-bar--' + x.est.tono + '"><i style="width:' + pct + '%"></i><em style="left:50%"></em></span>' +
+      '<span class="pp__num"><span>Hay <b>' + miles(x.hay) + " " + i.unidad + "</b></span><span>Mínimo <b>" + miles(x.mn) + "</b></span>" +
+        (x.ped ? '<span class="ini-ped">En camino <b>' + miles(x.ped) + "</b></span>" : "") + "</span>" +
+      '<button type="button" class="btn btn--sm' + (x.ped ? " btn--ghost" : "") + '" data-pedir-cod="' + x.c + '" data-bod="' + x.b + '">' +
+        (x.ped ? "Solicitar más" : "Solicitar") + "</button></article>";
+  }
+
+  /* ---------------------------------------------------------------- Solicitudes (12)
+
+     Inventario queda en el medio:
+       · Producción le manda lo que necesita para una orden (SOL_PROD).
+         Inventario verifica si hay en bodega: si alcanza, entrega y el
+         material sale del saldo; si no, pide lo que falta a Compras.
+       · Lo que está bajo el mínimo (o lo que faltó para Producción) se le
+         pide a Compras: son los mismos PEDIDOS de Bodegas.
+     Estados de una solicitud de Producción:
+       Por verificar → (Entrega parcial | Esperando compra) → Entregada
+       o Rechazada (no se borra: queda con su motivo). */
+
+  var SOL_PROD = [
+    { id: "SP-2026-016", fecha: "2026-09-23", op: "OP-2026-033", modelo: "Bota Andina · 60 pares", pide: "Jefe de corte",
+      urg: "Alta", para: "2026-09-24", estado: "Por verificar", nota: "",
+      items: [{ cod: "MP-01", cant: 900, dado: 0 }, { cod: "MP-02", cant: 60, dado: 0 }, { cod: "MP-04", cant: 4, dado: 0 }] },
+    { id: "SP-2026-015", fecha: "2026-09-23", op: "OP-2026-032", modelo: "Mocasín Cúcuta · 120 pares", pide: "Jefe de montaje",
+      urg: "Urgente", para: "2026-09-24", estado: "Por verificar", nota: "",
+      items: [{ cod: "MP-05", cant: 240, dado: 0 }, { cod: "MP-08", cant: 120, dado: 0 }] },
+    { id: "SP-2026-014", fecha: "2026-09-22", op: "OP-2026-031", modelo: "Botín Casual Cuero · 40 pares", pide: "Jefe de montaje",
+      urg: "Normal", para: "2026-09-23", estado: "Entregada", nota: "Entregada el 2026-09-22",
+      items: [{ cod: "MP-06", cant: 3, dado: 3 }, { cod: "MP-03", cant: 30, dado: 30 }] },
+    { id: "SP-2026-013", fecha: "2026-09-20", op: "OP-2026-029", modelo: "Sandalia Verano · 80 pares", pide: "Jefe de corte",
+      urg: "Normal", para: "2026-09-25", estado: "Rechazada", nota: "Producción canceló la orden",
+      items: [{ cod: "MP-07", cant: 640, dado: 0 }] }
+  ];
+  var SP_PIDIENDO = null;   // la solicitud de Producción por la que se está pidiendo a Compras
+  var SP_ABIERTA = { "Por verificar": 1, "Entrega parcial": 1, "Esperando compra": 1 };
+
+  /* Cómo está cada renglón frente a la bodega */
+  function verificarItem(it) {
+    var bod = bodegaDe(it.cod), falta = Math.max(0, it.cant - (it.dado || 0)), hay = hayEnBodega(bod, it.cod);
+    return { bod: bod, falta: falta, hay: hay, alcanza: hay >= falta, dar: Math.min(hay, falta), pedir: Math.max(0, falta - hay) };
+  }
+
+  function contarSolicitudes() {
+    var n = SOL_PROD.filter(function (s) { return SP_ABIERTA[s.estado]; }).length;
+    sumarAlMenu("12-solicitudes.html", 0, String(n));
+    var b = uno("#ini-sol-n");
+    if (b) { b.textContent = n; b.hidden = !n; }
+    return n;
+  }
+
+  function pintarSolProd() {
+    var cuerpo = uno("#sp-filas");
+    if (!cuerpo) return;
+    var TONO_URG = { Normal: "off", Alta: "warn", Urgente: "crit" };
+    var TONO_EST = { "Por verificar": "warn", "Entrega parcial": "warn", "Esperando compra": "crit", "Entregada": "ok", "Rechazada": "off" };
+    cuerpo.innerHTML = SOL_PROD.map(function (s) {
+      var abierta = SP_ABIERTA[s.estado], vs = s.items.map(verificarItem);
+      var hayAlgo = vs.some(function (v) { return v.dar > 0; }), todo = vs.every(function (v) { return v.alcanza; });
+      var faltaAlgo = vs.some(function (v) { return v.pedir > 0; });
+      var lista = s.items.map(function (it, k) {
+        var v = vs[k], i = infoMat(it.cod), marca;
+        if (!abierta || !v.falta) marca = '<span class="sp-hay sp-hay--listo">' + (it.dado ? "Entregado " + miles(it.dado) : "—") + "</span>";
+        else if (v.alcanza) marca = '<span class="sp-hay sp-hay--ok">✓ Hay ' + miles(v.hay) + "</span>";
+        else marca = '<span class="sp-hay sp-hay--falta">Faltan ' + miles(v.pedir) + "</span>";
+        return "<li><span><b>" + miles(it.cant) + " " + i.unidad + "</b> · " + it.cod + " " + esc(i.nombre) + "</span>" + marca +
+          (abierta && v.falta ? '<span class="tiny">' + v.bod + " tiene " + miles(v.hay) + (it.dado ? " · ya se entregaron " + miles(it.dado) : "") + "</span>" : "") + "</li>";
+      }).join("");
+      var acts = "";
+      if (abierta) {
+        if (todo) acts += '<button type="button" class="btn btn--sm" data-sp="entregar" data-id="' + s.id + '">Entregar</button>';
+        else {
+          if (hayAlgo) acts += '<button type="button" class="btn btn--sm btn--ghost" data-sp="entregar" data-id="' + s.id + '">Entregar lo que hay</button>';
+          if (faltaAlgo && s.estado !== "Esperando compra") acts += '<button type="button" class="btn btn--sm" data-sp="pedir" data-id="' + s.id + '">Solicitar lo que falta</button>';
+        }
+        acts += '<button type="button" class="btn btn--sm btn--ghost" data-sp="rechazar" data-id="' + s.id + '">Rechazar</button>';
+      } else acts = '<span class="tiny">' + esc(s.nota || "") + "</span>";
+      return '<tr class="' + (abierta ? "" : "sp-cerrada") + '"><td data-l="Solicitud"><b class="nw">' + s.id + '</b><div class="tiny nw">' + s.fecha + "</div></td>" +
+        '<td data-l="Orden"><b class="nw">' + s.op + '</b><div class="tiny">' + esc(s.modelo) + '</div><div class="tiny">Pide: ' + esc(s.pide) + "</div></td>" +
+        '<td data-l="Qué pide"><ul class="sp-items">' + lista + "</ul></td>" +
+        '<td data-l="Urgencia"><span class="pill pill--' + TONO_URG[s.urg] + '">' + s.urg + "</span></td>" +
+        '<td data-l="Para cuándo"><span class="nw">' + s.para + "</span></td>" +
+        '<td data-l="Estado"><span class="pill pill--' + TONO_EST[s.estado] + '">' + s.estado + "</span>" +
+          (abierta && s.nota ? '<div class="tiny">' + esc(s.nota) + "</div>" : "") + "</td>" +
+        '<td data-l="Acciones"><div class="acts">' + acts + "</div></td></tr>";
+    }).join("");
+    var c = {};
+    SOL_PROD.forEach(function (s) { c[s.estado] = (c[s.estado] || 0) + 1; });
+    uno("#sp-res").innerHTML = '<span class="dt__res-t">Totales<em>de las ' + SOL_PROD.length + " solicitud(es)</em></span>" +
+      '<span class="dt__res-i dt__res-i--warn"><b>Por verificar</b><span>' + (c["Por verificar"] || 0) + "</span></span>" +
+      '<span class="dt__res-i"><b>Esperando compra</b><span>' + ((c["Esperando compra"] || 0) + (c["Entrega parcial"] || 0)) + "</span></span>" +
+      '<span class="dt__res-i dt__res-i--ok"><b>Entregadas</b><span>' + (c["Entregada"] || 0) + "</span></span>";
+    var dt = uno("#dt-04-sol-prod");
+    if (uno('input[type="search"]', dt).value || todos(".dt__filtros select", dt).some(function (x) { return x.selectedIndex > 0; })) filtrar(dt);
+    else dtPintar(dt);
+  }
+
+  /* Los números de arriba y las tarjetas de stock bajo */
+  function pintarResumenSolicitudes() {
+    contarSolicitudes();
+    if (!uno("#sp-filas")) return;
+    var k = {
+      verificar: SOL_PROD.filter(function (s) { return s.estado === "Por verificar"; }).length,
+      espera: SOL_PROD.filter(function (s) { return s.estado === "Esperando compra" || s.estado === "Entrega parcial"; }).length,
+      compras: PEDIDOS.filter(function (p) { return p.estado !== "Anulado"; }).length,
+      entregadas: SOL_PROD.filter(function (s) { return s.estado === "Entregada"; }).length
+    };
+    for (var n in k) { var x = uno('[data-sp-k="' + n + '"]'); if (x) x.textContent = k[n]; }
+    var bajos = uno("#sp-bajos");
+    if (bajos) {
+      var l = porPedir();
+      bajos.innerHTML = l.length ? l.map(tarjetaPorPedir).join("") : '<p class="empty">Todo está por encima del mínimo.</p>';
+    }
+  }
+
+  function pintarSolicitudes() {
+    if (!uno("#sp-filas")) return;
+    asegurarMovs();
+    sincronizarListaBodegas();
+    pintarSolProd();
+    pintarPedidos();
+    pintarResumenSolicitudes();
+  }
+
+  /* Entrega a Producción lo que hay: sale de la bodega y queda en el registro */
+  function entregarSP(s) {
+    var dados = [], bajos = [];
+    s.items.forEach(function (it) {
+      var v = verificarItem(it);
+      if (!v.dar) return;
+      var queda = moverStock(v.bod, it.cod, -v.dar, { mv: nuevoMB(), tipo: "Salida", doc: "Entrega a Producción · " + s.id,
+                                                       quien: "Producción · " + s.pide, obs: s.op + " · " + s.modelo });
+      if (queda === null) return;
+      it.dado = (it.dado || 0) + v.dar;
+      var i = infoMat(it.cod);
+      dados.push(miles(v.dar) + " " + i.unidad + " de " + it.cod);
+      var mn = minDe(v.bod, it.cod);
+      if (mn && queda < mn) bajos.push(it.cod + " en " + v.bod);
+    });
+    if (!dados.length) return aviso("No hay nada en bodega para entregar todavía.", "warn");
+    var completa = s.items.every(function (it) { return (it.dado || 0) >= it.cant; });
+    if (completa) { s.estado = "Entregada"; s.nota = "Entregada el " + HOY; }
+    else if (s.estado !== "Esperando compra") { s.estado = "Entrega parcial"; s.nota = "Falta lo que no había en bodega"; }
+    pintarSolicitudes();
+    pintarAlmacen();
+    guardarPronto();
+    aviso("Entregado a Producción (" + s.op + "): " + dados.join(", ") + "." +
+          (bajos.length ? " Ojo: quedó bajo el mínimo " + bajos.join(" y ") + ". Solicítelo a Compras abajo." : ""),
+          bajos.length ? "warn" : "ok");
+  }
+
+  /* Lo que no alcanza se le pide a Compras (abre el mismo formulario de pedido) */
+  function pedirFaltanteSP(s) {
+    var faltan = s.items.map(function (it) { return { it: it, v: verificarItem(it) }; }).filter(function (x) { return x.v.pedir > 0; });
+    if (!faltan.length) return aviso("A esta solicitud no le falta nada: puede entregarla.", "ok");
+    var bod = faltan[0].v.bod;
+    var otras = faltan.filter(function (x) { return x.v.bod !== bod; }).length;
+    abrirSolicitud(bod, faltan.filter(function (x) { return x.v.bod === bod; }).map(function (x) {
+      var m = material(x.it.cod);
+      return { tipo: m ? m[2] : "otro", cod: m ? x.it.cod : "otro", cant: x.v.pedir };
+    }), "lo que le falta a la " + s.id + " de Producción");
+    SP_PIDIENDO = s.id;
+    var obs = uno("#sol-obs");
+    if (obs && !obs.value) obs.value = "Para la " + s.id + " de Producción (" + s.op + " · " + s.modelo + ").";
+    var urg = uno("#sol-urg");
+    if (urg && s.urg !== "Normal") urg.value = s.urg;
+    if (otras) aviso("Otro material de esta solicitud está en otra bodega: después solicítelo también.", "warn");
+  }
+
+  /* Cuando el pedido a Compras queda registrado, la solicitud de Producción queda esperando */
+  function ligarPedidoSP(p) {
+    if (!SP_PIDIENDO) return;
+    var s = SOL_PROD.filter(function (x) { return x.id === SP_PIDIENDO; })[0];
+    SP_PIDIENDO = null;
+    if (!s) return;
+    s.estado = "Esperando compra";
+    s.pedido = p.id;
+    s.nota = "Solicitud a Compras: " + p.id;
+    pintarSolProd();
+    pintarResumenSolicitudes();
+  }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-sp]") : null;
+    if (!b) return;
+    e.preventDefault();
+    var s = SOL_PROD.filter(function (x) { return x.id === b.getAttribute("data-id"); })[0];
+    if (!s) return;
+    var acc = b.getAttribute("data-sp");
+    if (acc === "entregar") return entregarSP(s);
+    if (acc === "pedir") return pedirFaltanteSP(s);
+    if (acc === "rechazar") {
+      if (!b.classList.contains("is-seguro")) {
+        b.classList.add("is-seguro"); b.textContent = "¿Rechazar? Pulse otra vez";
+        setTimeout(function () { if (b.isConnected) { b.classList.remove("is-seguro"); b.textContent = "Rechazar"; } }, 4000);
+        return;
+      }
+      s.estado = "Rechazada";
+      s.nota = "Rechazada por Inventario el " + HOY;
+      pintarSolicitudes();
+      guardarPronto();
+      return aviso("Solicitud " + s.id + " rechazada. No se borra: Producción la ve con su motivo.", "warn");
+    }
+  });
+
   /* ---------------------------------------------------------------- Selector de material (bonito y con buscador)
 
      La lista nativa del navegador con grupos se ve fea y no deja buscar.
@@ -3674,7 +4183,7 @@
     var t = o.textContent.split(" · ");
     if (t.length === 1 || !/^[A-Z]{2,}-[\w-]+$/.test(t[0])) return { cod: "", nombre: o.textContent, meta: "", hay: false };
     var meta = t.length > 2 ? t.slice(2).join(" · ") : "";
-    return { cod: t[0], nombre: t[1] || "", meta: meta, hay: /^hay /.test(meta) };
+    return { cod: t[0], nombre: t[1] || "", meta: meta, hay: /(^| · )hay /.test(meta) };
   }
 
   function etiquetaPick(sel) {
@@ -3825,11 +4334,11 @@
   /* ---------------------------------------------------------------- Lo que se guarda en el navegador
 
      Todo lo que el usuario hace queda guardado en este navegador (localStorage):
-     cómo quedó cada pantalla y los datos de la lógica (saldos, máquinas, kárdex).
+     cómo quedó cada pantalla y los datos de la lógica (saldos, máquinas, bodegas).
      Al recargar sigue igual. El botón «Datos de ejemplo» vuelve todo al inicio.
      Es solo del navegador de quien lo usa: otra persona ve los datos de ejemplo. */
 
-  var LLAVE_INV = "sicaf.inventario.v8";   // al cambiar las pantallas se sube el número y se arranca limpio
+  var LLAVE_INV = "sicaf.inventario.v28";   // al cambiar las pantallas se sube el número y se arranca limpio
   var GUARDADO = (function () {
     try { return JSON.parse(window.localStorage.getItem(LLAVE_INV)) || {}; } catch (e) { return {}; }
   })();
@@ -3843,9 +4352,9 @@
         var ct = uno(".ct", a);
         if (ct) menu[a.getAttribute("href")] = ct.textContent;
       });
-      GUARDADO.estado = { SALDO: SALDO, NUM_MOV: NUM_MOV, PARA_KARDEX: PARA_KARDEX,
-                          MAQ: MAQ, MQ_SEL: MQ_SEL, COSTO_UNIDAD: COSTO_UNIDAD, ULTIMA_SC: ULTIMA_SC,
-                          STOCK: STOCK, MOVS: MOVS, NUM_BG: NUM_BG, BG_SEL: BG_SEL, PEDIDOS: PEDIDOS,
+      GUARDADO.estado = { SALDO: SALDO,
+                          MAQ: MAQ, MQ_SEL: MQ_SEL, REPORTE_MQ: REPORTE_MQ, COSTO_UNIDAD: COSTO_UNIDAD, ULTIMA_SC: ULTIMA_SC,
+                          STOCK: STOCK, MOVS: MOVS, NUM_BG: NUM_BG, BG_SEL: BG_SEL, PEDIDOS: PEDIDOS, SOL_PROD: SOL_PROD,
                           FICHA_BOD: FICHA_BOD, NOMBRE_BOD: NOMBRE_BOD, MINIMOS: MINIMOS, CAPACIDAD: CAPACIDAD, menu: menu };
       window.localStorage.setItem(LLAVE_INV, JSON.stringify(GUARDADO));
       marcarGuardado(true);
@@ -3858,9 +4367,8 @@
     var e = GUARDADO.estado;
     if (!e) return;
     if (e.SALDO) SALDO = e.SALDO;
-    if (e.NUM_MOV) NUM_MOV = e.NUM_MOV;
-    if (e.PARA_KARDEX) PARA_KARDEX = e.PARA_KARDEX;
     if (e.MAQ) MAQ = e.MAQ;
+    if (e.REPORTE_MQ) REPORTE_MQ = e.REPORTE_MQ;
     if (e.MQ_SEL) MQ_SEL = e.MQ_SEL;
     if (e.COSTO_UNIDAD) COSTO_UNIDAD = e.COSTO_UNIDAD;
     if (e.ULTIMA_SC) ULTIMA_SC = e.ULTIMA_SC;
@@ -3869,6 +4377,7 @@
     if (e.NUM_BG) NUM_BG = e.NUM_BG;
     if (e.BG_SEL) BG_SEL = e.BG_SEL;
     if (e.PEDIDOS) PEDIDOS = e.PEDIDOS;
+    if (e.SOL_PROD) SOL_PROD = e.SOL_PROD;
     if (e.FICHA_BOD) FICHA_BOD = e.FICHA_BOD;
     if (e.NOMBRE_BOD) NOMBRE_BOD = e.NOMBRE_BOD;
     if (e.MINIMOS) MINIMOS = e.MINIMOS;
@@ -3918,20 +4427,31 @@
   recuperarEstado();
   if (GUARDADO.pantallas && GUARDADO.pantallas[actual] && pagina()) {
     pagina().innerHTML = GUARDADO.pantallas[actual];
+    todos(".guardado", pagina()).forEach(function (x) { x.remove(); });
   }
+
+  /* En Inventario no se muestra el módulo Diseño en el menú lateral (no se toca comun/marco.js) */
+  function quitarDiseno() {
+    todos('a[href*="02-diseno/"]').forEach(function (a) {
+      var li = a.closest("li");
+      (li && li.querySelectorAll("a").length === 1 ? li : a).remove();
+    });
+  }
+  quitarDiseno();
+  setTimeout(quitarDiseno, 0);
 
   /* Lo que se hace cada vez que se pinta una pantalla */
   function alPintar() {
     cerrarPick();
-    ponerCajaGuardado();
+    ponerFechaHoy();
     if (GUARDADO.estado) marcarGuardado(true);
     dtArrancar();
     if (actual === "06-maquinaria.html") pintarMaquinas();
     if (actual === "02-m-prima.html") { sincronizarMP(); explicarEntrada(); }
-    if (actual === "01-inicio.html") { sincronizarInicio(); refrescarArticulos(); marcarPedidosInicio(); pintarAlmacen(); }
-    if (actual === "05-merma.html") mostrarExistencia();
-    if (actual === "07-kardex.html") vaciarKardex();
+    if (actual === "01-inicio.html") { INI_VER = ""; pintarDesp(); contarIni(); sincronizarInicio(); refrescarArticulos(); marcarPedidosInicio(); pintarAlmacen(); }
     if (actual === "11-bodegas.html") iniciarBodegas();
+    if (actual === "12-solicitudes.html") pintarSolicitudes();
+    contarSolicitudes();
     mejorarSelectores();
   }
   alPintar();

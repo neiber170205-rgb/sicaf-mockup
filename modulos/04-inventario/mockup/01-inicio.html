@@ -7,7 +7,7 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css?v=20260929a" />
+    <link rel="stylesheet" href="estilos.css?v=20261005a" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Inicio">
 
@@ -21,66 +21,15 @@
         </span>
       </h2>
     </header>
-    <div class="kpis">
-      <button class="kpi kpi--arena kpi--btn" type="button" aria-pressed="false" data-kpi="ir:02-m-prima.html" data-dice="las referencias de materia prima" title="Abrir las referencias de materia prima">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">8</div>
-          <div class="kpi__l">Referencias de insumo</div>
-        </div>
-        <span class="kpi__d flat">↑ 0%</span>
-      </button>
-      <button class="kpi kpi--rosa kpi--btn" type="button" aria-pressed="false" data-kpi="ver:Por pedir" data-dice="lo que hay que pedir" title="Ver lo que hay que pedir">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">2</div>
-          <div class="kpi__l">Bajo el mínimo</div>
-        </div>
-        <span class="kpi__d down">↑ 100%</span>
-      </button>
-      <button class="kpi kpi--oliva kpi--btn" type="button" aria-pressed="false" data-kpi="ir:04-terminado.html" data-dice="el producto terminado" title="Abrir el producto terminado">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
-        </span>
-        <div>
-          <div class="kpi__n">122</div>
-          <div class="kpi__l">Pares terminados</div>
-        </div>
-        <span class="kpi__d up">↑ 11%</span>
-      </button>
-      <button class="kpi kpi--cobre kpi--btn" type="button" aria-pressed="false" data-kpi="ir:07-kardex.html" data-dice="el kardex, que es de donde sale la valorización" title="Abrir el kardex, que es de donde sale la valorización">
-        <span class="kpi__tile">
-          <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
-        </span>
-        <div>
-          <div class="kpi__n">$9.974.000</div>
-          <div class="kpi__l">Cuánto vale</div>
-        </div>
-        <span class="kpi__d up">↑ 2%</span>
-      </button>
-    </div>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i is-on" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
-      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
       <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
+      <a class="subnav__i" data-ico="correo" data-ct="2" href="12-solicitudes.html">Solicitudes</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
-      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
       <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
-      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
       <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
-      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
-      <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
       <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
-    </nav>
-    <nav class="rapidas rapidas--ini" aria-label="Accesos rápidos">
-      <a class="rapida" href="11-bodegas.html"><span class="ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/> <path d="m8 11 4 4 4-4"/> <path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/></svg></span><span><b>Entrada o salida</b><small>Registrar en una bodega</small></span></a>
-      <button class="rapida" type="button" data-pd="nuevo"><span class="ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"/> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"/> <circle cx="18" cy="20" r="2"/> <circle cx="8" cy="20" r="2"/></svg></span><span><b>Pedido a Compras</b><small>Pedir material</small></span></button>
-      <a class="rapida" href="05-merma.html"><span class="ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/> <path d="m6 6 12 12"/></svg></span><span><b>Merma</b><small>Registrar lo perdido</small></span></a>
-      <a class="rapida" href="06-maquinaria.html"><span class="ic"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/> <circle cx="12" cy="12" r="3"/></svg></span><span><b>Máquinas</b><small>Estado y averías</small></span></a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
     </nav>
     <article class="alm" id="alm">
       <header class="alm__h">
@@ -91,7 +40,6 @@
             <button type="button" data-alm-bod="BOD-01">BOD-01</button>
             <button type="button" data-alm-bod="BOD-02">BOD-02</button>
             <button type="button" data-alm-bod="BOD-03">BOD-03</button>
-            <button type="button" data-alm-bod="BOD-04">BOD-04</button>
           </div>
           <div class="alm__seg" role="group" aria-label="Qué movimientos">
             <button type="button" class="is-on" data-alm-ver="ambos">Entradas y salidas</button>
@@ -104,7 +52,7 @@
         <section class="alm__anillos" aria-label="Cuánto está ocupado">
           <span class="alm__t" id="alm-anillos-t">Cuánto está ocupada cada bodega</span>
           <div class="alm__rings" id="alm-rings"></div>
-          <p class="alm__ley"><span class="alm__ley-i alm__ley-i--ocu"></span>Ocupado <span class="alm__ley-i alm__ley-i--ped"></span>Pedido por llegar <span class="alm__ley-i alm__ley-i--lib"></span>Libre</p>
+          <p class="alm__ley">Pase el cursor por un color para ver qué es. <span class="alm__ley-i alm__ley-i--lib"></span>Libre</p>
         </section>
         <section class="alm__graf" aria-label="Entradas y salidas por mes">
           <div class="alm__resumen" id="alm-resumen"></div>
@@ -116,16 +64,6 @@
         </section>
       </div>
     </article>
-    <section class="panel">
-      <header class="panel__head panel__head--vino">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"/> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"/> <circle cx="18" cy="20" r="2"/> <circle cx="8" cy="20" r="2"/></svg>
-        <div><h2>Por pedir</h2></div>
-        <a class="ghostbtn" href="11-bodegas.html" data-ir-pedidos>Ver pedidos</a>
-      </header>
-      <div class="panel__body">
-        <div class="ini-pedir" id="ini-pedir"><p class="empty">Cargando…</p></div>
-      </div>
-    </section>
 
     <div class="ini-dos">
       <section class="panel">
@@ -152,6 +90,6 @@
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js?v=20260929a"></script>
+    <script src="prototipo.js?v=20261005a"></script>
   </body>
 </html>

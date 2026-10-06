@@ -2035,7 +2035,7 @@ input.edit:focus { outline: 2px solid var(--vino-600); outline-offset: 1px; }
 .avance__b i { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--cobre-500), var(--cobre-600)); }
 .avance b { font-size: 12.5px; min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; }
 
-/* Cantidades del kárdex: lo que entra en verde, lo que sale en rojo */
+/* Cantidades de los movimientos: lo que entra en verde, lo que sale en rojo */
 .mov { font-weight: 700; font-variant-numeric: tabular-nums; }
 .mov--mas { color: var(--ok); }
 .mov--menos { color: var(--crit); }
@@ -2473,7 +2473,7 @@ tr.pd-anulado > td:last-child { opacity: 1; }
 /* =====================================================================
    Inicio resumido: accesos, por pedir, alertas y últimos movimientos
    ===================================================================== */
-.rapidas--ini { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.rapidas--ini { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
 .rapidas--ini .rapida { text-decoration: none; color: inherit; font: inherit; text-align: left; }
 .ini-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
 .ini-grid .panel { margin-bottom: 0; }
@@ -2987,3 +2987,203 @@ tr.pd-anulado > td:last-child { opacity: 1; }
 .bgv-ub { display: block; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bgv .dt tbody td[data-l="Último movimiento"] { white-space: nowrap; }
 .bgv .dt tbody td[data-l="Bodega"] { white-space: normal; min-width: 150px; } .bgv .dt tbody td[data-l="Bodega"] .tiny { white-space: normal; }
+
+/* =====================================================================
+   Solicitudes (12): lo que pide Producción y lo que se le pide a Compras
+   ===================================================================== */
+@media (max-width: 1180px) and (min-width: 761px) {
+  .rapidas--ini { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.rapida span.ic { position: relative; }
+.rapida__n {
+  position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 9px; background: var(--crit); color: #fff; font-weight: 700; font-size: 11px; line-height: 18px; font-style: normal;
+  text-align: center; box-shadow: 0 0 0 2px var(--papel);
+}
+.sp-flujo {
+  list-style: none; margin: 0 0 16px; padding: 0; display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; counter-reset: none;
+}
+.sp-flujo li {
+  position: relative; display: grid; gap: 3px; padding: 12px 14px; border-radius: var(--r-m);
+  border: 1px solid var(--linea); background: var(--papel);
+}
+.sp-flujo li:not(:last-child)::after {
+  content: "→"; position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+  color: var(--cobre-500); font-weight: 700; z-index: 1;
+}
+.sp-flujo b { font-size: 13px; color: var(--vino-800); }
+.sp-flujo span { font-size: 11.5px; color: var(--tinta-3); line-height: 1.35; }
+.sp-nota { margin: 0 0 12px; font-size: 13px; color: var(--tinta-2); }
+.sp-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px; min-width: 230px; }
+.sp-items li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; line-height: 1.35; }
+.sp-items .sp-hay { justify-self: end; white-space: nowrap; font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
+.sp-hay--ok { background: var(--oliva-100); color: var(--oliva-800); }
+.sp-hay--falta { background: color-mix(in srgb, var(--crit) 14%, transparent); color: var(--crit); }
+.sp-hay--listo { background: #ECE6E0; color: var(--tinta-3); }
+.sp-items .tiny { grid-column: 1 / -1; }
+tr.sp-cerrada > td { opacity: .6; }
+tr.sp-cerrada > td:last-child { opacity: 1; }
+@media (max-width: 760px) {
+  .sp-flujo { grid-template-columns: 1fr 1fr; }
+  .sp-flujo li::after { display: none; }
+  .sp-items { min-width: 0; }
+}
+#dt-04-sol-prod td:last-child .acts { flex-direction: column; align-items: stretch; gap: 6px; }
+#dt-04-sol-prod td:last-child .acts .btn { justify-content: center; white-space: nowrap; }
+
+/* Inicio: solo dos tarjetas (insumos y pares terminados) que despliegan su contenido */
+.kpis--dos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.kpis--dos .kpi--btn.is-on .kpi__l::after { content: " · viendo"; }
+.ini-desp { margin-top: 16px; }
+.ini-desp__pie { margin: 0; padding: 10px 18px; font-size: 12px; color: var(--tinta-3); border-top: 1px solid var(--linea-2); }
+@media (max-width: 560px) { .kpis--dos { grid-template-columns: minmax(0, 1fr); } }
+
+/* Anillos por partes: cada material (o bodega) con su color y su % */
+.alm__rings { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.ring { justify-content: flex-start; }
+.ring__ley { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; width: 100%; max-width: 170px; }
+.ring__ley li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 6px; align-items: center; font-size: 11px; color: var(--tinta-2); text-align: left; }
+.ring__ley i { width: 10px; height: 10px; border-radius: 3px; }
+.ring__ley b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ring__ley span { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--tinta); }
+
+/* Anillos y barras por colores: sin lista debajo, el cursor dice qué es cada color */
+.ring__ley { display: none; }
+.ring__c--partes { cursor: crosshair; }
+.barra { background: none !important; display: flex; }
+.barra__pila { flex: 1; display: flex; flex-direction: column-reverse; border-radius: 6px 6px 2px 2px; overflow: hidden; }
+.barra__s { display: block; width: 100%; flex: none; transition: filter .15s; }
+.barra__s + .barra__s { box-shadow: 0 1px 0 rgba(255, 255, 255, .55); }
+.barra__s:hover { filter: brightness(1.18); }
+.barra--s .barra__s { background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .38) 0 3px, transparent 3px 7px); }
+.alm__dato--e i { background: var(--tinta-2); }
+.alm__dato--s i { background: repeating-linear-gradient(135deg, #fff 0 2px, var(--tinta-2) 2px 4px); }
+.alm-tip { max-width: 240px; padding: 7px 10px; }
+.tipc { display: flex; gap: 8px; align-items: flex-start; }
+.tipc > i { flex: none; width: 12px; height: 12px; border-radius: 4px; margin-top: 3px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .8); }
+.tipc b { display: block; margin: 0; }
+.tipc .tipc__n { display: inline; font-size: 12.5px; }
+
+/* Máquinas: dónde está, quién responde y quién la usa */
+.mq-card__quien { display: grid; gap: 3px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--linea-2); }
+.mq-card__quien > span { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 6px; font-size: 11.5px; line-height: 1.35; }
+.mq-card__quien em { font-style: normal; color: var(--tinta-3); }
+.mq-card__quien b { font-weight: 600; color: var(--tinta); overflow-wrap: anywhere; }
+.mq-card__quien b.mq-nadie { font-weight: 500; color: var(--tinta-3); }
+
+/* Maquinaria: el marcador de estado se pulsa para cambiarlo */
+.mq-pill { cursor: pointer; transition: box-shadow .15s, transform .15s; }
+.mq-pill i { font-style: normal; font-size: 9px; margin-left: 2px; opacity: .7; }
+.mq-pill:hover, .mq-pill:focus-visible { box-shadow: 0 0 0 2px currentColor; outline: none; }
+.mq-menu {
+  position: absolute; z-index: 140; width: 250px; padding: 8px; border-radius: 12px; background: var(--papel);
+  border: 1px solid var(--linea); box-shadow: 0 16px 34px -14px rgba(58, 42, 34, .55); display: grid; gap: 2px;
+}
+.mq-menu__t { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--tinta-3); padding: 4px 8px 6px; }
+.mq-menu button {
+  display: grid; gap: 3px; justify-items: start; padding: 7px 8px; border: 0; border-radius: 8px; background: none;
+  font: inherit; text-align: left; cursor: pointer;
+}
+.mq-menu button:hover:not([disabled]), .mq-menu button:focus-visible { background: var(--arena); outline: none; }
+.mq-menu button[disabled] { opacity: .45; cursor: default; }
+.mq-menu small { font-size: 11px; color: var(--tinta-3); }
+#mqr-vacio { padding: 18px; }
+
+/* Separador entre los anillos generales y los de cada bodega */
+.alm__sep { grid-column: 1 / -1; margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--linea-2); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--tinta-3); }
+
+/* Anillos compactos: tres por fila, más pequeños y con menos aire */
+.alm__t { margin-bottom: 8px; }
+.alm__rings { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 8px; }
+.ring { gap: 2px; padding: 4px 2px; }
+.ring__c { width: 70px; height: 70px; }
+.ring__c::before { inset: 8px; }
+.ring__c b { font-size: 13px; }
+.ring--gral .ring__c { width: 78px; height: 78px; }
+.ring--gral .ring__c b { font-size: 14.5px; }
+.ring__t { font-size: 12px; }
+.ring__s { font-size: 10.5px; }
+.alm__sep { margin-top: 2px; padding-top: 6px; }
+.alm__ley { margin-top: 8px; }
+@media (max-width: 420px) { .alm__rings { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Cuatro anillos por fila: General, Materiales, Referencias y Máquinas */
+.alm__rings { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ring--gral .ring__c { width: 72px; height: 72px; }
+.ring--gral .ring__c b { font-size: 13.5px; }
+@media (max-width: 1250px) and (min-width: 1001px) { .alm__rings { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Bodegas: responsable con sus iniciales y alertas de stock con detalle al pasar el cursor */
+.bgv-resp { display: flex; align-items: center; gap: 9px; }
+.bgv-resp__av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--vino-tint); color: var(--vino-700, #6d1420); font-size: 11.5px; font-weight: 700; }
+.bgv-resp b { display: block; font-weight: 600; font-size: 13px; }
+.bgv-al { position: relative; display: inline-block; cursor: help; outline: none; }
+.bgv-al__pop {
+  position: absolute; z-index: 60; right: 0; top: calc(100% + 8px); width: 290px; padding: 10px 12px; border-radius: 10px;
+  background: var(--vino-900, #2A0508); color: #fff; font-size: 12px; line-height: 1.4; text-align: left; white-space: normal;
+  box-shadow: 0 12px 26px -10px rgba(42, 5, 8, .55); opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity .12s, transform .12s, visibility .12s;
+}
+.bgv-al:hover .bgv-al__pop, .bgv-al:focus .bgv-al__pop { opacity: 1; visibility: visible; transform: none; }
+.bgv-al__t { display: block; font-size: 12.5px; margin-bottom: 6px; }
+.bgv-al__pop ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.bgv-al__i { padding-left: 10px; border-left: 3px solid var(--warn); }
+.bgv-al__i--crit { border-left-color: #ff8a8a; }
+.bgv-al__i b { display: block; font-size: 12px; }
+.bgv-al__i span { font-size: 11.5px; opacity: .85; }
+.bgv-al__pop { position: fixed; right: auto; top: 0; left: 0; }
+
+/* =====================================================================
+   Tablas compactas: menos aire en barra, filtros, filas, totales y pie
+   ===================================================================== */
+.dt__bar { padding: 8px 12px; gap: 8px; }
+.dt__q input { height: 34px; font-size: 13px; }
+.dt__b { height: 34px; padding: 0 11px; font-size: 12.5px; }
+/* los filtros en una sola línea: la etiqueta al lado de su lista */
+.dt__filtros { padding: 6px 12px; gap: 6px 12px; align-items: center; }
+.dt__filtros-t { height: 30px; font-size: 10.5px; }
+.dt__f { flex-direction: row; align-items: center; gap: 6px; }
+.dt__f-l { font-size: 10px; }
+.dt__in { height: 30px; font-size: 12.5px; padding: 0 8px; }
+select.dt__in { min-width: 118px; }
+/* encabezados y filas más bajos */
+.dt thead th > .dt__orden, .dt thead th.dt__th--txt { padding: 8px 10px 7px; font-size: 10.5px; }
+.dt table td { padding: 7px 10px; font-size: 13px; }
+.dt table td .tiny { margin-top: 1px; }
+.dt .pill { padding-top: 2px; padding-bottom: 2px; }
+.dt .btn--sm { padding-top: 4px; padding-bottom: 4px; }
+/* totales y pie */
+.dt__res { padding: 6px 12px; gap: 6px 10px; }
+.dt__res-i { padding: 3px 9px; }
+.dt__res-i span { font-size: 13.5px; }
+.dt__pie { padding: 6px 12px; gap: 6px 12px; }
+.dt__info { font-size: 12px; }
+.dt__tam { font-size: 11.5px; }
+.dt__tam .dt__in, .dt__pag { height: 28px; }
+.dt__pag { min-width: 28px; font-size: 12px; }
+/* las tablas no se estiran más de lo necesario */
+.dt__scroll { max-height: 58vh; }
+.panel__head { padding-top: 10px; padding-bottom: 10px; min-height: 54px; }
+@media (max-width: 760px) {
+  .dt__f { flex-direction: column; align-items: stretch; gap: 2px; }
+}
+
+/* Maquinaria: el operador se pulsa para asignarlo o cambiarlo */
+.mq-op { cursor: pointer; border-radius: 6px; padding: 0 4px; margin-left: -4px; transition: background .15s; }
+.mq-op i { font-style: normal; font-size: 10px; opacity: .45; }
+.mq-op:hover, .mq-op:focus-visible { background: var(--arena); outline: none; }
+.mq-op:hover i { opacity: .9; }
+.mq-menu__nota { padding: 0 8px 6px; font-size: 11px; color: var(--tinta-3); }
+.mq-menu__p { display: flex; align-items: center; gap: 8px; }
+.mq-menu__p .bgv-resp__av { width: 24px; height: 24px; font-size: 10px; }
+.mq-menu__p b { font-weight: 600; font-size: 13px; }
+
+/* Maquinaria: botón Editar en cada tarjeta */
+.mq-card__ed {
+  grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  padding: 6px 12px; border-radius: 8px; border: 1px solid var(--linea); background: var(--papel);
+  font-size: 12.5px; font-weight: 600; color: var(--vino-700, #6d1420); cursor: pointer; transition: background .15s, border-color .15s;
+}
+.mq-card__ed:hover, .mq-card__ed:focus-visible { background: var(--vino-tint); border-color: var(--vino-600); outline: none; }

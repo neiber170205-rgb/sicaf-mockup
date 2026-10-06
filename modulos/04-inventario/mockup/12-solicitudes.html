@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SICAF · Inventario · Solicitudes</title>
+    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+    <link rel="stylesheet" href="../../comun/estilos.css" />
+    <!-- Lo propio de este módulo -->
+    <link rel="stylesheet" href="estilos.css?v=20261005a" />
+  </head>
+  <body data-modulo="04-inventario" data-titulo="Inventario · Solicitudes">
+
+    <header class="phead">
+      <h2 class="phead__t">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/> <rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        Solicitudes
+        <span class="phead__f">
+          <svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+          2026-09-23
+        </span>
+      </h2>
+    </header>
+
+
+    <nav class="subnav" aria-label="Secciones de Inventario">
+      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+      <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
+      <a class="subnav__i is-on" data-ico="correo" data-ct="2" href="12-solicitudes.html">Solicitudes</a>
+      <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
+      <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
+      <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
+      <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
+    </nav>
+
+    <!-- Cómo viaja una solicitud: Producción → Inventario → (si falta) Compras -->
+    <ol class="sp-flujo" aria-label="Cómo viaja una solicitud">
+      <li><b>1 · Producción pide</b><span>Llega aquí con su orden de producción y lo que necesita.</span></li>
+      <li><b>2 · Inventario verifica</b><span>Se mira si hay en la bodega. Si alcanza, se entrega y sale del saldo.</span></li>
+      <li><b>3 · Si falta, va a Compras</b><span>Lo que no alcanza, o lo que quedó bajo el mínimo, se le pide a Compras.</span></li>
+      <li><b>4 · Llega y se entrega</b><span>Cuando Compras entrega, se le despacha a Producción lo que faltaba.</span></li>
+    </ol>
+
+    <section class="panel" id="p-sol-prod">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <div>
+          <h2>Recibidas de Producción</h2>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-04-sol-prod">
+          <div class="dt__bar">
+            <div class="dt__q"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><input type="search" placeholder="Buscar solicitud, orden, material..." aria-label="Buscar en las solicitudes de Producción"></div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg> Filtros</span>
+            <div class="dt__f"><label class="dt__f-l" for="sp-f-est">Estado</label>
+              <select id="sp-f-est" class="dt__in"><option value="">Todos</option><option>Por verificar</option><option>Entrega parcial</option><option>Esperando compra</option><option>Entregada</option><option>Rechazada</option></select></div>
+            <div class="dt__f"><label class="dt__f-l" for="sp-f-urg">Urgencia</label>
+              <select id="sp-f-urg" class="dt__in"><option value="">Todas</option><option>Normal</option><option>Alta</option><option>Urgente</option></select></div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead><tr>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Solicitud"><span>Solicitud</span><i class="dt__ind">⇅</i></button></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Orden"><span>Orden</span><i class="dt__ind">⇅</i></button></th>
+                <th><span>Qué pide · ¿hay en bodega?</span></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Urgencia"><span>Urgencia</span><i class="dt__ind">⇅</i></button></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Para cuándo"><span>Para cuándo</span><i class="dt__ind">⇅</i></button></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button></th>
+                <th class="dt__th--txt" style="width:1%">Acciones</th>
+              </tr></thead>
+              <tbody id="sp-filas"></tbody>
+            </table>
+          </div>
+          <div class="dt__res" id="sp-res"></div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite"></div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="sp-tam">Filas por página
+                <select id="sp-tam" class="dt__in"><option value="5" selected>5</option><option value="10">10</option><option value="25">25</option></select></label>
+              <nav class="dt__pager" aria-label="Paginación"></nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-pedidos">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18"/> <path d="M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25"/> <circle cx="18" cy="20" r="2"/> <circle cx="8" cy="20" r="2"/></svg>
+        <div>
+          <h2>Enviadas a Compras</h2>
+        </div>
+        <button class="ghostbtn" type="button" data-pd="nuevo"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/> <path d="M12 5v14"/></svg> Nueva solicitud</button>
+      </header>
+      <div class="panel__body">
+        <p class="sp-nota"><b>Stock bajo:</b> lo que está bajo el mínimo o cerca. Pulse <b>Solicitar</b> para mandarlo a Compras.</p>
+        <div class="ini-pedir" id="sp-bajos"></div>
+      </div>
+      <div class="panel__body panel__body--flush">
+        <div class="dt dt--acc" id="dt-04-pedidos">
+          <div class="dt__bar">
+            <div class="dt__q"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><input type="search" placeholder="Buscar solicitud, material, color..." aria-label="Buscar en las solicitudes"></div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg> Filtros</span>
+            <div class="dt__f"><label class="dt__f-l" for="pd-f-bod">Bodega</label>
+              <select id="pd-f-bod" class="dt__in"><option value="">Todas las bodegas</option></select></div>
+            <div class="dt__f"><label class="dt__f-l" for="pd-f-est">Estado</label>
+              <select id="pd-f-est" class="dt__in"><option value="">Todos</option><option>Registrado</option><option>Editado</option><option>Anulado</option></select></div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead><tr>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Solicitud"><span>Solicitud</span><i class="dt__ind">⇅</i></button></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Bodega"><span>Bodega</span><i class="dt__ind">⇅</i></button></th>
+                <th><span>Qué se solicitó</span></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Urgencia"><span>Urgencia</span><i class="dt__ind">⇅</i></button></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Para cuándo"><span>Para cuándo</span><i class="dt__ind">⇅</i></button></th>
+                <th style="width:1%"><button class="dt__orden" title="Ordenar por Estado"><span>Estado</span><i class="dt__ind">⇅</i></button></th>
+                <th class="dt__th--txt" style="width:1%">Acciones</th>
+              </tr></thead>
+              <tbody id="pd-filas"></tbody>
+            </table>
+          </div>
+          <div class="dt__res" id="pd-res"></div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite"></div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="pd-tam">Filas por página
+                <select id="pd-tam" class="dt__in"><option value="5" selected>5</option><option value="10">10</option><option value="25">25</option></select></label>
+              <nav class="dt__pager" aria-label="Paginación"></nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+    <script src="../../comun/marco.js"></script>
+    <!-- Lo que hace responder este mockup (solo de este módulo) -->
+    <script src="prototipo.js?v=20261005a"></script>
+  </body>
+</html>

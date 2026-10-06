@@ -1,299 +1,378 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mockup · Comercial · Entregas</title>
-    <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
-    <link rel="stylesheet" href="../../comun/estilos.css" />
-    <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css" />
-  </head>
-  <body data-modulo="07-comercial" data-titulo="Comercial · Entregas">
 
-    <section class="hero">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup · Comercial · Entregas</title>
+  <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
+  <link rel="stylesheet" href="../../comun/estilos.css" />
+  <!-- Lo propio de este módulo -->
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+
+<body data-modulo="07-comercial" data-titulo="Comercial · Entregas">
+
+  <nav class="subnav" aria-label="Secciones de Comercial">
+    <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
+    <a class="subnav__i" data-ico="etiqueta" data-ct="6" href="09-cotizacion.html">Cotizaciones</a>
+    <a class="subnav__i" data-ico="factura" data-ct="6" href="10-facturacion.html">Facturación</a>
+    <a class="subnav__i" data-ico="usuarios" data-ct="8" href="04-clientes.html">Clientes</a>
+    <a class="subnav__i" data-ico="zapato" href="03-existencias.html">Existencias</a>
+    <a class="subnav__i" data-ico="portapapeles" data-ct="6" href="05-pedidos.html">Pedidos</a>
+    <a class="subnav__i is-on" data-ico="camion" data-ct="1" href="06-entregas.html">Entregas</a>
+    <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
+  </nav>
+
+  <!-- La misma pantalla que Cotizaciones (09-cotizacion.html) y Facturación (10-facturacion.html):
+       el título con su nota, cuatro tarjetas y la tabla de datos. La tabla ES la pantalla. -->
+  <header class="phead phead--fila">
+    <h2 class="phead__t">
+      <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+        <path d="M15 18H9"></path>
+        <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+        <circle cx="17" cy="18" r="2"></circle>
+        <circle cx="7" cy="18" r="2"></circle>
+      </svg>
+      Entregas
+    </h2>
+    <!-- La casilla guarda si la nota está quitada. Sin JavaScript: la ✕ es su
+         <label>, y el CSS esconde la nota cuando la casilla queda marcada. -->
+    <input class="nota__ck" type="checkbox" id="quitar-nota" aria-label="Quitar la nota de la pantalla">
+    <div class="nota nota--info nota--lado">
+      <span class="dot">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
+      </span>
+      <p><b>Nota:</b> Aquí se ve el <b>estado del paquete</b> de cada pedido: <b>sin despachar</b> (En producción o Listo para despacho), <b>Despachado</b> (salió de la bodega y va en ruta) o <b>Entregado</b>. SICAF despacha cada pedido completo, en un solo envío: si el cliente quiere recibir por partes, hay una factura (y un pedido) por cada despacho. Comercial <b>no mueve despachos</b>: el estado lo publica Logística y aquí solo se consulta.</p>
+      <label class="nota__x" for="quitar-nota" title="Quitar la nota">&times;</label>
+    </div>
+  </header>
+
+  <!-- Las tarjetas de color filtran la tabla: un clic pone el filtro y otro lo quita -->
+  <div class="kpis">
+    <article class="kpi kpi--arena" data-kpi="todas">
+      <span class="kpi__tile">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+      </span>
       <div>
-        <h1>Comercial</h1>
-        <p>En qué va cada despacho y qué devolvió el cliente.</p>
+        <div class="kpi__n">7</div>
+        <div class="kpi__l">Pedidos</div>
+        <div class="kpi__s">350 pares · $25.217.002</div>
       </div>
-    </section>
-    <div class="kpis kpis--5">
-      <article class="kpi kpi--arena">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"></rect> <circle cx="12" cy="12" r="2"></circle> <path d="M6 12h.01M18 12h.01"></path></svg></span>
-        <div>
-          <div class="kpi__n">$84.350.000</div>
-          <div class="kpi__l">Ventas del mes</div>
-        </div>
-      </article>
-      <article class="kpi kpi--rosa">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18h20"></path> <path d="M2 14h6l3-3 4 2h5a2 2 0 0 1 2 2v2H2z"></path> <path d="M8 14V8"></path></svg></span>
-        <div>
-          <div class="kpi__n">1.240</div>
-          <div class="kpi__l">Pares vendidos</div>
-        </div>
-      </article>
-      <article class="kpi kpi--oliva">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-        <div>
-          <div class="kpi__n">8</div>
-          <div class="kpi__l">Clientes activos</div>
-        </div>
-      </article>
-      <article class="kpi kpi--cobre">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg></span>
-        <div>
-          <div class="kpi__n">6</div>
-          <div class="kpi__l">Pedidos abiertos</div>
-        </div>
-      </article>
-      <article class="kpi kpi--arena">
-        <span class="kpi__tile"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg></span>
-        <div>
-          <div class="kpi__n">5</div>
-          <div class="kpi__l">Devoluciones</div>
-        </div>
-      </article>
-    </div>
-        <span class="kpi__d up">↑ 18%</span>
-      </article>
-    </div>
-    <details class="avisos">
-      <summary class="avisos__cab">
-        <span class="avisos__ic"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
-        <span class="avisos__t">
-          <b>Pendientes y notificaciones</b>
-          <span class="tiny">2 urgentes · 2 en espera · 1 aviso de otro módulo</span>
-        </span>
-        <span class="avisos__n">5</span>
-        <span class="avisos__ver"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-      </summary>
-      <div class="avisos__cuerpo">
-        <div class="pend">
-          <button class="pend__i pend__i--crit" data-ir="03-existencias.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></span>
-            <span class="pend__x"><b>PV-2026-031 sin existencia suficiente</b><small>78 pares de REF-1042 · en bodega hay 78, ya comprometidos en otro pedido</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--crit" data-ir="04-clientes.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <path d="M16 3.128a4 4 0 0 1 0 7.744"></path> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <circle cx="9" cy="7" r="4"></circle></svg></span>
-            <span class="pend__x"><b>Almacenes del Valle con el cupo excedido</b><small>Saldo $5.200.000 sobre un cupo de $5.000.000 · no puede confirmar pedidos</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="09-cotizacion.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></span>
-            <span class="pend__x"><b>2 cotizaciones por vencer</b><small>CO-2026-008 y CO-2026-007 · 15 días desde que se enviaron</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--warn" data-ir="06-entregas.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg></span>
-            <span class="pend__x"><b>Devolución de 4 pares sin recoger</b><small>PV-2026-028 · defecto en el pegado · Logística no ha programado la recolección</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-          <button class="pend__i pend__i--info" data-ir="03-existencias.html">
-            <span class="pend__ic"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg></span>
-            <span class="pend__x"><b>122 pares terminados ingresaron a bodega</b><small>Inventario confirma REF-1042 y REF-1043 disponibles</small></span>
-            <span class="pend__v"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </button>
-        </div>
+    </article>
+    <button class="kpi kpi--rosa kpi--btn" data-grupo="en_produccion" aria-pressed="false" title="Filtrar la tabla: sin despachar (En producción)">
+      <span class="kpi__tile">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"></line> <line x1="12" x2="15" y1="14" y2="11"></line> <circle cx="12" cy="14" r="8"></circle></svg>
+      </span>
+      <div>
+        <div class="kpi__n">4</div>
+        <div class="kpi__l">En producción</div>
+        <div class="kpi__s">aún no se despachan</div>
       </div>
-    </details>
-    <nav class="subnav" aria-label="Secciones de Comercial">
-      <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
-      <a class="subnav__i" data-ico="etiqueta" data-ct="6" href="09-cotizacion.html">Cotizaciones</a>
-      <a class="subnav__i" data-ico="factura" data-ct="6" href="10-facturacion.html">Facturación</a>
-      <a class="subnav__i" data-ico="usuarios" data-ct="8" href="04-clientes.html">Clientes</a>
-      <a class="subnav__i" data-ico="zapato" href="03-existencias.html">Existencias</a>
-      <a class="subnav__i" data-ico="portapapeles" data-ct="6" href="05-pedidos.html">Pedidos</a>
-      <a class="subnav__i is-on" data-ico="camion" data-ct="3" href="06-entregas.html">Entregas</a>
-      <a class="subnav__i" data-ico="barras" href="07-reportes.html">Reportes</a>
-    </nav>
-    <section class="panel">
-      <header class="panel__head panel__head--oliva">
+    </button>
+    <button class="kpi kpi--oliva kpi--btn" data-grupo="despacho" aria-pressed="false" title="Filtrar la tabla: Despachados, en ruta">
+      <span class="kpi__tile">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
-        <div>
-          <h2>Entregas al Cliente</h2>
-          <div class="sub">Lo que Logística sacó de bodega y en qué va</div>
-        </div>
-        <span class="ghostbtn" style="pointer-events:none">1 en ruta</span>
-      </header>
-      <div class="panel__body panel__body--flush">
-        <div class="tabla-tools">
-          <div class="control">
-            <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
-            <input type="search" id="en-busca" placeholder="Buscar pedido, cliente o despacho…">
-          </div>
-          <div class="control control--corto">
-            <select id="en-filtro" aria-label="Filtrar la tabla">
-              <option>Todos los estados</option>
-              <option>En ruta</option>
-              <option>Entregado</option>
-              <option>Devuelto</option>
-            </select>
-            <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-          </div>
-          <span class="tabla-tools__n">3 entregas en curso</span>
-        </div>
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Pedido</th>
-                <th>Cliente</th>
-                <th>Despacho</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th class="acts"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-091</b></td>
-                <td data-l="Cliente">Calzado Norte</td>
-                <td class="muted" data-l="Despacho">DS-2026-056</td>
-                <td class="tiny" data-l="Fecha">2026-09-20</td>
-                <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
-                <td>
-                  <div class="acts"><button class="btn btn--sm btn--ghost">Avisar a Logística</button></div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-089</b></td>
-                <td data-l="Cliente">Calzado El Dorado</td>
-                <td class="muted" data-l="Despacho">DS-2026-059</td>
-                <td class="tiny" data-l="Fecha">2026-09-23</td>
-                <td data-l="Estado"><span class="pill pill--off">Alistando</span></td>
-                <td>
-                  <div class="acts"><button class="btn btn--sm btn--ghost">Avisar a Logística</button></div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-088</b></td>
-                <td data-l="Cliente">Distribuidora Tamanaco</td>
-                <td class="muted" data-l="Despacho">DS-2026-055</td>
-                <td class="tiny" data-l="Fecha">2026-09-16</td>
-                <td data-l="Estado"><span class="pill pill--warn">En tránsito</span></td>
-                <td>
-                  <div class="acts"><button class="btn btn--sm btn--ghost">Avisar a Logística</button></div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-087</b></td>
-                <td data-l="Cliente">Comercial Los Andes</td>
-                <td class="muted" data-l="Despacho">DS-2026-052</td>
-                <td class="tiny" data-l="Fecha">2026-09-11</td>
-                <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
-                <td>
-                  <div class="acts"><span class="tiny">—</span></div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-086</b></td>
-                <td data-l="Cliente">Almacén La Bota Fina</td>
-                <td class="muted" data-l="Despacho">DS-2026-051</td>
-                <td class="tiny" data-l="Fecha">2026-09-09</td>
-                <td data-l="Estado"><span class="pill pill--ok">Entregado</span></td>
-                <td>
-                  <div class="acts"><span class="tiny">—</span></div>
-                </td>
-              </tr>
-              </tbody>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando 5 de 5 entregas · el estado lo actualiza Logística, Comercial solo lo consulta</p>
+      </span>
+      <div>
+        <div class="kpi__n">1</div>
+        <div class="kpi__l">Despachados</div>
+        <div class="kpi__s">en ruta · DS-2026-052</div>
       </div>
-    </section>
-    <section class="panel">
-      <header class="panel__head panel__head--cobre">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path> <path d="M12 9v4"></path> <path d="M12 17h.01"></path></svg>
-        <div>
-          <h2>Devoluciones del Cliente</h2>
-          <div class="sub">Lo que vuelve, con su motivo</div>
-        </div>
-      </header>
-      <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Pedido</th>
-                <th>Cliente</th>
-                <th class="num">Pares</th>
-                <th>Motivo</th>
-                <th>Estado</th>
-                <th class="acts"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-089</b></td>
-                <td data-l="Cliente">Calzado El Dorado</td>
-                <td class="num" data-l="Pares">6</td>
-                <td data-l="Motivo">Talla equivocada</td>
-                <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Ver en Logística</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-088</b></td>
-                <td data-l="Cliente">Distribuidora Tamanaco</td>
-                <td class="num" data-l="Pares">4</td>
-                <td data-l="Motivo">Defecto de fabricación</td>
-                <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Ver en Logística</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-086</b></td>
-                <td data-l="Cliente">Almacén La Bota Fina</td>
-                <td class="num" data-l="Pares">3</td>
-                <td data-l="Motivo">Sobrante del pedido</td>
-                <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Ver en Logística</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-087</b></td>
-                <td data-l="Cliente">Comercial Los Andes</td>
-                <td class="num" data-l="Pares">8</td>
-                <td data-l="Motivo">Defecto de fabricación</td>
-                <td data-l="Estado"><span class="pill pill--crit">En calidad</span></td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Ver en Logística</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Pedido"><b>PD-2026-091</b></td>
-                <td data-l="Cliente">Calzado Norte</td>
-                <td class="num" data-l="Pares">2</td>
-                <td data-l="Motivo">Garantía</td>
-                <td data-l="Estado"><span class="pill pill--crit">Sin programar</span></td>
-                <td>
-                  <div class="acts">
-                    <button class="btn btn--sm btn--ghost">Ver en Logística</button>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-          </table>
-        </div>
-        <p class="tabla-pie">Mostrando 1 de 1 devolución · lo que vuelve pasa por Control de Calidad antes de reingresar a bodega</p>
+    </button>
+    <button class="kpi kpi--cobre kpi--btn" data-grupo="entregado" aria-pressed="false" title="Filtrar la tabla: Entregados">
+      <span class="kpi__tile">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"></path> <path d="m9 11 3 3L22 4"></path></svg>
+      </span>
+      <div>
+        <div class="kpi__n">2</div>
+        <div class="kpi__l">Entregados</div>
+        <div class="kpi__s">llegaron a tiempo</div>
       </div>
-    </section>
+    </button>
+  </div>
 
-    <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
-    <script src="../../comun/marco.js"></script>
-    <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js"></script>
-  </body>
+  <section class="panel panel--tabla">
+    <div class="panel__body panel__body--flush">
+      <div class="dt" id="dt-ent">
+        <div class="dt__bar">
+          <div class="dt__q">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input id="dt-ent-q" type="search" autocomplete="off" placeholder="Buscar pedido, cliente, factura o despacho..." aria-label="Buscar en la tabla">
+          </div>
+          <!-- Los filtros: <details> abre y cierra solo, sin JavaScript -->
+          <details class="fil">
+            <summary class="fil__b" title="Filtrar la tabla por cualquier columna">
+              <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"></path></svg>
+              Filtros
+              <span class="fil__n" hidden>0</span>
+            </summary>
+            <div class="fil__caja" role="group" aria-label="Filtros de la tabla">
+              <div class="fil__t">Una condición por columna</div>
+              <label class="fil__c">
+                <span class="fil__l">Pedido</span>
+                <input class="dt__in" type="text" data-f="codigo" placeholder="PD-2026-...">
+              </label>
+              <label class="fil__c">
+                <span class="fil__l">Cliente</span>
+                <input class="dt__in" type="text" data-f="cliente" placeholder="Nombre del cliente">
+              </label>
+              <label class="fil__c">
+                <span class="fil__l">Estado del paquete</span>
+                <select class="dt__in" data-f="estado">
+                  <option value="">Todos</option>
+                  <option value="en_produccion">En producción · sin despachar</option>
+                  <option value="listo">Listo para despacho · sin despachar</option>
+                  <option value="despacho">Despachado · en ruta</option>
+                  <option value="entregado">Entregado</option>
+                </select>
+              </label>
+              <div class="fil__c">
+                <span class="fil__l">Entrega</span>
+                <span class="fil__r"><input class="dt__in" type="date" data-f="desde" aria-label="Entrega desde"><span class="fil__rs">–</span><input class="dt__in" type="date" data-f="hasta" aria-label="Entrega hasta"></span>
+              </div>
+              <div class="fil__pie">
+                <span class="tiny" id="dt-ent-nfil">Sin filtros puestos</span>
+                <button class="fil__x" type="button" data-quitar="todos">Borrar todos</button>
+              </div>
+            </div>
+          </details>
+          <!-- Lo que está filtrando ahora: una ficha por filtro, con su cruz -->
+          <span class="fil__act" id="dt-ent-fichas" aria-label="Filtros puestos"></span>
+          <div class="dt__acts">
+            <!-- Comercial no crea despachos: lo hace Logística. Por eso no hay botón "Nuevo" -->
+            <button class="dt__b" type="button" title="Mostrar u ocultar columnas">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+              <span>Columnas</span>
+            </button>
+            <button class="dt__b" type="button" title="Exportar a Excel lo que ve en pantalla">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+              <span>Exportar Excel</span>
+            </button>
+          </div>
+        </div>
+        <div class="dt__scroll">
+          <table>
+            <thead>
+              <tr>
+                <th data-k="codigo">
+                  <button class="dt__orden" type="button" title="Ordenar por Pedido"><span>Pedido</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th class="dt__thcli" data-k="cliente">
+                  <button class="dt__orden" type="button" title="Ordenar por Cliente"><span>Cliente</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th data-k="factura">
+                  <button class="dt__orden" type="button" title="Ordenar por Factura"><span>Factura</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th class="num" data-k="pares">
+                  <button class="dt__orden" type="button" title="Ordenar por Pares"><span>Pares</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th data-k="despacho">
+                  <button class="dt__orden" type="button" title="Ordenar por Despacho"><span>Despacho</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th data-k="entrega">
+                  <button class="dt__orden" type="button" title="Ordenar por Entrega"><span>Entrega</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th class="is-on" data-k="estado" aria-sort="ascending">
+                  <button class="dt__orden" type="button" title="Ordenar por Estado"><span>Estado del paquete</span><i class="dt__ind">▲</i></button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-estado="en_produccion" data-fecha="2026-10-14" data-pares="84" data-valor="6299479">
+                <td data-l="Pedido"><b>PD-2026-091</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-7">Calzado Norte</td>
+                <td data-l="Factura">FV-2026-0152</td>
+                <td class="num" data-l="Pares">84</td>
+                <td class="muted" data-l="Despacho"><span class="dt__sinf">—</span></td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 14-octubre-2026">14-oct-2026<span class="tiny">prometida</span></td>
+                <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · OP-2026-056 Corte 25 %</span></td>
+              </tr>
+              <tr data-estado="en_produccion" data-fecha="2026-10-08" data-pares="36" data-valor="2223000">
+                <td data-l="Pedido"><b>PD-2026-090</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Calzado del Oriente · NIT 901.220.556-5">Calzado del Oriente</td>
+                <td data-l="Factura">FV-2026-0144</td>
+                <td class="num" data-l="Pares">36</td>
+                <td class="muted" data-l="Despacho"><span class="dt__sinf">—</span></td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 08-octubre-2026">08-oct-2026<span class="tiny">prometida</span></td>
+                <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · esperando orden de Producción</span></td>
+              </tr>
+              <tr data-estado="en_produccion" data-fecha="2026-10-06" data-pares="26" data-valor="2119390">
+                <td data-l="Pedido"><b>PD-2026-089</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Calzado El Dorado · NIT 830.112.991-6">Calzado El Dorado</td>
+                <td data-l="Factura">FV-2026-0139</td>
+                <td class="num" data-l="Pares">26</td>
+                <td class="muted" data-l="Despacho"><span class="dt__sinf">—</span></td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 06-octubre-2026">06-oct-2026<span class="tiny">prometida</span></td>
+                <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · OP-2026-055 Guarnición 50 %</span></td>
+              </tr>
+              <tr data-estado="en_produccion" data-fecha="2026-10-01" data-pares="48" data-valor="3795338">
+                <td data-l="Pedido"><b>PD-2026-088</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Distribuidora Tamanaco · NIT 900.221.334-8">Distribuidora Tamanaco</td>
+                <td data-l="Factura">FV-2026-0131</td>
+                <td class="num" data-l="Pares">48</td>
+                <td class="muted" data-l="Despacho"><span class="dt__sinf">—</span></td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 01-octubre-2026">01-oct-2026<span class="tiny">prometida</span></td>
+                <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · OP-2026-054 Montaje 75 %</span></td>
+              </tr>
+              <tr data-estado="despacho" data-fecha="2026-10-01" data-pares="72" data-valor="4305600">
+                <td data-l="Pedido"><b>PD-2026-087</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Comercial Los Andes · NIT 890.332.117-7">Comercial Los Andes</td>
+                <td data-l="Factura">FV-2026-0127</td>
+                <td class="num" data-l="Pares">72</td>
+                <td class="muted" data-l="Despacho">DS-2026-052</td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 01-octubre-2026">01-oct-2026<span class="tiny">en ruta</span></td>
+                <td data-l="Estado"><span class="pill pill--info">Despachado</span><span class="tiny">salió el 26-sep de BOD-02 · en ruta</span></td>
+              </tr>
+              <tr data-estado="entregado" data-fecha="2026-08-20" data-pares="24" data-valor="1827840">
+                <td data-l="Pedido"><b>PD-2026-086</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Almacén La Bota Fina · NIT 901.455.210-1">Almacén La Bota Fina</td>
+                <td data-l="Factura">FV-2026-0118</td>
+                <td class="num" data-l="Pares">24</td>
+                <td class="muted" data-l="Despacho">DS-2026-049</td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 20-agosto-2026">20-ago-2026<span class="tiny">llegó el 20-ago</span></td>
+                <td data-l="Estado"><span class="pill pill--off">Entregado</span><span class="tiny">despachado el 18-ago · a tiempo</span></td>
+              </tr>
+              <tr data-estado="entregado" data-fecha="2026-08-19" data-pares="60" data-valor="4646355">
+                <td data-l="Pedido"><b>PD-2026-085</b></td>
+                <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-7">Calzado Norte</td>
+                <td data-l="Factura">FV-2026-0112</td>
+                <td class="num" data-l="Pares">60</td>
+                <td class="muted" data-l="Despacho">DS-2026-047</td>
+                <td class="dt__fec" data-l="Entrega" title="Prometida para el 19-agosto-2026">19-ago-2026<span class="tiny">llegó el 19-ago</span></td>
+                <td data-l="Estado"><span class="pill pill--off">Entregado</span><span class="tiny">despachado el 14-ago · a tiempo</span></td>
+              </tr>
+              <tr class="dt__vacio" hidden><td colspan="7">Ningún pedido cumple el filtro. Quite alguno de los filtros de arriba.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dt__res">
+          <span class="dt__res-t">Totales<em id="dt-ent-de">de los 7 pedidos</em></span>
+          <span class="dt__res-i"><b>Valor</b><span data-tot="todas">$25.217.002</span></span>
+          <span class="dt__res-i"><b>Pares</b><span data-tot="pares">350</span></span>
+          <span class="dt__res-i dt__res-i--ok"><b>Ya despachados</b><span data-tot="despachados">156</span></span>
+          <span class="dt__res-i dt__res-i--warn"><b>Por despachar</b><span data-tot="pendientes">194</span></span>
+        </div>
+        <div class="dt__pie">
+          <div class="dt__info" id="dt-ent-info" aria-live="polite">Mostrando <b>1&ndash;7</b> de <b>7</b> pedido(s)</div>
+          <div class="dt__pieR">
+            <label class="dt__tam" for="dt-ent-tam">
+              Filas por página
+              <select id="dt-ent-tam" class="dt__in">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+            <nav class="dt__pager" id="dt-ent-pag" aria-label="Paginación">
+              <button class="dt__pag dt__pag--n" type="button" data-pag="-1" disabled aria-label="Página anterior">&lsaquo;</button>
+              <button class="dt__pag is-on" type="button" data-pag="1" aria-current="page">1</button>
+              <button class="dt__pag dt__pag--n" type="button" data-pag="+1" disabled aria-label="Página siguiente">&rsaquo;</button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <header class="panel__head panel__head--cobre">
+      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+        <path d="M12 9v4"></path>
+        <path d="M12 17h.01"></path>
+      </svg>
+      <div>
+        <h2>Devoluciones del Cliente</h2>
+        <div class="sub">Lo que vuelve, con su motivo · lo recoge Logística y lo revisa Control de Calidad antes de reingresar a bodega</div>
+      </div>
+    </header>
+    <div class="panel__body panel__body--flush">
+      <div class="tabla-tools">
+        <div class="control">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m21 21-4.34-4.34"></path>
+            <circle cx="11" cy="11" r="8"></circle>
+          </svg>
+          <input type="search" placeholder="Buscar pedido, cliente o motivo…">
+        </div>
+        <span class="tabla-tools__n">5 devoluciones · 23 pares</span>
+      </div>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th>Pedido</th>
+              <th>Cliente</th>
+              <th class="num">Pares</th>
+              <th>Motivo</th>
+              <th>Estado</th>
+              <th class="acts"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-l="Pedido"><b>PD-2026-089</b></td>
+              <td data-l="Cliente">Calzado El Dorado</td>
+              <td class="num" data-l="Pares">6</td>
+              <td data-l="Motivo">Talla equivocada</td>
+              <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
+              <td>
+                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
+              </td>
+            </tr>
+            <tr>
+              <td data-l="Pedido"><b>PD-2026-088</b></td>
+              <td data-l="Cliente">Distribuidora Tamanaco</td>
+              <td class="num" data-l="Pares">4</td>
+              <td data-l="Motivo">Defecto de fabricación</td>
+              <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
+              <td>
+                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
+              </td>
+            </tr>
+            <tr>
+              <td data-l="Pedido"><b>PD-2026-086</b></td>
+              <td data-l="Cliente">Almacén La Bota Fina</td>
+              <td class="num" data-l="Pares">3</td>
+              <td data-l="Motivo">Sobrante del pedido</td>
+              <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
+              <td>
+                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
+              </td>
+            </tr>
+            <tr>
+              <td data-l="Pedido"><b>PD-2026-087</b></td>
+              <td data-l="Cliente">Comercial Los Andes</td>
+              <td class="num" data-l="Pares">8</td>
+              <td data-l="Motivo">Defecto de fabricación</td>
+              <td data-l="Estado"><span class="pill pill--crit">En calidad</span></td>
+              <td>
+                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
+              </td>
+            </tr>
+            <tr>
+              <td data-l="Pedido"><b>PD-2026-091</b></td>
+              <td data-l="Cliente">Calzado Norte</td>
+              <td class="num" data-l="Pares">2</td>
+              <td data-l="Motivo">Garantía</td>
+              <td data-l="Estado"><span class="pill pill--crit">Sin programar</span></td>
+              <td>
+                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tabla-pie">Mostrando 5 de 5 devoluciones · el estado lo actualizan Logística y Control de Calidad; Comercial solo lo consulta</p>
+    </div>
+  </section>
+
+  <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
+  <script src="../../comun/marco.js"></script>
+  <!-- Lo que hace responder este mockup (solo de este módulo) -->
+  <script src="prototipo.js"></script>
+</body>
+
 </html>

@@ -7,7 +7,7 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css?v=20260929a" />
+    <link rel="stylesheet" href="estilos.css?v=20261005a" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Terminado">
 
@@ -23,16 +23,13 @@
     </header>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
-      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
       <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
+      <a class="subnav__i" data-ico="correo" data-ct="2" href="12-solicitudes.html">Solicitudes</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
-      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
       <a class="subnav__i is-on" data-ico="visto" href="04-terminado.html">Terminado</a>
-      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
       <a class="subnav__i" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
-      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
-      <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
       <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
     </nav>
     <section class="panel">
       <header class="panel__head panel__head--cobre">
@@ -206,7 +203,7 @@
           <span class="dot">
             <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg>
           </span>
-          <p><b>Nota:</b> Un lote no conforme no entra a la bodega: vuelve a Producción para reproceso. Al recibir un lote conforme, sube el disponible, se recalcula el valor y queda la entrada en el kárdex.</p>
+          <p><b>Nota:</b> Un lote no conforme no entra a la bodega: vuelve a Producción para reproceso. Al recibir un lote conforme, sube el disponible, se recalcula el valor y queda la entrada en el registro de Bodegas.</p>
           <span class="firma">Calzado que<br>impulsa tus metas</span>
         </div>
       </div>
@@ -215,6 +212,6 @@
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js?v=20260929a"></script>
+    <script src="prototipo.js?v=20261005a"></script>
   </body>
 </html>

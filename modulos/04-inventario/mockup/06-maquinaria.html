@@ -7,7 +7,7 @@
     <!-- El estilo de todo SICAF (colores, letras y piezas). Cómo se usa: comun/README.md -->
     <link rel="stylesheet" href="../../comun/estilos.css" />
     <!-- Lo propio de este módulo -->
-    <link rel="stylesheet" href="estilos.css?v=20260929a" />
+    <link rel="stylesheet" href="estilos.css?v=20261005a" />
   </head>
   <body data-modulo="04-inventario" data-titulo="Inventario · Maquinaria">
 
@@ -23,16 +23,13 @@
     </header>
     <nav class="subnav" aria-label="Secciones de Inventario">
       <a class="subnav__i" data-ico="cuadricula" href="01-inicio.html">Inicio</a>
-      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
       <a class="subnav__i" data-ico="bandeja" href="11-bodegas.html">Bodegas</a>
+      <a class="subnav__i" data-ico="correo" data-ct="2" href="12-solicitudes.html">Solicitudes</a>
       <a class="subnav__i" data-ico="caja" data-ct="2" href="02-m-prima.html">M. Prima</a>
-      <a class="subnav__i" data-ico="ruta" href="03-en-proceso.html">En proceso</a>
       <a class="subnav__i" data-ico="visto" href="04-terminado.html">Terminado</a>
-      <a class="subnav__i" data-ico="cerrar" data-ct="25" href="05-merma.html">Merma</a>
       <a class="subnav__i is-on" data-ico="engranaje" data-ct="2" href="06-maquinaria.html">Maquinaria</a>
-      <a class="subnav__i" data-ico="portapapeles" href="07-kardex.html">Kárdex</a>
-      <a class="subnav__i" data-ico="usuarios" href="08-usuarios.html">Usuarios</a>
       <a class="subnav__i" data-ico="barras" href="09-reportes.html">Reportes</a>
+      <a class="subnav__i" data-ico="lista" href="10-proceso.html">Proceso</a>
     </nav>
     <section class="panel">
       <header class="panel__head panel__head--vino">
@@ -45,19 +42,19 @@
       <div class="panel__body">
         <!-- Los datos de las máquinas: el prototipo los lee de aquí -->
         <ul class="mq-datos" hidden>
-          <li data-cod="MQ-01" data-nombre="Troqueladora hidráulica" data-img="troqueladora" data-etapa="Corte" data-estado="operativa" data-orden="OP-2026-031" data-operario="Luisa Mendoza" data-turno="1" data-horas="1840" data-ultimo="2026-08-20" data-cada="60" data-hist="[{&quot;f&quot;: &quot;2026-09-23&quot;, &quot;t&quot;: &quot;Empezó la orden OP-2026-031 con Luisa Mendoza.&quot;, &quot;tono&quot;: &quot;ok&quot;}, {&quot;f&quot;: &quot;2026-08-20&quot;, &quot;t&quot;: &quot;Mantenimiento preventivo: cambio de aceite hidráulico.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
-          <li data-cod="MQ-02" data-nombre="Máquina de guarnición plana" data-img="coser" data-etapa="Guarnición" data-estado="operativa" data-orden="OP-2026-028" data-operario="Édgar Pabón" data-turno="1" data-horas="2310" data-ultimo="2026-09-01" data-cada="60" data-hist="[{&quot;f&quot;: &quot;2026-09-01&quot;, &quot;t&quot;: &quot;Mantenimiento: ajuste de la tensión del hilo.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
-          <li data-cod="MQ-03" data-nombre="Prensa de montaje" data-img="prensa" data-etapa="Montaje" data-estado="averiada" data-orden="OP-2026-029" data-operario="Luisa Mendoza" data-turno="1" data-horas="3120" data-ultimo="2026-07-15" data-cada="60" data-dano="Pistón derecho: bota aceite y no baja" data-fechadano="2026-09-15" data-necesita="Cambio de pieza" data-hist="[{&quot;f&quot;: &quot;2026-09-15&quot;, &quot;t&quot;: &quot;Se dañó el pistón derecho (fuga de aceite). La orden OP-2026-029 quedó suspendida.&quot;, &quot;tono&quot;: &quot;crit&quot;}, {&quot;f&quot;: &quot;2026-07-15&quot;, &quot;t&quot;: &quot;Mantenimiento preventivo.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
-          <li data-cod="MQ-04" data-nombre="Horno reactivador" data-img="horno" data-etapa="Terminado" data-estado="mantenimiento" data-orden="" data-operario="Técnico externo" data-turno="" data-horas="980" data-ultimo="2026-06-14" data-cada="90" data-fechamant="2026-09-16" data-hist="[{&quot;f&quot;: &quot;2026-09-16&quot;, &quot;t&quot;: &quot;Enviado a mantenimiento preventivo con técnico externo.&quot;, &quot;tono&quot;: &quot;warn&quot;}]"></li>
-          <li data-cod="MQ-05" data-nombre="Pulidora de acabado" data-img="pulidora" data-etapa="Terminado" data-estado="libre" data-orden="" data-operario="" data-turno="" data-horas="640" data-ultimo="2026-08-05" data-cada="120" data-hist="[{&quot;f&quot;: &quot;2026-09-12&quot;, &quot;t&quot;: &quot;Terminó la orden OP-2026-027. Quedó libre.&quot;, &quot;tono&quot;: &quot;info&quot;}]"></li>
-          <li data-cod="MQ-06" data-nombre="Cosedora de poste antigua" data-img="coser" data-etapa="Guarnición" data-estado="desuso" data-orden="" data-operario="" data-turno="" data-horas="9450" data-ultimo="2026-03-10" data-cada="60" data-motivo="Reemplazada por otra" data-fechadesuso="2026-06-30" data-hist="[{&quot;f&quot;: &quot;2026-06-30&quot;, &quot;t&quot;: &quot;Quedó en desuso: la reemplazó la MQ-02.&quot;, &quot;tono&quot;: &quot;off&quot;}]"></li>
-          <li data-cod="HE-01" data-nombre="Pistola de pegante caliente" data-img="pistola" data-etapa="Montaje" data-estado="operativa" data-orden="OP-2026-034" data-operario="Marcela Ortiz" data-turno="1" data-horas="410" data-ultimo="2026-09-05" data-cada="30" data-hist="[{&quot;f&quot;: &quot;2026-09-22&quot;, &quot;t&quot;: &quot;Empezó la orden OP-2026-034 con Marcela Ortiz.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
-          <li data-cod="HE-02" data-nombre="Juego de cuchillas de corte" data-img="cuchilla" data-etapa="Corte" data-estado="averiada" data-orden="" data-operario="" data-turno="" data-horas="1200" data-ultimo="2026-08-01" data-cada="30" data-dano="Cuchillas 3 y 4 despicadas: cortan con rebaba" data-fechadano="2026-09-20" data-necesita="Afilado o ajuste" data-hist="[{&quot;f&quot;: &quot;2026-09-20&quot;, &quot;t&quot;: &quot;Se despicaron las cuchillas 3 y 4. Necesitan afilado.&quot;, &quot;tono&quot;: &quot;crit&quot;}]"></li>
-          <li data-cod="HE-03" data-nombre="Hormas talla 36 a 43" data-img="horma" data-etapa="Montaje" data-estado="libre" data-orden="" data-operario="" data-turno="" data-horas="0" data-ultimo="2026-09-10" data-cada="180" data-hist="[{&quot;f&quot;: &quot;2026-09-10&quot;, &quot;t&quot;: &quot;Revisión de las hormas: completas y sin desgaste.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
+          <li data-cod="MQ-01" data-nombre="Troqueladora hidráulica" data-img="troqueladora" data-etapa="Corte" data-area="Sala de corte" data-encargado="Carlos Ruiz · Jefe de corte" data-estado="operativa" data-orden="OP-2026-031" data-operario="Luisa Mendoza" data-turno="1" data-horas="1840" data-ultimo="2026-08-20" data-cada="60" data-hist="[{&quot;f&quot;: &quot;2026-09-23&quot;, &quot;t&quot;: &quot;Empezó la orden OP-2026-031 con Luisa Mendoza.&quot;, &quot;tono&quot;: &quot;ok&quot;}, {&quot;f&quot;: &quot;2026-08-20&quot;, &quot;t&quot;: &quot;Mantenimiento preventivo: cambio de aceite hidráulico.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
+          <li data-cod="MQ-02" data-nombre="Máquina de guarnición plana" data-img="coser" data-etapa="Guarnición" data-area="Sala de guarnición" data-encargado="Patricia Gómez · Jefa de guarnición" data-estado="operativa" data-orden="OP-2026-028" data-operario="Édgar Pabón" data-turno="1" data-horas="2310" data-ultimo="2026-09-01" data-cada="60" data-hist="[{&quot;f&quot;: &quot;2026-09-01&quot;, &quot;t&quot;: &quot;Mantenimiento: ajuste de la tensión del hilo.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
+          <li data-cod="MQ-03" data-nombre="Prensa de montaje" data-img="prensa" data-etapa="Montaje" data-area="Línea de montaje" data-encargado="Hernán Díaz · Jefe de montaje" data-estado="averiada" data-orden="OP-2026-029" data-operario="Luisa Mendoza" data-turno="1" data-horas="3120" data-ultimo="2026-07-15" data-cada="60" data-dano="Pistón derecho: bota aceite y no baja" data-fechadano="2026-09-15" data-necesita="Cambio de pieza" data-hist="[{&quot;f&quot;: &quot;2026-09-15&quot;, &quot;t&quot;: &quot;Se dañó el pistón derecho (fuga de aceite). La orden OP-2026-029 quedó suspendida.&quot;, &quot;tono&quot;: &quot;crit&quot;}, {&quot;f&quot;: &quot;2026-07-15&quot;, &quot;t&quot;: &quot;Mantenimiento preventivo.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
+          <li data-cod="MQ-04" data-nombre="Horno reactivador" data-img="horno" data-etapa="Terminado" data-area="Zona de acabados" data-encargado="Sofía Vargas · Jefa de acabados" data-estado="mantenimiento" data-orden="" data-operario="Técnico externo" data-turno="" data-horas="980" data-ultimo="2026-06-14" data-cada="90" data-fechamant="2026-09-16" data-hist="[{&quot;f&quot;: &quot;2026-09-16&quot;, &quot;t&quot;: &quot;Enviado a mantenimiento preventivo con técnico externo.&quot;, &quot;tono&quot;: &quot;warn&quot;}]"></li>
+          <li data-cod="MQ-05" data-nombre="Pulidora de acabado" data-img="pulidora" data-etapa="Terminado" data-area="Zona de acabados" data-encargado="Sofía Vargas · Jefa de acabados" data-estado="libre" data-orden="" data-operario="" data-turno="" data-horas="640" data-ultimo="2026-08-05" data-cada="120" data-hist="[{&quot;f&quot;: &quot;2026-09-12&quot;, &quot;t&quot;: &quot;Terminó la orden OP-2026-027. Quedó libre.&quot;, &quot;tono&quot;: &quot;info&quot;}]"></li>
+          <li data-cod="MQ-06" data-nombre="Cosedora de poste antigua" data-img="coser" data-etapa="Guarnición" data-area="Sala de guarnición" data-encargado="Patricia Gómez · Jefa de guarnición" data-estado="desuso" data-orden="" data-operario="" data-turno="" data-horas="9450" data-ultimo="2026-03-10" data-cada="60" data-motivo="Reemplazada por otra" data-fechadesuso="2026-06-30" data-hist="[{&quot;f&quot;: &quot;2026-06-30&quot;, &quot;t&quot;: &quot;Quedó en desuso: la reemplazó la MQ-02.&quot;, &quot;tono&quot;: &quot;off&quot;}]"></li>
+          <li data-cod="HE-01" data-nombre="Pistola de pegante caliente" data-img="pistola" data-etapa="Montaje" data-area="Línea de montaje" data-encargado="Hernán Díaz · Jefe de montaje" data-estado="operativa" data-orden="OP-2026-034" data-operario="Marcela Ortiz" data-turno="1" data-horas="410" data-ultimo="2026-09-05" data-cada="30" data-hist="[{&quot;f&quot;: &quot;2026-09-22&quot;, &quot;t&quot;: &quot;Empezó la orden OP-2026-034 con Marcela Ortiz.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
+          <li data-cod="HE-02" data-nombre="Juego de cuchillas de corte" data-img="cuchilla" data-etapa="Corte" data-area="Sala de corte" data-encargado="Carlos Ruiz · Jefe de corte" data-estado="averiada" data-orden="" data-operario="" data-turno="" data-horas="1200" data-ultimo="2026-08-01" data-cada="30" data-dano="Cuchillas 3 y 4 despicadas: cortan con rebaba" data-fechadano="2026-09-20" data-necesita="Afilado o ajuste" data-hist="[{&quot;f&quot;: &quot;2026-09-20&quot;, &quot;t&quot;: &quot;Se despicaron las cuchillas 3 y 4. Necesitan afilado.&quot;, &quot;tono&quot;: &quot;crit&quot;}]"></li>
+          <li data-cod="HE-03" data-nombre="Hormas talla 36 a 43" data-img="horma" data-etapa="Montaje" data-area="Línea de montaje" data-encargado="Hernán Díaz · Jefe de montaje" data-estado="libre" data-orden="" data-operario="" data-turno="" data-horas="0" data-ultimo="2026-09-10" data-cada="180" data-hist="[{&quot;f&quot;: &quot;2026-09-10&quot;, &quot;t&quot;: &quot;Revisión de las hormas: completas y sin desgaste.&quot;, &quot;tono&quot;: &quot;ok&quot;}]"></li>
         </ul>
 
-        <div class="mq-guia" aria-label="Qué quiere decir cada estado">
-          <span class="mq-guia__t"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg> Cómo leer los estados</span>
+        <div class="mq-guia" aria-label="Marcadores de estado">
+          <span class="mq-guia__t"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/> <path d="M12 16v-4"/> <path d="M12 8h.01"/></svg> Marcadores</span>
           <span class="mq-guia__i"><span class="pill pill--ok">Operativa</span> Trabajando</span>
           <span class="mq-guia__i"><span class="pill pill--info">Libre</span> No se está usando</span>
           <span class="mq-guia__i"><span class="pill pill--crit">Averiada</span> Se dañó algo</span>
@@ -155,9 +152,54 @@
       </div>
     </section>
 
+    <section class="panel" id="p-mq-reporte">
+      <header class="panel__head panel__head--vino">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/> <path d="M14 2v4a2 2 0 0 0 2 2h4"/> <path d="M10 9H8"/> <path d="M16 13H8"/> <path d="M16 17H8"/></svg>
+        <div>
+          <h2>Reporte de Cambios</h2>
+          <p class="panel__sub" id="mqr-n">0 cambio(s)</p>
+        </div>
+        <button class="ghostbtn" type="button" id="mqr-bajar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/> <path d="m7 10 5 5 5-5"/></svg> Descargar reporte</button>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="dt" id="dt-04-mq-reporte">
+          <div class="dt__bar">
+            <div class="dt__q"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/> <circle cx="11" cy="11" r="8"/></svg><input type="search" placeholder="Buscar equipo, área, responsable..." aria-label="Buscar en el reporte"></div>
+          </div>
+          <div class="dt__filtros" role="group" aria-label="Filtros de la tabla">
+            <span class="dt__filtros-t">Filtros</span>
+            <div class="dt__f"><label class="dt__f-l" for="mqr-f-que">Cambio</label>
+              <select id="mqr-f-que" class="dt__in"><option value="">Todos</option><option>Estado</option><option>Área</option><option>Responsable</option><option>Operador</option></select></div>
+          </div>
+          <div class="dt__scroll">
+            <table>
+              <thead><tr>
+                <th style="width:1%"><span>Fecha</span></th>
+                <th style="width:1%"><span>Equipo</span></th>
+                <th style="width:1%"><span>Cambio</span></th>
+                <th><span>Antes</span></th>
+                <th><span>Ahora</span></th>
+                <th style="width:1%"><span>Registró</span></th>
+              </tr></thead>
+              <tbody id="mqr-filas"></tbody>
+            </table>
+            <p class="empty" id="mqr-vacio">Todavía no hay cambios. Pulse el marcador de estado de un equipo (por ejemplo «Operativa») para cambiarlo, o edite su área o responsable.</p>
+          </div>
+          <div class="dt__pie">
+            <div class="dt__info tabla-pie" aria-live="polite"></div>
+            <div class="dt__pieR">
+              <label class="dt__tam" for="mqr-tam">Filas por página
+                <select id="mqr-tam" class="dt__in"><option value="5">5</option><option value="10" selected>10</option><option value="25">25</option></select></label>
+              <nav class="dt__pager" aria-label="Paginación"></nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
     <script src="../../comun/marco.js"></script>
     <!-- Lo que hace responder este mockup (solo de este módulo) -->
-    <script src="prototipo.js?v=20260929a"></script>
+    <script src="prototipo.js?v=20261005a"></script>
   </body>
 </html>

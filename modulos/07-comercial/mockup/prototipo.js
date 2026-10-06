@@ -2221,6 +2221,7 @@
     if (uno("#cli-form")) iniciarCliente();
     if (uno("#exi")) iniciarExistencias();
     if (uno("#dt-ped")) iniciarPedidos();
+    if (uno("#dt-ent")) iniciarTabla("dt-ent");
     ponerEnMenu(CLI_LISTA, activos().length);   // los clientes a los que se les vende
     // Las cotizaciones por facturar: lo que espera Facturación, en las dos pestañas
     var n = porFacturar().length;
@@ -4713,6 +4714,70 @@
                              .map(function (p) { return p.codigo; });
     }
     iniciarPedidos();
+  }
+
+  /* ---------------------------------------------------------------- 06. Entregas
+
+     06-entregas.html. Misma tabla de datos que Cotizaciones y Facturación: las
+     tarjetas filtran por el estado del paquete, el buscador, la caja de filtros,
+     el orden por columna, los totales y las páginas. Cada fila trae el estado
+     que publica Logística: sin despachar (En producción o Listo para despacho),
+     Despachado (en ruta) o Entregado. Comercial no mueve despachos (RN-COM-17):
+     aquí solo se consultan. */
+
+  var ENT_LISTA = "06-entregas.html";
+  var ESTADOS_ENT = ["en_produccion", "listo", "despacho", "entregado"];
+
+  TABLAS["dt-ent"] = {
+    codigo: "Pedido", una: "pedido", plural: "pedidos", unaOVarias: "pedido(s)", masculino: true,
+    orden: ["estado", 1],   // por estado, en el orden del pipeline; si empatan, el más nuevo arriba
+    estados: ESTADOS_ENT, nombres: NOMBRE_PED,
+    nombreFiltro: {
+      codigo: "Pedido", cliente: "Cliente", estado: "Estado del paquete",
+      desde: "Entrega desde", hasta: "Entrega hasta"
+    },
+    filtros: {
+      codigo: contiene("Pedido"),
+      cliente: contiene("Cliente")
+    },
+    textos: {
+      estado: function (v) {
+        return { en_produccion: "En producción · sin despachar", listo: "Listo para despacho · sin despachar",
+                 despacho: "Despachado · en ruta", entregado: "Entregado" }[v] || v;
+      }
+    },
+    claves: { entrega: function (tr) { return tr.getAttribute("data-fecha"); } },
+    columnas: { cliente: "Cliente", factura: "Factura", despacho: "Despacho", entrega: "Entrega" },
+    buscar: function (tr) { return tr.textContent + " " + celda(tr, "Cliente").title; },
+    contar: contarEntregas,
+    totales: totalesEntregas,
+    alEntrar: function () { return false; }   // el estado lo publica Logística: las filas vienen en el HTML
+  };
+
+  /* Las tarjetas cuentan TODOS los pedidos, no solo los filtrados */
+  function contarEntregas(filas) {
+    function de(estado) { return filas.filter(function (tr) { return tr.getAttribute("data-estado") === estado; }); }
+    function sumaPares(lista) { return lista.reduce(function (s, tr) { return s + numero(tr.getAttribute("data-pares")); }, 0); }
+    var valor = filas.reduce(function (s, tr) { return s + valorDe(tr); }, 0);
+    var enProduccion = de("en_produccion"), listos = de("listo"), enRuta = de("despacho"), entregados = de("entregado");
+    ponerKpi("todas", filas.length, miles(sumaPares(filas)) + " pares · " + pesos(valor));
+    ponerKpi("en_produccion", enProduccion.length, enProduccion.length ? "aún no se despachan" : "todos despachados");
+    ponerKpi("despacho", enRuta.length, enRuta.length ? "en ruta" : "ninguno en ruta");
+    ponerKpi("entregado", entregados.length, entregados.length ? "llegaron a tiempo" : "ninguno todavía");
+    // La pestaña del menú: lo que Logística tiene entre manos (en ruta o esperando salir)
+    ponerEnMenu(ENT_LISTA, listos.length + enRuta.length);
+  }
+
+  /* Los totales de lo que deja ver el filtro: pares, lo que ya salió de bodega y lo que falta por despachar */
+  function totalesEntregas(filas, dt) {
+    function sumaPares(estado) {
+      return filas.reduce(function (s, tr) {
+        return s + (!estado || tr.getAttribute("data-estado") === estado ? numero(tr.getAttribute("data-pares")) : 0);
+      }, 0);
+    }
+    uno('[data-tot="pares"]', dt).textContent = miles(sumaPares());
+    uno('[data-tot="despachados"]', dt).textContent = miles(sumaPares("despacho") + sumaPares("entregado"));
+    uno('[data-tot="pendientes"]', dt).textContent = miles(sumaPares("en_produccion") + sumaPares("listo"));
   }
 
   /* ---- El detalle de un pedido (el panel de la derecha) ---- */
