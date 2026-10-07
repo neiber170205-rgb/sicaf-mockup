@@ -339,20 +339,8 @@
   };
 
   function generarReporte() {
-    var tipo = uno("#rc-tipo"), desde = uno("#rc-desde"), hasta = uno("#rc-hasta"), fmt = uno("#rc-formato");
-    var panel = panelPorTitulo("Reportes Generados");
-    if (!panel) return aviso("Reporte generado.", "ok");
-
-    var codigo = siguienteCodigo(panel, "Nº");
-    var fila = nuevaFila(panel, "Nº");
-    var color = { "PDF": "vino", "Excel": "oliva", "CSV": "cobre" }[fmt ? fmt.value : "PDF"] || "vino";
-    ponerCelda(fila, "Nº", "<b>" + codigo + "</b>");
-    ponerCelda(fila, "Reporte", tipo ? tipo.value : "Reporte del módulo");
-    ponerCelda(fila, "Periodo", (desde ? desde.value : hoy()) + " a " + (hasta ? hasta.value : hoy()));
-    ponerCelda(fila, "Fecha", hoy() + " " + new Date().toTimeString().slice(0, 5));
-    ponerCelda(fila, "Formato", '<span class="chip chip--' + color + '">' + (fmt ? fmt.value : "PDF") + "</span>");
-    recontar(panel, "reportes");
-    aviso("Reporte " + codigo + " generado · queda en la lista para volver a descargarlo.", "ok");
+    /* 07-reportes.html cambió: el reporte se arma en la ventana #rep-nuevo
+       (ver la sección "07. Reportes" al final de este archivo). */
   }
 
   document.addEventListener("click", function (e) {
@@ -371,7 +359,10 @@
     var lleva = b.getAttribute("data-ir");
     if (lleva && ES_PANTALLA.test(lleva)) { e.preventDefault(); return ir(lleva, true); }
 
-    if (texto === "Generar reporte")     { e.preventDefault(); return generarReporte(); }
+    if (texto === "Generar reporte")     { e.preventDefault(); return abrirNuevoReporte(); }
+    if (b.closest("#rep-nuevo") && texto === "Guardar y descargar") { e.preventDefault(); return guardarReporte(); }
+    if (b.closest("#rep-nuevo") && texto === "Cancelar")            { e.preventDefault(); return cerrarNuevoReporte(); }
+    if (b.closest("#rep-det") && texto === "Descargar de nuevo")    { e.preventDefault(); return reDescargarReporte(); }
 
     if (texto === "Marcar atendida") {
       e.preventDefault();
@@ -565,7 +556,8 @@
         return s + (!estado || tr.getAttribute("data-estado") === estado ? valorDe(tr) : 0);
       }, 0);
     }
-    uno('[data-tot="todas"]', dt).textContent = pesos(suma());
+    var totTodas = uno('[data-tot="todas"]', dt);
+    if (totTodas) totTodas.textContent = pesos(suma());
     conf.estados.forEach(function (e) {
       var t = uno('[data-tot="' + e + '"]', dt);
       if (t) t.textContent = pesos(suma(e));
@@ -2222,6 +2214,7 @@
     if (uno("#exi")) iniciarExistencias();
     if (uno("#dt-ped")) iniciarPedidos();
     if (uno("#dt-ent")) iniciarTabla("dt-ent");
+    if (uno("#dt-rep")) iniciarTabla("dt-rep");
     ponerEnMenu(CLI_LISTA, activos().length);   // los clientes a los que se les vende
     // Las cotizaciones por facturar: lo que espera Facturación, en las dos pestañas
     var n = porFacturar().length;
@@ -3851,10 +3844,10 @@
   var PEDIDOS = [
     // Estos tenían todo en bodega: no pasaron por Producción
     { codigo: "PD-2026-085", factura: "FV-2026-0112", cot: "CO-2026-001", fecha: "2026-08-06", entrega: "2026-08-19",
-      bodega: "BOD-02", estado: "entregado",
+      bodega: "BOD-02", estado: "entregado", despacho: "DS-2026-047",
       validadoEl: "2026-08-06", listoEl: "2026-08-06", despachoEl: "2026-08-14", entregadoEl: "2026-08-19" },
     { codigo: "PD-2026-086", factura: "FV-2026-0118", cot: "CO-2026-002", fecha: "2026-08-08", entrega: "2026-08-20",
-      bodega: "BOD-02", estado: "entregado",
+      bodega: "BOD-02", estado: "entregado", despacho: "DS-2026-049",
       validadoEl: "2026-08-08", listoEl: "2026-08-08", despachoEl: "2026-08-18", entregadoEl: "2026-08-20" },
     { codigo: "PD-2026-087", factura: "FV-2026-0127", cot: "CO-2026-004", fecha: "2026-08-17", entrega: "2026-10-01",
       bodega: "BOD-02", estado: "despacho", despacho: "DS-2026-052",
@@ -4780,9 +4773,228 @@
     uno('[data-tot="pendientes"]', dt).textContent = miles(sumaPares("en_produccion") + sumaPares("listo"));
   }
 
+  /* ---------------------------------------------------------------- 07. Reportes
+
+     07-reportes.html. Las tarjetas de arriba son los totalizados del tablero. Debajo,
+     la misma tabla de datos de Cotizaciones y Facturación con los reportes generados.
+     "Generar reporte" abre la ventana del nuevo reporte: tipo, periodo y formato, con
+     su vista previa que se actualiza sola; al guardar se descarga el archivo (un CSV
+     con las filas del periodo) y el reporte queda en la tabla. Un clic en un reporte
+     abre su detalle a la derecha, con el botón para descargarlo de nuevo. */
+
+  var repNuevas = [];   // los que se acaban de generar y todavía no están en la tabla
+
+  /* Las filas de muestra de cada tipo de reporte: alimentan la vista previa y la descarga */
+  var PREVIAS = {
+    "Ventas por cliente y referencia": {
+      cols: ["Cliente", "Pares", "Venta"],
+      filas: [["Comercial Los Andes", "248", "$15.900.000"], ["Distribuidora Tamanaco", "212", "$14.380.000"],
+              ["Calzado Norte", "186", "$12.640.000"]]
+    },
+    "Ventas por vendedor": {
+      cols: ["Vendedor", "Cotizó", "Facturó", "Cierre"],
+      filas: [["Andrés Quintero", "5", "4", "80 %"], ["Valentina Rojas", "8", "4", "50 %"],
+              ["Marcela Duarte", "5", "0", "0 %"]]
+    },
+    "Cartera y cupos de crédito": {
+      cols: ["Cliente", "Por cobrar", "Vencido", "Total"],
+      filas: [["Comercial Los Andes", "$4.305.600", "$5.400.000", "$9.705.600"],
+              ["Distribuidora Tamanaco", "$3.795.338", "$2.150.000", "$5.945.338"],
+              ["Calzado El Dorado", "$4.646.355", "$0", "$4.646.355"]]
+    },
+    "Cotizaciones y tasa de cierre": {
+      cols: ["Estado", "Cotizaciones", "Del total", "Valor"],
+      filas: [["Facturadas", "8", "44 %", "$29.863.357"], ["Por facturar", "6", "33 %", "$16.071.671"],
+              ["Vencidas", "3", "17 %", "$4.978.000"]]
+    },
+    "Estado de despachos y entregas": {
+      cols: ["Pedido", "Cliente", "Entrega", "Estado del paquete"],
+      filas: [["PD-2026-091", "Calzado Norte", "14-oct-2026", "En producción"],
+              ["PD-2026-087", "Comercial Los Andes", "01-oct-2026", "Despachado · en ruta"],
+              ["PD-2026-086", "Almacén La Bota Fina", "20-ago-2026", "Entregado"]]
+    },
+    "Devoluciones por motivo": {
+      cols: ["Motivo", "Casos", "Pares", "Participación"],
+      filas: [["Defecto de fabricación", "2", "12", "52 %"], ["Talla equivocada", "1", "6", "26 %"],
+              ["Sobrante del pedido", "1", "3", "13 %"]]
+    },
+    "Pedidos pendientes de despacho": {
+      cols: ["Pedido", "Cliente", "Entrega prometida", "Estado"],
+      filas: [["PD-2026-088", "Distribuidora Tamanaco", "01-oct-2026", "En producción"],
+              ["PD-2026-089", "Calzado El Dorado", "06-oct-2026", "En producción"],
+              ["PD-2026-091", "Calzado Norte", "14-oct-2026", "En producción"]]
+    }
+  };
+
+  function previaDe(tipo) { return PREVIAS[tipo] || PREVIAS["Ventas por cliente y referencia"]; }
+
+  /* La muestra como tabla */
+  function previaHtml(p) {
+    return "<thead><tr>" + p.cols.map(function (c) { return "<th>" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      p.filas.map(function (f) {
+        return "<tr>" + f.map(function (celda, i) {
+          return i === 0 ? '<td data-l="' + esc(p.cols[0]) + '"><b>' + esc(celda) + "</b></td>"
+                         : '<td class="num" data-l="' + esc(p.cols[i]) + '">' + esc(celda) + "</td>";
+        }).join("") + "</tr>";
+      }).join("") + "</tbody>";
+  }
+
+  /* La descarga: un CSV con las filas del periodo */
+  function descargarReporte(r) {
+    var p = previaDe(r.tipo);
+    var lineas = ["SICAF - Comercial y Ventas",
+      "Reporte: " + r.tipo,
+      "Periodo: " + r.desde + " a " + r.hasta,
+      "Generado: " + r.fecha + " por Valentina Rojas (VEN-03)", ""]
+      .concat([p.cols.join(";")], p.filas.map(function (f) { return f.join(";"); }));
+    var blob = new Blob(["﻿" + lineas.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = r.codigo + "-" + sinTildes(r.tipo).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.parentNode.removeChild(a); }, 500);
+  }
+
+  TABLAS["dt-rep"] = {
+    codigo: "Nº", una: "reporte", plural: "reportes", unaOVarias: "reporte(s)", masculino: true,
+    estados: ["generado"], nombres: { generado: "Generado" },
+    nombreFiltro: { codigo: "Nº", tipo: "Tipo", formato: "Formato", desde: "Generado desde", hasta: "Generado hasta" },
+    filtros: {
+      codigo: contiene("Nº"),
+      tipo: function (tr, v) { return tr.getAttribute("data-tipo") === v; },
+      formato: function (tr, v) { return tr.getAttribute("data-formato") === v; }
+    },
+    textos: {},
+    claves: {},
+    columnas: { tipo: "Reporte", periodo: "Periodo", formato: "Formato" },
+    buscar: function (tr) { return tr.textContent; },
+    contar: function () {},   // las tarjetas de arriba son los totalizados del tablero: no se tocan
+    totales: totalesReportes,
+    alEntrar: entrarAReportes
+  };
+
+  /* Los totales de lo filtrado: cuántos reportes y de cada formato */
+  function totalesReportes(filas, dt) {
+    function de(f) { return filas.filter(function (tr) { return tr.getAttribute("data-formato") === f; }).length; }
+    uno('[data-tot="reportes"]', dt).textContent = miles(filas.length);
+    uno('[data-tot="pdf"]', dt).textContent = de("PDF");
+    uno('[data-tot="excel"]', dt).textContent = de("Excel");
+    uno('[data-tot="csv"]', dt).textContent = de("CSV");
+  }
+
+  /* La fila de un reporte recién generado, igual a las que trae el HTML */
+  function filaReporte(r) {
+    var color = { "PDF": "vino", "Excel": "oliva", "CSV": "cobre" }[r.formato] || "vino";
+    return '<tr class="es-nueva" data-estado="generado" data-fecha="' + r.fecha + '" data-tipo="' + esc(r.tipo) +
+      '" data-desde="' + r.desde + '" data-hasta="' + r.hasta + '" data-formato="' + r.formato + '">' +
+      '<td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">' + r.codigo + "</button></td>" +
+      '<td class="dt__cli" data-l="Reporte">' + esc(r.tipo) + "</td>" +
+      '<td class="tiny" data-l="Periodo">' + r.desde + " a " + r.hasta + "</td>" +
+      '<td class="dt__fec" data-l="Fecha">' + fechaCorta(fechaDe(r.fecha)) + "</td>" +
+      '<td data-l="Formato"><span class="chip chip--' + color + '">' + r.formato + "</span></td></tr>";
+  }
+
+  function entrarAReportes(dt, cuerpo) {
+    var hubo = repNuevas.length > 0;
+    if (hubo) {
+      todos("tr.es-nueva", cuerpo).forEach(function (tr) { tr.classList.remove("es-nueva"); });
+      while (repNuevas.length) cuerpo.insertAdjacentHTML("afterbegin", filaReporte(repNuevas.shift()));
+    }
+    return hubo;
+  }
+
+  /* ---- La ventana del nuevo reporte ---- */
+
+  function pintarPreviaNueva() {
+    uno("#rep-nv-previa").innerHTML = previaHtml(previaDe(uno("#rep-nv-tipo").value));
+    uno("#rep-nv-nota").textContent = "Primeras filas del " + uno("#rep-nv-desde").value + " al " +
+      uno("#rep-nv-hasta").value + ". El archivo completo trae todo el periodo.";
+  }
+  function abrirNuevoReporte() {
+    pintarPreviaNueva();
+    uno("#rep-nuevo").hidden = false;
+    uno(".modal", uno("#rep-nuevo")).focus();
+  }
+  function cerrarNuevoReporte() { uno("#rep-nuevo").hidden = true; }
+
+  function guardarReporte() {
+    var tipo = uno("#rep-nv-tipo").value, desde = uno("#rep-nv-desde").value,
+        hasta = uno("#rep-nv-hasta").value, formato = uno("#rep-nv-formato").value;
+    if (!desde || !hasta || hasta < desde) {
+      return aviso("Revise el periodo: la fecha Hasta no puede ser anterior a Desde.", "warn");
+    }
+    var codigos = todos('tbody tr[data-estado] td[data-l="Nº"]', uno("#dt-rep")).map(function (td) { return numero(cola(td.textContent)); });
+    var codigo = "RC-" + ("0000" + (Math.max.apply(null, codigos.concat([0])) + 1)).slice(-4);
+    var r = { codigo: codigo, tipo: tipo, desde: desde, hasta: hasta, formato: formato, fecha: hoy() };
+    repNuevas.push(r);
+    cerrarNuevoReporte();
+    iniciarTabla("dt-rep");
+    descargarReporte(r);
+    aviso("Reporte " + codigo + " generado: se descargó y quedó en la tabla.", "ok");
+  }
+
+  document.addEventListener("change", function (e) {
+    if (e.target.closest && e.target.closest("#rep-nuevo")) pintarPreviaNueva();
+  });
+  document.addEventListener("click", function (e) {
+    if (e.target === uno("#rep-nuevo")) cerrarNuevoReporte();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && uno("#rep-nuevo") && !uno("#rep-nuevo").hidden) cerrarNuevoReporte();
+  });
+
+  /* ---- El detalle de un reporte (el panel de la derecha) ---- */
+
+  DETALLES["dt-rep"] = { panel: "rep-det", pintar: pintarDetalleReporte };
+
+  function pintarDetalleReporte(tr) {
+    var tipo = tr.getAttribute("data-tipo"), desde = tr.getAttribute("data-desde"), hasta = tr.getAttribute("data-hasta");
+    uno("#rep-det-t").textContent = "Reporte " + textoDe(tr, "Nº");
+    uno("#rep-det-sub").textContent = tipo + " · " + desde + " a " + hasta;
+    uno("#rep-det-datos").innerHTML =
+      kv("Tipo", esc(tipo)) + kv("Periodo", desde + " a " + hasta) +
+      kv("Generado el", fechaLarga(fechaDe(tr.getAttribute("data-fecha")))) +
+      kv("Formato", tr.getAttribute("data-formato")) + kv("Generado por", "Valentina Rojas · VEN-03");
+    uno("#rep-det-previa").innerHTML = previaHtml(previaDe(tipo));
+  }
+
+  /* El botón del pie del detalle: baja el archivo otra vez */
+  function reDescargarReporte() {
+    var tr = detalleDesde;
+    if (!tr) return;
+    descargarReporte({ codigo: textoDe(tr, "Nº"), tipo: tr.getAttribute("data-tipo"), desde: tr.getAttribute("data-desde"),
+                       hasta: tr.getAttribute("data-hasta"), fecha: tr.getAttribute("data-fecha") });
+    aviso("Reporte " + textoDe(tr, "Nº") + " descargado de nuevo.", "ok");
+  }
+
   /* ---- El detalle de un pedido (el panel de la derecha) ---- */
 
   DETALLES["dt-ped"] = { panel: "ped-det", pintar: function (tr) { pintarDetallePedido(pedidoPor(tr.getAttribute("data-ped"))); } };
+
+  /* El detalle de una entrega (06-entregas.html): el mismo panel que el del pedido,
+     con el ojo en el despacho: el estado del paquete, el recorrido y, si ya salió,
+     la guía y las fechas de salida y de entrega. */
+  DETALLES["dt-ent"] = { panel: "ent-det", pintar: function (tr) { pintarDetalleEntrega(pedidoPor(textoDe(tr, "Pedido"))); } };
+
+  function pintarDetalleEntrega(p) {
+    var q = cotizacionDe(p.cot), c = q.cliente, t = totales(q), refs = refsEnCotizacion(p);
+    var salio = p.estado === "despacho" || p.estado === "entregado";
+    uno("#ent-det-t").textContent = "Entrega del pedido " + p.codigo;
+    uno("#ent-det-sub").textContent = c.nombre + " · " + cuantas(t.pares, "par", "pares") + " · " + pesos(t.total);
+    var estado = uno("#ent-det-estado");
+    estado.className = "cot-det__estado cot-det__estado--" + tonoDetalle(p);
+    estado.innerHTML = '<div class="cot-det__estado-cab"><span class="pill pill--' + TONO_PED[p.estado] + '">' + NOMBRE_PED[p.estado] +
+      "</span><p>" + textoPedido(p) + "</p></div>" + recorridoPedidoHtml(p, q) + novedadHtml(p);
+    uno("#ent-det-ficha").innerHTML = datosPedidoHtml(p, q) +
+      (salio ? seccion("Despacho", kv("Guía", esc(p.despacho || "—")) +
+        kv("Salió de la bodega", p.despachoEl ? fechaLarga(fechaDe(p.despachoEl)) : "—") +
+        kv("Entregado el", p.entregadoEl ? fechaLarga(fechaDe(p.entregadoEl)) : "aún no llega")) : "");
+    uno("#ent-det-avisos").innerHTML = vencidasPedidoHtml(p, c);
+    uno("#ent-det-prod-sub").textContent = cuantas(refs.length, "modelo", "modelos") + " · " + cuantas(t.pares, "par", "pares");
+    uno("#ent-det-lineas").innerHTML = refs.map(function (ref) { return itemPedidoHtml(p, ref, q); }).join("");
+    uno("#ent-det-pie").innerHTML = piePedidoHtml(p, t);
+  }
 
   /* El recorrido: un paso por caja del diagrama, con su fecha */
   var PASOS_PED = ["Facturado", "Pedido registrado", "Existencias validadas", "En producción", "Listo para despacho",

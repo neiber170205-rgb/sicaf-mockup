@@ -25,9 +25,9 @@
   </nav>
 
   <!-- El mismo encabezado que Cotizaciones (09-cotizacion.html) y Facturación (10-facturacion.html):
-       el título con su nota. Aquí no hay tabla de datos: hay un formulario para armar el
-       reporte, el resumen del periodo con los mismos números del tablero de Inicio y la
-       lista de los reportes ya generados. -->
+       el título con su nota y las tarjetas de los totalizados. Debajo, la tabla de datos:
+       los reportes que se han generado. "Generar reporte" abre el formulario del nuevo
+       reporte, con su vista previa; un clic en un reporte de la tabla abre su detalle. -->
   <header class="phead phead--fila">
     <h2 class="phead__t">
       <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -45,12 +45,12 @@
       <span class="dot">
         <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <path d="M12 16v-4"></path> <path d="M12 8h.01"></path></svg>
       </span>
-      <p><b>Nota:</b> Los números de abajo son <b>los mismos del tablero de Inicio</b>, con el corte del periodo que se elija. Un reporte se arma con las ventas, cotizaciones, pedidos y devoluciones ya registradas; al <b>generarlo</b> queda en la lista de abajo y se puede volver a descargar sin generarlo otra vez. Se guardan 12 meses.</p>
+      <p><b>Nota:</b> Con <b>Generar reporte</b> se elige el tipo, el periodo y el formato: la <b>vista previa</b> se actualiza sola y al <b>guardar</b> el archivo se descarga. El reporte queda en la tabla; con un clic en él se ven sus datos y se puede <b>volver a descargar</b>. Se guardan 12 meses.</p>
       <label class="nota__x" for="quitar-nota" title="Quitar la nota">&times;</label>
     </div>
   </header>
 
-  <!-- Las cuatro tarjetas del tablero: son el mismo corte que el resumen del periodo -->
+  <!-- Las cuatro tarjetas de los totalizados: el corte del mes en curso -->
   <div class="kpis">
     <article class="kpi kpi--arena">
       <span class="kpi__tile">
@@ -94,403 +94,8 @@
     </article>
   </div>
 
-  <section class="panel">
-    <header class="panel__head panel__head--vino">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
-      <div>
-        <h2>Generar Reporte</h2>
-        <div class="sub">Se arma con las ventas, cotizaciones, pedidos y devoluciones ya registradas</div>
-      </div>
-    </header>
-    <div class="panel__body panel__body--form">
-      <div class="field">
-        <label for="rc-tipo">Tipo de reporte</label>
-        <div class="control">
-          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
-          <select id="rc-tipo">
-            <option>Ventas por cliente y referencia</option>
-            <option>Ventas por vendedor</option>
-            <option>Cartera y cupos de crédito</option>
-            <option>Cotizaciones y tasa de cierre</option>
-            <option>Estado de despachos y entregas</option>
-            <option>Devoluciones por motivo</option>
-            <option>Pedidos pendientes de despacho</option>
-          </select>
-          <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-        </div>
-      </div>
-      <div class="field">
-        <label for="rc-desde">Desde</label>
-        <div class="control">
-          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
-          <input id="rc-desde" type="date" value="2026-09-01">
-        </div>
-      </div>
-      <div class="field">
-        <label for="rc-hasta">Hasta</label>
-        <div class="control">
-          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
-          <input id="rc-hasta" type="date" value="2026-09-22">
-        </div>
-      </div>
-      <div class="field">
-        <label for="rc-formato">Formato</label>
-        <div class="control">
-          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
-          <select id="rc-formato">
-            <option>PDF</option>
-            <option>Excel</option>
-            <option>CSV</option>
-          </select>
-          <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-        </div>
-      </div>
-      <button class="btn"><svg class="ico" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg> Generar reporte</button>
-      <p class="tiny">El reporte queda en la lista de abajo y se puede volver a descargar sin generarlo otra vez.</p>
-    </div>
-  </section>
-  <section class="panel">
-    <header class="panel__head panel__head--cobre">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
-      <div>
-        <h2>Resumen del Periodo</h2>
-        <div class="sub">Septiembre de 2026, hasta hoy</div>
-      </div>
-    </header>
-    <div class="panel__body panel__body--flush">
-      <div class="scroll-x">
-        <table>
-          <thead>
-            <tr>
-              <th>Concepto</th>
-              <th class="num">Valor</th>
-              <th>Detalle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-l="Concepto">Venta del mes</td>
-              <td class="num" data-l="Valor">$84.350.000</td>
-              <td class="tiny" data-l="Detalle">1.240 pares · 31 ventas registradas</td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Venta promedio por pedido</td>
-              <td class="num" data-l="Valor">$2.720.967</td>
-              <td data-l="Detalle"><span class="pill pill--ok">El mes pasado fue $2.410.000</span></td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Cotizaciones enviadas</td>
-              <td class="num" data-l="Valor">10</td>
-              <td class="tiny" data-l="Detalle">2 facturadas · 6 por facturar · 1 vencida · 1 en borrador</td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Tasa de cierre</td>
-              <td class="num" data-l="Valor">44 %</td>
-              <td data-l="Detalle"><span class="pill pill--ok">8 de 18 cotizaciones se volvieron factura</span></td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Clientes que compraron</td>
-              <td class="num" data-l="Valor">6 de 8</td>
-              <td class="tiny" data-l="Detalle">Comercializadora Pamplona y Almacén Sur todavía no estrenan</td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Cartera comprometida</td>
-              <td class="num" data-l="Valor">$25.497.293</td>
-              <td data-l="Detalle"><span class="pill pill--warn">$12.747.293 por cobrar · 3 clientes con facturas vencidas</span></td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Despachos del mes</td>
-              <td class="num" data-l="Valor">3</td>
-              <td data-l="Detalle"><span class="pill pill--warn">1 en ruta (DS-2026-052) · 4 pedidos aún en producción</span></td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Devoluciones del mes</td>
-              <td class="num" data-l="Valor">23 pares</td>
-              <td data-l="Detalle"><span class="pill pill--warn">1,9 % de lo vendido · 5 casos · 12 pares por defecto</span></td>
-            </tr>
-            <tr>
-              <td data-l="Concepto">Referencia más vendida</td>
-              <td class="num" data-l="Valor">REF-1042</td>
-              <td class="tiny" data-l="Detalle">Bota Andina · 420 pares · el 34 % del mes</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="tabla-pie">Los mismos números de las tarjetas de arriba y del tablero de Inicio, con el corte del periodo elegido arriba.</p>
-    </div>
-  </section>
+  <!-- Las dos estadísticas del periodo: quién vende y quién compra -->
   <div class="grid2 grid2--even">
-    <section class="panel">
-      <header class="panel__head panel__head--cobre">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"></rect> <circle cx="12" cy="12" r="2"></circle> <path d="M6 12h.01M18 12h.01"></path></svg>
-        <div>
-          <h2>Venta por Semana</h2>
-          <div class="sub">Cómo va el mes, semana a semana</div>
-        </div>
-      </header>
-      <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Semana</th>
-                <th class="num">Pares</th>
-                <th>Venta</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Semana">Semana 1 · 1 al 6</td>
-                <td class="num" data-l="Pares">268</td>
-                <td style="min-width:150px" data-l="Venta">
-                  <div class="bar "><i style="width:67.7%"></i></div>
-                  <div class="tiny">$17.920.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Semana">Semana 2 · 7 al 13</td>
-                <td class="num" data-l="Pares">312</td>
-                <td style="min-width:150px" data-l="Venta">
-                  <div class="bar "><i style="width:81.0%"></i></div>
-                  <div class="tiny">$21.450.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Semana">Semana 3 · 14 al 20</td>
-                <td class="num" data-l="Pares">384</td>
-                <td style="min-width:150px" data-l="Venta">
-                  <div class="bar "><i style="width:100.0%"></i></div>
-                  <div class="tiny">$26.480.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Semana">Semana 4 · 21 al 30</td>
-                <td class="num" data-l="Pares">276</td>
-                <td style="min-width:150px" data-l="Venta">
-                  <div class="bar "><i style="width:69.9%"></i></div>
-                  <div class="tiny">$18.500.000</div>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td><b>Total del mes</b></td>
-                <td class="num"><b>1.240</b></td>
-                <td><b>$84.350.000</b></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p class="tabla-pie">La barra compara cada semana contra la mejor del mes.</p>
-      </div>
-    </section>
-    <section class="panel">
-      <header class="panel__head panel__head--cobre">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="3"></circle> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path> <circle cx="18" cy="5" r="3"></circle></svg>
-        <div>
-          <h2>Devoluciones por Motivo</h2>
-          <div class="sub">Por qué vuelve la mercancía</div>
-        </div>
-      </header>
-      <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Motivo</th>
-                <th class="num">Casos</th>
-                <th class="num">Pares</th>
-                <th>Participación</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Motivo">Defecto de fabricación</td>
-                <td class="num" data-l="Casos">2</td>
-                <td class="num" data-l="Pares">12</td>
-                <td style="min-width:150px" data-l="Participación">
-                  <div class="bar "><i style="width:100.0%"></i></div>
-                  <div class="tiny">52 % de los pares devueltos</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Motivo">Talla equivocada</td>
-                <td class="num" data-l="Casos">1</td>
-                <td class="num" data-l="Pares">6</td>
-                <td style="min-width:150px" data-l="Participación">
-                  <div class="bar "><i style="width:50.0%"></i></div>
-                  <div class="tiny">26 % de los pares devueltos</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Motivo">Sobrante del pedido</td>
-                <td class="num" data-l="Casos">1</td>
-                <td class="num" data-l="Pares">3</td>
-                <td style="min-width:150px" data-l="Participación">
-                  <div class="bar "><i style="width:25.0%"></i></div>
-                  <div class="tiny">13 % de los pares devueltos</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Motivo">Garantía</td>
-                <td class="num" data-l="Casos">1</td>
-                <td class="num" data-l="Pares">2</td>
-                <td style="min-width:150px" data-l="Participación">
-                  <div class="bar "><i style="width:16.7%"></i></div>
-                  <div class="tiny">9 % de los pares devueltos</div>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td><b>4 motivos</b></td>
-                <td class="num"><b>5</b></td>
-                <td class="num"><b>23</b></td>
-                <td><b>1,9 % de lo vendido</b></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p class="tabla-pie">La barra compara cada motivo contra el que devuelve más pares.</p>
-      </div>
-    </section>
-  </div>
-  <section class="panel">
-    <header class="panel__head panel__head--vino">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
-      <div>
-        <h2>Cierre de Cotizaciones</h2>
-        <div class="sub">Las 18 del periodo y en qué acabó cada una · tasa de cierre 44 %</div>
-      </div>
-    </header>
-    <div class="panel__body panel__body--flush">
-      <div class="scroll-x">
-        <table>
-          <thead>
-            <tr>
-              <th>Estado</th>
-              <th class="num">Cotizaciones</th>
-              <th class="num">Del total</th>
-              <th>Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-l="Estado"><span class="pill pill--ok">Facturadas</span></td>
-              <td class="num" data-l="Cotizaciones">8</td>
-              <td class="num" data-l="Del total">44 %</td>
-              <td style="min-width:150px" data-l="Valor">
-                <div class="bar "><i style="width:100.0%"></i></div>
-                <div class="tiny">$29.863.357 facturado</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Estado"><span class="pill pill--warn">Por facturar</span></td>
-              <td class="num" data-l="Cotizaciones">6</td>
-              <td class="num" data-l="Del total">33 %</td>
-              <td style="min-width:150px" data-l="Valor">
-                <div class="bar "><i style="width:75.0%"></i></div>
-                <div class="tiny">$16.071.671 esperando en Facturación</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Estado"><span class="pill pill--crit">Vencidas</span></td>
-              <td class="num" data-l="Cotizaciones">3</td>
-              <td class="num" data-l="Del total">17 %</td>
-              <td style="min-width:150px" data-l="Valor">
-                <div class="bar "><i style="width:37.5%"></i></div>
-                <div class="tiny">$4.978.000 que no se facturaron a tiempo</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Estado"><span class="pill pill--off">Borrador</span></td>
-              <td class="num" data-l="Cotizaciones">1</td>
-              <td class="num" data-l="Del total">6 %</td>
-              <td style="min-width:150px" data-l="Valor">
-                <div class="bar "><i style="width:12.5%"></i></div>
-                <div class="tiny">$1.467.270 todavía no se ha enviado</div>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td><b>Total cotizado</b></td>
-              <td class="num"><b>18</b></td>
-              <td class="num"><b>100 %</b></td>
-              <td><b>$52.380.298</b></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <p class="tabla-pie">La barra compara cada estado contra el que acumula más valor. Las por facturar valen 15 días: si no se facturan a tiempo pasan a vencidas.</p>
-    </div>
-  </section>
-  <div class="grid2 grid2--even">
-    <section class="panel">
-      <header class="panel__head panel__head--oliva">
-        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18h20"></path> <path d="M2 14h6l3-3 4 2h5a2 2 0 0 1 2 2v2H2z"></path> <path d="M8 14V8"></path></svg>
-        <div>
-          <h2>Más Vendidos</h2>
-          <div class="sub">Las cinco referencias que más pares salieron</div>
-        </div>
-      </header>
-      <div class="panel__body panel__body--flush">
-        <div class="scroll-x">
-          <table>
-            <thead>
-              <tr>
-                <th>Nº</th>
-                <th>Referencia</th>
-                <th>Pares</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-l="Nº"><b>1</b></td>
-                <td data-l="Referencia"><b>REF-1042</b><div class="tiny">Bota Andina</div></td>
-                <td style="min-width:130px" data-l="Pares">
-                  <div class="bar "><i style="width:100.0%"></i></div>
-                  <div class="tiny">420 pares · $28.560.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Nº"><b>2</b></td>
-                <td data-l="Referencia"><b>REF-1044</b><div class="tiny">Mocasín Cúcuta</div></td>
-                <td style="min-width:130px" data-l="Pares">
-                  <div class="bar "><i style="width:73.8%"></i></div>
-                  <div class="tiny">310 pares · $19.840.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Nº"><b>3</b></td>
-                <td data-l="Referencia"><b>REF-1043</b><div class="tiny">Zapato Escolar</div></td>
-                <td style="min-width:130px" data-l="Pares">
-                  <div class="bar "><i style="width:63.1%"></i></div>
-                  <div class="tiny">265 pares · $14.575.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Nº"><b>4</b></td>
-                <td data-l="Referencia"><b>REF-1041</b><div class="tiny">Botín Clásico</div></td>
-                <td style="min-width:130px" data-l="Pares">
-                  <div class="bar "><i style="width:38.1%"></i></div>
-                  <div class="tiny">160 pares · $12.800.000</div>
-                </td>
-              </tr>
-              <tr>
-                <td data-l="Nº"><b>5</b></td>
-                <td data-l="Referencia"><b>REF-1046</b><div class="tiny">Sandalia Verano</div></td>
-                <td style="min-width:130px" data-l="Pares">
-                  <div class="bar "><i style="width:20.2%"></i></div>
-                  <div class="tiny">85 pares · $8.575.000</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="tabla-pie">REF-1042 se lleva el 34 % de los pares del mes.</p>
-      </div>
-    </section>
     <section class="panel">
       <header class="panel__head panel__head--oliva">
         <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -523,7 +128,7 @@
                 </td>
               </tr>
               <tr>
-                <td data-l="Vendedor"><b>Valentina Rojas</b><div class="tiny">VEN-03 · la que está en el sistema</div></td>
+                <td data-l="Vendedor"><b>Valentina Rojas</b><div class="tiny">VEN-03</div></td>
                 <td class="num" data-l="Cotizó">8</td>
                 <td class="num" data-l="Facturó">4</td>
                 <td class="num" data-l="Cierre">50 %</td>
@@ -539,7 +144,7 @@
                 <td class="num" data-l="Cierre">0 %</td>
                 <td style="min-width:130px" data-l="Facturado">
                   <div class="bar "><i style="width:0.0%"></i></div>
-                  <div class="tiny">$0 · sus 5 cotizaciones siguen por facturar o vencidas</div>
+                  <div class="tiny">$0 · sus 5 siguen por facturar o vencidas</div>
                 </td>
               </tr>
             </tbody>
@@ -557,199 +162,121 @@
         <p class="tabla-pie">La barra compara el valor facturado de cada vendedor. El cierre es cuántas de las que cotizó se volvieron factura.</p>
       </div>
     </section>
+    <section class="panel">
+      <header class="panel__head panel__head--oliva">
+        <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <div>
+          <h2>Ventas por Cliente</h2>
+          <div class="sub">Quién compró más en el mes</div>
+        </div>
+      </header>
+      <div class="panel__body panel__body--flush">
+        <div class="scroll-x">
+          <table>
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Cliente</th>
+                <th class="num">Pares</th>
+                <th>Venta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-l="Nº"><b>1</b></td>
+                <td data-l="Cliente">Comercial Los Andes</td>
+                <td class="num" data-l="Pares">248</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:100.0%"></i></div>
+                  <div class="tiny">$15.900.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>2</b></td>
+                <td data-l="Cliente">Distribuidora Tamanaco</td>
+                <td class="num" data-l="Pares">212</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:90.4%"></i></div>
+                  <div class="tiny">$14.380.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>3</b></td>
+                <td data-l="Cliente">Calzado Norte</td>
+                <td class="num" data-l="Pares">186</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:79.5%"></i></div>
+                  <div class="tiny">$12.640.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>4</b></td>
+                <td data-l="Cliente">Calzado El Dorado</td>
+                <td class="num" data-l="Pares">174</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:74.5%"></i></div>
+                  <div class="tiny">$11.850.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>5</b></td>
+                <td data-l="Cliente">Almacén Sur</td>
+                <td class="num" data-l="Pares">148</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:62.4%"></i></div>
+                  <div class="tiny">$9.920.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>6</b></td>
+                <td data-l="Cliente">Comercializadora Pamplona</td>
+                <td class="num" data-l="Pares">112</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:46.9%"></i></div>
+                  <div class="tiny">$7.460.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>7</b></td>
+                <td data-l="Cliente">Almacén La Bota Fina</td>
+                <td class="num" data-l="Pares">96</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:42.0%"></i></div>
+                  <div class="tiny">$6.680.000</div>
+                </td>
+              </tr>
+              <tr>
+                <td data-l="Nº"><b>8</b></td>
+                <td data-l="Cliente">Calzado del Oriente</td>
+                <td class="num" data-l="Pares">64</td>
+                <td style="min-width:150px" data-l="Venta">
+                  <div class="bar "><i style="width:34.7%"></i></div>
+                  <div class="tiny">$5.520.000</div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"><b>8 clientes</b></td>
+                <td class="num"><b>1.240</b></td>
+                <td><b>$84.350.000</b></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="tabla-pie">La barra compara cada cliente contra el que más compró.</p>
+      </div>
+    </section>
   </div>
+
+  <!-- La tabla de datos recolectada de las demás secciones del módulo: lo que cada
+       una registra hoy, con su total y su estado. Se consulta, no se edita. -->
   <section class="panel">
-    <header class="panel__head panel__head--vino">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"></rect> <circle cx="12" cy="12" r="2"></circle> <path d="M6 12h.01M18 12h.01"></path></svg>
+    <header class="panel__head panel__head--cobre">
+      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
       <div>
-        <h2>Cartera por Cliente</h2>
-        <div class="sub">Lo que cada uno debe: por cobrar y vencido · $25.497.293 en total</div>
-      </div>
-    </header>
-    <div class="panel__body panel__body--flush">
-      <div class="scroll-x">
-        <table>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th class="num">Por cobrar</th>
-              <th class="num">Vencido</th>
-              <th class="num">Total</th>
-              <th>Deuda</th>
-              <th>Situación</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-l="Cliente"><b>Comercial Los Andes</b><div class="tiny">NIT 890.332.117-7</div></td>
-              <td class="num" data-l="Por cobrar">$4.305.600</td>
-              <td class="num" data-l="Vencido">$5.400.000</td>
-              <td class="num" data-l="Total">$9.705.600</td>
-              <td style="min-width:130px" data-l="Deuda">
-                <div class="bar "><i style="width:100.0%"></i></div>
-                <div class="tiny">2 facturas vencidas</div>
-              </td>
-              <td data-l="Situación"><span class="pill pill--crit">Con facturas vencidas</span></td>
-            </tr>
-            <tr>
-              <td data-l="Cliente"><b>Distribuidora Tamanaco</b><div class="tiny">NIT 900.221.334-8</div></td>
-              <td class="num" data-l="Por cobrar">$3.795.338</td>
-              <td class="num" data-l="Vencido">$2.150.000</td>
-              <td class="num" data-l="Total">$5.945.338</td>
-              <td style="min-width:130px" data-l="Deuda">
-                <div class="bar "><i style="width:61.3%"></i></div>
-                <div class="tiny">1 factura vencida</div>
-              </td>
-              <td data-l="Situación"><span class="pill pill--crit">Con facturas vencidas</span></td>
-            </tr>
-            <tr>
-              <td data-l="Cliente"><b>Comercializadora Pamplona</b><div class="tiny">NIT 900.664.812-8</div></td>
-              <td class="num" data-l="Por cobrar">$0</td>
-              <td class="num" data-l="Vencido">$5.200.000</td>
-              <td class="num" data-l="Total">$5.200.000</td>
-              <td style="min-width:130px" data-l="Deuda">
-                <div class="bar "><i style="width:53.6%"></i></div>
-                <div class="tiny">3 facturas vencidas</div>
-              </td>
-              <td data-l="Situación"><span class="pill pill--crit">Con facturas vencidas</span></td>
-            </tr>
-            <tr>
-              <td data-l="Cliente"><b>Calzado El Dorado</b><div class="tiny">NIT 830.112.991-6</div></td>
-              <td class="num" data-l="Por cobrar">$4.646.355</td>
-              <td class="num" data-l="Vencido">$0</td>
-              <td class="num" data-l="Total">$4.646.355</td>
-              <td style="min-width:130px" data-l="Deuda">
-                <div class="bar "><i style="width:47.9%"></i></div>
-                <div class="tiny">FV-2026-0158 vence el 20-oct</div>
-              </td>
-              <td data-l="Situación"><span class="pill pill--warn">Por cobrar, al día</span></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td><b>4 clientes con saldo</b></td>
-              <td class="num"><b>$12.747.293</b></td>
-              <td class="num"><b>$12.750.000</b></td>
-              <td class="num"><b>$25.497.293</b></td>
-              <td colspan="2"><b>3 con facturas vencidas: no se les factura hasta pagar</b></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <p class="tabla-pie">La barra compara la deuda total de cada cliente contra la más alta. Al que tiene facturas vencidas se le cotiza, pero no se le factura hasta que paga.</p>
-    </div>
-  </section>
-  <section class="panel">
-    <header class="panel__head panel__head--oliva">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path> <circle cx="9" cy="7" r="4"></circle> <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-      <div>
-        <h2>Venta por Cliente</h2>
-        <div class="sub">Quién compró más en el mes</div>
-      </div>
-    </header>
-    <div class="panel__body panel__body--flush">
-      <div class="scroll-x">
-        <table>
-          <thead>
-            <tr>
-              <th>Nº</th>
-              <th>Cliente</th>
-              <th class="num">Pares</th>
-              <th>Venta</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-l="Nº"><b>1</b></td>
-              <td data-l="Cliente">Comercial Los Andes</td>
-              <td class="num" data-l="Pares">248</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:100.0%"></i></div>
-                <div class="tiny">$15.900.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>2</b></td>
-              <td data-l="Cliente">Distribuidora Tamanaco</td>
-              <td class="num" data-l="Pares">212</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:90.4%"></i></div>
-                <div class="tiny">$14.380.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>3</b></td>
-              <td data-l="Cliente">Calzado Norte</td>
-              <td class="num" data-l="Pares">186</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:79.5%"></i></div>
-                <div class="tiny">$12.640.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>4</b></td>
-              <td data-l="Cliente">Calzado El Dorado</td>
-              <td class="num" data-l="Pares">174</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:74.5%"></i></div>
-                <div class="tiny">$11.850.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>5</b></td>
-              <td data-l="Cliente">Almacén Sur</td>
-              <td class="num" data-l="Pares">148</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:62.4%"></i></div>
-                <div class="tiny">$9.920.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>6</b></td>
-              <td data-l="Cliente">Comercializadora Pamplona</td>
-              <td class="num" data-l="Pares">112</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:46.9%"></i></div>
-                <div class="tiny">$7.460.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>7</b></td>
-              <td data-l="Cliente">Almacén La Bota Fina</td>
-              <td class="num" data-l="Pares">96</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:42.0%"></i></div>
-                <div class="tiny">$6.680.000</div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Nº"><b>8</b></td>
-              <td data-l="Cliente">Calzado del Oriente</td>
-              <td class="num" data-l="Pares">64</td>
-              <td style="min-width:150px" data-l="Venta">
-                <div class="bar "><i style="width:34.7%"></i></div>
-                <div class="tiny">$5.520.000</div>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="2"><b>8 clientes</b></td>
-              <td class="num"><b>1.240</b></td>
-              <td><b>$84.350.000</b></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <p class="tabla-pie">La barra compara cada cliente contra el que más compró.</p>
-    </div>
-  </section>
-  <section class="panel">
-    <header class="panel__head panel__head--vino">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
-      <div>
-        <h2>Reportes Generados</h2>
-        <div class="sub">Los últimos que se sacaron, listos para volver a descargar</div>
+        <h2>Consolidado del Módulo</h2>
+        <div class="sub">Lo que registran hoy las demás secciones de Comercial</div>
       </div>
     </header>
     <div class="panel__body panel__body--flush">
@@ -759,98 +286,355 @@
             <path d="m21 21-4.34-4.34"></path>
             <circle cx="11" cy="11" r="8"></circle>
           </svg>
-          <input type="search" id="rl-busca" placeholder="Buscar reporte o periodo…">
+          <input type="search" placeholder="Buscar sección…">
         </div>
-        <div class="control control--corto">
-          <select id="rl-filtro" aria-label="Filtrar la tabla">
-            <option>Todos los formatos</option>
-            <option>PDF</option>
-            <option>Excel</option>
-            <option>CSV</option>
-          </select>
-          <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-        </div>
-        <span class="tabla-tools__n">6 reportes guardados</span>
+        <span class="tabla-tools__n">6 secciones</span>
       </div>
       <div class="scroll-x">
         <table>
           <thead>
             <tr>
-              <th>Nº</th>
-              <th>Reporte</th>
-              <th>Periodo</th>
-              <th>Fecha</th>
-              <th>Formato</th>
-              <th class="acts"></th>
+              <th>Sección</th>
+              <th class="num">Registros</th>
+              <th class="num">Total</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td data-l="Nº"><b>RC-0006</b></td>
-              <td data-l="Reporte">Ventas por cliente y referencia</td>
-              <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-22</td>
-              <td class="tiny" data-l="Fecha">2026-09-22 09:05</td>
-              <td data-l="Formato"><span class="chip chip--vino">PDF</span></td>
-              <td class="acts">
-                <button class="iconbtn" aria-label="Descargar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg></button>
-              </td>
+              <td data-l="Sección"><b>Cotizaciones</b><div class="tiny">09-cotizacion.html</div></td>
+              <td class="num" data-l="Registros">18 cotizaciones</td>
+              <td class="num" data-l="Total">$52.380.298</td>
+              <td data-l="Estado"><span class="pill pill--ok">44 % cerradas · 6 por facturar</span></td>
             </tr>
             <tr>
-              <td data-l="Nº"><b>RC-0005</b></td>
-              <td data-l="Reporte">Cartera y cupos de crédito</td>
-              <td class="tiny" data-l="Periodo">2026-09-22</td>
-              <td class="tiny" data-l="Fecha">2026-09-22 08:30</td>
-              <td data-l="Formato"><span class="chip chip--oliva">Excel</span></td>
-              <td class="acts">
-                <button class="iconbtn" aria-label="Descargar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg></button>
-              </td>
+              <td data-l="Sección"><b>Facturación</b><div class="tiny">10-facturacion.html</div></td>
+              <td class="num" data-l="Registros">14 facturas</td>
+              <td class="num" data-l="Total">$42.613.357</td>
+              <td data-l="Estado"><span class="pill pill--warn">Cartera $25.497.293 · 3 clientes vencidos</span></td>
             </tr>
             <tr>
-              <td data-l="Nº"><b>RC-0004</b></td>
-              <td data-l="Reporte">Cotizaciones y tasa de cierre</td>
-              <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-22</td>
-              <td class="tiny" data-l="Fecha">2026-09-21 16:40</td>
-              <td data-l="Formato"><span class="chip chip--oliva">Excel</span></td>
-              <td class="acts">
-                <button class="iconbtn" aria-label="Descargar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg></button>
-              </td>
+              <td data-l="Sección"><b>Pedidos</b><div class="tiny">05-pedidos.html</div></td>
+              <td class="num" data-l="Registros">7 pedidos</td>
+              <td class="num" data-l="Total">350 pares</td>
+              <td data-l="Estado"><span class="pill pill--warn">4 en producción · 1 en ruta</span></td>
             </tr>
             <tr>
-              <td data-l="Nº"><b>RC-0003</b></td>
-              <td data-l="Reporte">Estado de despachos y entregas</td>
-              <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-20</td>
-              <td class="tiny" data-l="Fecha">2026-09-20 15:10</td>
-              <td data-l="Formato"><span class="chip chip--cobre">CSV</span></td>
-              <td class="acts">
-                <button class="iconbtn" aria-label="Descargar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg></button>
-              </td>
+              <td data-l="Sección"><b>Entregas</b><div class="tiny">06-entregas.html</div></td>
+              <td class="num" data-l="Registros">3 despachos</td>
+              <td class="num" data-l="Total">156 pares</td>
+              <td data-l="Estado"><span class="pill pill--ok">2 entregados a tiempo · DS-2026-052 en ruta</span></td>
             </tr>
             <tr>
-              <td data-l="Nº"><b>RC-0002</b></td>
-              <td data-l="Reporte">Pedidos pendientes de despacho</td>
-              <td class="tiny" data-l="Periodo">2026-09-19</td>
-              <td class="tiny" data-l="Fecha">2026-09-19 08:00</td>
-              <td data-l="Formato"><span class="chip chip--cobre">CSV</span></td>
-              <td class="acts">
-                <button class="iconbtn" aria-label="Descargar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg></button>
-              </td>
+              <td data-l="Sección"><b>Clientes</b><div class="tiny">04-clientes.html</div></td>
+              <td class="num" data-l="Registros">8 activos</td>
+              <td class="num" data-l="Total">—</td>
+              <td data-l="Estado"><span class="pill pill--warn">6 compraron este mes</span></td>
             </tr>
             <tr>
-              <td data-l="Nº"><b>RC-0001</b></td>
-              <td data-l="Reporte">Ventas del mes anterior</td>
-              <td class="tiny" data-l="Periodo">2026-08-01 a 2026-08-31</td>
-              <td class="tiny" data-l="Fecha">2026-09-01 07:40</td>
-              <td data-l="Formato"><span class="chip chip--vino">PDF</span></td>
-              <td class="acts">
-                <button class="iconbtn" aria-label="Descargar"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg></button>
-              </td>
+              <td data-l="Sección"><b>Devoluciones</b><div class="tiny">las registra Logística, Comercial las consulta</div></td>
+              <td class="num" data-l="Registros">5 casos</td>
+              <td class="num" data-l="Total">23 pares</td>
+              <td data-l="Estado"><span class="pill pill--crit">1,9 % de lo vendido · 12 por defecto</span></td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td><b>Todo Comercial</b></td>
+              <td class="num"><b>55 movimientos</b></td>
+              <td class="num"><b>$179.343.655</b></td>
+              <td><b>con el corte de hoy</b></td>
+            </tr>
+          </tfoot>
         </table>
       </div>
-      <p class="tabla-pie">Mostrando 6 de 6 reportes · se guardan 12 meses</p>
+      <p class="tabla-pie">Datos tomados de Cotizaciones, Facturación, Pedidos, Entregas y Clientes. Cada sección sigue siendo la fuente: aquí solo se consolidan.</p>
     </div>
   </section>
+
+  <!-- La tabla ES la pantalla: los reportes generados, con la misma tabla de datos de
+       Cotizaciones y Facturación (buscador, filtros, orden, totales y páginas). -->
+  <section class="panel panel--tabla">
+    <div class="panel__body panel__body--flush">
+      <div class="dt" id="dt-rep">
+        <div class="dt__bar">
+          <div class="dt__q">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path> <circle cx="11" cy="11" r="8"></circle></svg>
+            <input id="dt-rep-q" type="search" autocomplete="off" placeholder="Buscar reporte, periodo o formato..." aria-label="Buscar en la tabla">
+          </div>
+          <!-- Los filtros: <details> abre y cierra solo, sin JavaScript -->
+          <details class="fil">
+            <summary class="fil__b" title="Filtrar la tabla por cualquier columna">
+              <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"></path></svg>
+              Filtros
+              <span class="fil__n" hidden>0</span>
+            </summary>
+            <div class="fil__caja" role="group" aria-label="Filtros de la tabla">
+              <div class="fil__t">Una condición por columna</div>
+              <label class="fil__c">
+                <span class="fil__l">Nº</span>
+                <input class="dt__in" type="text" data-f="codigo" placeholder="RC-000...">
+              </label>
+              <label class="fil__c">
+                <span class="fil__l">Tipo</span>
+                <select class="dt__in" data-f="tipo">
+                  <option value="">Todos</option>
+                  <option>Ventas por cliente y referencia</option>
+                  <option>Ventas por vendedor</option>
+                  <option>Cartera y cupos de crédito</option>
+                  <option>Cotizaciones y tasa de cierre</option>
+                  <option>Estado de despachos y entregas</option>
+                  <option>Devoluciones por motivo</option>
+                  <option>Pedidos pendientes de despacho</option>
+                </select>
+              </label>
+              <label class="fil__c">
+                <span class="fil__l">Formato</span>
+                <select class="dt__in" data-f="formato">
+                  <option value="">Todos</option>
+                  <option>PDF</option>
+                  <option>Excel</option>
+                  <option>CSV</option>
+                </select>
+              </label>
+              <div class="fil__c">
+                <span class="fil__l">Generado</span>
+                <span class="fil__r"><input class="dt__in" type="date" data-f="desde" aria-label="Generado desde"><span class="fil__rs">–</span><input class="dt__in" type="date" data-f="hasta" aria-label="Generado hasta"></span>
+              </div>
+              <div class="fil__pie">
+                <span class="tiny" id="dt-rep-nfil">Sin filtros puestos</span>
+                <button class="fil__x" type="button" data-quitar="todos">Borrar todos</button>
+              </div>
+            </div>
+          </details>
+          <!-- Lo que está filtrando ahora: una ficha por filtro, con su cruz -->
+          <span class="fil__act" id="dt-rep-fichas" aria-label="Filtros puestos"></span>
+          <div class="dt__acts">
+            <!-- Abre el formulario del nuevo reporte, con su vista previa -->
+            <button class="btn btn--sm" type="button" title="Generar un nuevo reporte">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path> <path d="M12 5v14"></path></svg>
+              Generar reporte
+            </button>
+            <button class="dt__b" type="button" title="Mostrar u ocultar columnas">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="3" rx="1"></rect> <rect width="7" height="7" x="14" y="14" rx="1"></rect> <rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+              <span>Columnas</span>
+            </button>
+          </div>
+        </div>
+        <div class="dt__scroll">
+          <table>
+            <thead>
+              <tr>
+                <th data-k="codigo">
+                  <button class="dt__orden" type="button" title="Ordenar por Nº"><span>Nº</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th class="dt__thcli" data-k="tipo">
+                  <button class="dt__orden" type="button" title="Ordenar por Reporte"><span>Reporte</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th data-k="periodo">
+                  <button class="dt__orden" type="button" title="Ordenar por Periodo"><span>Periodo</span><i class="dt__ind">⇅</i></button>
+                </th>
+                <th class="is-on" data-k="fecha" aria-sort="descending">
+                  <button class="dt__orden" type="button" title="Ordenar por Generado"><span>Generado</span><i class="dt__ind">▼</i></button>
+                </th>
+                <th data-k="formato">
+                  <button class="dt__orden" type="button" title="Ordenar por Formato"><span>Formato</span><i class="dt__ind">⇅</i></button>
+                </th>
+              </tr>
+            </thead>
+            <!-- Un clic en cualquier fila (o Enter sobre su número, que es un botón) abre
+                 el detalle de ese reporte a la derecha: #rep-det, al final del archivo -->
+            <tbody>
+              <tr data-estado="generado" data-fecha="2026-09-22" data-tipo="Ventas por cliente y referencia" data-desde="2026-09-01" data-hasta="2026-09-22" data-formato="PDF">
+                <td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">RC-0006</button></td>
+                <td class="dt__cli" data-l="Reporte">Ventas por cliente y referencia</td>
+                <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-22</td>
+                <td class="dt__fec" data-l="Fecha">22-sep-2026</td>
+                <td data-l="Formato"><span class="chip chip--vino">PDF</span></td>
+              </tr>
+              <tr data-estado="generado" data-fecha="2026-09-22" data-tipo="Cartera y cupos de crédito" data-desde="2026-09-22" data-hasta="2026-09-22" data-formato="Excel">
+                <td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">RC-0005</button></td>
+                <td class="dt__cli" data-l="Reporte">Cartera y cupos de crédito</td>
+                <td class="tiny" data-l="Periodo">2026-09-22</td>
+                <td class="dt__fec" data-l="Fecha">22-sep-2026</td>
+                <td data-l="Formato"><span class="chip chip--oliva">Excel</span></td>
+              </tr>
+              <tr data-estado="generado" data-fecha="2026-09-21" data-tipo="Cotizaciones y tasa de cierre" data-desde="2026-09-01" data-hasta="2026-09-22" data-formato="Excel">
+                <td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">RC-0004</button></td>
+                <td class="dt__cli" data-l="Reporte">Cotizaciones y tasa de cierre</td>
+                <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-22</td>
+                <td class="dt__fec" data-l="Fecha">21-sep-2026</td>
+                <td data-l="Formato"><span class="chip chip--oliva">Excel</span></td>
+              </tr>
+              <tr data-estado="generado" data-fecha="2026-09-20" data-tipo="Estado de despachos y entregas" data-desde="2026-09-01" data-hasta="2026-09-20" data-formato="CSV">
+                <td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">RC-0003</button></td>
+                <td class="dt__cli" data-l="Reporte">Estado de despachos y entregas</td>
+                <td class="tiny" data-l="Periodo">2026-09-01 a 2026-09-20</td>
+                <td class="dt__fec" data-l="Fecha">20-sep-2026</td>
+                <td data-l="Formato"><span class="chip chip--cobre">CSV</span></td>
+              </tr>
+              <tr data-estado="generado" data-fecha="2026-09-19" data-tipo="Pedidos pendientes de despacho" data-desde="2026-09-19" data-hasta="2026-09-19" data-formato="CSV">
+                <td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">RC-0002</button></td>
+                <td class="dt__cli" data-l="Reporte">Pedidos pendientes de despacho</td>
+                <td class="tiny" data-l="Periodo">2026-09-19</td>
+                <td class="dt__fec" data-l="Fecha">19-sep-2026</td>
+                <td data-l="Formato"><span class="chip chip--cobre">CSV</span></td>
+              </tr>
+              <tr data-estado="generado" data-fecha="2026-09-01" data-tipo="Ventas por cliente y referencia" data-desde="2026-08-01" data-hasta="2026-08-31" data-formato="PDF">
+                <td data-l="Nº"><button class="dt__ver" type="button" title="Ver el detalle">RC-0001</button></td>
+                <td class="dt__cli" data-l="Reporte">Ventas del mes anterior</td>
+                <td class="tiny" data-l="Periodo">2026-08-01 a 2026-08-31</td>
+                <td class="dt__fec" data-l="Fecha">01-sep-2026</td>
+                <td data-l="Formato"><span class="chip chip--vino">PDF</span></td>
+              </tr>
+              <tr class="dt__vacio" hidden><td colspan="5">Ningún reporte cumple el filtro. Quite alguno de los filtros de arriba.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dt__res">
+          <span class="dt__res-t">Totales<em id="dt-rep-de">de los 6 reportes</em></span>
+          <span class="dt__res-i"><b>Generados</b><span data-tot="reportes">6</span></span>
+          <span class="dt__res-i"><b>PDF</b><span data-tot="pdf">2</span></span>
+          <span class="dt__res-i dt__res-i--ok"><b>Excel</b><span data-tot="excel">2</span></span>
+          <span class="dt__res-i dt__res-i--warn"><b>CSV</b><span data-tot="csv">2</span></span>
+        </div>
+        <div class="dt__pie">
+          <div class="dt__info" id="dt-rep-info" aria-live="polite">Mostrando <b>1&ndash;6</b> de <b>6</b> reporte(s)</div>
+          <div class="dt__pieR">
+            <label class="dt__tam" for="dt-rep-tam">
+              Filas por página
+              <select id="dt-rep-tam" class="dt__in">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+            <nav class="dt__pager" id="dt-rep-pag" aria-label="Paginación">
+              <button class="dt__pag dt__pag--n" type="button" data-pag="-1" disabled aria-label="Página anterior">&lsaquo;</button>
+              <button class="dt__pag is-on" type="button" data-pag="1" aria-current="page">1</button>
+              <button class="dt__pag dt__pag--n" type="button" data-pag="+1" disabled aria-label="Página siguiente">&rsaquo;</button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- El detalle de un reporte: se abre con un clic en su fila y se cierra con la ✕,
+       con Esc o pulsando fuera. Arriba sus datos; abajo una muestra de lo que trae
+       y el botón para descargarlo de nuevo. Solo se lee. -->
+  <div class="overlay cot-det-fondo" id="rep-det" hidden>
+    <aside class="cot-det ped-det" role="dialog" aria-modal="true" aria-labelledby="rep-det-t" tabindex="-1">
+      <div class="modal__head">
+        <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path> <path d="M18 17V9"></path> <path d="M13 17V5"></path> <path d="M8 17v-3"></path></svg>
+        <div>
+          <h3 id="rep-det-t">Reporte RC-0006</h3>
+          <span class="sub" id="rep-det-sub">Ventas por cliente y referencia · 2026-09-01 a 2026-09-22</span>
+        </div>
+        <button class="cot-x" type="button" data-det="cerrar" aria-label="Cerrar el detalle">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="cot-det__cuerpo" tabindex="0" aria-label="Detalle del reporte">
+        <div class="cot-ficha">
+          <section class="cot-ficha__s">
+            <h4>Datos del reporte</h4>
+            <div id="rep-det-datos"></div>
+          </section>
+        </div>
+        <section class="cot-det__prod" aria-label="Contenido del reporte">
+          <h4 class="cot-det__t">Contenido <span>las primeras filas del periodo</span></h4>
+          <div class="scroll-x">
+            <table id="rep-det-previa"></table>
+          </div>
+        </section>
+      </div>
+      <div class="ped-det__pie">
+        <span>Generado por <b>Valentina Rojas · VEN-03</b></span>
+        <button class="btn btn--sm" type="button" id="rep-det-descargar">
+          <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+          Descargar de nuevo
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- El nuevo reporte: se abre con "Generar reporte". Se elige el tipo, el periodo y
+       el formato; la vista previa se actualiza sola al cambiar cualquiera de las tres.
+       "Guardar y descargar" baja el archivo y deja el reporte en la tabla. -->
+  <div class="overlay" id="rep-nuevo" role="dialog" aria-modal="true" aria-labelledby="rep-nv-t" hidden>
+    <div class="modal cot-modal" tabindex="-1">
+      <div class="modal__head">
+        <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+        <div>
+          <h3 id="rep-nv-t">Nuevo reporte</h3>
+          <span class="sub">Elija el tipo, el periodo y el formato: la vista previa se actualiza sola</span>
+        </div>
+      </div>
+      <div class="modal__cuerpo">
+        <div class="panel__body panel__body--form">
+          <div class="field">
+            <label for="rep-nv-tipo">Tipo de reporte</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path></svg>
+              <select id="rep-nv-tipo">
+                <option>Ventas por cliente y referencia</option>
+                <option>Ventas por vendedor</option>
+                <option>Cartera y cupos de crédito</option>
+                <option>Cotizaciones y tasa de cierre</option>
+                <option>Estado de despachos y entregas</option>
+                <option>Devoluciones por motivo</option>
+                <option>Pedidos pendientes de despacho</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rep-nv-desde">Desde</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
+              <input id="rep-nv-desde" type="date" value="2026-09-01">
+            </div>
+          </div>
+          <div class="field">
+            <label for="rep-nv-hasta">Hasta</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline></svg>
+              <input id="rep-nv-hasta" type="date" value="2026-09-22">
+            </div>
+          </div>
+          <div class="field">
+            <label for="rep-nv-formato">Formato</label>
+            <div class="control">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+              <select id="rep-nv-formato">
+                <option>PDF</option>
+                <option>Excel</option>
+                <option>CSV</option>
+              </select>
+              <span class="ico chev"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+          </div>
+        </div>
+        <!-- La vista previa: prototipo.js la vuelve a dibujar al cambiar tipo o fechas -->
+        <section class="rep-previa" aria-label="Vista previa del reporte">
+          <h4>Vista previa</h4>
+          <div class="scroll-x">
+            <table id="rep-nv-previa"></table>
+          </div>
+          <p class="tiny" id="rep-nv-nota">Primeras filas del periodo elegido. El archivo completo trae todo.</p>
+        </section>
+      </div>
+      <div class="modal__foot">
+        <p class="tiny">Al guardar, el archivo se descarga y el reporte queda en la tabla para verlo de nuevo.</p>
+        <button class="btn btn--ghost" type="button">Cancelar</button>
+        <button class="btn btn--cobre" type="button">
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="m7 10 5 5 5-5"></path></svg>
+          Guardar y descargar
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
   <script src="../../comun/marco.js"></script>

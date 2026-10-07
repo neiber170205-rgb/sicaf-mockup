@@ -181,7 +181,7 @@
             </thead>
             <tbody>
               <tr data-estado="en_produccion" data-fecha="2026-10-14" data-pares="84" data-valor="6299479">
-                <td data-l="Pedido"><b>PD-2026-091</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-091</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-7">Calzado Norte</td>
                 <td data-l="Factura">FV-2026-0152</td>
                 <td class="num" data-l="Pares">84</td>
@@ -190,7 +190,7 @@
                 <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · OP-2026-056 Corte 25 %</span></td>
               </tr>
               <tr data-estado="en_produccion" data-fecha="2026-10-08" data-pares="36" data-valor="2223000">
-                <td data-l="Pedido"><b>PD-2026-090</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-090</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Calzado del Oriente · NIT 901.220.556-5">Calzado del Oriente</td>
                 <td data-l="Factura">FV-2026-0144</td>
                 <td class="num" data-l="Pares">36</td>
@@ -199,7 +199,7 @@
                 <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · esperando orden de Producción</span></td>
               </tr>
               <tr data-estado="en_produccion" data-fecha="2026-10-06" data-pares="26" data-valor="2119390">
-                <td data-l="Pedido"><b>PD-2026-089</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-089</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Calzado El Dorado · NIT 830.112.991-6">Calzado El Dorado</td>
                 <td data-l="Factura">FV-2026-0139</td>
                 <td class="num" data-l="Pares">26</td>
@@ -208,7 +208,7 @@
                 <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · OP-2026-055 Guarnición 50 %</span></td>
               </tr>
               <tr data-estado="en_produccion" data-fecha="2026-10-01" data-pares="48" data-valor="3795338">
-                <td data-l="Pedido"><b>PD-2026-088</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-088</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Distribuidora Tamanaco · NIT 900.221.334-8">Distribuidora Tamanaco</td>
                 <td data-l="Factura">FV-2026-0131</td>
                 <td class="num" data-l="Pares">48</td>
@@ -217,7 +217,7 @@
                 <td data-l="Estado"><span class="pill pill--warn">En producción</span><span class="tiny">sin despachar · OP-2026-054 Montaje 75 %</span></td>
               </tr>
               <tr data-estado="despacho" data-fecha="2026-10-01" data-pares="72" data-valor="4305600">
-                <td data-l="Pedido"><b>PD-2026-087</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-087</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Comercial Los Andes · NIT 890.332.117-7">Comercial Los Andes</td>
                 <td data-l="Factura">FV-2026-0127</td>
                 <td class="num" data-l="Pares">72</td>
@@ -226,7 +226,7 @@
                 <td data-l="Estado"><span class="pill pill--info">Despachado</span><span class="tiny">salió el 26-sep de BOD-02 · en ruta</span></td>
               </tr>
               <tr data-estado="entregado" data-fecha="2026-08-20" data-pares="24" data-valor="1827840">
-                <td data-l="Pedido"><b>PD-2026-086</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-086</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Almacén La Bota Fina · NIT 901.455.210-1">Almacén La Bota Fina</td>
                 <td data-l="Factura">FV-2026-0118</td>
                 <td class="num" data-l="Pares">24</td>
@@ -235,7 +235,7 @@
                 <td data-l="Estado"><span class="pill pill--off">Entregado</span><span class="tiny">despachado el 18-ago · a tiempo</span></td>
               </tr>
               <tr data-estado="entregado" data-fecha="2026-08-19" data-pares="60" data-valor="4646355">
-                <td data-l="Pedido"><b>PD-2026-085</b></td>
+                <td data-l="Pedido"><button class="dt__ver" type="button" title="Ver la entrega">PD-2026-085</button></td>
                 <td class="dt__cli" data-l="Cliente" title="Calzado Norte · NIT 830.112.998-7">Calzado Norte</td>
                 <td data-l="Factura">FV-2026-0112</td>
                 <td class="num" data-l="Pares">60</td>
@@ -276,98 +276,70 @@
     </div>
   </section>
 
-  <section class="panel">
-    <header class="panel__head panel__head--cobre">
-      <svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
-        <path d="M12 9v4"></path>
-        <path d="M12 17h.01"></path>
-      </svg>
-      <div>
-        <h2>Devoluciones del Cliente</h2>
-        <div class="sub">Lo que vuelve, con su motivo · lo recoge Logística y lo revisa Control de Calidad antes de reingresar a bodega</div>
-      </div>
-    </header>
-    <div class="panel__body panel__body--flush">
-      <div class="tabla-tools">
-        <div class="control">
-          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m21 21-4.34-4.34"></path>
-            <circle cx="11" cy="11" r="8"></circle>
-          </svg>
-          <input type="search" placeholder="Buscar pedido, cliente o motivo…">
+  <!-- El detalle de una entrega: se abre con un clic en su fila (o Enter sobre su pedido,
+       que es un botón) y se cierra con la ✕, con Esc o pulsando fuera. El estado del
+       paquete dicho con palabras, el recorrido de la factura a la entrega, el cliente,
+       el despacho cuando ya salió y los productos. Solo se lee: el estado lo publica
+       Logística. Lo de adentro es un ejemplo: prototipo.js lo vuelve a dibujar con la
+       entrega que se abra. -->
+  <div class="overlay cot-det-fondo" id="ent-det" hidden>
+    <aside class="cot-det ped-det" role="dialog" aria-modal="true" aria-labelledby="ent-det-t" tabindex="-1">
+      <div class="modal__head">
+        <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path> <path d="M15 18H9"></path> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path> <circle cx="17" cy="18" r="2"></circle> <circle cx="7" cy="18" r="2"></circle></svg>
+        <div>
+          <h3 id="ent-det-t">Entrega del pedido PD-2026-091</h3>
+          <span class="sub" id="ent-det-sub">Calzado Norte · 84 pares · $6.299.479</span>
         </div>
-        <span class="tabla-tools__n">5 devoluciones · 23 pares</span>
+        <button class="cot-x" type="button" data-det="cerrar" aria-label="Cerrar el detalle">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path></svg>
+        </button>
       </div>
-      <div class="scroll-x">
-        <table>
-          <thead>
-            <tr>
-              <th>Pedido</th>
-              <th>Cliente</th>
-              <th class="num">Pares</th>
-              <th>Motivo</th>
-              <th>Estado</th>
-              <th class="acts"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-l="Pedido"><b>PD-2026-089</b></td>
-              <td data-l="Cliente">Calzado El Dorado</td>
-              <td class="num" data-l="Pares">6</td>
-              <td data-l="Motivo">Talla equivocada</td>
-              <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
-              <td>
-                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Pedido"><b>PD-2026-088</b></td>
-              <td data-l="Cliente">Distribuidora Tamanaco</td>
-              <td class="num" data-l="Pares">4</td>
-              <td data-l="Motivo">Defecto de fabricación</td>
-              <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
-              <td>
-                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Pedido"><b>PD-2026-086</b></td>
-              <td data-l="Cliente">Almacén La Bota Fina</td>
-              <td class="num" data-l="Pares">3</td>
-              <td data-l="Motivo">Sobrante del pedido</td>
-              <td data-l="Estado"><span class="pill pill--warn">En recolección</span></td>
-              <td>
-                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Pedido"><b>PD-2026-087</b></td>
-              <td data-l="Cliente">Comercial Los Andes</td>
-              <td class="num" data-l="Pares">8</td>
-              <td data-l="Motivo">Defecto de fabricación</td>
-              <td data-l="Estado"><span class="pill pill--crit">En calidad</span></td>
-              <td>
-                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
-              </td>
-            </tr>
-            <tr>
-              <td data-l="Pedido"><b>PD-2026-091</b></td>
-              <td data-l="Cliente">Calzado Norte</td>
-              <td class="num" data-l="Pares">2</td>
-              <td data-l="Motivo">Garantía</td>
-              <td data-l="Estado"><span class="pill pill--crit">Sin programar</span></td>
-              <td>
-                <div class="acts"><button class="btn btn--sm btn--ghost" data-ir="05-pedidos.html">Ver el pedido</button></div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="cot-det__cuerpo" tabindex="0" aria-label="Detalle de la entrega">
+        <section class="cot-det__estado cot-det__estado--warn" id="ent-det-estado" aria-label="Estado del paquete">
+          <div class="cot-det__estado-cab">
+            <span class="pill pill--warn">En producción</span>
+            <p><b>Faltan 60 pares en <span class="cot-det__nw">BOD-02</span>.</b> Producción los hace en <span class="cot-det__nw">OP-2026-056</span> (Corte). Los otros 24 ya están apartados.</p>
+          </div>
+          <ol class="cot-rec ped-rec" aria-label="Recorrido de la entrega">
+            <li class="cot-rec__p is-hecho"><span class="cot-rec__n" aria-hidden="true">✓</span><b>Facturado</b><small>11-sep-2026</small></li>
+            <li class="cot-rec__p is-hecho"><span class="cot-rec__n" aria-hidden="true">✓</span><b>Pedido registrado</b><small>11-sep-2026</small></li>
+            <li class="cot-rec__p is-hecho"><span class="cot-rec__n" aria-hidden="true">✓</span><b>Existencias validadas</b><small>11-sep-2026</small></li>
+            <li class="cot-rec__p is-ahora" aria-current="step"><span class="cot-rec__n" aria-hidden="true">4</span><b>En producción</b><small>11-sep-2026</small></li>
+            <li class="cot-rec__p"><span class="cot-rec__n" aria-hidden="true">5</span><b>Listo para despacho</b><small>pendiente</small></li>
+            <li class="cot-rec__p"><span class="cot-rec__n" aria-hidden="true">6</span><b>En despacho</b><small>pendiente</small></li>
+            <li class="cot-rec__p"><span class="cot-rec__n" aria-hidden="true">7</span><b>Entregado</b><small>pendiente</small></li>
+          </ol>
+        </section>
+        <div class="cot-ficha">
+          <div class="cot-ficha__g cot-ficha__g--2" id="ent-det-ficha">
+            <section class="cot-ficha__s">
+              <h4>Cliente y entrega</h4>
+              <b class="cot-det__cli">Calzado Norte</b><span class="tiny">NIT 830.112.998-7 · Bogotá</span>
+              <div class="kv"><span>Contacto</span><b>Jorge Ramírez · compras</b></div>
+              <div class="kv"><span>Teléfono</span><b>301 554 2290</b></div>
+              <div class="kv"><span>Dirección</span><b>Calle 80 # 24-15</b></div>
+            </section>
+            <section class="cot-ficha__s">
+              <h4>Origen</h4>
+              <div class="kv"><span>Factura</span><b>FV-2026-0152</b></div>
+              <div class="kv"><span>Cotización</span><b>CO-2026-010</b></div>
+              <div class="kv"><span>Entrega prometida</span><b>14-octubre-2026</b></div>
+              <div class="kv"><span>Bodega</span><b>BOD-02 · Producto terminado</b></div>
+            </section>
+          </div>
+        </div>
+        <!-- El aviso de las facturas vencidas del cliente (el pedido sigue; se le avisa a cartera) -->
+        <div class="ped-det__avisos" id="ent-det-avisos"></div>
+        <section class="cot-det__prod" aria-labelledby="ent-det-prod-t">
+          <h4 class="cot-det__t" id="ent-det-prod-t">Productos del envío <span id="ent-det-prod-sub">1 modelo · 84 pares</span></h4>
+          <div class="cot-det__lineas" id="ent-det-lineas"></div>
+        </section>
       </div>
-      <p class="tabla-pie">Mostrando 5 de 5 devoluciones · el estado lo actualizan Logística y Control de Calidad; Comercial solo lo consulta</p>
-    </div>
-  </section>
+      <div class="ped-det__pie" id="ent-det-pie">
+        <span>Pares <b>84</b></span><span class="ped-det__valor">Valor <b>$6.299.479</b></span>
+      </div>
+    </aside>
+  </div>
 
   <!-- El marco de SICAF: menú lateral con el logo y los módulos -->
   <script src="../../comun/marco.js"></script>
