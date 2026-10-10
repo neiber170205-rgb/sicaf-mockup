@@ -5,7 +5,7 @@
 👉 **Míralo funcionando: https://neiber170205-rgb.github.io/sicaf-mockup/**
 
 Esto es el **prototipo**: el dibujo de cómo se va a ver y comportar el sistema, hecho antes de programarlo,
-para ponernos de acuerdo con la docente y entre nosotros. Son nueve módulos —Dashboard, Diseño, Compras,
+para ponernos de acuerdo con la docente y entre nosotros. Son ocho módulos —Dashboard, Compras,
 Inventario, Producción, Control de Calidad, Comercial, Logística y Despacho, y Administración de
 usuarios— con datos de demostración que cambian al pulsar.
 
@@ -14,7 +14,6 @@ usuarios— con datos de demostración que cambian al pulsar.
 | Usuario | Contraseña | Qué ve |
 |---|---|---|
 | `admin@sicaf.com` | `admin2026` | Todo el sistema |
-| `camila@sicaf.com` | `sicaf2026` | Solo Diseño |
 | `andres@sicaf.com` | `sicaf2026` | Solo Compras |
 | `maria@sicaf.com` | `sicaf2026` | Solo Inventario |
 | `marta@sicaf.com` | `sicaf2026` | Solo Producción |

@@ -69,7 +69,6 @@ const uid=p=>p+'-'+String(Math.floor(Math.random()*9000+1000));
    (ver MOCKUPS DE LOS MÓDULOS, más abajo). */
 const MODS=[
  {id:'usuarios',   n:'Inicio',            ic:'grid',     c:'09-admin'},
- {id:'diseno',     n:'Diseño',            ic:'pencil',   c:'02-diseno'},
  {id:'compras',    n:'Compras',           ic:'cart',     c:'03-compras'},
  {id:'inventario', n:'Inventario',        ic:'box',      c:'04-inventario'},
  {id:'produccion', n:'Producción',        ic:'gear',     c:'05-produccion'},
@@ -78,7 +77,7 @@ const MODS=[
  {id:'logistica',  n:'Logística y Despacho', ic:'truck', c:'08-logistica'},
  {id:'dashboard',  n:'Dashboard General', ic:'grid',   c:'01-dashboard'}
 ];
-const AREA_CHIP={diseno:'vino',compras:'vino',inventario:'cobre',produccion:'tinta',calidad:'oliva',comercial:'cobre',logistica:'cobre',usuarios:'vino',dashboard:'tinta'};
+const AREA_CHIP={compras:'vino',inventario:'cobre',produccion:'tinta',calidad:'oliva',comercial:'cobre',logistica:'cobre',usuarios:'vino',dashboard:'tinta'};
 const modName=id=>(MODS.find(m=>m.id===id)||{n:id}).n;
 const CORTO={logistica:'Logística',calidad:'Calidad',usuarios:'Inicio',dashboard:'Dashboard'};
 const modCorto=id=>CORTO[id]||modName(id);
@@ -102,14 +101,12 @@ const S={
   {id:2,nombre:'María Rodríguez',correo:'maria@sicaf.com',area:'inventario',rol:'gerente',estado:'Activo',alta:'2026-09-11'},
   {id:3,nombre:'Luis Fernando',correo:'luis@sicaf.com',area:'calidad',rol:'operario',estado:'Activo',alta:'2026-09-12'},
   {id:4,nombre:'Valentina Rojas',correo:'valentina@sicaf.com',area:'comercial',rol:'operario',estado:'Activo',alta:'2026-09-12'},
-  {id:5,nombre:'Camila Duarte',correo:'camila@sicaf.com',area:'diseno',rol:'supervisor',estado:'Activo',alta:'2026-09-12'},
   {id:6,nombre:'Andrés Suárez',correo:'andres@sicaf.com',area:'compras',rol:'supervisor',estado:'Activo',alta:'2026-09-12'},
   {id:7,nombre:'Marta Villamizar',correo:'marta@sicaf.com',area:'produccion',rol:'supervisor',estado:'Activo',alta:'2026-09-12'}
  ],
  bitacora:[
   {f:'2026-09-12 09:26',u:'Admin Principal',a:'Creación de acceso',d:'Marta Villamizar · Producción · Supervisor'},
   {f:'2026-09-12 09:22',u:'Admin Principal',a:'Creación de acceso',d:'Andrés Suárez · Compras · Supervisor'},
-  {f:'2026-09-12 09:18',u:'Admin Principal',a:'Creación de acceso',d:'Camila Duarte · Diseño · Supervisor'},
   {f:'2026-09-12 09:10',u:'Admin Principal',a:'Creación de acceso',d:'Valentina Rojas · Comercial · Operario'},
   {f:'2026-09-12 08:41',u:'Admin Principal',a:'Creación de acceso',d:'Luis Fernando · Control de Calidad · Operario'},
   {f:'2026-09-11 16:05',u:'Admin Principal',a:'Creación de acceso',d:'María Rodríguez · Inventario · Gerente'},
@@ -421,7 +418,6 @@ S.insumos.forEach(()=>{});
 notificar('produccion','calidad','aviso','Lote LT-2026-030 listo para inspección','64 pares de REF-1042 terminados en OP-2026-030 esperan acta de inspección.','LT-2026-030');
 notificar('calidad','produccion','urgente','Lote LT-2026-028 rechazado','81,67 % de conformidad, por debajo del umbral de 90 %. Defecto principal: pegue de suela, etapa Montaje.','OP-2026-029');
 notificar('comercial','logistica','aviso','Pedido PD-2026-088 listo para despacho','40 pares de REF-1042 para Calzado El Dorado (Bogotá). Hay existencias en bodega.','PD-2026-088');
-notificar('diseno','produccion','info','Modelo REF-1043 aprobado','Mocasín Cúcuta versión 1 ya puede entrar en órdenes de producción.','REF-1043');
 notificar('compras','inventario','aviso','Recepción pendiente OC-2026-014','Curtiembre del Norte despachó 1.200 dm² de cuero vacuno graso. Registre la recepción cuando llegue a bodega.','OC-2026-014');
 notificar('calidad','inventario','info','Ingreso de producto terminado LT-2026-029','78 pares conformes de REF-1042 ingresaron a bodega (97,5 % de conformidad).','LT-2026-029');
 notificar('logistica','comercial','info','Despacho DS-2026-055 en tránsito','18 pares de REF-1042 para Distribuidora Tamanaco salieron con la guía GR-88231.','DS-2026-055');
@@ -1114,7 +1110,7 @@ function panelMosaico(){
  const pend=[];
  const npend=pendientes('produccion').length;
  if(npend)pend.push({n:'info',ic:'bell',t:n0(npend)+' aviso(s) de otros módulos',
-  d:'Diseño, Compras o Calidad necesitan algo de Producción.',act:'alertas'});
+  d:'Compras o Calidad necesitan algo de Producción.',act:'alertas'});
  S.op.filter(o=>o.estado==='en espera').forEach(o=>pend.push({n:'warn',ic:'alert',
   t:o.id+' en espera de material',d:n0(o.cant)+' pares de '+o.ref+' · Compras ya fue notificado',ir:'ordenes'}));
  lineasBOM().filter(l=>l.falta>0).sort((a,b)=>a.cobertura-b.cobertura).forEach(l=>pend.push({n:'crit',ic:'box',
@@ -1937,7 +1933,7 @@ A['entrar']=()=>{
  S.vista=inicioDe(r.u);
  log('Inicio de sesión',r.u.nombre+' · '+(r.u.rol==='admin'?'administrador':r.u.rol+' de '+modName(r.u.area)));
  render();
- toast('ok','Bienvenido, '+r.u.nombre.split(' ')[0],r.u.rol==='admin'?'Acceso administrador: los nueve módulos habilitados.':'Rol '+r.u.rol+'. Solo tiene habilitado el módulo de '+modName(r.u.area)+'.');
+ toast('ok','Bienvenido, '+r.u.nombre.split(' ')[0],r.u.rol==='admin'?'Acceso administrador: los ocho módulos habilitados.':'Rol '+r.u.rol+'. Solo tiene habilitado el módulo de '+modName(r.u.area)+'.');
 };
 A['ver-pass']=el=>{const i=$('#l-pass');i.type=i.type==='password'?'text':'password';
  el.innerHTML=ico(i.type==='password'?'eye':'eyeoff',18);i.focus();};
@@ -1957,8 +1953,8 @@ A['sesion-det']=()=>{
   '<div style="display:flex;gap:14px;align-items:center"><span class="avatar">'+esc(u.nombre[0])+'</span>'
   +'<div><b style="font-size:18px">'+esc(u.nombre)+'</b><div class="tiny">'+esc(u.correo)+'</div></div></div>'
   +'<div class="kv" style="margin-top:16px"><span>Nivel de permisos</span><b>'+(u.rol==='admin'?'Administrador':u.rol[0].toUpperCase()+u.rol.slice(1))+'</b></div>'
-  +'<div class="kv"><span>Módulos habilitados</span><b>'+(u.rol==='admin'?'Los nueve módulos':modName(u.area))+'</b></div>'
-  +'<div class="aviso aviso--warn" style="margin-top:16px">'+ico('lock',20)+'<div><b>Control de acceso en el servidor</b><p>'+(u.rol==='admin'?'Como administrador ve los nueve módulos. ':'Los departamentos ajenos al suyo no se muestran ni pueden ejecutarse. ')+'El permiso se verifica antes de cada operación, no basta con ocultar el botón.</p></div></div>',
+  +'<div class="kv"><span>Módulos habilitados</span><b>'+(u.rol==='admin'?'Los ocho módulos':modName(u.area))+'</b></div>'
+  +'<div class="aviso aviso--warn" style="margin-top:16px">'+ico('lock',20)+'<div><b>Control de acceso en el servidor</b><p>'+(u.rol==='admin'?'Como administrador ve los ocho módulos. ':'Los departamentos ajenos al suyo no se muestran ni pueden ejecutarse. ')+'El permiso se verifica antes de cada operación, no basta con ocultar el botón.</p></div></div>',
   'Cerrar sesión',()=>{cerrarModal();A['salir']();});
 };
 A['recordar']=()=>modal('¿Olvidó su contraseña?',
@@ -1971,7 +1967,7 @@ A['alertas']=()=>{
  const mias=misNotis(), sin=mias.filter(n=>!n.leida);
  modal('Notificaciones entre módulos',
   '<p class="muted">'+(S.user.rol==='admin'
-    ?'Como administrador ve el tráfico completo entre los nueve módulos.'
+    ?'Como administrador ve el tráfico completo entre los ocho módulos.'
     :'Recibe lo que otras áreas necesitan de '+esc(modName(S.user.area))+' y el eco de lo que usted envía.')+'</p>'
   +(sin.length?'<div class="linkline" style="text-align:right;margin:6px 0 0"><button data-act="noti-todas">Marcar todas como atendidas</button></div>':'')
   +'<div class="notis" style="margin-top:12px">'
@@ -1988,7 +1984,7 @@ A['noti-ir']=el=>{const n=S.notis.find(x=>x.id===el.dataset.id);
  cerrarModal();S.vista=n.para;S.q='';render();};
 A['info']=el=>{
  const t={soporte:['Soporte','<p>Mesa de ayuda interna de la fábrica, extensión 120. Los incidentes se registran con el usuario responsable y la fecha, y quedan asociados al módulo donde ocurrieron.</p>'],
-  manual:['Manual de usuario','<p>El flujo del sistema sigue la cadena productiva:</p><p style="margin-top:8px" class="muted">Diseño → Compras → Inventario → Producción → Control de Calidad → Comercial → Logística.</p><p style="margin-top:10px">Dashboard y Administración de Usuarios son módulos transversales: el primero solo consulta, el segundo condiciona el acceso a todos los demás.</p><p style="margin-top:10px"><b>Notificaciones:</b> cuando una operación necesita algo de otra área, el sistema avisa al responsable. Inventario avisa a Compras al cruzar el mínimo; Producción avisa a Compras si falta material y a Calidad cuando termina un lote; Calidad devuelve a Producción lo rechazado e informa a Inventario lo conforme; Comercial dispara Producción o Logística según haya existencias; Logística informa a Inventario cada salida y remite a Calidad las devoluciones por defecto.</p>'],
+  manual:['Manual de usuario','<p>El flujo del sistema sigue la cadena productiva:</p><p style="margin-top:8px" class="muted">Compras → Inventario → Producción → Control de Calidad → Comercial → Logística.</p><p style="margin-top:10px">Dashboard y Administración de Usuarios son módulos transversales: el primero solo consulta, el segundo condiciona el acceso a todos los demás.</p><p style="margin-top:10px"><b>Notificaciones:</b> cuando una operación necesita algo de otra área, el sistema avisa al responsable. Inventario avisa a Compras al cruzar el mínimo; Producción avisa a Compras si falta material y a Calidad cuando termina un lote; Calidad devuelve a Producción lo rechazado e informa a Inventario lo conforme; Comercial dispara Producción o Logística según haya existencias; Logística informa a Inventario cada salida y remite a Calidad las devoluciones por defecto.</p>'],
   seguridad:['Políticas de seguridad','<ul style="margin:0;padding-left:18px"><li>Cada usuario se asocia a un área y a un rol: gerente, supervisor u operario.</li><li>Solo el administrador tiene acceso transversal. Un usuario de Logística no puede ver Inventario, ni uno de Inventario ver Producción: cada quien entra únicamente a su departamento.</li><li>La validación de permisos ocurre en el servidor, antes de ejecutar la operación; ocultar un botón no es control de acceso.</li><li>Ningún registro se elimina: se anula o se desactiva, conservando la trazabilidad.</li><li>Toda operación queda asociada al usuario que la ejecutó y a la fecha en que ocurrió.</li><li>Un documento no avanza de estado si el anterior no fue cerrado.</li></ul>']}[el.dataset.tema];
  modal(t[0],t[1]);
 };
@@ -2280,7 +2276,7 @@ function pintarSugerencias(){
 /* =====================================================================
    RENDER Y EVENTOS
    ===================================================================== */
-const PLACEHOLDER={usuarios:'Buscar empleado o rol...',dashboard:'Buscar indicador...',diseno:'Buscar modelo o referencia...',compras:'Buscar orden o insumo...',inventario:'Buscar insumo...',produccion:'Buscar orden...',calidad:'Buscar lote o defecto...',comercial:'Buscar pedido o cliente...',logistica:'Buscar despacho o ruta...'};
+const PLACEHOLDER={usuarios:'Buscar empleado o rol...',dashboard:'Buscar indicador...',compras:'Buscar orden o insumo...',inventario:'Buscar insumo...',produccion:'Buscar orden...',calidad:'Buscar lote o defecto...',comercial:'Buscar pedido o cliente...',logistica:'Buscar despacho o ruta...'};
 function renderLogin(){
  $('#login').innerHTML=
   '<aside class="login__brand">'
@@ -2324,7 +2320,7 @@ function pintarMenuUsuario(){
   +(tema?' data-tema="'+tema+'"':'')+'>'+ico(ic,17)+'<span>'+txt+'</span></button>';
  m.innerHTML='<div class="umenu__h"><span class="avatar avatar--sm">'+esc(u.nombre[0])+'</span>'
   +'<div><b>'+esc(u.nombre)+'</b><small>'+esc(u.correo)+'</small></div></div>'
-  +'<div class="umenu__rol">'+ico('lock',15)+(u.rol==='admin'?'Administrador · los nueve módulos'
+  +'<div class="umenu__rol">'+ico('lock',15)+(u.rol==='admin'?'Administrador · los ocho módulos'
     :u.rol[0].toUpperCase()+u.rol.slice(1)+' · '+esc(modName(u.area)))+'</div>'
   +'<div class="umenu__g">'
    +item('sesion-det','','user','Detalles de la sesión')
@@ -2350,7 +2346,7 @@ function rotularTablas(){
 /* El menú lateral: los módulos que el usuario puede ver (el administrador, todos;
    los demás, solo el suyo). De Producción cuelgan sus procesos; del módulo
    abierto, las pantallas de su mockup (igual que en comun/marco.js). */
-const TINTE={dashboard:'#FFFFFF',diseno:'var(--cobre-400)',compras:'#F2E3DE',inventario:'var(--cobre-400)',produccion:'#F2E3DE',calidad:'#5CBB7B',comercial:'var(--cobre-400)',logistica:'var(--cobre-400)',usuarios:'#FFFFFF'};
+const TINTE={dashboard:'#FFFFFF',compras:'#F2E3DE',inventario:'var(--cobre-400)',produccion:'#F2E3DE',calidad:'#5CBB7B',comercial:'var(--cobre-400)',logistica:'var(--cobre-400)',usuarios:'#FFFFFF'};
 function pintarMenu(){
  $('#nav').innerHTML=MODS.filter(m=>m.id!=='dashboard'&&puedeVer(m.id)).map(m=>{
   const cur=S.vista===m.id;

@@ -89,17 +89,16 @@ fuera.
 El inicio de sesión abre con el usuario administrador ya escrito; basta con pulsar **Ingresar**.
 
 ```
-admin@sicaf.com  ·  admin2026      → acceso total (los 9 módulos)
+admin@sicaf.com  ·  admin2026      → acceso total (los 8 módulos)
 ```
 
 Hay un encargado por módulo. Entran escribiendo su propio correo y la clave `sicaf2026`,
 y el menú lateral solo les muestra su módulo (los demás no aparecen):
 
 ```
-camila@sicaf.com → Diseño        andres@sicaf.com    → Compras
-maria@sicaf.com  → Inventario    marta@sicaf.com     → Producción
-luis@sicaf.com   → Calidad       valentina@sicaf.com → Comercial
-erick@sicaf.com  → Logística
+andres@sicaf.com    → Compras      maria@sicaf.com → Inventario
+marta@sicaf.com     → Producción   luis@sicaf.com  → Calidad
+valentina@sicaf.com → Comercial    erick@sicaf.com → Logística
 ```
 
 Se puede escribir solo la parte antes de la `@` (por ejemplo `admin`).
@@ -124,7 +123,7 @@ mockup: lo que se crea ahí no se vuelve un acceso para entrar.
 ## La barra lateral se pliega
 
 Junto al logotipo y el nombre **SICAF** hay un botón (icono `panel-left` de Lucide) que
-**pliega la barra lateral** hasta dejar solo los iconos de los nueve módulos, y la vuelve a
+**pliega la barra lateral** hasta dejar solo los iconos de los ocho módulos, y la vuelve a
 abrir. Está ahí, y no en la barra superior, porque es la barra que se pliega: el botón queda
 sobre lo que controla y la barra superior se deja entera para buscar y para la sesión.
 Con la barra plegada, el nombre de cada módulo aparece al pasar el ratón por encima. Por
